@@ -1,4 +1,980 @@
 { "commands": [
-
+{ "hdr": "6F5", "rax": "6FD", "dbg": true, "cmd": {"22": "4899"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVDC_CHG_MAX_C", "path": "Battery", "fmt": { "len": 16, "max": 655.35, "div": 100, "unit": "amps" }, "name": "HV DC charger maximum current"}
+  ]},
+{ "hdr": "6F5", "rax": "6FD", "dbg": true, "cmd": {"22": "489D"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVDC_CHG_MAX_V", "path": "Battery", "fmt": { "len": 16, "max": 6553.5, "div": 10, "unit": "volts" }, "name": "HV DC charger maximum voltage"}
+  ]},
+{ "hdr": "720", "rax": "728", "dbg": true, "cmd": {"22": "404C"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_ODO_V2", "path": "Trips", "fmt": { "len": 24, "max": 1677721, "div": 10, "unit": "kilometers" }, "name": "Odometer", "suggestedMetric": "odometer"}
+  ]},
+{ "hdr": "720", "rax": "728", "dbg": true, "cmd": {"22": "6185"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_FLI_V2", "path": "Fuel", "fmt": { "len": 8, "max": 100, "mul": 100, "div": 255, "unit": "percent" }, "name": "Fuel tank level", "suggestedMetric": "fuelTankLevel"}
+  ]},
+{ "hdr": "720", "rax": "728", "dbg": true, "cmd": {"22": "61A5"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_TPMS_WARN", "path": "Tires", "fmt": {"bix": 2, "len": 1, "max": 1, "unit": "offon" }, "name": "Tire pressure warning indicator"}
+  ]},
+{ "hdr": "720", "rax": "728", "dbg": true, "cmd": {"22": "DD01"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_ODO_TRIP", "path": "Trips", "fmt": { "len": 24, "max": 1677721, "div": 10, "unit": "kilometers" }, "name": "Trip distance"}
+  ]},
+{ "hdr": "726", "dbg": true, "cmd": {"22": "407E"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_EXTERIOR_LIGHT_STATE", "path": "Lights", "name": "Focus Exterior Lighting State", "fmt": {"bix": 0, "len": 1, "map": {
+          "0":   { "description": "0", "value": "0" },
+          "216": { "description": "1", "value": "1" }
+        }}
+    }
+  ]},
+{ "hdr": "726", "dbg": true, "cmd": {"22": "7151"}, "freq": 4,
+  "signals": [
+    {"id": "FORD_HIGHBEAM_STATUS", "path": "Lights", "fmt": { "len": 16, "max": 2, "unit": "offon" }, "name": "Highbeam Status"}
+  ]},
+{ "hdr": "726", "dbg": true, "cmd": {"22": "C150"}, "freq": 3,
+  "signals": [
+    {"id": "FORD_TRUNK_OPEN",          "path": "Doors", "fmt": {"bix": 11, "len": 1, "max": 1, "unit": "noyes" }, "name": "Trunk Ajar?"},
+    {"id": "FORD_RRD_OPEN",            "path": "Doors", "fmt": {"bix": 12, "len": 1, "max": 1, "unit": "noyes" }, "name": "Rear Right Door Ajar?"},
+    {"id": "FORD_RLD_OPEN",            "path": "Doors", "fmt": {"bix": 13, "len": 1, "max": 1, "unit": "noyes" }, "name": "Rear Left Door Ajar?"},
+    {"id": "FORD_DRIVER_DOOR_OPEN",    "path": "Doors", "fmt": {"bix": 16, "len": 1, "max": 1, "unit": "noyes" }, "name": "Driver Door Ajar"},
+    {"id": "FORD_PASSENGER_DOOR_OPEN", "path": "Doors", "fmt": {"bix": 17, "len": 1, "max": 1, "unit": "noyes" }, "name": "Passenger Door Ajar?"}
+  ]},
+{ "hdr": "726", "dbg": true, "cmd": {"22": "C154"}, "freq": 3,
+  "signals": [
+    {"id": "FORD_HOOD_OPEN", "path": "Doors", "fmt": { "len": 1, "max": 1, "unit": "noyes" }, "name": "Hood Ajar?"}
+  ]},
+{ "hdr": "726", "dbg": true, "cmd": {"22": "C259"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_CENTRAL_LOCK_STATUS", "path": "Doors", "name": "Lock Status", "fmt": {"len": 8, "map": {
+          "0": { "description": "Unlocked", "value": "UNLOCKED" },
+          "2": { "description": "Locked",   "value": "LOCKED" }
+        }}
+    }
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "2813"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_TP_FL", "path": "Tires", "fmt": { "len": 16, "max": 3276, "div": 20, "unit": "psi" }, "name": "Front left tire pressure", "suggestedMetric": "frontLeftTirePressure"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "2814"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_TP_FR", "path": "Tires", "fmt": { "len": 16, "max": 3276, "div": 20, "unit": "psi" }, "name": "Front right tire pressure", "suggestedMetric": "frontRightTirePressure"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "2815"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_TP_RRO", "path": "Tires", "fmt": { "len": 16, "max": 3276, "div": 20, "unit": "psi" }, "name": "Rear right outer tire pressure", "suggestedMetric": "rearRightTirePressure"},
+    {"id": "FORD_TP_RR",  "path": "Tires", "fmt": { "len": 16, "max": 255,  "div": 20, "unit": "psi" }, "name": "Rear right tire pressure",       "suggestedMetric": "rearRightTirePressure"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "2816"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_TP_RLO", "path": "Tires", "fmt": { "len": 16, "max": 3276, "div": 20, "unit": "psi" }, "name": "Rear left outer tire pressure", "suggestedMetric": "rearLeftTirePressure"},
+    {"id": "FORD_TP_RL",  "path": "Tires", "fmt": { "len": 16, "max": 255,  "div": 20, "unit": "psi" }, "name": "Rear left tire pressure",       "suggestedMetric": "rearLeftTirePressure"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "2817"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_TP_RRI", "path": "Tires", "fmt": { "len": 16, "max": 3276, "div": 20, "unit": "psi" }, "name": "Rear right inner tire pressure"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "2818"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_TP_RLI", "path": "Tires", "fmt": { "len": 16, "max": 3276, "div": 20, "unit": "psi" }, "name": "Rear left inner tire pressure"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "4027"}, "freq": 3600,
+  "signals": [
+    {"id": "FORD_BATT_AGE", "path": "Battery", "fmt": { "len": 16, "max": 1825,               "unit": "scalar" }, "name": "Battery age"},
+    {"id": "FORD_12V_AGE",  "path": "Battery", "fmt": { "len": 16, "max": 1572840, "mul": 24, "unit": "hours"  }, "name": "Aux 12V battery age"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "4028"}, "freq": 10,
+  "signals": [
+    {"id": "FORD_BATT_SOC", "path": "Battery", "fmt": { "len": 8, "max": 100, "mul": 100, "div": 255, "unit": "percent" }, "name": "Battery charge"},
+    {"id": "FORD_12V_SOC",  "path": "Battery", "fmt": { "len": 8, "max": 100,                         "unit": "percent" }, "name": "Aux 12V battery state of charge"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "4029"}, "freq": 10,
+  "signals": [
+    {"id": "FORD_BATT_TEMP", "path": "Battery", "fmt": { "len": 8, "max": 100, "min": -40, "add": -40, "unit": "celsius" }, "name": "Battery temperature"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "402A"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_12V_V", "path": "Battery", "fmt": { "len": 8, "max": 18.75, "div": 20, "add": 6, "unit": "volts" }, "name": "Aux 12V battery voltage", "suggestedMetric": "starterBatteryVoltage"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "402B"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_12V_A", "path": "Battery", "fmt": { "len": 8, "max": 128, "min": -127, "add": -127, "unit": "amps" }, "name": "Aux 12V battery current"}
+  ]},
+{ "hdr": "726", "rax": "72E", "dbg": true, "cmd": {"22": "DD01"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_ODO_726", "path": "Trips", "fmt": { "len": 24, "max": 16777215, "unit": "kilometers" }, "name": "Odometer, instrument panel", "suggestedMetric": "odometer"}
+  ]},
+{ "hdr": "746", "rax": "74E", "dbg": true, "cmd": {"22": "4836"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_DCDC_LV_A", "path": "Battery", "fmt": { "len": 8, "max": 255, "unit": "amps" }, "name": "LV DC-DC converter low voltage current"}
+  ]},
+{ "hdr": "746", "rax": "74E", "dbg": true, "cmd": {"22": "483A"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_DCDC_HV_A", "path": "Battery", "fmt": { "len": 8, "max": 25, "div": 10, "unit": "amps" }, "name": "LV DC-DC converter high voltage current"}
+  ]},
+{ "hdr": "746", "rax": "74E", "dbg": true, "cmd": {"22": "483D"}, "freq": 10,
+  "signals": [
+    {"id": "FORD_DCDC_ENABLED", "path": "Battery", "fmt": { "len": 8, "max": 1, "unit": "offon" }, "name": "DC-DC converter"}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "2B00"}, "freq": 3,
+  "signals": [
+    {"id": "FORD_PARKING_BRAKE", "path": "Control", "fmt": { "len": 1, "max": 1, "unit": "offon" }, "name": "Parking brake state"}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "2B06"}, "freq": 0.1,
+  "signals": [
+    {"id": "FORD_FR_VSS", "path": "Movement", "fmt": { "len": 8, "max": 200, "unit": "kilometersPerHour" }, "name": "Front right wheel speed"}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "2B07"}, "freq": 0.1,
+  "signals": [
+    {"id": "FORD_FL_VSS", "path": "Movement", "fmt": { "len": 8, "max": 200, "unit": "kilometersPerHour" }, "name": "Front left wheel speed"}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "2B08"}, "freq": 0.1,
+  "signals": [
+    {"id": "FORD_RR_VSS", "path": "Movement", "fmt": { "len": 8, "max": 200, "unit": "kilometersPerHour" }, "name": "Rear right wheel speed"}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "2B09"}, "freq": 0.1,
+  "signals": [
+    {"id": "FORD_RL_VSS", "path": "Movement", "fmt": { "len": 8, "max": 200, "unit": "kilometersPerHour" }, "name": "Rear left wheel speed"}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "2B0C"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_LAT_ANG", "path": "Movement", "fmt": { "len": 8, "max": 90, "min": -90, "sign": true, "unit": "degrees" }, "name": "Lateral angle"}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "2B0D"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_BRK_FL_P", "path": "Control", "fmt": { "len": 8, "max": 255, "unit": "kilopascal" }, "name": "Brake hydraulic pressure"}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "2B11"}, "freq": 0.1,
+  "signals": [
+    {"id": "FORD_LAT_G", "path": "Movement", "fmt": { "len": 16, "max": 1, "min": -1, "div": 50, "sign": true, "unit": "scalar" }, "name": "Lateral acceleration"}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "3201"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_STEER_ANGLE", "path": "Control", "fmt": { "len": 8,  "max": 790,  "min": -790,  "mul": 6.25,                            "sign": true, "unit": "degrees" }, "name": "Steering wheel angle", "description": "Positive is rotated to the left, negative is rotated to the right."},
+    {"id": "FORD_STEER_ANG",   "path": "Control", "fmt": { "len": 16, "max": 1638, "min": -1638,              "div": 20, "add": -1638.4,               "unit": "degrees" }, "name": "Steering angle",       "description": "Positive is rotated to the left, negative is rotated to the right."}
+  ]},
+{ "hdr": "760", "rax": "768", "dbg": true, "cmd": {"22": "DD01"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_ODO_BCM", "path": "Trips", "fmt": { "len": 24, "max": 16777215, "unit": "kilometers" }, "name": "Odometer, battery control module", "suggestedMetric": "odometer"}
+  ]},
+{ "hdr": "764", "rax": "76C", "dbg": true, "cmd": {"22": "A224"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_CC_TGT_VSS", "path": "Cruise control", "fmt": { "len": 16, "max": 736, "min": -736, "mul": 3.6, "div": 10, "sign": true, "unit": "kilometersPerHour" }, "name": "Target vehicle speed", "description": "The speed of the vehicle ahead of you."}
+  ]},
+{ "hdr": "7C7", "dbg": true, "cmd": {"22": "99AB"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_AC_COMP_A", "path": "Climate", "fmt": { "len": 16, "max": 100, "min": -100, "mul": 100, "div": 32767, "sign": true, "unit": "amps" }, "name": "A/C compressor current"}
+  ]},
+{ "hdr": "7DF", "dbg": true, "cmd": {"22": "1310"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_EOT", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Engine oil temperature"}
+  ]},
+{ "hdr": "7DF", "dbg": true, "cmd": {"22": "1E12"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_GEAR_V2", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Current gear", "description": "The automatic transmission gear. Numbers aren't yet mapped to named gears."}
+  ]},
+{ "hdr": "7DF", "dbg": true, "cmd": {"22": "1E1C"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_TOT_V2", "path": "Transmission", "fmt": { "len": 16, "max": 255, "div": 16, "unit": "celsius" }, "name": "Transmission oil temperature"}
+  ]},
+{ "hdr": "7DF", "dbg": true, "cmd": {"22": "1E23"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_GEAR_SHFT_V2", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Shift gear"}
+  ]},
+{ "hdr": "7DF", "dbg": true, "cmd": {"22": "F42F"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_FLI_V2", "path": "Fuel", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Fuel level (alternative)"}
+  ]},
+{ "hdr": "7DF", "dbg": true, "cmd": {"22": "F45C"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_EOP", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Engine oil pressure"}
+  ]},
+{ "hdr": "7E0", "dbg": true, "cmd": {"22": "030F"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_CL", "fmt": { "len": 16, "max": 5, "mul": 0.0000305176, "unit": "scalar" }, "name": "Commanded lambda", "description": "The ratio of of oxygen in the combustion chamber compared to the amount that should have been present for ideal combustion."}
+  ]},
+{ "hdr": "7E0", "dbg": true, "cmd": {"22": "0393"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_AC_P", "fmt": { "len": 16, "max": 1000, "min": -100, "mul": 0.2900754962, "unit": "psi" }, "name": "Air conditioning compressor pressure"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0301"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_MAP_V", "fmt": { "len": 16, "max": 5, "mul": 0.0009765625, "unit": "volts" }, "name": "Manifold absolute pressure sensor voltage", "description": "Typically varies from 1 volt at idle to 5 volts during wide open throttle."}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0307"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_LPFP_DUTY", "fmt": { "len": 16, "max": 100, "mul": 0.0030517578, "unit": "percent" }, "name": "Low pressure fuel pump commanded duty cycle"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0316"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_VCT_INT_DUTY", "fmt": { "len": 16, "max": 100, "mul": 0.0030517578, "unit": "percent" }, "name": "VCT intake camshaft solenoid duty cycle"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0317"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_VCT_EXH_DUTY", "fmt": { "len": 16, "max": 100, "mul": 0.0030517578, "unit": "percent" }, "name": "VCT exhaust camshaft solenoid duty cycle"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0318"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_VCT_INT_ACT", "fmt": { "len": 16, "max": 0, "min": -50, "mul": 0.0625, "unit": "degrees" }, "name": "VCT intake camshaft actual"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0319"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_VCT_EXH_ACT", "fmt": { "len": 16, "max": 50, "mul": 0.0625, "unit": "degrees" }, "name": "VCT exhaust camshaft actual"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "031A"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_VCT_INT_ERR", "fmt": { "len": 16, "max": 50, "min": -50, "mul": 0.0625, "unit": "degrees" }, "name": "VCT intake camshaft error"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "031B"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_VCT_EXH_ERR", "fmt": { "len": 16, "max": 50, "min": -50, "mul": 0.0625, "unit": "degrees" }, "name": "VCT exhaust camshaft error"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0324"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_HPFP_V",                    "fmt": { "len": 16, "max": 5,                      "div": 204.6, "unit": "volts" }, "name": "High pressure fuel rail sensor voltage"},
+    {"id": "FORD_[ECU] HPFP SENSOR VOLTAGE", "fmt": { "len": 16, "max": 5, "mul": 0.0048875855,               "unit": "volts" }, "name": "High pressure fuel rail sensor voltage"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "032B"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_ACC_POS",                          "fmt": { "len": 8, "max": 100,             "div": 2, "unit": "percent" }, "name": "Accelerator pedal position"},
+    {"id": "FORD_[ECU] ACCELERATOR PEDAL POSITION", "fmt": { "len": 8, "max": 100, "mul": 0.5,           "unit": "percent" }, "name": "Accelerator pedal position"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0334"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_PCM_CYL_HEAD_T_CORR", "path": "Engine", "fmt": { "len": 16, "max": 511.984375, "min": -512, "div": 64, "sign": true, "unit": "celsius" }, "name": "Cylinder head temperature"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0338"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_ETC_TRIM_LEARNED",       "fmt":            {      "len": 16, "max": 64, "min": -63.9,                     "div": 512,             "sign": true,               "unit": "degrees" },                "name": "Electronic throttle control learned trim angle"},
+    {"id": "FORD_ETC_TRIM_LRN",           "path": "Engine", "fmt": {          "len": 16, "max": 63.9,  "min": -64,                     "div": 512,               "sign": true,                   "unit": "degrees" },                                                        "name": "Throttle control trim angle, learned"},
+    {"id": "FORD_[ECU] ETC LEARNED TRIM", "fmt":            {      "len": 16, "max": 90, "min": -90,   "mul": 0.001953125,                                                     "unit": "degrees" },                "name": "Electronic throttle control learned trim angle"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "033C"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_TIP_V",                    "fmt": { "len": 16, "max": 5,                      "div": 204.8, "unit": "volts" }, "name": "Throttle inlet pressure sensor voltage"},
+    {"id": "FORD_[ECU] TIP SENSOR VOLTAGE", "fmt": { "len": 16, "max": 5, "mul": 0.0048828125,               "unit": "volts" }, "name": "Throttle inlet pressure sensor voltage"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "033E"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_TIP_ABS",              "fmt": { "len": 16, "max": 60,                      "div": 903.8107848, "unit": "psi" }, "name": "Throttle inlet pressure absolute"},
+    {"id": "FORD_[ECU] TIP ACTUAL ABS", "fmt": { "len": 16, "max": 60, "mul": 0.0011064263,                     "unit": "psi" }, "name": "Throttle inlet pressure absolute"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0345"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_MISF_EVENTS_LATEST_CYC", "path": "Engine", "fmt": { "len": 32, "max": 4294967295, "unit": "scalar" }, "name": "Misfire events, latest cycle"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0353"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_BARO",       "fmt": { "len": 16, "max": 20, "min": 8,                      "div": 27.582114, "unit": "psi" }, "name": "Barometric pressure"},
+    {"id": "FORD_[ECU] BARO", "fmt": { "len": 16, "max": 20, "min": 8, "mul": 0.0362553791,                   "unit": "psi" }, "name": "Barometric pressure"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "035A"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_BARO_V", "fmt": { "len": 16, "max": 5, "mul": 0.0048875855, "unit": "volts" }, "name": "Barometric pressure sensor voltage"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "035F"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_RO2_V", "fmt": { "len": 16, "max": 1, "mul": 0.0009765625, "unit": "volts" }, "name": "Rear O2 voltage"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0382"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_MISF_ACCEL_CYL1_NORM", "path": "Engine", "fmt": { "len": 8, "max": 1.984375, "min": -2, "div": 64, "sign": true, "unit": "scalar" }, "name": "Misfire acceleration, cylinder 1"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0388"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_MISF_ACCEL_CYL2_NORM", "path": "Engine", "fmt": { "len": 8, "max": 1.984375, "min": -2, "div": 64, "sign": true, "unit": "scalar" }, "name": "Misfire acceleration, cylinder 2"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "038A"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_MISF_ACCEL_CYL3_NORM", "path": "Engine", "fmt": { "len": 8, "max": 1.984375, "min": -2, "div": 64, "sign": true, "unit": "scalar" }, "name": "Misfire acceleration, cylinder 3"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "038B"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_MISF_ACCEL_CYL4_NORM", "path": "Engine", "fmt": { "len": 8, "max": 1.984375, "min": -2, "div": 64, "sign": true, "unit": "scalar" }, "name": "Misfire acceleration, cylinder 4"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "038C"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_MISF_ACCEL_CYL5_NORM", "path": "Engine", "fmt": { "len": 8, "max": 1.984375, "min": -2, "div": 64, "sign": true, "unit": "scalar" }, "name": "Misfire acceleration, cylinder 5"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "038E"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_EVAP_V",                   "fmt": { "len": 16, "max": 5,                      "div": 5.0048876, "sign": true, "unit": "volts" }, "name": "Evaporative vapor pressure sensor voltage"},
+    {"id": "FORD_[ECU] EVAP PRES SENSOR V", "fmt": { "len": 16, "max": 5, "mul": 0.1998046869,                                 "unit": "volts" }, "name": "Evaporative vapor pressure sensor voltage"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "038F"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_ECT",       "fmt": { "len": 16, "max": 148.889, "min": -40,                  "div": 64, "sign": true, "unit": "celsius" }, "name": "Engine coolant temperature"},
+    {"id": "FORD_[ECU] ECT", "fmt": { "len": 16, "max": 148.889, "min": -40, "mul": 0.015625,                          "unit": "celsius" }, "name": "Engine coolant temperature"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0398"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_MISF_ACCEL_CYL6_NORM", "path": "Engine", "fmt": { "len": 8, "max": 1.984375, "min": -2, "div": 64, "sign": true, "unit": "scalar" }, "name": "Misfire acceleration, cylinder 6"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "03AF"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_TRQ_CTRL_REQ", "path": "Engine", "fmt": { "len": 8, "max": 100, "unit": "percent" }, "name": "Torque request"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "03BA"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_AAT_V", "fmt": { "len": 16, "max": 5, "mul": 0.0048875855, "unit": "volts" }, "name": "Ambient air temperature sensor voltage"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "03BB"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_VCT_EXH_DES", "fmt": { "len": 16, "max": 50, "mul": 0.0625, "unit": "degrees" }, "name": "VCT exhaust cam, desired"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "03BC"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_VCT_INT_DES",       "fmt": { "len": 16, "max": 40, "min": -30,                "div": 16, "sign": true, "unit": "degrees" }, "name": "VCT intake cam, desired"},
+    {"id": "FORD_[ECU] VCT INT DES", "fmt": { "len": 16, "max": 0,  "min": -50, "mul": 0.0625,                          "unit": "degrees" }, "name": "Vct intake cam desired"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "03BD"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_CL_LC",                "fmt": { "len": 16, "max": 3.99, "min": -4,                      "div": 8192, "sign": true, "unit": "scalar" }, "name": "Closed loop lambda correction"},
+    {"id": "FORD_[ECU] CL LAMBDA CORR", "fmt": { "len": 16, "max": 5,    "min": -5, "mul": 0.0001220703,                            "unit": "scalar" }, "name": "Closed loop lambda correction"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "03CA"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_MCT", "fmt": { "len": 8, "max": 148.889, "unit": "celsius" }, "name": "Manifold charge temperature"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "03DC"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_HPFP_DES", "fmt": { "len": 16, "max": 3500, "mul": 1.4503773969, "unit": "psi" }, "name": "High pressure fuel pressure desired"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "03E8"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_OAR", "fmt": { "len": 16, "max": 1, "min": -1, "mul": 0.0000610352, "unit": "scalar" }, "name": "Octane adjust ratio"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "03EC"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_IGN_CORR_CYL1", "path": "Engine", "fmt": { "len": 16, "max": 63.9, "min": -64, "div": 512, "sign": true, "unit": "degrees" }, "name": "Ignition correction, cylinder 1"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0403"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_KS1_RAW", "path": "Engine", "fmt": { "len": 16, "max": 65535, "unit": "scalar" }, "name": "Knock sensor, 1"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0404"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_KS2_RAW", "path": "Engine", "fmt": { "len": 16, "max": 65535, "unit": "scalar" }, "name": "Knock sensor, 2"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0415"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_ENG_EOP_RAW", "path": "Engine", "fmt": { "len": 16, "max": 32767, "min": -32768, "sign": true, "unit": "kilopascal" }, "name": "Oil pressure"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "041F"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_LPFP_DES", "path": "Engine", "fmt": { "len": 8, "max": 110, "mul": 435, "div": 1000, "unit": "psi" }, "name": "Fuel pressure, low desired"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0427"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_BPV_OPEN", "path": "Engine", "fmt": { "len": 8, "max": 1, "div": 255, "unit": "scalar" }, "name": "Bypass valve"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0460"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_CAT_SENS_V", "path": "Engine", "fmt": { "len": 16, "max": 5, "div": 1024, "sign": true, "unit": "volts" }, "name": "Charge air temperature sensor voltage"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0461"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_CAT", "path": "Engine", "fmt": { "len": 16, "max": 189, "min": -40, "div": 64, "add": -40, "sign": true, "unit": "celsius" }, "name": "Charge air temperature"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0462"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_WGDC", "path": "Engine", "fmt": { "len": 16, "max": 100, "mul": 100, "div": 32768, "unit": "percent" }, "name": "Wastegate duty cycle"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0466"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_TIP_DES_ABS", "path": "Engine", "fmt": { "len": 16, "max": 72.5, "mul": 37, "div": 33441, "unit": "psi" }, "name": "Throttle inlet pressure, desired"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "046F"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_INJ_MODE", "path": "Engine", "fmt": { "len": 8, "max": 7, "unit": "scalar" }, "name": "Injection mode"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0548"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_LPFP_ACT", "path": "Engine", "fmt": { "len": 16, "max": 200, "mul": 10000, "div": 137892, "sign": true, "unit": "psi" }, "name": "Fuel pressure, low actual"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "054B"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_PCM_ENG_OIL_LIFE_REM", "path": "Engine", "fmt": { "len": 8, "max": 100, "unit": "percent" }, "name": "Oil life remaining"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "054D"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_LPFP_SENS_V", "path": "Engine", "fmt": { "len": 16, "max": 5, "div": 1024, "sign": true, "unit": "volts" }, "name": "Fuel pressure sensor voltage, low"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "057D"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_AAT_ALT", "path": "Climate", "fmt": { "len": 8, "max": 87.5, "min": -40, "div": 2, "add": -40, "unit": "celsius" }, "name": "Ambient temperature, alternate"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0580"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_GRILL_SHUTTER_POSITION", "path": "Engine", "fmt": { "len": 8, "max": 100, "mul": 100, "div": 255, "unit": "percent" }, "name": "Grill shutter position"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "05AC"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_CYL_1_KNK_COMB_PERF_CNT", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Knock counter, cylinder 1"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "05AD"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_CYL_2_KNK_COMB_PERF_CNT", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Knock counter, cylinder 2"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "05AE"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_CYL_3_KNK_COMB_PERF_CNT", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Knock counter, cylinder 3"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "05AF"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_CYL_4_KNK_COMB_PERF_CNT", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Knock counter, cylinder 4"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "05B0"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_CYL_5_KNK_COMB_PERF_CNT", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Knock counter, cylinder 5"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "05B1"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_CYL_6_KNK_COMB_PERF_CNT", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Knock counter, cylinder 6"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "05FC"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_PCM_CYL_HEAD_T_SENS_2_RAW", "path": "Engine", "fmt": { "len": 16, "max": 511.984375, "min": -512, "div": 64, "sign": true, "unit": "celsius" }, "name": "Cylinder head temperature, sensor 2"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0604"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_A_C_REFRIG_P", "path": "Climate", "fmt": { "len": 16, "max": 32767, "min": -32768, "sign": true, "unit": "kilopascal" }, "name": "A/C refrigerant pressure"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0700"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_IAT_FAULT", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Intake temperature fault"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "0707"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_GRILL_SHUT_DC", "path": "Engine", "fmt": { "len": 8, "max": 100, "mul": 100, "div": 255, "unit": "percent" }, "name": "Grill shutter duty cycle"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "091A"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_ETC_ANG_DES",      "path": "Engine", "fmt": { "len": 16, "max": 127.99,             "div": 512,  "unit": "degrees" }, "name": "Throttle angle, desired"},
+    {"id": "FORD_THROTTLE_POS_DES", "path": "Engine", "fmt": { "len": 16, "max": 100,    "mul": 100, "div": 8192, "unit": "percent" }, "name": "Throttle position desired"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "093C"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_ETC_ANG_ACT",      "path": "Engine", "fmt": { "len": 16, "max": 127.99,             "div": 512,  "unit": "degrees" }, "name": "Throttle angle, actual"},
+    {"id": "FORD_THROTTLE_POS_ACT", "path": "Engine", "fmt": { "len": 16, "max": 100,    "mul": 100, "div": 8192, "unit": "percent" }, "name": "Throttle position actual"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "099B"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_AC_STATE", "path": "Climate", "fmt": { "len": 8, "max": 1, "unit": "offon" }, "name": "A/C compressor, state"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1126"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_ERT", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "seconds" }, "name": "Engine run time"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1166"}, "freq": 0.5,
+  "signals": [
+    {"id": "FORD_EVAP_PURGE_CMD", "path": "Engine", "fmt": { "len": 16, "max": 100, "mul": 100, "div": 32768, "unit": "percent" }, "name": "Evaporative purge"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "116B"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_IGN_TIM_CYL1", "path": "Engine", "fmt": { "len": 16, "max": 80, "min": -80, "div": 4, "sign": true, "unit": "degrees" }, "name": "Ignition timing, cylinder 1"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1279"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_IAT_SENS_V", "path": "Engine", "fmt": { "len": 16, "max": 5, "mul": 5, "div": 1023, "unit": "volts" }, "name": "Intake temperature sensor voltage"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1505"}, "freq": 0.1,
+  "signals": [
+    {"id": "FORD_VSS_HD", "path": "Movement", "fmt": { "len": 16, "max": 200, "div": 128, "unit": "kilometersPerHour" }, "name": "Vehicle speed, high resolution", "suggestedMetric": "speed"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1E12"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_GEAR", "path": "Engine", "name": "Current gear", "description": "The automatic transmission gear.", "fmt": {"len": 8, "map": {
+          "1":  { "description": "First gear",   "value": "1" },
+          "2":  { "description": "Second gear",  "value": "2" },
+          "3":  { "description": "Third gear",   "value": "3" },
+          "4":  { "description": "Fourth gear",  "value": "4" },
+          "5":  { "description": "Fifth gear",   "value": "5" },
+          "6":  { "description": "Sixth gear",   "value": "6" },
+          "7":  { "description": "Seventh gear", "value": "7" },
+          "8":  { "description": "Eighth gear",  "value": "8" },
+          "9":  { "description": "Ninth gear",   "value": "9" },
+          "10": { "description": "Tenth gear",   "value": "10" }
+        }}
+    }
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1E16"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_AXLE_GEAR_RATIO_MEAS", "path": "Transmission", "fmt": { "len": 16, "max": 10, "div": 4096, "unit": "scalar" }, "name": "Axle gear ratio, measured"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1E19"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_CMD_TRANS_GEAR_RATIO", "path": "Transmission", "fmt": { "len": 16, "max": 16, "mul": 16, "div": 65535, "unit": "scalar" }, "name": "Gear ratio, commanded"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1E1A"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_CMD_TRANS_MAIN_LINE_P", "path": "Transmission", "fmt": { "len": 16, "max": 65534, "min": -65536, "mul": 2, "sign": true, "unit": "kilopascal" }, "name": "Transmission pressure, commanded"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1E1C"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_TOT", "path": "Engine", "fmt": { "len": 16, "max": 500, "min": -500, "div": 16, "sign": true, "unit": "celsius" }, "name": "Transmission oil temperature"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1E1F"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_GEAR_ENG", "path": "Transmission", "fmt": { "len": 8, "max": 6, "unit": "scalar" }, "name": "Gear, engaged"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "1E23"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_GEAR_SHFT", "path": "Engine", "name": "Shift gear", "fmt": {"len": 8, "map": {
+          "10": { "description": "Manual",  "value": "MANUAL" },
+          "46": { "description": "Drive",   "value": "DRIVE" },
+          "50": { "description": "Neutral", "value": "NEUTRAL" },
+          "60": { "description": "Reverse", "value": "REVERSE" },
+          "70": { "description": "Park",    "value": "PARK" }
+        }}
+    }
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "4194"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_DTE", "path": "Trips", "fmt": { "len": 16, "max": 6553.5, "div": 10, "unit": "kilometers" }, "name": "Distance to empty, calculated", "suggestedMetric": "fuelRange"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "4195"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_DTE_DISP", "path": "Trips", "fmt": { "len": 16, "max": 6553.5, "div": 10, "unit": "kilometers" }, "name": "Distance to empty, displayed", "suggestedMetric": "fuelRange"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "9800"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_AC_P_SENS_V", "path": "Climate", "fmt": { "len": 16, "max": 5, "div": 1024, "sign": true, "unit": "volts" }, "name": "A/C compressor pressure sensor voltage"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "fcm1": true, "dbg": true, "cmd": {"22": "DD01"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_ODO", "path": "Trips", "fmt": { "len": 24, "max": 16777215, "unit": "kilometers" }, "name": "Odometer", "suggestedMetric": "odometer"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "DD02"}, "freq": 30,
+  "signals": [
+    {"id": "FORD_ECU_V", "path": "ECU", "fmt": { "len": 8, "max": 100, "div": 10, "unit": "volts" }, "name": "Main ECU voltage supply"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F404"}, "freq": 0.5,
+  "signals": [
+    {"id": "FORD_ENG_LOAD_PCT", "path": "Engine", "fmt": { "len": 8, "max": 100, "mul": 100, "div": 255, "unit": "percent" }, "name": "Engine load"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F406"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_STFT", "path": "Engine", "fmt": { "len": 8, "max": 99.2, "min": -100, "mul": 100, "div": 128, "add": -100, "unit": "percent" }, "name": "Fuel trim, short term"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F407"}, "freq": 0.5,
+  "signals": [
+    {"id": "FORD_LTFT", "path": "Engine", "fmt": { "len": 8, "max": 99.2, "min": -100, "mul": 100, "div": 128, "add": -100, "unit": "percent" }, "name": "Fuel trim, long term"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F40B"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_MAP", "path": "Engine", "fmt": { "len": 8, "max": 36, "mul": 10000, "div": 68947, "unit": "psi" }, "name": "Manifold pressure"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F40C"}, "freq": 0.1,
+  "signals": [
+    {"id": "FORD_RPM", "path": "Engine", "fmt": { "len": 16, "max": 16383.75, "div": 4, "unit": "rpm" }, "name": "Engine speed"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F40D"}, "freq": 0.25,
+  "signals": [
+    {"id": "FORD_VSS", "path": "Movement", "fmt": { "len": 8, "max": 255, "unit": "kilometersPerHour" }, "name": "Vehicle speed"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F40F"}, "freq": 2,
+  "signals": [
+    {"id": "FORD_IAT_ALT2", "path": "Engine", "fmt": { "len": 8, "max": 215, "min": -40, "add": -40, "unit": "celsius" }, "name": "Intake temperature, alternate"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F41F"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_RUN_TIME", "path": "Engine", "fmt": { "len": 16, "max": 65535, "unit": "seconds" }, "name": "Engine run time"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F421"}, "freq": 60,
+  "signals": [
+    {"id": "FORD_MIL_DIST", "path": "Engine", "fmt": { "len": 16, "max": 65535, "unit": "kilometers" }, "name": "Distance with MIL"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F42F"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_FLI", "path": "Fuel", "fmt": { "len": 8, "max": 255, "mul": 100, "div": 255, "unit": "percent" }, "name": "Fuel level", "suggestedMetric": "fuelTankLevel"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F430"}, "freq": 60,
+  "signals": [
+    {"id": "FORD_WARMUP_CLR", "path": "Engine", "fmt": { "len": 8, "max": 255, "unit": "scalar" }, "name": "Warm-ups since DTC clear"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F431"}, "freq": 60,
+  "signals": [
+    {"id": "FORD_DIST_DTC_CLR", "path": "Engine", "fmt": { "len": 16, "max": 65535, "unit": "kilometers" }, "name": "Distance since DTC clear"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F43C"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_CAT_TEMP", "path": "Engine", "fmt": { "len": 16, "max": 6513.5, "min": -40, "div": 10, "add": -40, "unit": "celsius" }, "name": "Catalyst temperature"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F443"}, "freq": 0.5,
+  "signals": [
+    {"id": "FORD_ENG_LOAD_ACT", "path": "Engine", "fmt": { "len": 16, "max": 25700, "mul": 100, "div": 255, "unit": "percent" }, "name": "Engine load, actual"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F462"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_ACT_ENG_PCT_TRQ", "path": "Engine", "fmt": { "len": 8, "max": 100, "add": -125, "unit": "percent" }, "name": "Actual engine percent torque"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F463"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PCM_ENG_REFERENCE_TRQ", "path": "Engine", "fmt": { "len": 16, "max": 65535, "unit": "newtonMeters" }, "name": "Engine reference torque"}
+  ]},
+{ "hdr": "7E0", "rax": "7E8", "dbg": true, "cmd": {"22": "F4A6"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_PCM_VEH_ODO", "path": "Trips", "fmt": { "len": 32, "max": 429496729.5, "div": 10, "unit": "kilometers" }, "name": "Vehicle odometer"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "484A"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_CHG_OUT_V", "path": "Battery", "fmt": { "len": 16, "max": 600, "div": 100, "unit": "volts" }, "name": "HV charger output voltage"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "484E"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_CHG_PWR_AVAIL", "path": "Battery", "fmt": { "len": 16, "max": 327.675, "div": 200, "unit": "kilowatts" }, "name": "HV charger input power available"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "4851"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_EVSE_TYPE", "path": "Battery", "name": "Charger type", "fmt": {"len": 8, "map": {
+          "0":  { "description": "None",             "value": "NONE" },
+          "1":  { "description": "Level 1",          "value": "LEVEL_1" },
+          "2":  { "description": "Level 2",          "value": "LEVEL_2" },
+          "3":  { "description": "DC",               "value": "DC" },
+          "4":  { "description": "Basic",            "value": "BASIC" },
+          "5":  { "description": "High Level",       "value": "HIGH_LEVEL" },
+          "6":  { "description": "Basic AC",         "value": "BASIC_AC" },
+          "7":  { "description": "High Level AC",    "value": "HIGH_LEVEL_AC" },
+          "8":  { "description": "High Level DC",    "value": "HIGH_LEVEL_DC" },
+          "10": { "description": "No communication", "value": "NO_COMM" },
+          "11": { "description": "Fault",            "value": "FAULT" },
+          "12": { "description": "Handshake end",    "value": "HANDSHAKE_END" }
+        }}
+    }
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "485E"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_AC_CHG_IN_V", "path": "Battery", "fmt": { "len": 16, "max": 300, "div": 100, "unit": "volts" }, "name": "HV AC charger input voltage"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "485F"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_AC_CHG_IN_A", "path": "Battery", "fmt": { "len": 8, "max": 100, "unit": "amps" }, "name": "HV AC charger input current"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "4860"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_AC_CHG_IN_FREQ", "path": "Battery", "fmt": { "len": 8, "max": 90, "min": 30, "div": 2, "unit": "hertz" }, "name": "HV AC charger input frequency"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "4861"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_CHG_PILOT_DUTY", "path": "Battery", "fmt": { "len": 8, "max": 100, "div": 2, "unit": "percent" }, "name": "HV charger pilot duty cycle"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "4862"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_CHG_PROX_STATUS", "path": "Battery", "name": "HV charger proximity status", "fmt": {"len": 8, "map": {
+          "0":  { "description": "Off",            "value": "OFF" },
+          "1":  { "description": "On S3",          "value": "ON_S3" },
+          "2":  { "description": "On",             "value": "ON" },
+          "3":  { "description": "10 A",           "value": "10A" },
+          "4":  { "description": "13 A",           "value": "13A" },
+          "5":  { "description": "16 A",           "value": "16A" },
+          "6":  { "description": "20 A",           "value": "20A" },
+          "7":  { "description": "Fault",          "value": "FAULT" },
+          "8":  { "description": "32 A",           "value": "32A" },
+          "9":  { "description": "63 A",           "value": "63A" },
+          "16": { "description": "DC",             "value": "DC" },
+          "17": { "description": "Open",           "value": "OPEN" },
+          "18": { "description": "Short",          "value": "SHORT" },
+          "19": { "description": "Short to power", "value": "SHORT_PWR" },
+          "20": { "description": "Out of range",   "value": "OUT_OF_RANGE" },
+          "21": { "description": "Open circuit",   "value": "OPEN_CIRCUIT" }
+        }}
+    }
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "4888"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_AC_CHG_COUPLER_T", "path": "Battery", "fmt": { "len": 8, "max": 215, "min": -40, "add": -40, "unit": "celsius" }, "name": "HV AC charger coupler temperature"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "4897"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_DC_CHG_COUPLER_T1", "path": "Battery", "fmt": { "len": 8, "max": 215, "min": -40, "add": -40, "unit": "celsius" }, "name": "HV DC charger coupler temperature 1"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "489E"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_DC_CHG_STATUS", "path": "Battery", "name": "HV DC charger status", "fmt": {"len": 8, "map": {
+          "0":  { "description": "Not ready",     "value": "NOT_READY" },
+          "1":  { "description": "Initialize",    "value": "INIT" },
+          "2":  { "description": "Ready",         "value": "READY" },
+          "3":  { "description": "Wait check",    "value": "WAIT_CHECK" },
+          "4":  { "description": "Pre-condition", "value": "PRE_CONDITION" },
+          "5":  { "description": "Charging",      "value": "CHARGING" },
+          "6":  { "description": "Done",          "value": "DONE" },
+          "8":  { "description": "Wait",          "value": "WAIT" },
+          "9":  { "description": "Not capable",   "value": "NOT_CAPABLE" },
+          "10": { "description": "Fault",         "value": "FAULT" },
+          "11": { "description": "Charger check", "value": "CHARGER_CHECK" }
+        }}
+    }
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "48A0"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_CHG_PROX_V", "path": "Battery", "fmt": { "len": 8, "max": 5.1, "div": 50, "unit": "volts" }, "name": "HV charger proximity voltage"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "48A4"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_DC_CHG_COUPLER_T3", "path": "Battery", "fmt": { "len": 8, "max": 215, "min": -40, "add": -40, "unit": "celsius" }, "name": "HV DC charger coupler temperature 3"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "48A5"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_CHG_OUT_REDUCT_T", "path": "Battery", "fmt": { "len": 8, "max": 100, "unit": "percent" }, "name": "HV charger output reduction temperature"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "48B6"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_CHG_PILOT_V", "path": "Battery", "fmt": { "len": 8, "max": 15, "div": 10, "unit": "volts" }, "name": "HV charger pilot voltage"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "48B7"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_EVSE_DIGITAL_MODE", "path": "Battery", "name": "Charger digital mode", "fmt": {"len": 8, "map": {
+          "0":  { "description": "None",      "value": "NONE" },
+          "1":  { "description": "DC E-",     "value": "DC_E_MINUS" },
+          "2":  { "description": "DC -P",     "value": "DC_MINUS_P" },
+          "3":  { "description": "DC EP",     "value": "DC_EP" },
+          "4":  { "description": "AC E-",     "value": "AC_E_MINUS" },
+          "5":  { "description": "AC -P",     "value": "AC_MINUS_P" },
+          "6":  { "description": "AC EP",     "value": "AC_EP" },
+          "7":  { "description": "Reset",     "value": "RESET" },
+          "8":  { "description": "Off",       "value": "OFF" },
+          "9":  { "description": "Establish", "value": "ESTABLISH" },
+          "10": { "description": "Fault",     "value": "FAULT" }
+        }}
+    }
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "48BC"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_MAX_CHG_A", "path": "Battery", "fmt": { "len": 16, "max": 15, "div": 20, "unit": "amps" }, "name": "HV battery maximum charge current"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "dbg": true, "cmd": {"22": "48C4"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_CHG_MAX_PWR", "path": "Battery", "fmt": { "len": 16, "max": 500, "div": 20, "unit": "kilowatts" }, "name": "HV charger maximum power"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "fcm1": true, "dbg": true, "cmd": {"22": "DD04"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_IAT", "path": "Climate", "fmt": { "len": 8, "max": 215, "min": -40, "add": -40, "unit": "celsius" }, "name": "Interior temperature"}
+  ]},
+{ "hdr": "7E2", "rax": "7EA", "fcm1": true, "dbg": true, "cmd": {"22": "DD05"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_AAT", "path": "Climate", "fmt": { "len": 8, "max": 215, "min": -40, "add": -40, "unit": "celsius" }, "name": "Exterior temperature"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "05A1"}, "freq": 60,
+  "signals": [
+    {"id": "FORD_TARGET_SOC", "path": "Battery", "fmt": { "len": 8, "max": 100, "unit": "percent" }, "name": "Target/desired state of charge"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "fcm1": true, "dbg": true, "cmd": {"22": "4800"}, "freq": 10,
+  "signals": [
+    {"id": "FORD_HVBAT_T", "path": "Battery", "fmt": { "len": 8, "max": 205, "min": -50, "add": -50, "unit": "celsius" }, "name": "HV battery temperature"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "fcm1": true, "dbg": true, "cmd": {"22": "4801"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_SOC", "path": "Battery", "fmt": { "len": 16, "max": 100, "div": 500, "unit": "percent" }, "name": "HV battery charge", "suggestedMetric": "stateOfCharge", "description": "High resolution state of charge."}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4803"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_HV_POS_LEAK_V", "path": "Battery", "fmt": { "len": 16, "max": 65.535, "div": 1000, "unit": "volts" }, "name": "HV positive leakage voltage"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4804"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_HV_NEG_LEAK_V", "path": "Battery", "fmt": { "len": 16, "max": 65.535, "div": 1000, "unit": "volts" }, "name": "HV negative leakage voltage"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4805"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_CONTACTOR_V_POS", "path": "Battery", "fmt": { "len": 16, "max": 300, "div": 10, "unit": "volts" }, "name": "Contactor voltage positive"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4806"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_CONTACTOR_V_NEG", "path": "Battery", "fmt": { "len": 16, "max": 300, "div": 10, "unit": "volts" }, "name": "Contactor voltage negative"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4808"}, "freq": 15,
+  "signals": [
+    {"id": "FORD_T_RANGE_MAX", "path": "Battery", "fmt": {           "len": 8, "max": 205, "min": -50, "add": -50, "unit": "celsius" }, "name": "HV battery temperature range, maximum"},
+    {"id": "FORD_T_RANGE_MIN", "path": "Battery", "fmt": {"bix": 8,  "len": 8, "max": 205, "min": -50, "add": -50, "unit": "celsius" }, "name": "HV battery temperature range, minimum"},
+    {"id": "FORD_T_RANGE",     "path": "Battery", "fmt": {"bix": 16, "len": 8, "max": 205, "min": -50, "add": -50, "unit": "celsius" }, "name": "HV battery temperature range"},
+    {"id": "FORD_T_RANGE_AVG", "path": "Battery", "fmt": {"bix": 24, "len": 8, "max": 205, "min": -50, "add": -50, "unit": "celsius" }, "name": "HV battery temperature range, average"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4809"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_CHR_A", "path": "Battery", "fmt": { "len": 16, "max": 300, "div": 100, "unit": "amps" }, "name": "HV battery current high range"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "480B"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_A_ALT", "path": "Battery", "fmt": { "len": 16, "max": 300, "min": -300, "div": 50, "sign": true, "unit": "amps" }, "name": "HV battery current (alternate)"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "fcm1": true, "dbg": true, "cmd": {"22": "480D"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_V", "path": "Battery", "fmt": { "len": 16, "max": 655.35, "div": 100, "unit": "volts" }, "name": "HV battery voltage"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "fcm1": true, "dbg": true, "cmd": {"22": "4810"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_HVBAT_AGE", "path": "Battery", "fmt": { "len": 16, "max": 235926, "mul": 720, "div": 200, "unit": "hours" }, "name": "HV battery age"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4815"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_MAX_DISCH_PWR_LIM", "path": "Battery", "fmt": { "len": 8, "max": 63.75, "mul": 25, "div": 100, "unit": "kilowatts" }, "name": "Maximum discharge power limit"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "483F"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_HVBAT_MOD_V", "path": "Battery", "fmt": { "len": 16, "max": 65.535, "div": 1000, "unit": "volts" }, "name": "HV battery modules voltage"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4840"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_HVBAT_MIN_MOD_V", "path": "Battery", "fmt": { "len": 16, "max": 65.535, "div": 1000, "unit": "volts" }, "name": "HV battery minimum module voltage"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4841"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_HVBAT_AVG_MOD_V", "path": "Battery", "fmt": { "len": 16, "max": 50, "div": 1000, "unit": "volts" }, "name": "HV battery average module voltage"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4842"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_CCR", "path": "Battery", "fmt": { "len": 16, "max": 600, "div": 100, "unit": "amps" }, "name": "HV battery charge current requested"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4844"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_CVR", "path": "Battery", "fmt": { "len": 8, "max": 500, "mul": 2, "unit": "volts" }, "name": "HV battery charge voltage requested"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "fcm1": true, "dbg": true, "cmd": {"22": "4845"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_SOC_DISP", "path": "Battery", "fmt": { "len": 8, "max": 100, "div": 2, "unit": "percent" }, "name": "HV battery charge (displayed)", "suggestedMetric": "stateOfCharge", "description": "The state of charge displayed on the vehicle's dashboard."}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4846"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_HVBAT_COOLANT_INLET_T", "path": "Battery", "fmt": { "len": 8, "max": 205, "min": -50, "add": -50, "unit": "celsius" }, "name": "HV battery coolant inlet temperature"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "fcm1": true, "dbg": true, "cmd": {"22": "4848"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_HVBAT_KWH", "path": "Battery", "fmt": { "len": 16, "max": 131.07, "div": 500, "unit": "kilowattHours" }, "name": "HV battery energy"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "484D"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_HVBAT_CHG_STATUS", "path": "Battery", "name": "HV battery charging status", "fmt": {"len": 8, "map": {
+          "0": { "description": "Not ready", "value": "NOT_READY" },
+          "1": { "description": "Wait",      "value": "WAIT" },
+          "2": { "description": "Ready",     "value": "READY" },
+          "3": { "description": "Charging",  "value": "CHARGING" },
+          "4": { "description": "Done",      "value": "DONE" },
+          "5": { "description": "Fault",     "value": "FAULT" }
+        }}
+    }
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "fcm1": true, "dbg": true, "cmd": {"22": "484F"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_CHRG_STATE", "path": "Battery", "name": "Charging state", "suggestedMetric": "isCharging", "fmt": {"len": 8, "map": {
+          "0": { "description": "Not ready",        "value": "NOT_READY" },
+          "1": { "description": "Ready",            "value": "READY" },
+          "2": { "description": "Fault",            "value": "FAULT" },
+          "3": { "description": "Wait Check",       "value": "WAIT" },
+          "4": { "description": "Pre-condition",    "value": "PRE_COND" },
+          "5": { "description": "Charging",         "value": "CHARGING" },
+          "6": { "description": "Done",             "value": "DONE" },
+          "7": { "description": "External Charger", "value": "EXT" },
+          "8": { "description": "Initializing",     "value": "INIT" }
+        }}
+    }
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "4850"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_CHG_OUT_A", "path": "Battery", "fmt": { "len": 16, "max": 600, "div": 100, "unit": "amps" }, "name": "HV charger output current measured"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "48F9"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_A", "path": "Battery", "fmt": { "len": 16, "max": 600, "min": -600, "div": 10, "sign": true, "unit": "amps" }, "name": "HV battery current"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "dbg": true, "cmd": {"22": "48FB"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_HVBAT_CHG_PWR_LIM", "path": "Battery", "fmt": { "len": 16, "max": 300, "div": 10, "unit": "kilowatts" }, "name": "HV battery charge power limit"}
+  ]},
+{ "hdr": "7E4", "rax": "7EC", "fcm1": true, "dbg": true, "cmd": {"22": "490C"}, "freq": 3600,
+  "signals": [
+    {"id": "FORD_HVBAT_SOH", "path": "Battery", "fmt": { "len": 8, "max": 100, "div": 2, "unit": "percent" }, "name": "HV battery state of health", "suggestedMetric": "stateOfHealth"}
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "dbg": true, "cmd": {"22": "1E12"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_GEAR_CMD", "path": "Transmission", "name": "Gear commanded", "fmt": {"len": 8, "map": {
+          "0":   { "description": "Unknown", "value": "UNKNOWN" },
+          "20":  { "description": "L",       "value": "L" },
+          "40":  { "description": "D",       "value": "D" },
+          "50":  { "description": "N",       "value": "N" },
+          "60":  { "description": "R",       "value": "R" },
+          "70":  { "description": "P",       "value": "P" },
+          "255": { "description": "Fault",   "value": "FAULT" }
+        }}
+    }
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "fcm1": true, "dbg": true, "cmd": {"22": "1E1C"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_TT", "path": "Transmission", "fmt": { "len": 16, "max": 300, "min": -300, "div": 16, "sign": true, "unit": "celsius" }, "name": "Transmission temperature"}
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "dbg": true, "cmd": {"22": "1E2C"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PRI_MOTOR_RPM", "path": "Drivetrain", "fmt": { "len": 16, "max": 12000, "min": -6000, "sign": true, "unit": "rpm" }, "name": "Primary motor speed"}
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "dbg": true, "cmd": {"22": "481C"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PRI_MOTOR_TQ", "path": "Drivetrain", "fmt": { "len": 16, "max": 200, "min": -200, "div": 10, "sign": true, "unit": "newtonMeters" }, "name": "Primary motor torque"}
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "dbg": true, "cmd": {"22": "481D"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_PRI_MOTOR_INV_V", "path": "Drivetrain", "fmt": { "len": 16, "max": 400, "min": -400, "div": 10, "sign": true, "unit": "volts" }, "name": "Primary motor inverter voltage"}
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "dbg": true, "cmd": {"22": "481F"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_PRI_MOTOR_COIL_T", "path": "Drivetrain", "fmt": { "len": 16, "max": 300, "min": -40, "sign": true, "unit": "celsius" }, "name": "Primary motor coil temperature"}
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "dbg": true, "cmd": {"22": "4824"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_PRI_MOTOR_INV_T", "path": "Drivetrain", "fmt": { "len": 16, "max": 300, "min": -40, "sign": true, "unit": "celsius" }, "name": "Primary motor inverter temperature"}
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "dbg": true, "cmd": {"22": "48DE"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_COOLANT_HTR_PWR", "path": "Climate", "fmt": { "len": 16, "max": 65.535, "div": 1000, "unit": "kilowatts" }, "name": "Coolant heater power"}
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "dbg": true, "cmd": {"22": "48DF"}, "freq": 10,
+  "signals": [
+    {"id": "FORD_COOLANT_HTR_OP_MODE", "path": "Climate", "name": "Coolant heater operation mode", "fmt": {"len": 8, "map": {
+          "0": { "description": "Off",         "value": "OFF" },
+          "1": { "description": "On",          "value": "ON" },
+          "2": { "description": "Degraded",    "value": "DEGRADED" },
+          "3": { "description": "Shutdown",    "value": "SHUTDOWN" },
+          "4": { "description": "Short",       "value": "SHORT" },
+          "5": { "description": "No response", "value": "NO_RESPONSE" },
+          "6": { "description": "Unknown",     "value": "UNKNOWN" },
+          "7": { "description": "Stop",        "value": "STOP" }
+        }}
+    }
+  ]},
+{ "hdr": "7E6", "rax": "7EE", "dbg": true, "cmd": {"22": "48E0"}, "freq": 10,
+  "signals": [
+    {"id": "FORD_HVBAT_THERMAL_OP_MODE", "path": "Battery", "name": "HV battery thermal operation mode", "fmt": {"len": 8, "map": {
+          "0":  { "description": "Off",              "value": "OFF" },
+          "1":  { "description": "Equalize",         "value": "EQUALIZE" },
+          "2":  { "description": "Coolant flow",     "value": "COOLANT_FLOW" },
+          "3":  { "description": "Coolant fan",      "value": "COOLANT_FAN" },
+          "4":  { "description": "Coolant moderate", "value": "COOLANT_MODERATE" },
+          "5":  { "description": "Coolant maximum",  "value": "COOLANT_MAX" },
+          "15": { "description": "Heat",             "value": "HEAT" }
+        }}
+    }
+  ]},
+{ "hdr": "7E7", "rax": "7EF", "dbg": true, "cmd": {"22": "481A"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_SEC_MOTOR_TQ", "path": "Drivetrain", "fmt": { "len": 16, "max": 200, "min": -200, "div": 10, "sign": true, "unit": "newtonMeters" }, "name": "Secondary motor torque"}
+  ]},
+{ "hdr": "7E7", "rax": "7EF", "dbg": true, "cmd": {"22": "481E"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_SEC_MOTOR_INV_T", "path": "Drivetrain", "fmt": { "len": 16, "max": 300, "min": -40, "sign": true, "unit": "celsius" }, "name": "Secondary motor inverter temperature"}
+  ]},
+{ "hdr": "7E7", "rax": "7EF", "dbg": true, "cmd": {"22": "4820"}, "freq": 5,
+  "signals": [
+    {"id": "FORD_SEC_MOTOR_COIL_T", "path": "Drivetrain", "fmt": { "len": 16, "max": 300, "min": -40, "sign": true, "unit": "celsius" }, "name": "Secondary motor coil temperature"}
+  ]},
+{ "hdr": "7E7", "rax": "7EF", "dbg": true, "cmd": {"22": "4821"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_SEC_MOTOR_RPM", "path": "Drivetrain", "fmt": { "len": 16, "max": 12000, "min": -6000, "sign": true, "unit": "rpm" }, "name": "Secondary motor speed"}
+  ]},
+{ "hdr": "7E7", "rax": "7EF", "dbg": true, "cmd": {"22": "4823"}, "freq": 1,
+  "signals": [
+    {"id": "FORD_SEC_MOTOR_INV_V", "path": "Drivetrain", "fmt": { "len": 16, "max": 400, "min": -400, "div": 10, "sign": true, "unit": "volts" }, "name": "Secondary motor inverter voltage"}
+  ]}
 ]
 }
