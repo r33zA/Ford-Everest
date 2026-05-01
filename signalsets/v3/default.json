@@ -3,11 +3,13 @@
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "22": "010D" },
+      "cmd": {
+        "22": "010D"
+      },
       "freq": 0.25,
       "signals": [
         {
-          "id": "EVEREST_SPEED_FORD_CANDIDATE",
+          "id": "EVEREST_TEST_SPEED_FORD_010D",
           "path": "Movement.Everest",
           "fmt": {
             "len": 8,
@@ -15,7 +17,7 @@
             "unit": "kilometersPerHour"
           },
           "name": "Ford vehicle speed candidate",
-          "description": "Candidate Ford enhanced vehicle speed. Compare against dashboard speed and generic OBD speed.",
+          "description": "Compare against dashboard and generic OBD speed.",
           "suggestedMetric": "speed"
         }
       ]
@@ -23,11 +25,13 @@
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "01": "0D" },
+      "cmd": {
+        "01": "0D"
+      },
       "freq": 0.25,
       "signals": [
         {
-          "id": "EVEREST_SPEED_GENERIC",
+          "id": "EVEREST_GENERIC_SPEED_010D",
           "path": "Movement.Generic",
           "fmt": {
             "len": 8,
@@ -36,7 +40,7 @@
             "unit": "kilometersPerHour"
           },
           "name": "Generic OBD vehicle speed",
-          "description": "Generic SAE vehicle speed. Use as a comparison against the Ford speed candidate.",
+          "description": "Generic SAE vehicle speed for comparison.",
           "suggestedMetric": "speed"
         }
       ]
@@ -44,11 +48,13 @@
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "01": "A6" },
+      "cmd": {
+        "01": "A6"
+      },
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_ODO_GENERIC",
+          "id": "EVEREST_TEST_ODOMETER_01A6",
           "path": "Movement.Generic",
           "fmt": {
             "len": 32,
@@ -65,11 +71,37 @@
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "01": "2F" },
+      "cmd": {
+        "22": "F42F"
+      },
       "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_FUEL_LEVEL_GENERIC",
+          "id": "EVEREST_TEST_FUEL_REMAINING_F42F",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Fuel remaining",
+          "description": "Equation: A*100/255.",
+          "suggestedMetric": "fuelTankLevel"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "2F"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_FUEL_LEVEL_012F",
           "path": "Fuel.Generic",
           "fmt": {
             "len": 8,
@@ -79,7 +111,7 @@
             "unit": "percent"
           },
           "name": "Generic fuel level",
-          "description": "Generic SAE fuel tank level. Use as comparison against Ford/Ranger fuel level.",
+          "description": "Generic SAE fuel level for comparison.",
           "suggestedMetric": "fuelTankLevel"
         }
       ]
@@ -87,173 +119,335 @@
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "22": "F42F" },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_FUEL_LEVEL_RANGER_BORROWED",
-          "path": "Fuel.Everest",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "Ford fuel level borrowed from Ranger",
-          "description": "Borrowed Ford Ranger fuel level PID. Not confirmed on Everest.",
-          "suggestedMetric": "fuelTankLevel"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": { "22": "096E" },
+      "cmd": {
+        "22": "0579"
+      },
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_DPF_FULL_CANDIDATE_096E",
+          "id": "EVEREST_TEST_DPF_SOOT_CLOSED_LOOP_0579",
           "path": "Emissions.DPF.Everest",
           "fmt": {
-            "len": 8,
+            "len": 16,
             "max": 100,
-            "mul": 100,
-            "div": 255,
             "unit": "percent"
           },
-          "name": "DPF full percentage candidate 096E",
-          "description": "Experimental DPF full percentage candidate from scan-supported PID range. Scaling and meaning are unconfirmed."
+          "name": "DPF soot blockage - closed loop",
+          "description": "Equation shown: A*256+B. If value is too high, a divisor may be needed."
         }
       ]
     },
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "22": "09CD" },
+      "cmd": {
+        "22": "057B"
+      },
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_DPF_FULL_CANDIDATE_09CD",
+          "id": "EVEREST_TEST_DPF_SOOT_OPEN_LOOP_057B",
           "path": "Emissions.DPF.Everest",
           "fmt": {
-            "len": 8,
+            "len": 16,
             "max": 100,
-            "mul": 100,
-            "div": 255,
             "unit": "percent"
           },
-          "name": "DPF full percentage candidate 09CD",
-          "description": "Second experimental DPF full percentage candidate. Scaling and meaning are unconfirmed."
+          "name": "DPF soot blockage - open loop",
+          "description": "Equation shown: A*256+B. If value is too high, a divisor may be needed."
         }
       ]
     },
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "22": "1E12" },
+      "cmd": {
+        "22": "042C"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_SOOT_MASS_042C",
+          "path": "Emissions.DPF.Everest",
+          "fmt": {
+            "len": 16,
+            "mul": 20,
+            "add": -1,
+            "unit": "percent"
+          },
+          "name": "DPF soot mass experimental",
+          "description": "Experimental. Equation shown: ((A*256)+B)*(100/5)-1. Treat cautiously."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E12"
+      },
       "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_GEAR_RANGER_BORROWED",
+          "id": "EVEREST_TEST_GEAR_COMMANDED_7E1_1E12",
           "path": "Transmission.Everest",
-          "name": "Current gear borrowed from Ranger",
-          "description": "Borrowed Ford Ranger automatic transmission gear PID. Not confirmed on Everest.",
           "fmt": {
             "len": 8,
-            "map": {
-              "1": {
-                "description": "First gear",
-                "value": "1"
-              },
-              "2": {
-                "description": "Second gear",
-                "value": "2"
-              },
-              "3": {
-                "description": "Third gear",
-                "value": "3"
-              },
-              "4": {
-                "description": "Fourth gear",
-                "value": "4"
-              },
-              "5": {
-                "description": "Fifth gear",
-                "value": "5"
-              },
-              "6": {
-                "description": "Sixth gear",
-                "value": "6"
-              },
-              "7": {
-                "description": "Seventh gear",
-                "value": "7"
-              },
-              "8": {
-                "description": "Eighth gear",
-                "value": "8"
-              },
-              "9": {
-                "description": "Ninth gear",
-                "value": "9"
-              },
-              "10": {
-                "description": "Tenth gear",
-                "value": "10"
-              }
-            }
-          }
+            "max": 10,
+            "unit": "scalar"
+          },
+          "name": "Transmission gear commanded",
+          "description": "10-speed TCM candidate. Equation: A."
         }
       ]
     },
     {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": { "22": "1E23" },
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E1F"
+      },
       "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_SHIFT_POSITION_RANGER_BORROWED",
+          "id": "EVEREST_TEST_GEAR_ENGAGED_7E1_1E1F",
           "path": "Transmission.Everest",
-          "name": "Shift position borrowed from Ranger",
-          "description": "Borrowed Ford Ranger shift position PID. Not confirmed on Everest.",
           "fmt": {
             "len": 8,
-            "map": {
-              "10": {
-                "description": "Manual",
-                "value": "MANUAL"
-              },
-              "46": {
-                "description": "Drive",
-                "value": "DRIVE"
-              },
-              "50": {
-                "description": "Neutral",
-                "value": "NEUTRAL"
-              },
-              "60": {
-                "description": "Reverse",
-                "value": "REVERSE"
-              },
-              "70": {
-                "description": "Park",
-                "value": "PARK"
-              }
-            }
-          }
+            "max": 10,
+            "unit": "scalar"
+          },
+          "name": "Transmission gear engaged",
+          "description": "10-speed TCM candidate. Equation: A."
         }
       ]
     },
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "01": "5C" },
+      "cmd": {
+        "22": "5A7A"
+      },
       "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_ENGINE_OIL_TEMP_GENERIC",
+          "id": "EVEREST_TEST_GEAR_PCM_5A7A",
+          "path": "Transmission.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 10,
+            "unit": "scalar"
+          },
+          "name": "Transmission gear PCM candidate",
+          "description": "Ranger/Everest/Territory candidate. Equation: A."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E1C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TRANS_TEMP_1E1C_DIV16",
+          "path": "Transmission.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "div": 16,
+            "unit": "celsius"
+          },
+          "name": "Transmission fluid temperature div16",
+          "description": "Equation: (A*256+B)/16."
+        },
+        {
+          "id": "EVEREST_TEST_TRANS_TEMP_1E1C_5_72",
+          "path": "Transmission.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "mul": 5,
+            "div": 72,
+            "add": -17,
+            "unit": "celsius"
+          },
+          "name": "Transmission fluid temperature 5/72",
+          "description": "Equation: ((A*256)+B)*5/72-17."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1674"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TRANS_TEMP_ALT_1674",
+          "path": "Transmission.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Transmission fluid temperature alternate",
+          "description": "Equation: A-40."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E14"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TCC_SLIP_1E14",
+          "path": "Transmission.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 5500,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Torque converter slip speed",
+          "description": "Equation: (A*256+B)/4."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E13"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TRANS_TURBINE_SPEED_1E13",
+          "path": "Transmission.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 50000,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Transmission turbine shaft speed",
+          "description": "Equation: (A*256+B)/4."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E1B"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TRANS_OUTPUT_SPEED_1E1B",
+          "path": "Transmission.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 5500,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Transmission output shaft speed",
+          "description": "Equation: (A*256+B)/4."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F405"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_COOLANT_TEMP_F405",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Coolant temperature Ford candidate",
+          "description": "Equation: A-40.",
+          "suggestedMetric": "engineCoolantTemperature"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "05"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_COOLANT_TEMP_0105",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Generic engine coolant temperature",
+          "description": "Generic SAE coolant temperature.",
+          "suggestedMetric": "engineCoolantTemperature"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F45C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ENGINE_OIL_TEMP_F45C",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Engine oil temperature Ford candidate",
+          "description": "Equation: A-40."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "5C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_ENGINE_OIL_TEMP_015C",
           "path": "Engine.Generic",
           "fmt": {
             "len": 8,
@@ -263,18 +457,20 @@
             "unit": "celsius"
           },
           "name": "Generic engine oil temperature",
-          "description": "Generic SAE engine oil temperature. Compare with Ford oil temperature candidate."
+          "description": "Generic SAE oil temperature for comparison."
         }
       ]
     },
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "22": "015C" },
+      "cmd": {
+        "22": "F40F"
+      },
       "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_ENGINE_OIL_TEMP_FORD_CANDIDATE",
+          "id": "EVEREST_TEST_INTAKE_AIR_TEMP_F40F",
           "path": "Engine.Everest",
           "fmt": {
             "len": 8,
@@ -283,20 +479,22 @@
             "add": -40,
             "unit": "celsius"
           },
-          "name": "Ford engine oil temperature candidate",
-          "description": "Candidate Ford enhanced oil temperature based on scan-supported PID 015C. Compare against generic oil temperature."
+          "name": "Intake air temperature Ford candidate",
+          "description": "Equation: A-40."
         }
       ]
     },
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "01": "05" },
-      "freq": 1,
+      "cmd": {
+        "22": "03CA"
+      },
+      "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_COOLANT_TEMP_GENERIC",
-          "path": "Engine.Generic",
+          "id": "EVEREST_TEST_INTAKE_AIR_TEMP_2_03CA",
+          "path": "Engine.Everest",
           "fmt": {
             "len": 8,
             "max": 215,
@@ -304,20 +502,90 @@
             "add": -40,
             "unit": "celsius"
           },
-          "name": "Engine coolant temperature",
-          "description": "Generic SAE engine coolant temperature.",
-          "suggestedMetric": "engineCoolantTemperature"
+          "name": "Intake air temperature 2",
+          "description": "Equation: A-40."
         }
       ]
     },
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "01": "42" },
+      "cmd": {
+        "22": "051C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_AIR_CHARGE_TEMP_051C",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Intercooler air charge temperature",
+          "description": "Equation: A-40."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0522"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_FUEL_TEMP_0522",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Fuel temperature",
+          "description": "Equation: A-40."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F446"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_AMBIENT_AIR_TEMP_F446",
+          "path": "Climate.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Ambient air temperature Ford candidate",
+          "description": "Equation: A-40."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "42"
+      },
       "freq": 1,
       "signals": [
         {
-          "id": "EVEREST_12V_CONTROL_MODULE_VOLTAGE",
+          "id": "EVEREST_GENERIC_CONTROL_MODULE_VOLTAGE_0142",
           "path": "Electrical.Generic",
           "fmt": {
             "len": 16,
@@ -326,18 +594,20 @@
             "unit": "volts"
           },
           "name": "Main 12V / control module voltage",
-          "description": "Generic SAE control module voltage. Use as main 12V battery/charging reference."
+          "description": "Generic SAE control module voltage."
         }
       ]
     },
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "01": "0C" },
+      "cmd": {
+        "01": "0C"
+      },
       "freq": 0.25,
       "signals": [
         {
-          "id": "EVEREST_RPM_GENERIC",
+          "id": "EVEREST_GENERIC_RPM_010C",
           "path": "Engine.Generic",
           "fmt": {
             "len": 16,
@@ -353,11 +623,13 @@
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "22": "010C" },
+      "cmd": {
+        "22": "010C"
+      },
       "freq": 0.25,
       "signals": [
         {
-          "id": "EVEREST_RPM_FORD_CANDIDATE",
+          "id": "EVEREST_TEST_RPM_FORD_010C",
           "path": "Engine.Everest",
           "fmt": {
             "len": 16,
@@ -366,7 +638,493 @@
             "unit": "rpm"
           },
           "name": "Ford RPM candidate",
-          "description": "Candidate Ford enhanced RPM based on scan-supported PID 010C. Compare against generic RPM."
+          "description": "Candidate Ford enhanced RPM."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1440"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_MAP_1440",
+          "path": "Engine.Boost.Everest",
+          "fmt": {
+            "len": 16,
+            "mul": 0.03625,
+            "unit": "psi"
+          },
+          "name": "Manifold absolute pressure",
+          "description": "Boost can be estimated as MAP minus BARO."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1442"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BARO_1442",
+          "path": "Engine.Boost.Everest",
+          "fmt": {
+            "len": 16,
+            "mul": 0.03625,
+            "unit": "psi"
+          },
+          "name": "Barometric pressure",
+          "description": "Boost can be estimated as MAP minus BARO."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "0B"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_MAP_010B",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilopascal"
+          },
+          "name": "Generic intake manifold absolute pressure",
+          "description": "Generic SAE MAP for comparison."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "04"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_ENGINE_LOAD_0104",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Calculated engine load",
+          "description": "Generic SAE calculated engine load.",
+          "suggestedMetric": "engineLoad"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "11"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_THROTTLE_POSITION_0111",
+          "path": "Control.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Absolute throttle position",
+          "description": "Generic SAE throttle position.",
+          "suggestedMetric": "throttlePosition"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "0E"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_TIMING_ADVANCE_010E",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 63.5,
+            "min": -64,
+            "div": 2,
+            "add": -64,
+            "unit": "degrees"
+          },
+          "name": "Timing advance",
+          "description": "Generic SAE timing advance. Diesel usefulness may be limited."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "0A"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_FUEL_PRESSURE_010A",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 765,
+            "mul": 3,
+            "unit": "kilopascal"
+          },
+          "name": "Generic fuel pressure",
+          "description": "Generic SAE fuel pressure."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0415"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_0415",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 16,
+            "unit": "kilopascal"
+          },
+          "name": "Oil pressure candidate",
+          "description": "Header assumed 7E0. Borrowed custom PID appeared as 22 0415 with kPa to psi conversion."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "164F"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_FUEL_RAIL_PRESSURE_164F",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 16,
+            "unit": "psi",
+            "mul": 0.145
+          },
+          "name": "Fuel rail pressure candidate",
+          "description": "Candidate from shared research. Formula/source unclear; treat cautiously."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "052E"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGR_OPEN_052E",
+          "path": "Emissions.EGR.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "EGR open percentage",
+          "description": "Equation: A*100/255."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0569"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGT_PRE_TURBO_0569",
+          "path": "Emissions.Exhaust.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 1500,
+            "div": 32,
+            "unit": "celsius"
+          },
+          "name": "Exhaust manifold EGT pre-turbo",
+          "description": "Equation: (A*256+B)/32."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "03F4"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGT_POST_TURBO_03F4",
+          "path": "Emissions.Exhaust.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 1500,
+            "mul": 5,
+            "unit": "celsius"
+          },
+          "name": "EGT post turbo",
+          "description": "Equation: A*5."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "03F5"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGT_PRE_DPF_03F5",
+          "path": "Emissions.Exhaust.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 1500,
+            "mul": 5,
+            "unit": "celsius"
+          },
+          "name": "EGT pre DPF",
+          "description": "Equation: A*5."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "03F6"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGT_POST_DPF_03F6",
+          "path": "Emissions.Exhaust.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 1500,
+            "mul": 5,
+            "unit": "celsius"
+          },
+          "name": "EGT post DPF",
+          "description": "Equation: A*5."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0684"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ADBLUE_LEVEL_PERCENT_0684",
+          "path": "Emissions.AdBlue.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "div": 4,
+            "unit": "percent"
+          },
+          "name": "AdBlue tank level percentage",
+          "description": "Equation: A/4."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0487"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ADBLUE_LEVEL_LITRES_0487",
+          "path": "Emissions.AdBlue.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "div": 1000,
+            "unit": "liters"
+          },
+          "name": "AdBlue tank level litres",
+          "description": "Equation: (A*256+B)/1000."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0685"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ADBLUE_TEMP_0685",
+          "path": "Emissions.AdBlue.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "AdBlue tank temperature",
+          "description": "Equation: A-40."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0683"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ADBLUE_LEVEL_MM_0683",
+          "path": "Emissions.AdBlue.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "unit": "millimeters"
+          },
+          "name": "AdBlue tank level millimetres",
+          "description": "Low priority test candidate. Equation: A*256+B."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "4028"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BATTERY_SOC_4028",
+          "path": "Electrical.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "unit": "percent"
+          },
+          "name": "Battery state of charge estimated",
+          "description": "BCM candidate. Equation: A."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "4029"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BATTERY_TEMP_4029",
+          "path": "Electrical.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 87,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Battery temperature estimated",
+          "description": "BCM candidate. Equation: A-40."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "402B"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BATTERY_CURRENT_402B",
+          "path": "Electrical.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "min": -100,
+            "add": -126,
+            "unit": "ampere"
+          },
+          "name": "Battery current in/out",
+          "description": "BCM candidate. One source said A-127, another A-126. Testing required."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0551"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ALTERNATOR_CURRENT_0551",
+          "path": "Electrical.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 250,
+            "div": 64,
+            "unit": "ampere"
+          },
+          "name": "Alternator current output",
+          "description": "Equation: (A*256+B)/64."
         }
       ]
     }
