@@ -310,7 +310,7 @@
       "signals": [
         {
           "id": "EVEREST_TCC_SLIP_1E14",
-          "path": "Transmission.Everest",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 16,
             "max": 5500,
@@ -332,7 +332,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_OSS_RPM_7E1_1E0B",
-          "path": "Transmission.Everest.Test",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 16,
             "max": 10000,
@@ -353,7 +353,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_TCM_SPEED_1E12_DIV100",
-          "path": "Transmission.Everest.Test",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 16,
             "max": 300,
@@ -429,6 +429,19 @@
           },
           "name": "AdBlue level percent test 054D",
           "description": "New candidate; expect near full after recent refill."
+        },
+        {
+          "id": "EVEREST_LPFP_SENSOR_VOLTAGE_054D",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "div": 1024,
+            "sign": true,
+            "unit": "volts"
+          },
+          "name": "Fuel pressure sensor voltage, low",
+          "description": "Confirmed responding. Formula val / 1024."
         }
       ]
     },
@@ -627,6 +640,19 @@
           },
           "name": "Battery state of charge estimated",
           "description": "Working/plausible on 726."
+        },
+        {
+          "id": "EVEREST_BATTERY_CHARGE_4028_DIV255",
+          "path": "Electrical.Everest.Test",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Battery charge 4028 div255",
+          "description": "Comparison candidate from Ford PID details. Formula A*100/255."
         }
       ]
     },
@@ -643,13 +669,13 @@
           "path": "Electrical.Everest",
           "fmt": {
             "len": 8,
-            "max": 100,
-            "min": -100,
-            "add": -126,
+            "min": -127,
+            "max": 128,
+            "add": -127,
             "unit": "ampere"
           },
-          "name": "Battery current in/out",
-          "description": "Working/plausible on 726; sign direction still needs confirmation."
+          "name": "Aux 12V battery current",
+          "description": "Working on 726. Formula A-127; sign direction still needs confirmation."
         }
       ]
     },
@@ -951,7 +977,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_WHEEL_SPEED_LF_4B01",
-          "path": "Movement.Everest.WheelSpeedTest",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 16,
             "max": 300,
@@ -973,7 +999,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_WHEEL_SPEED_RF_4B02",
-          "path": "Movement.Everest.WheelSpeedTest",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 16,
             "max": 300,
@@ -995,7 +1021,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_WHEEL_SPEED_LR_4B03",
-          "path": "Movement.Everest.WheelSpeedTest",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 16,
             "max": 300,
@@ -1017,7 +1043,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_WHEEL_SPEED_RR_4B04",
-          "path": "Movement.Everest.WheelSpeedTest",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 16,
             "max": 300,
@@ -1440,8 +1466,809 @@
             "mul": 0.392,
             "unit": "percent"
           },
-          "name": "Oil life remaining candidate",
-          "description": "New oil life remaining candidate."
+          "name": "Oil life remaining",
+          "description": "Confirmed working from Ford PID details."
+        },
+        {
+          "id": "EVEREST_OIL_LIFE_REMAINING_054B",
+          "path": "Maintenance.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "unit": "percent"
+          },
+          "name": "Oil life remaining",
+          "description": "Confirmed responding. Formula A."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "03BA"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_AAT_SENSOR_VOLTAGE_03BA",
+          "path": "Climate.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "mul": 0.0048875855,
+            "unit": "volts"
+          },
+          "name": "Ambient air temperature sensor voltage",
+          "description": "Confirmed responding. Formula val * 0.0048875855."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "03DC"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_HPFP_DESIRED_03DC",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 3500,
+            "mul": 1.4503773969,
+            "unit": "psi"
+          },
+          "name": "High pressure fuel pressure desired",
+          "description": "Confirmed responding. Formula val * 1.4503773969."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0324"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_HPFP_SENSOR_VOLTAGE_0324",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "div": 204.6,
+            "unit": "volts"
+          },
+          "name": "High pressure fuel rail sensor voltage",
+          "description": "Confirmed responding. Formula val / 204.6."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0307"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_DUTY_0307",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "mul": 0.0030517578,
+            "unit": "percent"
+          },
+          "name": "Low pressure fuel pump commanded duty cycle",
+          "description": "Confirmed responding. Formula val * 0.0030517578."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0301"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_MAP_SENSOR_VOLTAGE_0301",
+          "path": "Engine.Boost.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "mul": 0.0009765625,
+            "unit": "volts"
+          },
+          "name": "Manifold absolute pressure sensor voltage",
+          "description": "Confirmed responding. Formula val * 0.0009765625."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "402A"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_AUX_12V_BATTERY_VOLTAGE_402A",
+          "path": "Electrical.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 18.75,
+            "div": 20,
+            "add": 6,
+            "unit": "volts"
+          },
+          "name": "Aux 12V battery voltage",
+          "description": "Confirmed responding on 726. Formula A/20 + 6.",
+          "suggestedMetric": "starterBatteryVoltage"
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "4027"
+      },
+      "freq": 3600,
+      "signals": [
+        {
+          "id": "EVEREST_AUX_12V_BATTERY_AGE_HOURS_4027",
+          "path": "Electrical.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 1572840,
+            "mul": 24,
+            "unit": "hours"
+          },
+          "name": "Aux 12V battery age",
+          "description": "Confirmed responding. Formula val * 24."
+        },
+        {
+          "id": "EVEREST_BATTERY_AGE_SCALAR_4027",
+          "path": "Electrical.Everest.Test",
+          "fmt": {
+            "len": 16,
+            "max": 1825,
+            "unit": "scalar"
+          },
+          "name": "Battery age scalar",
+          "description": "Comparison display from Ford PID details. Formula val."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "9800"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_AC_PRESSURE_SENSOR_VOLTAGE_9800",
+          "path": "Climate.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "div": 1024,
+            "sign": true,
+            "unit": "volts"
+          },
+          "name": "A/C compressor pressure sensor voltage",
+          "description": "Confirmed responding. Formula val / 1024."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0604"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_AC_REFRIGERANT_PRESSURE_0604",
+          "path": "Climate.Everest",
+          "fmt": {
+            "len": 16,
+            "min": -32768,
+            "max": 32767,
+            "sign": true,
+            "unit": "kilopascal"
+          },
+          "name": "A/C refrigerant pressure",
+          "description": "Confirmed responding. Raw signed kPa; sanity check units/value."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F404"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_LOAD_F404",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Engine load",
+          "description": "Confirmed responding. Formula A*100/255.",
+          "suggestedMetric": "engineLoad"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F462"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_PCM_ACTUAL_ENGINE_PERCENT_TORQUE_F462",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "add": -125,
+            "unit": "percent"
+          },
+          "name": "Actual engine percent torque",
+          "description": "Confirmed responding. Formula A-125."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0462"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_WASTEGATE_DUTY_CYCLE_0462",
+          "path": "Engine.Boost.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "mul": 100,
+            "div": 32768,
+            "unit": "percent"
+          },
+          "name": "Wastegate duty cycle",
+          "description": "Confirmed responding. Formula val*100/32768."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F463"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_REFERENCE_TORQUE_F463",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "newtonMeters"
+          },
+          "name": "Engine reference torque",
+          "description": "Confirmed responding. Raw N\u00b7m value."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "05FC"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_CYL_HEAD_TEMP_SENSOR_2_05FC",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 16,
+            "min": -512,
+            "max": 511.984375,
+            "div": 64,
+            "sign": true,
+            "unit": "celsius"
+          },
+          "name": "Cylinder head temperature sensor 2",
+          "description": "Confirmed responding. Formula val / 64."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F431"
+      },
+      "freq": 60,
+      "signals": [
+        {
+          "id": "EVEREST_DISTANCE_SINCE_DTC_CLEAR_F431",
+          "path": "Diagnostics.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "kilometers"
+          },
+          "name": "Distance since DTC clear",
+          "description": "Confirmed responding."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F421"
+      },
+      "freq": 60,
+      "signals": [
+        {
+          "id": "EVEREST_DISTANCE_WITH_MIL_F421",
+          "path": "Diagnostics.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "kilometers"
+          },
+          "name": "Distance with MIL",
+          "description": "Confirmed responding."
+        }
+      ]
+    },
+    {
+      "hdr": "7DF",
+      "rax": null,
+      "cmd": {
+        "22": "F45C"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_OIL_PRESSURE_7DF_F45C",
+          "path": "Engine.Everest.Test",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "Engine oil pressure",
+          "description": "Confirmed response via functional header 7DF; units still need validation."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F41F"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_RUN_TIME_F41F",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "seconds"
+          },
+          "name": "Engine run time",
+          "description": "Confirmed responding. Raw seconds."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F40C"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_SPEED_F40C",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 16383.75,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Engine speed",
+          "description": "Confirmed responding. Formula val / 4.",
+          "suggestedMetric": "engineSpeed"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0548"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_ACTUAL_0548",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "mul": 10000,
+            "div": 137892,
+            "sign": true,
+            "unit": "psi"
+          },
+          "name": "Fuel pressure, low actual",
+          "description": "Confirmed responding. Formula val*10000/137892."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "041F"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_DESIRED_041F",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 110,
+            "mul": 435,
+            "div": 1000,
+            "unit": "psi"
+          },
+          "name": "Fuel pressure, low desired",
+          "description": "Confirmed responding. Formula A*435/1000."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0707"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_GRILL_SHUTTER_DUTY_CYCLE_0707",
+          "path": "Body.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Grill shutter duty cycle",
+          "description": "Confirmed responding. Formula A*100/255."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0700"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_IAT_FAULT_0700",
+          "path": "Engine.Everest.Test",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "Intake temperature fault",
+          "description": "Confirmed responding; raw scalar flag/counter requires validation."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1279"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_IAT_SENSOR_VOLTAGE_1279",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "mul": 5,
+            "div": 1023,
+            "unit": "volts"
+          },
+          "name": "Intake temperature sensor voltage",
+          "description": "Confirmed responding. Formula val*5/1023."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F40B"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_MANIFOLD_PRESSURE_F40B",
+          "path": "Engine.Boost.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 36,
+            "mul": 10000,
+            "div": 68947,
+            "unit": "psi"
+          },
+          "name": "Manifold pressure",
+          "description": "Confirmed responding. Formula A*10000/68947."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F430"
+      },
+      "freq": 60,
+      "signals": [
+        {
+          "id": "EVEREST_WARMUPS_SINCE_DTC_CLEAR_F430",
+          "path": "Diagnostics.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "Warm-ups since DTC clear",
+          "description": "Confirmed responding."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "0D"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SPEED_STANDARD_OBD2_010D",
+          "path": "Movement.Everest.SpeedTest",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Vehicle speed standard OBD2",
+          "description": "Speed candidate. Standard Mode 01 PID 0D. Compare against dash and GPS.",
+          "suggestedMetric": "speed"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F40D"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SPEED_FORD_EXTENDED_F40D",
+          "path": "Movement.Everest.SpeedTest",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Vehicle speed Ford extended",
+          "description": "Speed candidate. Mode 22 variant; compare against dash and GPS.",
+          "suggestedMetric": "speed"
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E15"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SPEED_OSS_1E15_RPM",
+          "path": "Movement.Everest.SpeedTest",
+          "fmt": {
+            "len": 16,
+            "max": 10000,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Output shaft speed OSS 1E15",
+          "description": "Speed-related TCM candidate. Raw RPM; may need axle/tire conversion."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E16"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SPEED_ISS_TSS_1E16_RPM",
+          "path": "Movement.Everest.SpeedTest",
+          "fmt": {
+            "len": 16,
+            "max": 10000,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Input shaft speed ISS/TSS 1E16",
+          "description": "TCM candidate; turbine/input speed, not road speed."
+        }
+      ]
+    },
+    {
+      "hdr": "7A0",
+      "rax": "7A8",
+      "cmd": {
+        "22": "2858"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SPEED_ABS_2858",
+          "path": "Movement.Everest.SpeedTest",
+          "fmt": {
+            "len": 16,
+            "max": 300,
+            "div": 100,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Wheel speed front-left ABS",
+          "description": "ABS wheel speed candidate from speed table. Header may vary; compare against dash and GPS."
+        }
+      ]
+    },
+    {
+      "hdr": "7A0",
+      "rax": "7A8",
+      "cmd": {
+        "22": "2859"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SPEED_ABS_2859",
+          "path": "Movement.Everest.SpeedTest",
+          "fmt": {
+            "len": 16,
+            "max": 300,
+            "div": 100,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Wheel speed front-right ABS",
+          "description": "ABS wheel speed candidate from speed table. Header may vary; compare against dash and GPS."
+        }
+      ]
+    },
+    {
+      "hdr": "7A0",
+      "rax": "7A8",
+      "cmd": {
+        "22": "285A"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SPEED_ABS_285A",
+          "path": "Movement.Everest.SpeedTest",
+          "fmt": {
+            "len": 16,
+            "max": 300,
+            "div": 100,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Wheel speed rear-left ABS",
+          "description": "ABS wheel speed candidate from speed table. Header may vary; compare against dash and GPS."
+        }
+      ]
+    },
+    {
+      "hdr": "7A0",
+      "rax": "7A8",
+      "cmd": {
+        "22": "285B"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SPEED_ABS_285B",
+          "path": "Movement.Everest.SpeedTest",
+          "fmt": {
+            "len": 16,
+            "max": 300,
+            "div": 100,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Wheel speed rear-right ABS",
+          "description": "ABS wheel speed candidate from speed table. Header may vary; compare against dash and GPS."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "A210"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SPEED_SETTING_A210",
+          "path": "Movement.Everest.SpeedTest",
+          "fmt": {
+            "len": 8,
+            "max": 300,
+            "mul": 1.609,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Vehicle speed setting VSSET A210",
+          "description": "Cruise/set speed candidate; likely setpoint, not live vehicle speed."
         }
       ]
     }
