@@ -1,15 +1,20 @@
-# Ford Everest
+## Everest MY25.25 testing notes
 
-This repository contains signal set configurations for the Ford Everest, organized by model year and version. The files are structured to allow for easy differentiation between model generations and other vehicle parameters, ensuring accurate signal mapping for each version of the Ford Everest.
+Vehicle target:
+- Ford Everest Trend
+- MY25.25
+- Australian market
+- 2.0 L Bi-Turbo Diesel
+- 10-speed automatic
+- Full-time 4WD
 
-## Contributing
+Base repo:
+- OBDb/Ford-Everest
 
-Contributions are welcome! If you would like to add support for additional model years or other configurations, please open an issue or submit a pull request.
+Reference repo only:
+- OBDb/Ford-Ranger
 
-1. Fork the repository
-2. Create a new branch for your changes
-3. Commit your changes and open a pull request with a detailed description
-
-## Issues
-
-If you encounter any issues or would like to discuss improvements, please feel free to open an issue. We encourage collaboration and appreciate feedback to make the repository as accurate and useful as possible.
+Working rule:
+- Test the OBDb/Ford-Everest fork unchanged in Pelican first.
+- Add or edit one PID at a time.
+- Only contribute verified signals upstream.
