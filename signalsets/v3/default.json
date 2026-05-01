@@ -171,6 +171,7 @@
           "path": "Emissions.DPF.Everest",
           "fmt": {
             "len": 16,
+            "max": 100,
             "mul": 20,
             "add": -1,
             "unit": "percent"
@@ -655,6 +656,7 @@
           "path": "Engine.Boost.Everest",
           "fmt": {
             "len": 16,
+            "max": 100,
             "mul": 0.03625,
             "unit": "psi"
           },
@@ -676,6 +678,7 @@
           "path": "Engine.Boost.Everest",
           "fmt": {
             "len": 16,
+            "max": 20,
             "mul": 0.03625,
             "unit": "psi"
           },
@@ -812,6 +815,7 @@
           "path": "Engine.Everest",
           "fmt": {
             "len": 16,
+            "max": 1000,
             "unit": "kilopascal"
           },
           "name": "Oil pressure candidate",
@@ -832,6 +836,7 @@
           "path": "Fuel.Everest",
           "fmt": {
             "len": 16,
+            "max": 30000,
             "unit": "psi",
             "mul": 0.145
           },
