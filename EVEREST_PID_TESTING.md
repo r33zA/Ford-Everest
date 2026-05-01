@@ -8,6 +8,16 @@ Vehicle:
 - 10-speed automatic
 - Australian market
 
+- Vehicle generation:
+- Ford Everest UB / U704
+- Third-generation Everest, introduced 2022
+- Australian UB series
+- Platform related to Ford Ranger P703 / Next-Gen Ranger
+
+PID donor priority:
+- Ford Ranger P703 / Next-Gen Ranger data was preferred where exact Everest data was unavailable.
+- Older Ranger PX/PX3 data was treated as lower-confidence and tested before use.
+
 Testing setup:
 - App: Pelican on iOS / CarPlay
 - OBD source: custom GitHub fork of OBDb/Ford-Everest
