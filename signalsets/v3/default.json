@@ -3,48 +3,207 @@
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "22": "1E12" },
-      "freq": 2,
+      "cmd": { "22": "010D" },
+      "freq": 0.25,
       "signals": [
         {
-          "id": "EVEREST_GEAR",
-          "path": "Transmission",
-          "name": "Current gear",
-          "description": "The automatic transmission gear.",
+          "id": "EVEREST_SPEED_FORD_CANDIDATE",
+          "path": "Movement.Everest",
           "fmt": {
             "len": 8,
-            "map": {
-              "1":  { "description": "First gear",   "value": "1" },
-              "2":  { "description": "Second gear",  "value": "2" },
-              "3":  { "description": "Third gear",   "value": "3" },
-              "4":  { "description": "Fourth gear",  "value": "4" },
-              "5":  { "description": "Fifth gear",   "value": "5" },
-              "6":  { "description": "Sixth gear",   "value": "6" },
-              "7":  { "description": "Seventh gear", "value": "7" },
-              "8":  { "description": "Eighth gear",  "value": "8" },
-              "9":  { "description": "Ninth gear",   "value": "9" },
-              "10": { "description": "Tenth gear",   "value": "10" }
-            }
-          }
+            "max": 255,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Ford vehicle speed candidate",
+          "description": "Candidate Ford enhanced vehicle speed. Compare against dashboard speed and generic OBD speed.",
+          "suggestedMetric": "speed"
         }
       ]
     },
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "22": "1E1C" },
-      "freq": 1,
+      "cmd": { "01": "0D" },
+      "freq": 0.25,
       "signals": [
         {
-          "id": "EVEREST_TOT",
-          "path": "Transmission",
+          "id": "EVEREST_SPEED_GENERIC",
+          "path": "Movement.Generic",
           "fmt": {
-            "len": 16,
+            "len": 8,
             "max": 255,
-            "div": 16,
-            "unit": "celsius"
+            "nullmax": 255,
+            "unit": "kilometersPerHour"
           },
-          "name": "Transmission oil temperature"
+          "name": "Generic OBD vehicle speed",
+          "description": "Generic SAE vehicle speed. Use as a comparison against the Ford speed candidate.",
+          "suggestedMetric": "speed"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "01": "A6" },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_ODO_GENERIC",
+          "path": "Movement.Generic",
+          "fmt": {
+            "len": 32,
+            "max": 429496729.5,
+            "mul": 0.1,
+            "unit": "kilometers"
+          },
+          "name": "Odometer candidate",
+          "description": "Generic SAE odometer candidate. Compare against dash odometer.",
+          "suggestedMetric": "odometer"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "01": "2F" },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_FUEL_LEVEL_GENERIC",
+          "path": "Fuel.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Generic fuel level",
+          "description": "Generic SAE fuel tank level. Use as comparison against Ford/Ranger fuel level.",
+          "suggestedMetric": "fuelTankLevel"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "22": "F42F" },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_FUEL_LEVEL_RANGER_BORROWED",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Ford fuel level borrowed from Ranger",
+          "description": "Borrowed Ford Ranger fuel level PID. Not confirmed on Everest.",
+          "suggestedMetric": "fuelTankLevel"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "22": "096E" },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_DPF_FULL_CANDIDATE_096E",
+          "path": "Emissions.DPF.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "DPF full percentage candidate 096E",
+          "description": "Experimental DPF full percentage candidate from scan-supported PID range. Scaling and meaning are unconfirmed."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "22": "09CD" },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_DPF_FULL_CANDIDATE_09CD",
+          "path": "Emissions.DPF.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "DPF full percentage candidate 09CD",
+          "description": "Second experimental DPF full percentage candidate. Scaling and meaning are unconfirmed."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "22": "1E12" },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GEAR_RANGER_BORROWED",
+          "path": "Transmission.Everest",
+          "name": "Current gear borrowed from Ranger",
+          "description": "Borrowed Ford Ranger automatic transmission gear PID. Not confirmed on Everest.",
+          "fmt": {
+            "len": 8,
+            "map": {
+              "1": {
+                "description": "First gear",
+                "value": "1"
+              },
+              "2": {
+                "description": "Second gear",
+                "value": "2"
+              },
+              "3": {
+                "description": "Third gear",
+                "value": "3"
+              },
+              "4": {
+                "description": "Fourth gear",
+                "value": "4"
+              },
+              "5": {
+                "description": "Fifth gear",
+                "value": "5"
+              },
+              "6": {
+                "description": "Sixth gear",
+                "value": "6"
+              },
+              "7": {
+                "description": "Seventh gear",
+                "value": "7"
+              },
+              "8": {
+                "description": "Eighth gear",
+                "value": "8"
+              },
+              "9": {
+                "description": "Ninth gear",
+                "value": "9"
+              },
+              "10": {
+                "description": "Tenth gear",
+                "value": "10"
+              }
+            }
+          }
         }
       ]
     },
@@ -55,17 +214,33 @@
       "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_GEAR_SHFT",
-          "path": "Transmission",
-          "name": "Shift gear",
+          "id": "EVEREST_SHIFT_POSITION_RANGER_BORROWED",
+          "path": "Transmission.Everest",
+          "name": "Shift position borrowed from Ranger",
+          "description": "Borrowed Ford Ranger shift position PID. Not confirmed on Everest.",
           "fmt": {
             "len": 8,
             "map": {
-              "10": { "description": "Manual",  "value": "MANUAL" },
-              "46": { "description": "Drive",   "value": "DRIVE" },
-              "50": { "description": "Neutral", "value": "NEUTRAL" },
-              "60": { "description": "Reverse", "value": "REVERSE" },
-              "70": { "description": "Park",    "value": "PARK" }
+              "10": {
+                "description": "Manual",
+                "value": "MANUAL"
+              },
+              "46": {
+                "description": "Drive",
+                "value": "DRIVE"
+              },
+              "50": {
+                "description": "Neutral",
+                "value": "NEUTRAL"
+              },
+              "60": {
+                "description": "Reverse",
+                "value": "REVERSE"
+              },
+              "70": {
+                "description": "Park",
+                "value": "PARK"
+              }
             }
           }
         }
@@ -74,21 +249,124 @@
     {
       "hdr": "7E0",
       "rax": "7E8",
-      "cmd": { "22": "F42F" },
+      "cmd": { "01": "5C" },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_OIL_TEMP_GENERIC",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Generic engine oil temperature",
+          "description": "Generic SAE engine oil temperature. Compare with Ford oil temperature candidate."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "22": "015C" },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_OIL_TEMP_FORD_CANDIDATE",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Ford engine oil temperature candidate",
+          "description": "Candidate Ford enhanced oil temperature based on scan-supported PID 015C. Compare against generic oil temperature."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "01": "05" },
       "freq": 1,
       "signals": [
         {
-          "id": "EVEREST_FLI",
-          "path": "Fuel",
+          "id": "EVEREST_COOLANT_TEMP_GENERIC",
+          "path": "Engine.Generic",
           "fmt": {
             "len": 8,
-            "max": 255,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
           },
-          "name": "Fuel level",
-          "suggestedMetric": "fuelTankLevel"
+          "name": "Engine coolant temperature",
+          "description": "Generic SAE engine coolant temperature.",
+          "suggestedMetric": "engineCoolantTemperature"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "01": "42" },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_12V_CONTROL_MODULE_VOLTAGE",
+          "path": "Electrical.Generic",
+          "fmt": {
+            "len": 16,
+            "max": 65.535,
+            "div": 1000,
+            "unit": "volts"
+          },
+          "name": "Main 12V / control module voltage",
+          "description": "Generic SAE control module voltage. Use as main 12V battery/charging reference."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "01": "0C" },
+      "freq": 0.25,
+      "signals": [
+        {
+          "id": "EVEREST_RPM_GENERIC",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 16,
+            "max": 16383.75,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Engine RPM",
+          "description": "Generic SAE engine RPM."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": { "22": "010C" },
+      "freq": 0.25,
+      "signals": [
+        {
+          "id": "EVEREST_RPM_FORD_CANDIDATE",
+          "path": "Engine.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 16383.75,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Ford RPM candidate",
+          "description": "Candidate Ford enhanced RPM based on scan-supported PID 010C. Compare against generic RPM."
         }
       ]
     }
