@@ -11,7 +11,7 @@
         {
           "id": "EVEREST_FUEL_REMAINING_F42F",
           "path": "Fuel.Everest",
-          "fmt": {q
+          "fmt": {
             "len": 8,
             "max": 100,
             "mul": 100,
