@@ -1,5 +1,15 @@
 # Ford Everest MY25.25 PID Testing Log
 
+Last updated: 2026-05-04
+
+Update focus:
+- Removed the bad active JSON entry `EVEREST_ENGINE_OIL_PRESSURE_7DF_F45C`.
+- Kept `FORD_EOP` / 7DF / 22F45C as archive-only raw evidence, not an active default.json signal.
+- Moved the latest responding non-speed items out of testing where they are now useful enough to keep.
+- Added the newer 760 / 768 wheel-speed and lateral-movement candidates as test-only; they responded while stationary, but still need a driving test.
+- Kept speed-related live comparisons grouped under `Movement.Everest.SpeedTest`.
+
+
 Vehicle:
 - Ford Everest Trend
 - MY25.25
@@ -37,6 +47,7 @@ Testing setup:
 | Works / test | Responds, but needs more driving or comparison before promotion |
 | Wrong target | Responds, but does not represent the intended value |
 | Rejected | No response, out of range, stale, impossible, wrong formula, or wrong scale |
+| Archive only | Responded once or more, but should not be kept in active default.json |
 
 ---
 
@@ -90,6 +101,11 @@ Testing setup:
 | 2026-05-01 | 220707 | 7E0 | 7E8 | Grille shutter duty cycle | Works / test | 7 % | Should vary with warm-up/cooling demand | Formula A*100/255. Needs road/warm-up validation. |
 | 2026-05-01 | 22032B | 7E0 | 7E8 | Accelerator pedal position | Works | 0–4 % | Pedal input % | Formula A*100/255. Replaces failed throttle attempts for driver input. |
 | 2026-05-01 | 22F40D | 7E0 | 7E8 | Vehicle speed Ford extended | Works / best current speed | 76 km/h | Live dash speed | Updates quickly. Consistently about 4 km/h under dash. Best current OBD speed candidate. |
+| 2026-05-04 | 221E1C | 7E1 | 7E9 | Transmission fluid temperature 5/72 compare | Works / keep | 46 °C | Plausible transmission temp | Latest retest still behaves plausibly. Keep current 5/72 formula as active best. |
+| 2026-05-04 | 224027 | 726 | 72E | Battery age scalar | Works / keep | 153 | Raw battery age scalar | Responds consistently. Keep scalar version; hours interpretation remains lower-confidence. |
+| 2026-05-04 | 224028 | 726 | 72E | Battery charge / raw SOC comparison | Works / context-only | 32 % | Battery display comparison | This appears to be the divided/alternate charge interpretation, not the confirmed starter-battery SOC. Do not replace confirmed SOC formula A. |
+| 2026-05-04 | 010B | 7E0 | 7E8 | Generic MAP test | Works / low-priority | 15 | MAP absolute comparison | Responds and aligns broadly with MAP absolute. F40B remains preferred Ford-specific MAP. |
+| 2026-05-04 | 220700 | 7E0 | 7E8 | Intake temperature fault | Works / diagnostic | 0 | No fault flag | Stable diagnostic flag. Keep as diagnostic/status item, not a temperature value. |
 
 ---
 
@@ -102,12 +118,18 @@ Testing setup:
 | 2026-05-01 | 220604 | 7E0 | 7E8 | A/C refrigerant pressure | Works / scaling uncertain | 128 shown | A/C pressure | Responds, but raw/display scaling needs cross-check. |
 | 2026-05-01 | 220700 | 7E0 | 7E8 | Intake temperature fault | Works / diagnostic | 0 | Likely 0 = no fault | Diagnostic flag/status only. |
 | 2026-05-01 | 221279 | 7E0 | 7E8 | Intake temperature sensor voltage | Questionable | 0 V | Sensor voltage should normally be non-zero | Responds, but value suspicious. Test only. |
-| 2026-05-01 | 22F45C | 7DF | — | Engine oil pressure raw | Works / scaling uncertain | 119 | Should vary with engine state | Responds, but unit/scaling unclear. Test raw only. |
+| 2026-05-01 | 22F45C | 7DF | — | Engine oil pressure raw / FORD_EOP | Archive only | 119–127 raw | Should vary with engine state | `EVEREST_ENGINE_OIL_PRESSURE_7DF_F45C` removed from active JSON. Keep only as evidence; scaling/unit not confirmed. |
 | 2026-05-01 | 220462 | 7E0 | 7E8 | Wastegate duty cycle | Questionable | 0 % | Should vary under load if valid | Possible PID/name/formula mismatch. Do not confuse with F462 torque. |
 | 2026-05-01 | 221E15 | 7E1 | 7E9 | Output shaft speed OSS | Works / diagnostic | 1,025.5 rpm | Changes with road speed | Useful transmission/road movement signal, but not direct dash speed without conversion. |
 | 2026-05-01 | 221E16 | 7E1 | 7E9 | Input shaft speed ISS/TSS | Works / diagnostic | 705.75 rpm | Changes with drivetrain state | Useful diagnostic value, not direct vehicle speed. |
 | 2026-05-01 | 010D | — | — | Vehicle speed standard OBD2 | To retest | — | Live dash speed in km/h | Keep as comparison candidate. |
 | 2026-05-01 | 010D | 7E0 | 7E8 | Vehicle speed standard OBD2 forced PCM | To retest | — | Live dash speed in km/h | Earlier forced/header test was not useful. |
+| 2026-05-04 | 222B07 | 760 | 768 | Front left wheel speed | Works / test | 0 km/h | Live wheel speed | Responded while stationary. Needs driving test before promotion. Formula currently raw km/h-style, clamp 0–200 km/h. |
+| 2026-05-04 | 222B06 | 760 | 768 | Front right wheel speed | Works / test | 0 km/h | Live wheel speed | Responded while stationary. Needs driving test before promotion. Formula currently raw km/h-style, clamp 0–200 km/h. |
+| 2026-05-04 | 222B09 | 760 | 768 | Rear left wheel speed | Works / test | 0 km/h | Live wheel speed | Responded while stationary. Needs driving test before promotion. Formula currently raw km/h-style, clamp 0–200 km/h. |
+| 2026-05-04 | 222B08 | 760 | 768 | Rear right wheel speed | Works / test | 0 km/h | Live wheel speed | Responded while stationary. Needs driving test before promotion. Formula currently raw km/h-style, clamp 0–200 km/h. |
+| 2026-05-04 | 222B0C | 760 | 768 | Lateral angle | Works / test | -1 deg | Vehicle lateral angle | Responded plausibly while parked. Needs movement/level-ground validation. |
+| 2026-05-04 | 222B11 | 760 | 768 | Lateral acceleration | Works / test | -0.14 | Lateral acceleration | Responded plausibly while parked. Needs cornering/straight-road validation. |
 | 2026-05-01 | 222858 | 7A0 | — | Wheel speed front-left ABS | To retest | — | Live wheel speed in km/h | Header may vary. |
 | 2026-05-01 | 222859 | 7A0 | — | Wheel speed front-right ABS | To retest | — | Live wheel speed in km/h | Header may vary. |
 | 2026-05-01 | 22285A | 7A0 | — | Wheel speed rear-left ABS | To retest | — | Live wheel speed in km/h | Header may vary. |
@@ -200,6 +222,11 @@ This allows the values to be viewed together while driving.
 | Date | PID / cmd | Header | Response | Signal | Result | Value seen | Expected | Notes |
 |---|---|---:|---:|---|---|---|---|---|
 | 2026-05-01 | 22F40D | 7E0 | 7E8 | Vehicle speed Ford extended | Works / best current | 76 km/h | Live dash speed in km/h | Updates quickly. Consistently about 4 km/h under dashboard speed. |
+| 2026-05-04 | 22F40D | 7E0 | 7E8 | Vehicle speed Ford extended | Works / active | 0 km/h parked | Stationary check | Still the active speed connectable. Earlier road test showed about 4 km/h under dash but updates quickly. |
+| 2026-05-04 | 222B07 | 760 | 768 | Front left wheel speed | Works / test | 0 km/h parked | Live wheel speed in km/h | Newer ABS/body candidate responded. Needs driving test. |
+| 2026-05-04 | 222B06 | 760 | 768 | Front right wheel speed | Works / test | 0 km/h parked | Live wheel speed in km/h | Newer ABS/body candidate responded. Needs driving test. |
+| 2026-05-04 | 222B09 | 760 | 768 | Rear left wheel speed | Works / test | 0 km/h parked | Live wheel speed in km/h | Newer ABS/body candidate responded. Needs driving test. |
+| 2026-05-04 | 222B08 | 760 | 768 | Rear right wheel speed | Works / test | 0 km/h parked | Live wheel speed in km/h | Newer ABS/body candidate responded. Needs driving test. |
 | 2026-05-01 | 010D | — | — | Generic OBD vehicle speed, no header | Still to confirm | — | Live dash speed in km/h | Keep as comparison candidate. |
 | 2026-05-01 | 010D | 7E0 | 7E8 | Generic OBD vehicle speed forced PCM | Retest / uncertain | — | Live dash speed in km/h | Earlier forced/header test was not useful. |
 | 2026-05-01 | 221E15 | 7E1 | 7E9 | Output shaft speed OSS | Works / diagnostic | 1,025.5 rpm | Changes with road speed | Raw rpm-style value; not direct dash speed. |
@@ -233,7 +260,7 @@ Known issue:
 | DPF full % matching dash | Not found | Dash showed 65 %, 80 %, and full during tests. 0579, 057B, 055D and 042C did not reliably match. |
 | True boost pressure | Partly found | MAP absolute pressure F40B works. Need a working BARO or calculated boost strategy. |
 | Fuel rail pressure actual | Partly found | Desired pressure, low-pressure actual, low-pressure desired, and sensor voltages respond. Actual high-pressure rail pressure still needs a clean confirmed pressure PID. |
-| Oil pressure | Raw only | 7DF / F45C responds with raw 119, but scaling/unit not confirmed. |
+| Oil pressure | Not solved / archive only | 7DF / F45C raw values 119–127 were seen, but scaling/unit is not confirmed. `EVEREST_ENGINE_OIL_PRESSURE_7DF_F45C` should stay removed from active default.json. |
 | DPF regeneration state | Not found | Need status/regen-active PID if available. |
 | Battery age unit | Unclear | Raw 150–151 and hours-style 3600 hrs both derived from 224027. Need confirmation of true meaning. |
 
@@ -247,7 +274,7 @@ Keep in active file:
 - Ford extended vehicle speed F40D as best current SpeedTest signal
 - Useful test-only signals that respond
 - Current useful diagnostic counters
-- New speedometer candidates grouped under Movement.Everest.SpeedTest
+- Newer 760 / 768 wheel-speed and lateral-movement candidates grouped under Movement.Everest.SpeedTest while testing
 
 Remove from active file:
 - All rejected PIDs
@@ -266,11 +293,32 @@ Keep as test-only:
 - ABS wheel speed 2858/2859/285A/285B candidates
 - OSS / ISS rpm values
 - MAP / boost-related candidates
-- Raw oil pressure
+- Raw oil pressure as archive evidence only, not active default.json
 - Battery age interpretation candidates
 - Grille shutter duty cycle
 - A/C refrigerant pressure
 - Intake diagnostic flags
+
+---
+
+## Latest layout decision — 2026-05-04
+
+Use the default OBDb-style category layout for normal/working signals. Avoid leaving everything under `Test` once a PID has either been confirmed or rejected.
+
+Recommended placement rules:
+
+| Signal type | Recommended category path | Notes |
+|---|---|---|
+| Working production-style signals | Normal category, e.g. `Engine`, `Fuel`, `Transmission`, `Battery`, `Movement` | Keep names readable and stable. |
+| Live speed comparison signals | `Movement.Everest.SpeedTest` | Keep together so Pelican can show movement/speed values on one page. |
+| New unconfirmed candidates | `Category.Testing.<identifiable PID name>` | OK while testing, but promote or remove after results. |
+| Rejected signals | Not in active `default.json` | Keep only in this markdown log. |
+| Archive-only raw signals | Not in active `default.json` unless intentionally retesting | Current example: 7DF / 22F45C oil-pressure raw. |
+
+Current no-active-testing assumption:
+- There are no broad old testing batches left to keep by default.
+- Only the new 760 / 768 wheel-speed and lateral-movement candidates still need a proper driving validation.
+- Oil-pressure raw is not considered active testing unless deliberately re-added later with a new scale hypothesis.
 
 ---
 
@@ -310,6 +358,9 @@ Strong candidates for future upstream contribution:
 - Manifold absolute pressure F40B
 - MAP sensor voltage 0301
 - Accelerator pedal position 032B
+- Lateral angle 2B0C after movement/level validation
+- Lateral acceleration 2B11 after movement/level validation
+- Wheel speeds 2B06/2B07/2B08/2B09 after driving validation
 
 Possible upstream candidate after GPS/dash validation:
 - Vehicle speed Ford extended F40D
@@ -321,6 +372,6 @@ Keep out of upstream production JSON until solved:
 - Actual high-pressure rail pressure
 - Oil pressure scaling
 - Battery age interpretation
-- ABS wheel speeds until response/header is confirmed
+- ABS / wheel-speed values until confirmed while driving
 - Old DPF 0579 / 057B / 055D dash-fullness interpretations
 - Wrong-scale AdBlue percentage interpretations
