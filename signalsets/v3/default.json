@@ -284,18 +284,6 @@
       "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_TRANS_TEMP_1E1C_DIV16",
-          "path": "Transmission.Everest",
-          "fmt": {
-            "len": 16,
-            "max": 200,
-            "div": 16,
-            "unit": "celsius"
-          },
-          "name": "Transmission fluid temperature div16",
-          "description": "Confirmed working/plausible transmission fluid temperature. Kept alongside 5/72 value."
-        },
-        {
           "id": "EVEREST_TRANS_TEMP_1E1C_5_72",
           "path": "Transmission.Everest",
           "fmt": {
@@ -306,8 +294,8 @@
             "add": -17,
             "unit": "celsius"
           },
-          "name": "Transmission fluid temperature 5/72",
-          "description": "Confirmed working/plausible transmission fluid temperature. Latest test showed 46 \u00b0C. Kept alongside div16 for comparison."
+          "name": "Transmission fluid temperature",
+          "description": "Active transmission fluid temperature. 5/72 scaling retained as the best match from testing; latest comparison showed 92.5 °C while div16 read 98.6 °C."
         }
       ]
     },
@@ -521,7 +509,7 @@
             "unit": "percent"
           },
           "name": "Battery charge 4028 div255",
-          "description": "Confirmed responding. Formula A*100/255; latest test showed about 32\u201333%. Kept as secondary battery charge value."
+          "description": "Confirmed responding. Formula A*100/255; latest test showed about 32–33%. Kept as secondary battery charge value."
         }
       ]
     },
@@ -588,7 +576,7 @@
             "unit": "percent"
           },
           "name": "Accelerator pedal position",
-          "description": "Confirmed responding. Showed 0\u20134% during testing."
+          "description": "Confirmed responding. Showed 0–4% during testing."
         }
       ]
     },
@@ -912,7 +900,7 @@
             "unit": "newtonMeters"
           },
           "name": "Engine reference torque",
-          "description": "Confirmed responding. Raw N\u00b7m value."
+          "description": "Confirmed responding. Raw N·m value."
         }
       ]
     },
@@ -1251,27 +1239,6 @@
       ]
     },
     {
-      "hdr": "7DF",
-      "rax": null,
-      "cmd": {
-        "22": "F45C"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_ENGINE_OIL_PRESSURE_7DF_F45C_RAW",
-          "path": "Engine.Test",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "Engine oil pressure raw retest",
-          "description": "Test-only retest from Pelican FORD_EOP. Functional header 7DF, command 22F45C. Screenshot showed raw scalar around 127; real pressure units not confirmed."
-        }
-      ]
-    },
-    {
       "hdr": "760",
       "rax": "768",
       "cmd": {
@@ -1288,7 +1255,8 @@
             "unit": "kilometersPerHour"
           },
           "name": "Front left wheel speed",
-          "description": "Working Ford wheel-speed parameter. Stationary value confirmed at 0 km/h; use for rolling comparison."
+          "description": "Confirmed working Ford wheel-speed parameter. Rolling test showed all four wheel speeds updating together at 13 km/h.",
+          "suggestedMetric": "speed"
         }
       ]
     },
@@ -1309,7 +1277,8 @@
             "unit": "kilometersPerHour"
           },
           "name": "Front right wheel speed",
-          "description": "Working Ford wheel-speed parameter. Stationary value confirmed at 0 km/h; use for rolling comparison."
+          "description": "Confirmed working Ford wheel-speed parameter. Rolling test showed all four wheel speeds updating together at 13 km/h.",
+          "suggestedMetric": "speed"
         }
       ]
     },
@@ -1330,7 +1299,8 @@
             "unit": "kilometersPerHour"
           },
           "name": "Rear left wheel speed",
-          "description": "Working Ford wheel-speed parameter. Stationary value confirmed at 0 km/h; use for rolling comparison."
+          "description": "Confirmed working Ford wheel-speed parameter. Rolling test showed all four wheel speeds updating together at 13 km/h.",
+          "suggestedMetric": "speed"
         }
       ]
     },
@@ -1351,7 +1321,8 @@
             "unit": "kilometersPerHour"
           },
           "name": "Rear right wheel speed",
-          "description": "Working Ford wheel-speed parameter. Stationary value confirmed at 0 km/h; use for rolling comparison."
+          "description": "Confirmed working Ford wheel-speed parameter. Rolling test showed all four wheel speeds updating together at 13 km/h.",
+          "suggestedMetric": "speed"
         }
       ]
     },
