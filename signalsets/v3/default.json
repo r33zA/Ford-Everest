@@ -28,6 +28,29 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "22": "4195"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_DTE_DISP",
+          "path": "Fuel.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilometers"
+          },
+          "name": "Distance to empty, displayed",
+          "description": "Confirmed against dash at 336 km. Formula raw/10.",
+          "suggestedMetric": "fuelRange"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "01": "2F"
       },
       "freq": 5,
@@ -1252,20 +1275,20 @@
       "hdr": "760",
       "rax": "768",
       "cmd": {
-        "22": "B07"
+        "22": "2B07"
       },
       "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_FRONT_LEFT_WHEEL_SPEED_760_B07",
-          "path": "Movement.Test",
+          "id": "FORD_FL_VSS",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 8,
             "max": 200,
             "unit": "kilometersPerHour"
           },
           "name": "Front left wheel speed",
-          "description": "Test candidate from Pelican/Ford parameter. Stationary screenshot showed 0 km/h; needs rolling test against dash/GPS."
+          "description": "Working Ford wheel-speed parameter. Stationary value confirmed at 0 km/h; use for rolling comparison."
         }
       ]
     },
@@ -1273,20 +1296,20 @@
       "hdr": "760",
       "rax": "768",
       "cmd": {
-        "22": "B06"
+        "22": "2B06"
       },
       "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_FRONT_RIGHT_WHEEL_SPEED_760_B06",
-          "path": "Movement.Test",
+          "id": "FORD_FR_VSS",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 8,
             "max": 200,
             "unit": "kilometersPerHour"
           },
           "name": "Front right wheel speed",
-          "description": "Test candidate from Pelican/Ford parameter. Stationary screenshot showed 0 km/h; needs rolling test against dash/GPS."
+          "description": "Working Ford wheel-speed parameter. Stationary value confirmed at 0 km/h; use for rolling comparison."
         }
       ]
     },
@@ -1294,20 +1317,20 @@
       "hdr": "760",
       "rax": "768",
       "cmd": {
-        "22": "B09"
+        "22": "2B09"
       },
       "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_REAR_LEFT_WHEEL_SPEED_760_B09",
-          "path": "Movement.Test",
+          "id": "FORD_RL_VSS",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 8,
             "max": 200,
             "unit": "kilometersPerHour"
           },
           "name": "Rear left wheel speed",
-          "description": "Test candidate from Pelican/Ford parameter. Stationary screenshot showed 0 km/h; needs rolling test against dash/GPS."
+          "description": "Working Ford wheel-speed parameter. Stationary value confirmed at 0 km/h; use for rolling comparison."
         }
       ]
     },
@@ -1315,20 +1338,20 @@
       "hdr": "760",
       "rax": "768",
       "cmd": {
-        "22": "B08"
+        "22": "2B08"
       },
       "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_REAR_RIGHT_WHEEL_SPEED_760_B08",
-          "path": "Movement.Test",
+          "id": "FORD_RR_VSS",
+          "path": "Movement.Everest.SpeedTest",
           "fmt": {
             "len": 8,
             "max": 200,
             "unit": "kilometersPerHour"
           },
           "name": "Rear right wheel speed",
-          "description": "Test candidate from Pelican/Ford parameter. Stationary screenshot showed 0 km/h; needs rolling test against dash/GPS."
+          "description": "Working Ford wheel-speed parameter. Stationary value confirmed at 0 km/h; use for rolling comparison."
         }
       ]
     },
@@ -1336,13 +1359,13 @@
       "hdr": "760",
       "rax": "768",
       "cmd": {
-        "22": "B0C"
+        "22": "2B0C"
       },
       "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_LATERAL_ANGLE_760_B0C",
-          "path": "Movement.Test",
+          "id": "FORD_LAT_ANG",
+          "path": "Movement.Everest.BodyMotion",
           "fmt": {
             "len": 8,
             "min": -90,
@@ -1351,7 +1374,7 @@
             "unit": "degrees"
           },
           "name": "Lateral angle",
-          "description": "Test candidate from Pelican/Ford parameter. Screenshot showed about -1 deg while parked; confirm orientation and response during body roll/side slope."
+          "description": "Working Ford lateral-angle parameter. Observed about -1 deg; verify orientation on level ground."
         }
       ]
     },
@@ -1359,13 +1382,13 @@
       "hdr": "760",
       "rax": "768",
       "cmd": {
-        "22": "B11"
+        "22": "2B11"
       },
       "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_LATERAL_ACCELERATION_760_B11",
-          "path": "Movement.Test",
+          "id": "FORD_LAT_G",
+          "path": "Movement.Everest.BodyMotion",
           "fmt": {
             "len": 16,
             "min": -1,
@@ -1375,7 +1398,7 @@
             "unit": "scalar"
           },
           "name": "Lateral acceleration",
-          "description": "Test candidate from Pelican/Ford parameter. Screenshot showed about -0.14; confirm live movement response and whether unit should be g."
+          "description": "Working Ford lateral-acceleration parameter. Formula raw/50; observed live values around -0.14 to 0.4."
         }
       ]
     }
