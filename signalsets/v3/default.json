@@ -1189,7 +1189,19 @@
             "unit": "kilometersPerHour"
           },
           "name": "Vehicle speed Ford extended",
-          "description": "Confirmed working/live. Reads about 4 km/h below dashboard speed during test; updates quickly. Current preferred speed PID.",
+          "description": "Confirmed working/live raw Ford extended speed. Reads about 4 km/h below dashboard speed during testing; updates quickly. Kept as raw/reference speed."
+        },
+        {
+          "id": "EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED",
+          "path": "Movement.Everest",
+          "fmt": {
+            "len": 8,
+            "max": 259,
+            "add": 4,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Vehicle speed Ford extended corrected",
+          "description": "Dash-matching convenience version of F40D. Adds 4 km/h to the raw Ford extended speed because road testing showed F40D reads about 4 km/h below dashboard speed.",
           "suggestedMetric": "speed"
         }
       ]
