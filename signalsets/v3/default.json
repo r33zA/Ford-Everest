@@ -246,7 +246,8 @@
             "unit": "percent"
           },
           "name": "Accelerator pedal position",
-          "description": "Confirmed responding. Showed 0–4% during testing."
+          "description": "Confirmed responding. Showed 0–4% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
+          "suggestedMetric": "throttlePosition"
         }
       ]
     },
@@ -424,6 +425,52 @@
           },
           "name": "Exhaust manifold EGT pre-turbo",
           "description": "Working/plausible."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "24"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_O2_LAMBDA_EQUIVALENCE_RATIO_0124",
+          "path": "Emissions.Testing",
+          "fmt": {
+            "len": 16,
+            "max": 1.9999694824,
+            "div": 32768,
+            "unit": "ratio"
+          },
+          "name": "O2 lambda equivalence ratio test",
+          "description": "Wide-range O2/lambda equivalence-ratio candidate. Diesels usually care more about excess-air/lambda than petrol-style fuel trims; keep as test-only until support and scale are confirmed.",
+          "suggestedMetric": "o2Lambda"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "44"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_COMMANDED_EQUIVALENCE_RATIO_0144",
+          "path": "Emissions.Testing",
+          "fmt": {
+            "len": 16,
+            "max": 1.9999694824,
+            "div": 32768,
+            "unit": "ratio"
+          },
+          "name": "Commanded equivalence ratio test",
+          "description": "Generic SAE commanded equivalence-ratio/lambda-style candidate. More diesel-relevant than petrol short-term trim if the PCM supports it.",
+          "suggestedMetric": "commandedLambda"
         }
       ]
     },
@@ -793,6 +840,29 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "01": "10"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_MAF_0110",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "gramsPerSecond"
+          },
+          "name": "Air flow rate from mass air flow sensor",
+          "description": "Generic SAE MAF airflow value. Useful diesel air-side signal if supported; added as mass air flow connectable/fallback.",
+          "suggestedMetric": "massAirFlow"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "01": "2F"
       },
       "freq": 5,
@@ -1016,6 +1086,58 @@
           "name": "Fuel remaining",
           "description": "Working. Equation A*100/255.",
           "suggestedMetric": "fuelTankLevel"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "06"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_1_0106",
+          "path": "Fuel.Testing",
+          "fmt": {
+            "len": 8,
+            "min": -100,
+            "max": 99.21875,
+            "mul": 100,
+            "div": 128,
+            "add": -100,
+            "unit": "percent"
+          },
+          "name": "Short term fuel trim bank 1 test",
+          "description": "Generic SAE short-term fuel trim Bank 1 candidate exposed for Everest diesel comparison testing. Diesel engines may not use petrol-style closed-loop fuel trim, so this may be unsupported or unhelpful.",
+          "suggestedMetric": "shortTermFuelTrim"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "08"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_2_0108",
+          "path": "Fuel.Testing",
+          "fmt": {
+            "len": 8,
+            "min": -100,
+            "max": 99.21875,
+            "mul": 100,
+            "div": 128,
+            "add": -100,
+            "unit": "percent"
+          },
+          "name": "Short term fuel trim bank 2 test",
+          "description": "Generic SAE short-term fuel trim Bank 2 candidate exposed for Everest diesel comparison testing. The 2.0L diesel may not report this like a petrol engine; keep as test-only unless it proves useful.",
+          "suggestedMetric": "shortTermFuelTrim"
         }
       ]
     },
