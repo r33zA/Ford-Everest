@@ -364,29 +364,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "055D"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_DPF_SOOT_055D_DIV64",
-          "path": "Emissions.DPF",
-          "fmt": {
-            "len": 16,
-            "max": 100,
-            "div": 64,
-            "unit": "percent"
-          },
-          "name": "DPF soot load 055D div64",
-          "description": "Confirmed responding; showed 100% when dash exhaust filter showed Full. Useful DPF/filter fullness monitor.",
-          "suggestedMetric": "dpfSootLoad"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "052E"
       },
       "freq": 2,
@@ -1448,7 +1425,7 @@
       "signals": [
         {
           "id": "EVEREST_TRANS_TEMP_1E1C_5_72",
-          "path": "Transmission",
+          "path": "Transmission.Everest",
           "fmt": {
             "len": 16,
             "max": 200,
@@ -1457,8 +1434,22 @@
             "add": -17,
             "unit": "celsius"
           },
-          "name": "Transmission fluid temperature",
-          "description": "Active transmission fluid temperature. 5/72 scaling retained as the best match from testing; latest comparison showed 92.5 °C while div16 read 98.6 °C."
+          "name": "Transmission fluid temperature Everest 5/72",
+          "description": "Active Everest-specific transmission fluid temperature. 5/72 scaling retained as the best current match from testing; kept alongside the div16 comparison value.",
+          "suggestedMetric": "transmissionFluidTemperature"
+        },
+        {
+          "id": "EVEREST_TRANS_TEMP_1E1C_DIV16",
+          "path": "Transmission.Generic",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "div": 16,
+            "unit": "celsius"
+          },
+          "name": "Transmission fluid temperature div16 compare",
+          "description": "Generic/common div16 transmission-temperature comparison using the same 7E1 221E1C TCM response. Added back for comparison against the Everest 5/72 scaling; validate against real warm-up and dashboard behaviour.",
+          "suggestedMetric": "transmissionFluidTemperature"
         }
       ]
     },
