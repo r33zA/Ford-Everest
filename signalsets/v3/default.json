@@ -1424,8 +1424,21 @@
       "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_TRANS_TEMP_1E1C_5_72",
+          "id": "EVEREST_TRANS_TEMP_1E1C_DIV16",
           "path": "Transmission.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "div": 16,
+            "unit": "celsius"
+          },
+          "name": "Transmission fluid temperature Everest div16",
+          "description": "Promoted to primary Everest transmission-fluid-temperature candidate after Pelican drive comparison. Same 7E1 221E1C TCM response as the 5/72 value; div16 warm-up and operating range looked more plausible against coolant, oil temperature, speed/load, and normal 10-speed behaviour. Validate against FORScan/factory scan data when available.",
+          "suggestedMetric": "transmissionFluidTemperature"
+        },
+        {
+          "id": "EVEREST_TRANS_TEMP_1E1C_5_72",
+          "path": "Transmission.Generic",
           "fmt": {
             "len": 16,
             "max": 200,
@@ -1434,22 +1447,8 @@
             "add": -17,
             "unit": "celsius"
           },
-          "name": "Transmission fluid temperature Everest 5/72",
-          "description": "Active Everest-specific transmission fluid temperature. 5/72 scaling retained as the best current match from testing; kept alongside the div16 comparison value.",
-          "suggestedMetric": "transmissionFluidTemperature"
-        },
-        {
-          "id": "EVEREST_TRANS_TEMP_1E1C_DIV16",
-          "path": "Transmission.Generic",
-          "fmt": {
-            "len": 16,
-            "max": 200,
-            "div": 16,
-            "unit": "celsius"
-          },
-          "name": "Transmission fluid temperature div16 compare",
-          "description": "Generic/common div16 transmission-temperature comparison using the same 7E1 221E1C TCM response. Added back for comparison against the Everest 5/72 scaling; validate against real warm-up and dashboard behaviour.",
-          "suggestedMetric": "transmissionFluidTemperature"
+          "name": "Transmission fluid temperature 5/72 compare",
+          "description": "Comparison/legacy scaling for the same 7E1 221E1C TCM response. Kept for validation only; current Pelican drive comparison suggests this reads lower than expected, so div16 is now the preferred active Everest transmission-temperature candidate."
         }
       ]
     },
