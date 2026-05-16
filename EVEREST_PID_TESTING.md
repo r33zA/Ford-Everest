@@ -2,17 +2,17 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-05-14 v0.6.2 DPF shelved + transmission temperature comparison pass  
-Aligned default file: `default_everest_my25_25_v0_6_2_dpf_shelved_trans_temp_compare.json` / `signalsets/v3/default.json` target  
+Version: 2026-05-16 v0.6.3 transmission temperature div16 primary pass  
+Aligned default file: `default_everest_my25_25_v0_6_3_trans_temp_div16_primary.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
 ## Update focus
 
-- Updated from v0.6.1 diesel connectables pass.
-- Shelved `EVEREST_DPF_SOOT_055D_DIV64` because it does **not** appear to track the dashboard DPF/exhaust-filter level reliably. It is removed from active `default.json` for now.
-- Added `EVEREST_TRANS_TEMP_1E1C_DIV16` back as a transmission-temperature comparison signal under `Transmission.Generic`.
-- Marked both transmission-temperature signals as `transmissionFluidTemperature` connectables so they can be compared in Pelican if that connectable key is supported.
-- Kept `EVEREST_TRANS_TEMP_1E1C_5_72` as the current Everest-specific best candidate, but renamed it more clearly as the 5/72 value.
+- Updated from v0.6.2 DPF shelved + transmission temperature comparison pass.
+- Promoted `EVEREST_TRANS_TEMP_1E1C_DIV16` to the preferred Everest transmission-fluid-temperature candidate under `Transmission.Everest`.
+- Demoted `EVEREST_TRANS_TEMP_1E1C_5_72` to a comparison / legacy scaling value under `Transmission.Generic`.
+- Removed `transmissionFluidTemperature` suggestedMetric from the 5/72 comparison value so Pelican should prefer the div16 signal as the active connectable.
+- Kept the 5/72 value in the file for future validation against FORScan/factory scan data, not as the preferred dashboard value.
 - Revalidated JSON: no duplicate signal IDs, no active oil-pressure signal, no active DPF soot/fullness signal.
 
 ## Important note — DPF signal status
@@ -21,9 +21,11 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 | --- | --- | --- |
 | `EVEREST_DPF_SOOT_055D_DIV64` | Shelved / removed from active default | It responds, but it does not match the vehicle dashboard DPF/exhaust-filter level closely enough. Keep the observation in research notes only until the underlying meaning is proven. |
 
-## Important note — transmission-temperature comparison
+## Important note — transmission-temperature scaling decision
 
-There is no confirmed universal SAE Mode 01 transmission-fluid-temperature PID proven for this Everest in our testing. The added “generic/common” comparison is the older div16 interpretation of the same TCM response `7E1 221E1C`, placed under `Transmission.Generic` so it is easy to compare against the Everest 5/72 scaling. In other words: useful comparison, not gospel. Tiny disclaimer gremlin defeated.
+Both transmission-temperature signals use the same TCM response `7E1 221E1C`; only the scaling differs. A Pelican drive-session comparison showed the div16 value warming and operating in a more plausible range when compared with coolant temperature, engine oil temperature, vehicle speed/load, and normal 10-speed automatic behaviour. For now, `EVEREST_TRANS_TEMP_1E1C_DIV16` is the preferred Everest candidate and `EVEREST_TRANS_TEMP_1E1C_5_72` is retained only as a comparison / legacy scaling value.
+
+Still validate against FORScan or factory scan-tool transmission-fluid-temperature data when available. Tiny disclaimer gremlin remains under supervision.
 
 ## Sanity-check snapshot
 
@@ -31,7 +33,7 @@ There is no confirmed universal SAE Mode 01 transmission-fluid-temperature PID p
 | --- | --- |
 | Commands in current default.json | 64 |
 | Signals in current default.json | 68 |
-| Signals with suggestedMetric | 21 |
+| Signals with suggestedMetric | 20 |
 | Remaining EVEREST_TEST_* signal IDs | 4 |
 | Active oil-pressure signal | None — intentionally removed |
 | Active DPF soot/fullness signal | None — shelved |
@@ -90,8 +92,7 @@ Category.Subgroup.Generic
 | speed | Movement | EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED | Vehicle speed Ford extended corrected | 22F40D |
 | starterBatteryVoltage | Battery | EVEREST_AUX_12V_BATTERY_VOLTAGE_402A | Aux 12V battery voltage | 22402A |
 | throttlePosition | Control | EVEREST_ACCEL_PEDAL_032B | Accelerator pedal position | 22032B |
-| transmissionFluidTemperature | Transmission.Everest | EVEREST_TRANS_TEMP_1E1C_5_72 | Transmission fluid temperature Everest 5/72 | 221E1C |
-| transmissionFluidTemperature | Transmission.Generic | EVEREST_TRANS_TEMP_1E1C_DIV16 | Transmission fluid temperature div16 compare | 221E1C |
+| transmissionFluidTemperature | Transmission.Everest | EVEREST_TRANS_TEMP_1E1C_DIV16 | Transmission fluid temperature Everest div16 | 221E1C |
 | transmissionGear | Transmission | EVEREST_GEAR_ENGAGED_7E1_1E1F | Transmission gear engaged | 221E1F |
 
 ## Confirmed / working and currently understood
@@ -111,8 +112,8 @@ Category.Subgroup.Generic
 | Engine | 22F405 | 7E0→7E8 | Coolant temperature | Works | Active as engineCoolantTemperature |
 | Engine | 22F40C | 7E0→7E8 | Engine speed | Works | Active as engineSpeed |
 | Engine | 22F45C | 7E0→7E8 | Engine oil temperature | Works | Active as engineOilTemperature |
-| Transmission | 221E1C 5/72 | 7E1→7E9 | Transmission fluid temperature Everest 5/72 | Works / chosen | Best current Everest-specific scaling; now connectable |
-| Transmission | 221E1C div16 | 7E1→7E9 | Transmission fluid temperature div16 compare | Comparison | Added back for comparison; now connectable |
+| Transmission | 221E1C div16 | 7E1→7E9 | Transmission fluid temperature Everest div16 | Works / chosen | Preferred current Everest-specific scaling; active transmissionFluidTemperature connectable |
+| Transmission | 221E1C 5/72 | 7E1→7E9 | Transmission fluid temperature 5/72 compare | Comparison / legacy | Retained for validation only; no suggestedMetric |
 | Transmission | 221E1F | 7E1→7E9 | Transmission gear engaged | Works | Active as transmissionGear |
 | Emissions | 22052E | 7E0→7E8 | EGR open percentage | Works | Active |
 | Emissions | 220569 | 7E0→7E8 | EGT pre-turbo | Works / plausible | Active |
@@ -191,8 +192,8 @@ This table is generated from the current parsed `default.json` so the log and JS
 | Transmission | EVEREST_ISS_TSS_1E16_RPM | Input shaft speed ISS/TSS 1E16 | 221E16 | 7E1→7E9 | len 16; val÷4; range ..10000; rpm | — |
 | Transmission | EVEREST_OSS_1E15_RPM | Output shaft speed OSS 1E15 | 221E15 | 7E1→7E9 | len 16; val÷4; range ..10000; rpm | — |
 | Transmission | EVEREST_TCC_SLIP_1E14 | Torque converter slip speed | 221E14 | 7E1→7E9 | len 16; val÷4; range ..5500; rpm | — |
-| Transmission.Everest | EVEREST_TRANS_TEMP_1E1C_5_72 | Transmission fluid temperature Everest 5/72 | 221E1C | 7E1→7E9 | len 16; val×5; val÷72; val-17; range ..200; celsius | transmissionFluidTemperature |
-| Transmission.Generic | EVEREST_TRANS_TEMP_1E1C_DIV16 | Transmission fluid temperature div16 compare | 221E1C | 7E1→7E9 | len 16; val÷16; range ..200; celsius | transmissionFluidTemperature |
+| Transmission.Everest | EVEREST_TRANS_TEMP_1E1C_DIV16 | Transmission fluid temperature Everest div16 | 221E1C | 7E1→7E9 | len 16; val÷16; range ..200; celsius | transmissionFluidTemperature |
+| Transmission.Generic | EVEREST_TRANS_TEMP_1E1C_5_72 | Transmission fluid temperature 5/72 compare | 221E1C | 7E1→7E9 | len 16; val×5; val÷72; val-17; range ..200; celsius | — |
 
 ## Shelved, rejected, removed, or archive-only candidates
 
@@ -272,3 +273,32 @@ Keep removed:
 - Added `EVEREST_TRANS_TEMP_1E1C_DIV16` back under `Transmission.Generic`.
 - Added `transmissionFluidTemperature` suggestedMetric to both the 5/72 and div16 transmission-temperature entries.
 - Updated active signal table and sanity-check counts from parsed JSON.
+
+
+## v0.6.3 transmission-temperature decision log
+
+| Item | Decision |
+| --- | --- |
+| Preferred transmission temperature | `EVEREST_TRANS_TEMP_1E1C_DIV16` |
+| Comparison / legacy scaling | `EVEREST_TRANS_TEMP_1E1C_5_72` |
+| Shared source response | `7E1 221E1C` |
+| Reason | Pelican drive-session comparison made div16 look more plausible against coolant, oil temperature, speed/load, and expected 10-speed transmission warm-up behaviour. |
+| Remaining validation | Compare against FORScan or factory scan-tool TFT when available. |
+
+## Commit message
+
+```text
+Promote div16 transmission temperature scaling
+```
+
+## Extended description
+
+```text
+Promotes EVEREST_TRANS_TEMP_1E1C_DIV16 to the preferred Everest transmission-fluid-temperature candidate after Pelican drive-session comparison.
+
+Both active transmission-temperature signals use the same 7E1 221E1C TCM response, but the div16 scaling produced a more plausible warm-up curve and operating range when compared with coolant temperature, engine oil temperature, speed/load, and expected 10-speed automatic behaviour.
+
+The older 5/72 -17 scaling is retained as a comparison / legacy value under Transmission.Generic, but its transmissionFluidTemperature suggestedMetric has been removed so Pelican should prefer the div16 signal as the active connectable.
+
+DPF soot/fullness remains shelved, oil pressure remains removed, and the JSON has been revalidated with no duplicate signal IDs.
+```
