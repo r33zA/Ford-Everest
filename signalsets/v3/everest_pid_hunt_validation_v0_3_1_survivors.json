@@ -1,0 +1,926 @@
+{
+  "commands": [
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "10"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_MAF_0110",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "gramsPerSecond"
+          },
+          "name": "Air flow rate from mass air flow sensor",
+          "description": "Generic SAE MAF airflow value. Useful diesel air-side signal if supported; added as mass air flow connectable/fallback.",
+          "suggestedMetric": "massAirFlow"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "032B"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_ACCEL_PEDAL_032B",
+          "path": "Control",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Accelerator pedal position",
+          "description": "Confirmed responding. Showed 0\u20134% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
+          "suggestedMetric": "throttlePosition"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0373"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_PRESSURE_0373_RAW16_AB",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "DPF pressure 0373 raw AB",
+          "description": "Candidate DPF pressure/differential pressure value. Ford references mention byte-position quirks; raw AB retained for analysis."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_PRESSURE_0373_KPA_CANDIDATE",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 16,
+            "max": 800,
+            "mul": 0.01221,
+            "unit": "kilopascal"
+          },
+          "name": "DPF pressure 0373 kPa candidate",
+          "description": "Candidate formula raw*0.01221 kPa. Expect low values at idle and rise with load/exhaust flow."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_PRESSURE_0373_KPA_01221",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 800,
+            "mul": 0.01221,
+            "unit": "kilopascal"
+          },
+          "name": "DPF pressure 0373 kPa 0.01221",
+          "description": "Survivor because it responded with valid zero, not negative response. Test under load; idle may be 0."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_PRESSURE_0373_RAW16_AB",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "DPF pressure 0373 raw AB",
+          "description": "Raw companion for 0373. A valid 0 may still be meaningful."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0440"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_EMISSIONS_7E0_0440_RAW8_A",
+          "path": "Testing.DPF_Regen_Emissions.Raw8",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF Regen Emissions 0440 raw8 A",
+          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first byte only; compare behaviour against known references before promoting."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_EMISSIONS_7E0_0440_RAW16_AB",
+          "path": "Testing.DPF_Regen_Emissions.Raw16",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF Regen Emissions 0440 raw16 AB",
+          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first two bytes; compare behaviour against known references before promoting."
+        },
+        {
+          "id": "EVEREST_TEST_REGEN_STATUS_0440_RAW8_A",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "Regen status 0440 raw A",
+          "description": "Candidate regen status bitfield. Llama/source notes suggest bit 4 may indicate regen state. Raw byte retained for manual bit analysis."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_REGEN_STATUS_0440_RAW8_A",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "Regen status 0440 raw A",
+          "description": "Survivor because it responded with valid zero. Candidate regen bitfield; watch during regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0522"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_FUEL_TEMP_0522",
+          "path": "Fuel",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Fuel temperature",
+          "description": "Working."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0569"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_EGT_PRE_TURBO_0569",
+          "path": "Emissions.Exhaust",
+          "fmt": {
+            "len": 16,
+            "max": 1500,
+            "div": 32,
+            "unit": "celsius"
+          },
+          "name": "Exhaust manifold EGT pre-turbo",
+          "description": "Working/plausible."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0579"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EXHAUST_REGEN_EGT_7E0_0579_RAW8_A",
+          "path": "Testing.Exhaust_Regen_EGT.Raw8",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST Exhaust Regen EGT 0579 raw8 A",
+          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first byte only; compare behaviour against known references before promoting."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_REGEN_EGT_7E0_0579_RAW16_AB",
+          "path": "Testing.Exhaust_Regen_EGT.Raw16",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Exhaust Regen EGT 0579 raw16 AB",
+          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first two bytes; compare behaviour against known references before promoting."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_LOAD_CLOSED_LOOP_0579_RAW8_A",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "DPF load closed-loop 0579 raw A",
+          "description": "High-priority Everest validation candidate. Ford/Ranger references identify 220579 as closed-loop DPF load. Raw first byte retained for packet sanity."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_LOAD_CLOSED_LOOP_0579_PERCENT_A_DIV255",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "DPF load closed-loop 0579 percent",
+          "description": "Candidate formula A*100/255. Compare directly against dash exhaust-filter/DPF display if enabled and watch rise/fall around regen."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_ACTIVE_0579_RAW_FLAG_A",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "DPF regen active 0579 raw flag",
+          "description": "Raw byte for checking possible regen-active bit in 0579 response. Bit extraction may need manual analysis from raw logs."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_LOAD_0579_PERCENT_A_DIV255",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "DPF load 0579 percent",
+          "description": "Survivor because it responded with 0. Compare over distance/regen; may be closed-loop DPF load or byte offset may need adjustment."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_LOAD_0579_RAW8_A",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "DPF load 0579 raw A",
+          "description": "Raw companion for 0579."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "057B"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EXHAUST_REGEN_EGT_7E0_057B_RAW8_A",
+          "path": "Testing.Exhaust_Regen_EGT.Raw8",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST Exhaust Regen EGT 057B raw8 A",
+          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first byte only; compare behaviour against known references before promoting."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_REGEN_EGT_7E0_057B_RAW16_AB",
+          "path": "Testing.Exhaust_Regen_EGT.Raw16",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Exhaust Regen EGT 057B raw16 AB",
+          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first two bytes; compare behaviour against known references before promoting."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_SOOT_OPEN_LOOP_057B_RAW8_A",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "DPF soot open-loop 057B raw A",
+          "description": "High-priority Everest validation candidate. Ford/Ranger references identify 22057B as open-loop/modelled DPF soot/load."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_SOOT_OPEN_LOOP_057B_PERCENT_A_DIV255",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "DPF soot open-loop 057B percent",
+          "description": "Candidate formula A*100/255. Compare against closed-loop 0579 and dash DPF level."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_SOOT_057B_PERCENT_A_DIV255",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "DPF soot 057B percent",
+          "description": "Survivor because it responded with 0. Compare against 0610; may be open-loop/model soot or wrong byte offset."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_SOOT_057B_RAW8_A",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "DPF soot 057B raw A",
+          "description": "Raw companion for 057B."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0610"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_SOOT_INFERRED_0610_RAW16_AB",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "DPF soot inferred 0610 raw AB",
+          "description": "Candidate inferred soot mass/concentration value. Some Ford references describe 0610 as inferred soot. Raw retained because byte offsets may vary."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_SOOT_0610_PERCENT_DIV100",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "percent"
+          },
+          "name": "DPF soot 0610 percent div100",
+          "description": "Survivor candidate. User observed raw 5948 -> 59.48. Treat as strongest current soot/load candidate; validate against distance/regens."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_SOOT_0610_RAW16_AB",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "DPF soot 0610 raw AB",
+          "description": "Raw companion for 0610. User observed 5948."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0614"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_DISTANCE_OR_COUNTER_0614_RAW16_AB",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "DPF distance/counter 0614 raw AB",
+          "description": "Medium-confidence candidate from cross-source AI notes. Possible regen/distance/counter value; validate cautiously."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_DISTANCE_OR_COUNTER_0614_DIV10",
+          "path": "Emissions.DPF.Validation",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilometers"
+          },
+          "name": "DPF distance/counter 0614 div10 candidate",
+          "description": "Candidate raw/10 km interpretation. Include only for validation, not confirmed."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_DISTANCE_0614_KM_DIV10",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilometers"
+          },
+          "name": "DPF distance 0614 km div10",
+          "description": "Survivor candidate. User observed raw 1149 -> 115 km. Likely distance/counter related to DPF or regen."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_DISTANCE_0614_RAW16_AB",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "DPF distance 0614 raw AB",
+          "description": "Raw companion for 0614. User observed 1149."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F404"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_LOAD_F404",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Engine load",
+          "description": "Working engine load percentage. Added as engine load connectable.",
+          "suggestedMetric": "engineLoad"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F405"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_COOLANT_TEMP_F405",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Coolant temperature",
+          "description": "Working; matched built-in ECT.",
+          "suggestedMetric": "engineCoolantTemperature"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F40C"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_SPEED_F40C",
+          "path": "Engine",
+          "fmt": {
+            "len": 16,
+            "max": 16383.75,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Engine speed",
+          "description": "Confirmed responding. Formula val / 4.",
+          "suggestedMetric": "engineSpeed"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F40D"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_SPEED_FORD_EXTENDED_F40D",
+          "path": "Movement",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Vehicle speed Ford extended raw",
+          "description": "Confirmed working Ford extended vehicle speed. Raw value reads about 4 km/h below dashboard; kept as raw speed connectable.",
+          "suggestedMetric": "speed"
+        },
+        {
+          "id": "EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED",
+          "path": "Movement",
+          "fmt": {
+            "len": 8,
+            "max": 259,
+            "add": 4,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Vehicle speed Ford extended corrected",
+          "description": "Ford extended vehicle speed with +4 km/h display correction to better match the dashboard. Use this as the practical speed connectable.",
+          "suggestedMetric": "speed"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F42F"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_FUEL_REMAINING_F42F",
+          "path": "Fuel",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Fuel remaining",
+          "description": "Working. Equation A*100/255.",
+          "suggestedMetric": "fuelTankLevel"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F45C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_OIL_TEMP_F45C",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Engine oil temperature",
+          "description": "Working. Equation A-40. Added as engine oil temperature connectable.",
+          "suggestedMetric": "engineOilTemperature"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F460"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGT11_F460_RAW16_AB",
+          "path": "Emissions.Exhaust.Validation",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "EGT11 post turbo / pre DOC F460 raw AB",
+          "description": "Ford/Ranger/Everest EGT candidate. Raw 16-bit retained for validation against existing EGT and regen behaviour."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_EGT11_F460_RAW16_AB_ONLY",
+          "path": "Emissions.Exhaust.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "EGT11 F460 raw only",
+          "description": "Alive but current decode looks wrong: user observed raw 65481 and 1000\u00b0C display. Keep raw only until signed/offset behaviour is understood."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F463"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGRT_F463_RAW16_AB",
+          "path": "Emissions.Exhaust.Validation",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "EGRT EGR/manifold temp F463 raw AB",
+          "description": "Ford/Ranger/Everest EGT candidate. Raw 16-bit retained for validation against existing EGT and regen behaviour."
+        },
+        {
+          "id": "EVEREST_TEST_EGRT_F463_CELSIUS_CANDIDATE",
+          "path": "Emissions.Exhaust.Validation",
+          "fmt": {
+            "len": 16,
+            "min": -40,
+            "max": 1000,
+            "mul": 0.1,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "EGRT EGR/manifold temp F463 Celsius candidate",
+          "description": "Candidate formula raw*0.1 - 40 \u00b0C. During regen, pre/post DPF sensors should climb sharply."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_EGRT_F463_CELSIUS",
+          "path": "Emissions.Exhaust.Survivors",
+          "fmt": {
+            "len": 16,
+            "min": -40,
+            "max": 1000,
+            "mul": 0.1,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "EGRT F463 Celsius",
+          "description": "Survivor. User observed raw 500 -> 10\u00b0C. Plausible cold/light-load value; test warm and under load."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_EGRT_F463_RAW16_AB",
+          "path": "Emissions.Exhaust.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "EGRT F463 raw AB",
+          "description": "Raw companion for F463. User observed 500."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F478"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_MULTI_EGT_F478_RAW64",
+          "path": "Emissions.Exhaust.Testing",
+          "fmt": {
+            "len": 64,
+            "max": 18446744073709551615,
+            "unit": "scalar"
+          },
+          "name": "Multi EGT F478 raw packet",
+          "description": "High-priority Ford diesel cross-reference candidate. Ford 6.7 references use this as a multi-EGT packet. Raw 64-bit capture is included because offset decoding needs validation in Pelican."
+        },
+        {
+          "id": "EVEREST_TEST_MULTI_EGT_F478_FIRST_WORD_RAW16_AB",
+          "path": "Emissions.Exhaust.Testing",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "Multi EGT F478 first word raw AB",
+          "description": "First 16-bit word of 22F478 for live-change validation. Compare against existing EGT pre-turbo 220569."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_MULTI_EGT_F478_FIRST_WORD_RAW16",
+          "path": "Emissions.Exhaust.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "Multi EGT F478 first word raw",
+          "description": "Strong survivor. User observed first word 1797. PID is alive; decoding still needs work."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_MULTI_EGT_F478_WORD1_CELSIUS_01_MINUS40",
+          "path": "Emissions.Exhaust.Survivors",
+          "fmt": {
+            "len": 16,
+            "min": -40,
+            "max": 1000,
+            "mul": 0.1,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Multi EGT F478 word1 Celsius candidate",
+          "description": "Candidate decode for first 16-bit word: raw*0.1-40. With raw 1797 this would be 139.7\u00b0C, plausible for exhaust after idle/light running."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_MULTI_EGT_F478_RAW64",
+          "path": "Emissions.Exhaust.Survivors",
+          "fmt": {
+            "len": 64,
+            "max": 18446744073709551615,
+            "unit": "scalar"
+          },
+          "name": "Multi EGT F478 raw packet",
+          "description": "Raw packet retained only for structural comparison. Pelican display may be unwieldy."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F48B"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_STATUS_F48B_RAW8_A",
+          "path": "Emissions.DPF.Testing",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "DPF regen status F48B raw A",
+          "description": "High-priority Ford diesel cross-reference candidate. Watch for stable off value and clear change during active regen."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_STATUS_F48B_RAW16_AB",
+          "path": "Emissions.DPF.Testing",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "DPF regen status F48B raw AB",
+          "description": "Raw 16-bit companion for 22F48B. Included because some references describe a bit flag in the second byte."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_REGEN_STATUS_F48B_RAW8_A",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "DPF regen/status F48B raw A",
+          "description": "Strong survivor. User observed A=127. Likely state/bitfield/threshold value. Watch for change during regen."
+        },
+        {
+          "id": "EVEREST_SURVIVOR_DPF_REGEN_STATUS_F48B_RAW16_AB",
+          "path": "Emissions.DPF.Survivors",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "DPF regen/status F48B raw AB",
+          "description": "Raw 16-bit companion. User observed 32512 = 127*256, suggesting first byte is the meaningful state."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E14"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TCC_SLIP_1E14",
+          "path": "Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 5500,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Torque converter slip speed",
+          "description": "Confirmed working torque converter slip RPM."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E1C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TRANS_TEMP_1E1C_DIV16",
+          "path": "Transmission.Everest",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "div": 16,
+            "unit": "celsius"
+          },
+          "name": "Transmission fluid temperature Everest div16",
+          "description": "Promoted to primary Everest transmission-fluid-temperature candidate after Pelican drive comparison. Same 7E1 221E1C TCM response as the 5/72 value; div16 warm-up and operating range looked more plausible against coolant, oil temperature, speed/load, and normal 10-speed behaviour. Validate against FORScan/factory scan data when available.",
+          "suggestedMetric": "transmissionFluidTemperature"
+        },
+        {
+          "id": "EVEREST_TRANS_TEMP_1E1C_5_72",
+          "path": "Transmission.Generic",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "mul": 5,
+            "div": 72,
+            "add": -17,
+            "unit": "celsius"
+          },
+          "name": "Transmission fluid temperature 5/72 compare",
+          "description": "Comparison/legacy scaling for the same 7E1 221E1C TCM response. Kept for validation only; current Pelican drive comparison suggests this reads lower than expected, so div16 is now the preferred active Everest transmission-temperature candidate."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E1F"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GEAR_ENGAGED_7E1_1E1F",
+          "path": "Transmission",
+          "fmt": {
+            "len": 8,
+            "max": 10,
+            "unit": "scalar"
+          },
+          "name": "Transmission gear engaged",
+          "description": "Working; tested 1 and 9. Added as a connectable candidate for transmission gear display if supported by Pelican.",
+          "suggestedMetric": "transmissionGear"
+        }
+      ]
+    }
+  ]
+}
