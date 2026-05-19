@@ -1,6 +1,324 @@
 {
   "commands": [
     {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "4027"
+      },
+      "freq": 3600,
+      "signals": [
+        {
+          "id": "EVEREST_AUX_12V_BATTERY_AGE_HOURS_4027",
+          "path": "Battery",
+          "fmt": {
+            "len": 16,
+            "max": 1572840,
+            "mul": 24,
+            "unit": "hours"
+          },
+          "name": "Aux 12V battery age",
+          "description": "Confirmed responding on 726. Displays raw days converted to hours (A*24)."
+        },
+        {
+          "id": "EVEREST_BATTERY_AGE_SCALAR_4027",
+          "path": "Battery",
+          "fmt": {
+            "len": 16,
+            "max": 1825,
+            "unit": "scalar"
+          },
+          "name": "Battery age scalar",
+          "description": "Confirmed responding. Raw age counter; likely days. Latest test showed 153."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "4028"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_BATTERY_SOC_4028_726",
+          "path": "Battery",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "unit": "percent"
+          },
+          "name": "Aux 12V battery state of charge",
+          "description": "Confirmed responding on 726. Raw percent-style value."
+        },
+        {
+          "id": "EVEREST_BATTERY_CHARGE_4028_DIV255",
+          "path": "Battery",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Battery charge 4028 div255",
+          "description": "Confirmed responding. Formula A*100/255; latest test showed about 32\u201333%. Kept as secondary battery charge value."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "402A"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_AUX_12V_BATTERY_VOLTAGE_402A",
+          "path": "Battery",
+          "fmt": {
+            "len": 8,
+            "max": 18.75,
+            "div": 20,
+            "add": 6,
+            "unit": "volts"
+          },
+          "name": "Aux 12V battery voltage",
+          "description": "Confirmed responding on 726. Formula A/20 + 6.",
+          "suggestedMetric": "starterBatteryVoltage"
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "402B"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_BATTERY_CURRENT_402B_726",
+          "path": "Battery",
+          "fmt": {
+            "len": 8,
+            "min": -127,
+            "max": 128,
+            "add": -127,
+            "unit": "ampere"
+          },
+          "name": "Aux 12V battery current",
+          "description": "Working on 726. Formula A-127; sign direction still needs confirmation."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B06"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_FR_VSS",
+          "path": "Movement.WheelSpeed",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Front right wheel speed",
+          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B07"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_FL_VSS",
+          "path": "Movement.WheelSpeed",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Front left wheel speed",
+          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B08"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_RR_VSS",
+          "path": "Movement.WheelSpeed",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Rear right wheel speed",
+          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B09"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_RL_VSS",
+          "path": "Movement.WheelSpeed",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Rear left wheel speed",
+          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B0C"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_LAT_ANG",
+          "path": "Movement.BodyMotion",
+          "fmt": {
+            "len": 8,
+            "min": -90,
+            "max": 90,
+            "sign": true,
+            "unit": "degrees"
+          },
+          "name": "Lateral angle",
+          "description": "Working Ford lateral-angle parameter. Observed about -1 deg; verify orientation on level ground."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B11"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_LAT_G",
+          "path": "Movement.BodyMotion",
+          "fmt": {
+            "len": 16,
+            "min": -1,
+            "max": 1,
+            "div": 50,
+            "sign": true,
+            "unit": "scalar"
+          },
+          "name": "Lateral acceleration",
+          "description": "Working Ford lateral-acceleration parameter. Formula raw/50; observed live values around -0.14 to 0.4."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "06"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_1_0106",
+          "path": "Fuel.Testing",
+          "fmt": {
+            "len": 8,
+            "min": -100,
+            "max": 99.21875,
+            "mul": 100,
+            "div": 128,
+            "add": -100,
+            "unit": "percent"
+          },
+          "name": "Short term fuel trim bank 1 test",
+          "description": "Generic SAE short-term fuel trim Bank 1 candidate exposed for Everest diesel comparison testing. Diesel engines may not use petrol-style closed-loop fuel trim, so this may be unsupported or unhelpful.",
+          "suggestedMetric": "shortTermFuelTrim"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "08"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_2_0108",
+          "path": "Fuel.Testing",
+          "fmt": {
+            "len": 8,
+            "min": -100,
+            "max": 99.21875,
+            "mul": 100,
+            "div": 128,
+            "add": -100,
+            "unit": "percent"
+          },
+          "name": "Short term fuel trim bank 2 test",
+          "description": "Generic SAE short-term fuel trim Bank 2 candidate exposed for Everest diesel comparison testing. The 2.0L diesel may not report this like a petrol engine; keep as test-only unless it proves useful.",
+          "suggestedMetric": "shortTermFuelTrim"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "0B"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_MAP_010B",
+          "path": "Engine.Boost.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilopascal"
+          },
+          "name": "Generic MAP",
+          "description": "Generic SAE MAP value. Confirmed responding; latest test showed 15."
+        }
+      ]
+    },
+    {
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
@@ -20,6 +338,165 @@
           "name": "Air flow rate from mass air flow sensor",
           "description": "Generic SAE MAF airflow value. Useful diesel air-side signal if supported; added as mass air flow connectable/fallback.",
           "suggestedMetric": "massAirFlow"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "24"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_O2_LAMBDA_EQUIVALENCE_RATIO_0124",
+          "path": "Emissions.Testing",
+          "fmt": {
+            "len": 16,
+            "max": 1.9999694824,
+            "div": 32768,
+            "unit": "ratio"
+          },
+          "name": "O2 lambda equivalence ratio test",
+          "description": "Wide-range O2/lambda equivalence-ratio candidate. Diesels usually care more about excess-air/lambda than petrol-style fuel trims; keep as test-only until support and scale are confirmed.",
+          "suggestedMetric": "o2Lambda"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "2F"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_FUEL_LEVEL_012F",
+          "path": "Fuel.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Generic fuel level",
+          "description": "Working backup/comparison.",
+          "suggestedMetric": "fuelTankLevel"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "44"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_COMMANDED_EQUIVALENCE_RATIO_0144",
+          "path": "Emissions.Testing",
+          "fmt": {
+            "len": 16,
+            "max": 1.9999694824,
+            "div": 32768,
+            "unit": "ratio"
+          },
+          "name": "Commanded equivalence ratio test",
+          "description": "Generic SAE commanded equivalence-ratio/lambda-style candidate. More diesel-relevant than petrol short-term trim if the PCM supports it.",
+          "suggestedMetric": "commandedLambda"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "A6"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_ODOMETER_01A6",
+          "path": "Movement",
+          "fmt": {
+            "len": 32,
+            "max": 429496729.5,
+            "mul": 0.1,
+            "unit": "kilometers"
+          },
+          "name": "Odometer",
+          "description": "Working candidate; confirm exact dash odometer.",
+          "suggestedMetric": "odometer"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0301"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_MAP_SENSOR_VOLTAGE_0301",
+          "path": "Engine.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "mul": 0.0009765625,
+            "unit": "volts"
+          },
+          "name": "Manifold absolute pressure sensor voltage",
+          "description": "Confirmed responding. Formula val * 0.0009765625."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0307"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_DUTY_0307",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "mul": 0.0030517578,
+            "unit": "percent"
+          },
+          "name": "Low pressure fuel pump commanded duty cycle",
+          "description": "Confirmed responding. Formula val * 0.0030517578."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0324"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_HPFP_SENSOR_VOLTAGE_0324",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "div": 204.6,
+            "unit": "volts"
+          },
+          "name": "High pressure fuel rail sensor voltage",
+          "description": "Confirmed responding. Formula val / 204.6."
         }
       ]
     },
@@ -51,55 +528,66 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "0373"
+        "22": "03BA"
       },
-      "freq": 5,
+      "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_DPF_PRESSURE_0373_RAW16_AB",
-          "path": "Emissions.DPF.Validation",
+          "id": "EVEREST_AAT_SENSOR_VOLTAGE_03BA",
+          "path": "Climate",
           "fmt": {
             "len": 16,
-            "max": 65535,
-            "unit": "scalar"
+            "max": 5,
+            "mul": 0.0048875855,
+            "unit": "volts"
           },
-          "name": "DPF pressure 0373 raw AB",
-          "description": "Candidate DPF pressure/differential pressure value. Ford references mention byte-position quirks; raw AB retained for analysis."
-        },
+          "name": "Ambient air temperature sensor voltage",
+          "description": "Confirmed responding. Formula val * 0.0048875855."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "03DC"
+      },
+      "freq": 30,
+      "signals": [
         {
-          "id": "EVEREST_TEST_DPF_PRESSURE_0373_KPA_CANDIDATE",
-          "path": "Emissions.DPF.Validation",
+          "id": "EVEREST_HPFP_DESIRED_03DC",
+          "path": "Fuel",
           "fmt": {
             "len": 16,
-            "max": 800,
-            "mul": 0.01221,
-            "unit": "kilopascal"
+            "max": 3500,
+            "mul": 1.4503773969,
+            "unit": "psi"
           },
-          "name": "DPF pressure 0373 kPa candidate",
-          "description": "Candidate formula raw*0.01221 kPa. Expect low values at idle and rise with load/exhaust flow."
-        },
+          "name": "High pressure fuel pressure desired",
+          "description": "Confirmed responding. Formula val * 1.4503773969."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "041F"
+      },
+      "freq": 30,
+      "signals": [
         {
-          "id": "EVEREST_SURVIVOR_DPF_PRESSURE_0373_KPA_01221",
-          "path": "Emissions.DPF.Survivors",
+          "id": "EVEREST_LPFP_DESIRED_041F",
+          "path": "Fuel",
           "fmt": {
-            "len": 16,
-            "max": 800,
-            "mul": 0.01221,
-            "unit": "kilopascal"
+            "len": 8,
+            "max": 110,
+            "mul": 435,
+            "div": 1000,
+            "unit": "psi"
           },
-          "name": "DPF pressure 0373 kPa 0.01221",
-          "description": "Survivor because it responded with valid zero, not negative response. Test under load; idle may be 0."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_DPF_PRESSURE_0373_RAW16_AB",
-          "path": "Emissions.DPF.Survivors",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "DPF pressure 0373 raw AB",
-          "description": "Raw companion for 0373. A valid 0 may still be meaningful."
+          "name": "Fuel pressure, low desired",
+          "description": "Confirmed responding. Formula A*435/1000."
         }
       ]
     },
@@ -112,48 +600,83 @@
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_DPF_REGEN_EMISSIONS_7E0_0440_RAW8_A",
-          "path": "Testing.DPF_Regen_Emissions.Raw8",
+          "id": "EVEREST_TEST_DPF_REGEN_STATUS_0440_RAW8_A",
+          "path": "Emissions.DPF.Testing",
           "fmt": {
             "len": 8,
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST DPF Regen Emissions 0440 raw8 A",
-          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first byte only; compare behaviour against known references before promoting."
-        },
+          "name": "TEST DPF regen status 0440 raw A",
+          "description": "Testing only. Responded with valid zero during testing. Possible regen-status bitfield; keep for future comparison during active regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0462"
+      },
+      "freq": 30,
+      "signals": [
         {
-          "id": "EVEREST_TEST_DPF_REGEN_EMISSIONS_7E0_0440_RAW16_AB",
-          "path": "Testing.DPF_Regen_Emissions.Raw16",
+          "id": "EVEREST_WASTEGATE_DUTY_CYCLE_0462",
+          "path": "Engine.Boost",
           "fmt": {
             "len": 16,
-            "max": 65535,
-            "unit": "scalar"
+            "max": 100,
+            "mul": 100,
+            "div": 32768,
+            "unit": "percent"
           },
-          "name": "TEST DPF Regen Emissions 0440 raw16 AB",
-          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first two bytes; compare behaviour against known references before promoting."
-        },
+          "name": "Wastegate duty cycle",
+          "description": "Confirmed responding. Formula val*100/32768."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0487"
+      },
+      "freq": 10,
+      "signals": [
         {
-          "id": "EVEREST_TEST_REGEN_STATUS_0440_RAW8_A",
-          "path": "Emissions.DPF.Validation",
+          "id": "EVEREST_ADBLUE_LEVEL_LITRES_0487",
+          "path": "Emissions.AdBlue",
+          "fmt": {
+            "len": 16,
+            "max": 18.5,
+            "div": 1000,
+            "unit": "liters"
+          },
+          "name": "AdBlue tank level",
+          "description": "Confirmed responding. Showed around 17 L after recent fill; plausible against approx 18.5 L tank. Best AdBlue quantity candidate so far."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "051C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_AIR_CHARGE_TEMP_051C",
+          "path": "Engine",
           "fmt": {
             "len": 8,
-            "max": 255,
-            "unit": "scalar"
+            "max": 200,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
           },
-          "name": "Regen status 0440 raw A",
-          "description": "Candidate regen status bitfield. Llama/source notes suggest bit 4 may indicate regen state. Raw byte retained for manual bit analysis."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_REGEN_STATUS_0440_RAW8_A",
-          "path": "Emissions.DPF.Survivors",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "Regen status 0440 raw A",
-          "description": "Survivor because it responded with valid zero. Candidate regen bitfield; watch during regen."
+          "name": "Intercooler air charge temperature",
+          "description": "Working."
         }
       ]
     },
@@ -184,6 +707,119 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "22": "052E"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_EGR_OPEN_052E",
+          "path": "Emissions.EGR",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "EGR open percentage",
+          "description": "Working."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0548"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_ACTUAL_0548",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "mul": 10000,
+            "div": 137892,
+            "sign": true,
+            "unit": "psi"
+          },
+          "name": "Fuel pressure, low actual",
+          "description": "Confirmed responding. Formula val*10000/137892."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "054B"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_OIL_LIFE_REMAINING_054B",
+          "path": "Maintenance",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "unit": "percent"
+          },
+          "name": "Oil life remaining",
+          "description": "Confirmed responding. Latest test showed 47%. Preferred raw-percent oil life signal."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "054D"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_SENSOR_VOLTAGE_054D",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "div": 1024,
+            "sign": true,
+            "unit": "volts"
+          },
+          "name": "Fuel pressure sensor voltage, low",
+          "description": "Confirmed responding. Formula val / 1024."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0551"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_ALTERNATOR_CURRENT_0551",
+          "path": "Battery",
+          "fmt": {
+            "len": 16,
+            "max": 250,
+            "div": 64,
+            "unit": "ampere"
+          },
+          "name": "Alternator current output",
+          "description": "Working/plausible."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "22": "0569"
       },
       "freq": 2,
@@ -206,90 +842,23 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "0579"
+        "22": "05FC"
       },
-      "freq": 10,
+      "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_EXHAUST_REGEN_EGT_7E0_0579_RAW8_A",
-          "path": "Testing.Exhaust_Regen_EGT.Raw8",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST Exhaust Regen EGT 0579 raw8 A",
-          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first byte only; compare behaviour against known references before promoting."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_REGEN_EGT_7E0_0579_RAW16_AB",
-          "path": "Testing.Exhaust_Regen_EGT.Raw16",
+          "id": "EVEREST_CYL_HEAD_TEMP_SENSOR_2_05FC",
+          "path": "Engine",
           "fmt": {
             "len": 16,
-            "max": 65535,
-            "unit": "scalar"
+            "min": -512,
+            "max": 511.984375,
+            "div": 64,
+            "sign": true,
+            "unit": "celsius"
           },
-          "name": "TEST Exhaust Regen EGT 0579 raw16 AB",
-          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first two bytes; compare behaviour against known references before promoting."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_LOAD_CLOSED_LOOP_0579_RAW8_A",
-          "path": "Emissions.DPF.Validation",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "DPF load closed-loop 0579 raw A",
-          "description": "High-priority Everest validation candidate. Ford/Ranger references identify 220579 as closed-loop DPF load. Raw first byte retained for packet sanity."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_LOAD_CLOSED_LOOP_0579_PERCENT_A_DIV255",
-          "path": "Emissions.DPF.Validation",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "DPF load closed-loop 0579 percent",
-          "description": "Candidate formula A*100/255. Compare directly against dash exhaust-filter/DPF display if enabled and watch rise/fall around regen."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_REGEN_ACTIVE_0579_RAW_FLAG_A",
-          "path": "Emissions.DPF.Validation",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "DPF regen active 0579 raw flag",
-          "description": "Raw byte for checking possible regen-active bit in 0579 response. Bit extraction may need manual analysis from raw logs."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_DPF_LOAD_0579_PERCENT_A_DIV255",
-          "path": "Emissions.DPF.Survivors",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "DPF load 0579 percent",
-          "description": "Survivor because it responded with 0. Compare over distance/regen; may be closed-loop DPF load or byte offset may need adjustment."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_DPF_LOAD_0579_RAW8_A",
-          "path": "Emissions.DPF.Survivors",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "DPF load 0579 raw A",
-          "description": "Raw companion for 0579."
+          "name": "Cylinder head temperature sensor 2",
+          "description": "Confirmed responding. Formula val / 64."
         }
       ]
     },
@@ -297,79 +866,22 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "057B"
+        "22": "0604"
       },
-      "freq": 10,
+      "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_EXHAUST_REGEN_EGT_7E0_057B_RAW8_A",
-          "path": "Testing.Exhaust_Regen_EGT.Raw8",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST Exhaust Regen EGT 057B raw8 A",
-          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first byte only; compare behaviour against known references before promoting."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_REGEN_EGT_7E0_057B_RAW16_AB",
-          "path": "Testing.Exhaust_Regen_EGT.Raw16",
+          "id": "EVEREST_AC_REFRIGERANT_PRESSURE_0604",
+          "path": "Climate",
           "fmt": {
             "len": 16,
-            "max": 65535,
-            "unit": "scalar"
+            "min": -32768,
+            "max": 32767,
+            "sign": true,
+            "unit": "kilopascal"
           },
-          "name": "TEST Exhaust Regen EGT 057B raw16 AB",
-          "description": "Targeted Service 22 PID hunt candidate from 7E0. Raw first two bytes; compare behaviour against known references before promoting."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_SOOT_OPEN_LOOP_057B_RAW8_A",
-          "path": "Emissions.DPF.Validation",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "DPF soot open-loop 057B raw A",
-          "description": "High-priority Everest validation candidate. Ford/Ranger references identify 22057B as open-loop/modelled DPF soot/load."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_SOOT_OPEN_LOOP_057B_PERCENT_A_DIV255",
-          "path": "Emissions.DPF.Validation",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "DPF soot open-loop 057B percent",
-          "description": "Candidate formula A*100/255. Compare against closed-loop 0579 and dash DPF level."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_DPF_SOOT_057B_PERCENT_A_DIV255",
-          "path": "Emissions.DPF.Survivors",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "DPF soot 057B percent",
-          "description": "Survivor because it responded with 0. Compare against 0610; may be open-loop/model soot or wrong byte offset."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_DPF_SOOT_057B_RAW8_A",
-          "path": "Emissions.DPF.Survivors",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "DPF soot 057B raw A",
-          "description": "Raw companion for 057B."
+          "name": "A/C refrigerant pressure",
+          "description": "Confirmed responding. Raw signed kPa; sanity check units/value."
         }
       ]
     },
@@ -382,38 +894,17 @@
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_DPF_SOOT_INFERRED_0610_RAW16_AB",
-          "path": "Emissions.DPF.Validation",
+          "id": "EVEREST_DPF_FULLNESS_0610",
+          "path": "Emissions.DPF",
           "fmt": {
             "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "DPF soot inferred 0610 raw AB",
-          "description": "Candidate inferred soot mass/concentration value. Some Ford references describe 0610 as inferred soot. Raw retained because byte offsets may vary."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_DPF_SOOT_0610_PERCENT_DIV100",
-          "path": "Emissions.DPF.Survivors",
-          "fmt": {
-            "len": 16,
-            "max": 655.35,
+            "max": 100,
             "div": 100,
             "unit": "percent"
           },
-          "name": "DPF soot 0610 percent div100",
-          "description": "Survivor candidate. User observed raw 5948 -> 59.48. Treat as strongest current soot/load candidate; validate against distance/regens."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_DPF_SOOT_0610_RAW16_AB",
-          "path": "Emissions.DPF.Survivors",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "DPF soot 0610 raw AB",
-          "description": "Raw companion for 0610. User observed 5948."
+          "name": "DPF / exhaust filter fullness",
+          "description": "Everest-confirmed. Formula raw / 100. Matched the vehicle exhaust-filter display through a full regen cycle: high/full, cleaning, and post-regen near zero. Promoted from validation after live Pelican testing.",
+          "suggestedMetric": "dpfSootLoad"
         }
       ]
     },
@@ -426,50 +917,152 @@
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_DPF_DISTANCE_OR_COUNTER_0614_RAW16_AB",
-          "path": "Emissions.DPF.Validation",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "DPF distance/counter 0614 raw AB",
-          "description": "Medium-confidence candidate from cross-source AI notes. Possible regen/distance/counter value; validate cautiously."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_DISTANCE_OR_COUNTER_0614_DIV10",
-          "path": "Emissions.DPF.Validation",
+          "id": "EVEREST_DISTANCE_SINCE_DPF_REGEN_0614",
+          "path": "Emissions.DPF",
           "fmt": {
             "len": 16,
             "max": 6553.5,
             "div": 10,
             "unit": "kilometers"
           },
-          "name": "DPF distance/counter 0614 div10 candidate",
-          "description": "Candidate raw/10 km interpretation. Include only for validation, not confirmed."
-        },
+          "name": "Distance since DPF regen",
+          "description": "Everest-confirmed. Formula raw / 10 km. Counted up with driving distance, reset to 0 km at regen completion, then immediately started counting up again. Promoted from validation after live Pelican testing."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0685"
+      },
+      "freq": 10,
+      "signals": [
         {
-          "id": "EVEREST_SURVIVOR_DPF_DISTANCE_0614_KM_DIV10",
-          "path": "Emissions.DPF.Survivors",
+          "id": "EVEREST_ADBLUE_TEMP_0685",
+          "path": "Emissions.AdBlue",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "AdBlue tank temperature",
+          "description": "Confirmed responding. AdBlue tank temperature."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0700"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_IAT_FAULT_0700",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "Intake temperature fault",
+          "description": "Confirmed responding. Showed 0; likely no intake temperature fault."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0707"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_GRILL_SHUTTER_DUTY_CYCLE_0707",
+          "path": "Body",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Grill shutter duty cycle",
+          "description": "Confirmed responding. Formula A*100/255."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1279"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_IAT_SENSOR_VOLTAGE_1279",
+          "path": "Engine",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "mul": 5,
+            "div": 1023,
+            "unit": "volts"
+          },
+          "name": "Intake temperature sensor voltage",
+          "description": "Responds but showed 0 V during test. Keep as low-confidence candidate; compare later."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "4195"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_DTE_DISP",
+          "path": "Fuel",
           "fmt": {
             "len": 16,
             "max": 6553.5,
             "div": 10,
             "unit": "kilometers"
           },
-          "name": "DPF distance 0614 km div10",
-          "description": "Survivor candidate. User observed raw 1149 -> 115 km. Likely distance/counter related to DPF or regen."
-        },
+          "name": "Distance to empty, displayed",
+          "description": "Confirmed against dash at 336 km. Formula raw/10. Added as fuel range connectable.",
+          "suggestedMetric": "fuelRange"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "9800"
+      },
+      "freq": 30,
+      "signals": [
         {
-          "id": "EVEREST_SURVIVOR_DPF_DISTANCE_0614_RAW16_AB",
-          "path": "Emissions.DPF.Survivors",
+          "id": "EVEREST_AC_PRESSURE_SENSOR_VOLTAGE_9800",
+          "path": "Climate",
           "fmt": {
             "len": 16,
-            "max": 65535,
-            "unit": "scalar"
+            "max": 5,
+            "div": 1024,
+            "sign": true,
+            "unit": "volts"
           },
-          "name": "DPF distance 0614 raw AB",
-          "description": "Raw companion for 0614. User observed 1149."
+          "name": "A/C compressor pressure sensor voltage",
+          "description": "Confirmed responding. Formula val / 1024."
         }
       ]
     },
@@ -518,6 +1111,29 @@
           "name": "Coolant temperature",
           "description": "Working; matched built-in ECT.",
           "suggestedMetric": "engineCoolantTemperature"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F40B"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_MANIFOLD_PRESSURE_F40B",
+          "path": "Engine.Boost",
+          "fmt": {
+            "len": 8,
+            "max": 36,
+            "mul": 10000,
+            "div": 68947,
+            "unit": "psi"
+          },
+          "name": "Manifold pressure",
+          "description": "Confirmed responding. Formula A*10000/68947."
         }
       ]
     },
@@ -583,6 +1199,71 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "22": "F40F"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_INTAKE_AIR_TEMP_F40F",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Intake air temperature",
+          "description": "Working."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F41F"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_RUN_TIME_F41F",
+          "path": "Engine",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "seconds"
+          },
+          "name": "Engine run time",
+          "description": "Confirmed responding. Raw seconds."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F421"
+      },
+      "freq": 60,
+      "signals": [
+        {
+          "id": "EVEREST_DISTANCE_WITH_MIL_F421",
+          "path": "DTCs",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "kilometers"
+          },
+          "name": "Distance with MIL",
+          "description": "Confirmed responding."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "22": "F42F"
       },
       "freq": 2,
@@ -600,6 +1281,72 @@
           "name": "Fuel remaining",
           "description": "Working. Equation A*100/255.",
           "suggestedMetric": "fuelTankLevel"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F430"
+      },
+      "freq": 60,
+      "signals": [
+        {
+          "id": "EVEREST_WARMUPS_SINCE_DTC_CLEAR_F430",
+          "path": "DTCs",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "Warm-ups since DTC clear",
+          "description": "Confirmed responding."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F431"
+      },
+      "freq": 60,
+      "signals": [
+        {
+          "id": "EVEREST_DISTANCE_SINCE_DTC_CLEAR_F431",
+          "path": "DTCs",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "kilometers"
+          },
+          "name": "Distance since DTC clear",
+          "description": "Working diagnostic distance counter. Added as distance since DTCs cleared connectable.",
+          "suggestedMetric": "distanceSinceDTCsCleared"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F446"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_AMBIENT_AIR_TEMP_F446",
+          "path": "Climate",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Ambient air temperature",
+          "description": "Working; close to dash ambient."
         }
       ]
     },
@@ -631,31 +1378,21 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F460"
+        "22": "F462"
       },
-      "freq": 5,
+      "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_TEST_EGT11_F460_RAW16_AB",
-          "path": "Emissions.Exhaust.Validation",
+          "id": "EVEREST_PCM_ACTUAL_ENGINE_PERCENT_TORQUE_F462",
+          "path": "Engine",
           "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
+            "len": 8,
+            "max": 100,
+            "add": -125,
+            "unit": "percent"
           },
-          "name": "EGT11 post turbo / pre DOC F460 raw AB",
-          "description": "Ford/Ranger/Everest EGT candidate. Raw 16-bit retained for validation against existing EGT and regen behaviour."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_EGT11_F460_RAW16_AB_ONLY",
-          "path": "Emissions.Exhaust.Survivors",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "EGT11 F460 raw only",
-          "description": "Alive but current decode looks wrong: user observed raw 65481 and 1000\u00b0C display. Keep raw only until signed/offset behaviour is understood."
+          "name": "Actual engine percent torque",
+          "description": "Confirmed responding. Formula A-125."
         }
       ]
     },
@@ -665,57 +1402,43 @@
       "cmd": {
         "22": "F463"
       },
-      "freq": 5,
+      "freq": 30,
       "signals": [
         {
+          "id": "EVEREST_ENGINE_REFERENCE_TORQUE_F463",
+          "path": "Engine",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "newtonMeters"
+          },
+          "name": "Engine reference torque",
+          "description": "Confirmed responding. Raw N\u00b7m value."
+        },
+        {
+          "id": "EVEREST_TEST_EGRT_F463_CELSIUS",
+          "path": "Emissions.Exhaust.Testing",
+          "fmt": {
+            "len": 16,
+            "min": -40,
+            "max": 1000,
+            "mul": 0.1,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "TEST EGRT F463 Celsius",
+          "description": "Testing only. Responded with plausible low-temperature value during testing. Possible EGRT / EGR manifold temperature candidate. Needs warm/load validation."
+        },
+        {
           "id": "EVEREST_TEST_EGRT_F463_RAW16_AB",
-          "path": "Emissions.Exhaust.Validation",
+          "path": "Emissions.Exhaust.Testing",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "EGRT EGR/manifold temp F463 raw AB",
-          "description": "Ford/Ranger/Everest EGT candidate. Raw 16-bit retained for validation against existing EGT and regen behaviour."
-        },
-        {
-          "id": "EVEREST_TEST_EGRT_F463_CELSIUS_CANDIDATE",
-          "path": "Emissions.Exhaust.Validation",
-          "fmt": {
-            "len": 16,
-            "min": -40,
-            "max": 1000,
-            "mul": 0.1,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "EGRT EGR/manifold temp F463 Celsius candidate",
-          "description": "Candidate formula raw*0.1 - 40 \u00b0C. During regen, pre/post DPF sensors should climb sharply."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_EGRT_F463_CELSIUS",
-          "path": "Emissions.Exhaust.Survivors",
-          "fmt": {
-            "len": 16,
-            "min": -40,
-            "max": 1000,
-            "mul": 0.1,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "EGRT F463 Celsius",
-          "description": "Survivor. User observed raw 500 -> 10\u00b0C. Plausible cold/light-load value; test warm and under load."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_EGRT_F463_RAW16_AB",
-          "path": "Emissions.Exhaust.Survivors",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "EGRT F463 raw AB",
-          "description": "Raw companion for F463. User observed 500."
+          "name": "TEST EGRT F463 raw AB",
+          "description": "Testing only. Raw companion for F463."
         }
       ]
     },
@@ -725,44 +1448,22 @@
       "cmd": {
         "22": "F478"
       },
-      "freq": 5,
+      "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_MULTI_EGT_F478_RAW64",
-          "path": "Emissions.Exhaust.Testing",
-          "fmt": {
-            "len": 64,
-            "max": 18446744073709551615,
-            "unit": "scalar"
-          },
-          "name": "Multi EGT F478 raw packet",
-          "description": "High-priority Ford diesel cross-reference candidate. Ford 6.7 references use this as a multi-EGT packet. Raw 64-bit capture is included because offset decoding needs validation in Pelican."
-        },
-        {
-          "id": "EVEREST_TEST_MULTI_EGT_F478_FIRST_WORD_RAW16_AB",
+          "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_RAW16_AB",
           "path": "Emissions.Exhaust.Testing",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "Multi EGT F478 first word raw AB",
-          "description": "First 16-bit word of 22F478 for live-change validation. Compare against existing EGT pre-turbo 220569."
+          "name": "TEST exhaust multi-EGT F478 raw AB",
+          "description": "Testing only. PID is alive and appears packet-like, but decode is not confirmed. Keep raw first word for future EGT/regen analysis."
         },
         {
-          "id": "EVEREST_SURVIVOR_MULTI_EGT_F478_FIRST_WORD_RAW16",
-          "path": "Emissions.Exhaust.Survivors",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "Multi EGT F478 first word raw",
-          "description": "Strong survivor. User observed first word 1797. PID is alive; decoding still needs work."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_MULTI_EGT_F478_WORD1_CELSIUS_01_MINUS40",
-          "path": "Emissions.Exhaust.Survivors",
+          "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_CANDIDATE_C",
+          "path": "Emissions.Exhaust.Testing",
           "fmt": {
             "len": 16,
             "min": -40,
@@ -771,19 +1472,8 @@
             "add": -40,
             "unit": "celsius"
           },
-          "name": "Multi EGT F478 word1 Celsius candidate",
-          "description": "Candidate decode for first 16-bit word: raw*0.1-40. With raw 1797 this would be 139.7\u00b0C, plausible for exhaust after idle/light running."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_MULTI_EGT_F478_RAW64",
-          "path": "Emissions.Exhaust.Survivors",
-          "fmt": {
-            "len": 64,
-            "max": 18446744073709551615,
-            "unit": "scalar"
-          },
-          "name": "Multi EGT F478 raw packet",
-          "description": "Raw packet retained only for structural comparison. Pelican display may be unwieldy."
+          "name": "TEST exhaust multi-EGT F478 candidate",
+          "description": "Testing only. Candidate formula raw*0.1 - 40 C for first word. Needs comparison against existing EGT 220569 and active regen behaviour before promotion."
         }
       ]
     },
@@ -793,51 +1483,50 @@
       "cmd": {
         "22": "F48B"
       },
-      "freq": 5,
+      "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_DPF_REGEN_STATUS_F48B_RAW8_A",
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW8_A",
           "path": "Emissions.DPF.Testing",
           "fmt": {
             "len": 8,
             "max": 255,
             "unit": "scalar"
           },
-          "name": "DPF regen status F48B raw A",
-          "description": "High-priority Ford diesel cross-reference candidate. Watch for stable off value and clear change during active regen."
+          "name": "TEST DPF status F48B raw A",
+          "description": "Testing only. Responded during v0.3/v0.3.1 testing with raw A around 127. Possible DPF/regen status or state byte. Keep for future regen comparison."
         },
         {
-          "id": "EVEREST_TEST_DPF_REGEN_STATUS_F48B_RAW16_AB",
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW16_AB",
           "path": "Emissions.DPF.Testing",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "DPF regen status F48B raw AB",
-          "description": "Raw 16-bit companion for 22F48B. Included because some references describe a bit flag in the second byte."
-        },
+          "name": "TEST DPF status F48B raw AB",
+          "description": "Testing only. Raw 16-bit companion for 22F48B. Earlier value 32512 appeared to equal 127*256, suggesting the first byte may be the meaningful state."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E12"
+      },
+      "freq": 2,
+      "signals": [
         {
-          "id": "EVEREST_SURVIVOR_DPF_REGEN_STATUS_F48B_RAW8_A",
-          "path": "Emissions.DPF.Survivors",
+          "id": "EVEREST_GEAR_COMMANDED_7E1_1E12",
+          "path": "Transmission",
           "fmt": {
             "len": 8,
-            "max": 255,
+            "max": 10,
             "unit": "scalar"
           },
-          "name": "DPF regen/status F48B raw A",
-          "description": "Strong survivor. User observed A=127. Likely state/bitfield/threshold value. Watch for change during regen."
-        },
-        {
-          "id": "EVEREST_SURVIVOR_DPF_REGEN_STATUS_F48B_RAW16_AB",
-          "path": "Emissions.DPF.Survivors",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "DPF regen/status F48B raw AB",
-          "description": "Raw 16-bit companion. User observed 32512 = 127*256, suggesting first byte is the meaningful state."
+          "name": "Transmission gear commanded",
+          "description": "Working; tested 1 and 9."
         }
       ]
     },
@@ -860,6 +1549,50 @@
           },
           "name": "Torque converter slip speed",
           "description": "Confirmed working torque converter slip RPM."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E15"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_OSS_1E15_RPM",
+          "path": "Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 10000,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Output shaft speed OSS 1E15",
+          "description": "Confirmed working as driveline output shaft RPM. Not direct road speed without conversion."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E16"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_ISS_TSS_1E16_RPM",
+          "path": "Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 10000,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Input shaft speed ISS/TSS 1E16",
+          "description": "Confirmed working as input/turbine shaft RPM. Not direct road speed."
         }
       ]
     },
