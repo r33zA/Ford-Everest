@@ -601,7 +601,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_DPF_REGEN_STATUS_0440_RAW8_A",
-          "path": "Emissions.DPF.Testing",
+          "path": "Emissions.Testing",
           "fmt": {
             "len": 8,
             "max": 255,
@@ -1417,7 +1417,7 @@
         },
         {
           "id": "EVEREST_TEST_EGRT_F463_CELSIUS",
-          "path": "Emissions.Exhaust.Testing",
+          "path": "Emissions.Testing",
           "fmt": {
             "len": 16,
             "min": -40,
@@ -1431,7 +1431,7 @@
         },
         {
           "id": "EVEREST_TEST_EGRT_F463_RAW16_AB",
-          "path": "Emissions.Exhaust.Testing",
+          "path": "Emissions.Testing",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -1452,7 +1452,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_RAW16_AB",
-          "path": "Emissions.Exhaust.Testing",
+          "path": "Emissions.Testing",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -1463,7 +1463,7 @@
         },
         {
           "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_CANDIDATE_C",
-          "path": "Emissions.Exhaust.Testing",
+          "path": "Emissions.Testing",
           "fmt": {
             "len": 16,
             "min": -40,
@@ -1487,7 +1487,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW8_A",
-          "path": "Emissions.DPF.Testing",
+          "path": "Emissions.Testing",
           "fmt": {
             "len": 8,
             "max": 255,
@@ -1498,7 +1498,7 @@
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW16_AB",
-          "path": "Emissions.DPF.Testing",
+          "path": "Emissions.Testing",
           "fmt": {
             "len": 16,
             "max": 65535,
