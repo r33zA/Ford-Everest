@@ -4,6 +4,104 @@
       "hdr": "726",
       "rax": "72E",
       "cmd": {
+        "22": "4006"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BATTERY_SOH_726_4006_RAW16_AB",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Battery SOH 4006 raw AB",
+          "description": "Testing only. Raw companion for Battery SOH. Possible battery state of health."
+        },
+        {
+          "id": "EVEREST_TEST_BATTERY_SOH_726_4006_CANDIDATE",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "unit": "percent"
+          },
+          "name": "TEST Battery SOH 4006",
+          "description": "Testing only. Possible battery state of health."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "4007"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BATTERY_INTERNAL_RESISTANCE_726_4007_RAW16_AB",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Battery internal resistance 4007 raw AB",
+          "description": "Testing only. Raw companion for Battery internal resistance. Possible battery internal resistance; scaling unknown."
+        },
+        {
+          "id": "EVEREST_TEST_BATTERY_INTERNAL_RESISTANCE_726_4007_CANDIDATE",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "unit": "scalar"
+          },
+          "name": "TEST Battery internal resistance 4007",
+          "description": "Testing only. Possible battery internal resistance; scaling unknown."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "400A"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BATTERY_TEMPERATURE_726_400A_RAW16_AB",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Battery temperature 400A raw AB",
+          "description": "Testing only. Raw companion for Battery temperature. Possible battery temperature."
+        },
+        {
+          "id": "EVEREST_TEST_BATTERY_TEMPERATURE_726_400A_CANDIDATE",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 8,
+            "min": -40,
+            "max": 215,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "TEST Battery temperature 400A",
+          "description": "Testing only. Possible battery temperature."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
         "22": "4027"
       },
       "freq": 3600,
@@ -255,7 +353,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_1_0106",
-          "path": "Fuel.Testing",
+          "path": "TESTING.Fuel",
           "fmt": {
             "len": 8,
             "min": -100,
@@ -281,7 +379,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_2_0108",
-          "path": "Fuel.Testing",
+          "path": "TESTING.Fuel",
           "fmt": {
             "len": 8,
             "min": -100,
@@ -345,29 +443,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "01": "24"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_O2_LAMBDA_EQUIVALENCE_RATIO_0124",
-          "path": "Emissions.Testing",
-          "fmt": {
-            "len": 16,
-            "max": 1.9999694824,
-            "div": 32768,
-            "unit": "ratio"
-          },
-          "name": "O2 lambda equivalence ratio test",
-          "description": "Wide-range O2/lambda equivalence-ratio candidate. Diesels usually care more about excess-air/lambda than petrol-style fuel trims; keep as test-only until support and scale are confirmed.",
-          "suggestedMetric": "o2Lambda"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "01": "2F"
       },
       "freq": 5,
@@ -392,29 +467,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "01": "44"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_COMMANDED_EQUIVALENCE_RATIO_0144",
-          "path": "Emissions.Testing",
-          "fmt": {
-            "len": 16,
-            "max": 1.9999694824,
-            "div": 32768,
-            "unit": "ratio"
-          },
-          "name": "Commanded equivalence ratio test",
-          "description": "Generic SAE commanded equivalence-ratio/lambda-style candidate. More diesel-relevant than petrol short-term trim if the PCM supports it.",
-          "suggestedMetric": "commandedLambda"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "01": "A6"
       },
       "freq": 10,
@@ -431,6 +483,107 @@
           "name": "Odometer",
           "description": "Working candidate; confirm exact dash odometer.",
           "suggestedMetric": "odometer"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0210"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_MAF_EXTENDED_7E0_0210_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST MAF extended 0210 raw AB",
+          "description": "Testing only. Raw companion for MAF extended. Compare against generic 0110 MAF."
+        },
+        {
+          "id": "EVEREST_TEST_MAF_EXTENDED_7E0_0210_CANDIDATE",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 500,
+            "div": 100,
+            "unit": "gramsPerSecond"
+          },
+          "name": "TEST MAF extended 0210",
+          "description": "Testing only. Compare against generic 0110 MAF."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0233"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BARO_7E0_0233_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST BARO 0233 raw AB",
+          "description": "Testing only. Raw companion for BARO. Possible barometric pressure."
+        },
+        {
+          "id": "EVEREST_TEST_BARO_7E0_0233_CANDIDATE",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST BARO 0233",
+          "description": "Testing only. Possible barometric pressure."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0247"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_MAP_BOOST_GAUGE_7E0_0247_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST MAP boost gauge 0247 raw AB",
+          "description": "Testing only. Raw companion for MAP boost gauge. Possible gauge boost. Validate against existing MAP/manifold pressure."
+        },
+        {
+          "id": "EVEREST_TEST_MAP_BOOST_GAUGE_7E0_0247_CANDIDATE",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "min": -14.5,
+            "max": 40,
+            "mul": 0.1450377,
+            "add": -14.5,
+            "unit": "psi"
+          },
+          "name": "TEST MAP boost gauge 0247",
+          "description": "Testing only. Possible gauge boost. Validate against existing MAP/manifold pressure."
         }
       ]
     },
@@ -528,6 +681,39 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "22": "032E"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_GENERATOR_DESIRED_VOLTAGE_7E0_032E_RAW16_AB",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Generator desired voltage 032E raw AB",
+          "description": "Testing only. Raw companion for Generator desired voltage. Possible smart alternator target voltage."
+        },
+        {
+          "id": "EVEREST_TEST_GENERATOR_DESIRED_VOLTAGE_7E0_032E_CANDIDATE",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 16,
+            "max": 20,
+            "div": 100,
+            "unit": "volts"
+          },
+          "name": "TEST Generator desired voltage 032E",
+          "description": "Testing only. Possible smart alternator target voltage."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "22": "03BA"
       },
       "freq": 30,
@@ -601,7 +787,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_DPF_REGEN_STATUS_0440_RAW8_A",
-          "path": "Emissions.Testing",
+          "path": "TESTING.Regen",
           "fmt": {
             "len": 8,
             "max": 255,
@@ -1024,6 +1210,40 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "22": "1632"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_GENERATOR_COMMAND_DUTY_7E0_1632_RAW16_AB",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Generator command duty 1632 raw AB",
+          "description": "Testing only. Raw companion for Generator command duty. Possible generator command duty cycle."
+        },
+        {
+          "id": "EVEREST_TEST_GENERATOR_COMMAND_DUTY_7E0_1632_CANDIDATE",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST Generator command duty 1632",
+          "description": "Testing only. Possible generator command duty cycle."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "22": "4195"
       },
       "freq": 30,
@@ -1063,6 +1283,168 @@
           },
           "name": "A/C compressor pressure sensor voltage",
           "description": "Confirmed responding. Formula val / 1024."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "C45D"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_4WD_MODE_7E0_C45D_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 4WD mode C45D raw AB",
+          "description": "Testing only. Raw companion for 4WD mode. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_4WD_MODE_7E0_C45D_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 8,
+            "max": 15,
+            "unit": "scalar"
+          },
+          "name": "TEST 4WD mode C45D",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "C460"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TRANSFER_CLUTCH_DUTY_7E0_C460_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Transfer clutch duty C460 raw AB",
+          "description": "Testing only. Raw companion for Transfer clutch duty. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_TRANSFER_CLUTCH_DUTY_7E0_C460_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST Transfer clutch duty C460",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "C461"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_FRONT_PROP_SPEED_7E0_C461_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Front prop speed C461 raw AB",
+          "description": "Testing only. Raw companion for Front prop speed. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_FRONT_PROP_SPEED_7E0_C461_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 8000,
+            "unit": "rpm"
+          },
+          "name": "TEST Front prop speed C461",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "C462"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_REAR_PROP_SPEED_7E0_C462_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Rear prop speed C462 raw AB",
+          "description": "Testing only. Raw companion for Rear prop speed. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_REAR_PROP_SPEED_7E0_C462_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 8000,
+            "unit": "rpm"
+          },
+          "name": "TEST Rear prop speed C462",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "C463"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_REAR_LOCKER_STATE_7E0_C463_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Rear locker state C463 raw AB",
+          "description": "Testing only. Raw companion for Rear locker state. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_REAR_LOCKER_STATE_7E0_C463_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST Rear locker state C463",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E0. Test safely during mode changes."
         }
       ]
     },
@@ -1222,6 +1604,102 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "22": "F411"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_REGEN_COMMANDED_7E0_F411_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Regen commanded F411 raw AB",
+          "description": "Testing only. Raw companion for Regen commanded. Candidate Ford regen/state PID. Watch during known active regen."
+        },
+        {
+          "id": "EVEREST_TEST_REGEN_COMMANDED_7E0_F411_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST Regen commanded F411",
+          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F412"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_REGEN_INHIBIT_7E0_F412_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Regen inhibit F412 raw AB",
+          "description": "Testing only. Raw companion for Regen inhibit. Candidate Ford regen/state PID. Watch during known active regen."
+        },
+        {
+          "id": "EVEREST_TEST_REGEN_INHIBIT_7E0_F412_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST Regen inhibit F412",
+          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F413"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_REGEN_REQUEST_7E0_F413_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Regen request F413 raw AB",
+          "description": "Testing only. Raw companion for Regen request. Candidate Ford regen/state PID. Watch during known active regen."
+        },
+        {
+          "id": "EVEREST_TEST_REGEN_REQUEST_7E0_F413_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST Regen request F413",
+          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "22": "F41F"
       },
       "freq": 30,
@@ -1354,6 +1832,102 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "22": "F450"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_ACTIVE_REGEN_7E0_F450_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF active regen F450 raw AB",
+          "description": "Testing only. Raw companion for DPF active regen. Candidate Ford regen/state PID. Watch during known active regen."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_ACTIVE_REGEN_7E0_F450_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF active regen F450",
+          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F451"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF regen request F451 raw AB",
+          "description": "Testing only. Raw companion for DPF regen request. Candidate Ford regen/state PID. Watch during known active regen."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF regen request F451",
+          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F453"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_BITFIELD_7E0_F453_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status bitfield F453 raw AB",
+          "description": "Testing only. Raw companion for DPF status bitfield. Candidate Ford regen/state PID. Watch during known active regen."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_BITFIELD_7E0_F453_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status bitfield F453",
+          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "22": "F45C"
       },
       "freq": 2,
@@ -1417,7 +1991,7 @@
         },
         {
           "id": "EVEREST_TEST_EGRT_F463_CELSIUS",
-          "path": "Emissions.Testing",
+          "path": "TESTING.Misc",
           "fmt": {
             "len": 16,
             "min": -40,
@@ -1431,7 +2005,7 @@
         },
         {
           "id": "EVEREST_TEST_EGRT_F463_RAW16_AB",
-          "path": "Emissions.Testing",
+          "path": "TESTING.Misc",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -1446,13 +2020,255 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "22": "F46A"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGT11_7E0_F46A_RAW16_AB",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST EGT11 F46A raw AB",
+          "description": "Testing only. Raw companion for EGT11. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+        },
+        {
+          "id": "EVEREST_TEST_EGT11_7E0_F46A_CANDIDATE",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "min": -40,
+            "max": 1000,
+            "mul": 0.1,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "TEST EGT11 F46A",
+          "description": "Testing only. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F46B"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGT12_7E0_F46B_RAW16_AB",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST EGT12 F46B raw AB",
+          "description": "Testing only. Raw companion for EGT12. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+        },
+        {
+          "id": "EVEREST_TEST_EGT12_7E0_F46B_CANDIDATE",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "min": -40,
+            "max": 1000,
+            "mul": 0.1,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "TEST EGT12 F46B",
+          "description": "Testing only. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F46C"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_RAW16_AB",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST EGT13 DPF inlet F46C raw AB",
+          "description": "Testing only. Raw companion for EGT13 DPF inlet. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+        },
+        {
+          "id": "EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_CANDIDATE",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "min": -40,
+            "max": 1000,
+            "mul": 0.1,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "TEST EGT13 DPF inlet F46C",
+          "description": "Testing only. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F46D"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EGT14_DPF_OUTLET_7E0_F46D_RAW16_AB",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST EGT14 DPF outlet F46D raw AB",
+          "description": "Testing only. Raw companion for EGT14 DPF outlet. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+        },
+        {
+          "id": "EVEREST_TEST_EGT14_DPF_OUTLET_7E0_F46D_CANDIDATE",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "min": -40,
+            "max": 1000,
+            "mul": 0.1,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "TEST EGT14 DPF outlet F46D",
+          "description": "Testing only. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F470"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST VGT commanded F470 raw AB",
+          "description": "Testing only. Raw companion for VGT commanded. Possible VGT/turbo vane commanded position."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_CANDIDATE",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST VGT commanded F470",
+          "description": "Testing only. Possible VGT/turbo vane commanded position."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F471"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST VGT actual F471 raw AB",
+          "description": "Testing only. Raw companion for VGT actual. Possible VGT/turbo vane actual position."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_CANDIDATE",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST VGT actual F471",
+          "description": "Testing only. Possible VGT/turbo vane actual position."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F476"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_CHARGE_AIR_COOLER_OUTLET_TEMP_7E0_F476_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Charge air cooler outlet temp F476 raw AB",
+          "description": "Testing only. Raw companion for Charge air cooler outlet temp. Possible post-intercooler temperature."
+        },
+        {
+          "id": "EVEREST_TEST_CHARGE_AIR_COOLER_OUTLET_TEMP_7E0_F476_CANDIDATE",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 8,
+            "min": -40,
+            "max": 215,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "TEST Charge air cooler outlet temp F476",
+          "description": "Testing only. Possible post-intercooler temperature."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "22": "F478"
       },
       "freq": 10,
       "signals": [
         {
           "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_RAW16_AB",
-          "path": "Emissions.Testing",
+          "path": "TESTING.EGT",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -1463,7 +2279,7 @@
         },
         {
           "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_CANDIDATE_C",
-          "path": "Emissions.Testing",
+          "path": "TESTING.EGT",
           "fmt": {
             "len": 16,
             "min": -40,
@@ -1481,13 +2297,79 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "22": "F479"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Turbo inlet pressure F479 raw AB",
+          "description": "Testing only. Raw companion for Turbo inlet pressure. Possible turbo inlet pressure. Conflicts with some alternator claims, so validate carefully."
+        },
+        {
+          "id": "EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_CANDIDATE",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 300,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Turbo inlet pressure F479",
+          "description": "Testing only. Possible turbo inlet pressure. Conflicts with some alternator claims, so validate carefully."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F47A"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST LP turbo speed or alternate turbo value F47A raw AB",
+          "description": "Testing only. Raw companion for LP turbo speed or alternate turbo value. Possible LP turbo speed or alternate turbo value."
+        },
+        {
+          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_CANDIDATE",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 200000,
+            "mul": 10,
+            "unit": "rpm"
+          },
+          "name": "TEST LP turbo speed or alternate turbo value F47A",
+          "description": "Testing only. Possible LP turbo speed or alternate turbo value."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "22": "F48B"
       },
       "freq": 10,
       "signals": [
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW8_A",
-          "path": "Emissions.Testing",
+          "path": "TESTING.Regen",
           "fmt": {
             "len": 8,
             "max": 255,
@@ -1498,7 +2380,7 @@
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW16_AB",
-          "path": "Emissions.Testing",
+          "path": "TESTING.Regen",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -1506,6 +2388,72 @@
           },
           "name": "TEST DPF status F48B raw AB",
           "description": "Testing only. Raw 16-bit companion for 22F48B. Earlier value 32512 appeared to equal 127*256, suggesting the first byte may be the meaningful state."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F48D"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TURBO_BYPASS_7E0_F48D_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Turbo bypass F48D raw AB",
+          "description": "Testing only. Raw companion for Turbo bypass. Possible bi-turbo bypass valve command."
+        },
+        {
+          "id": "EVEREST_TEST_TURBO_BYPASS_7E0_F48D_CANDIDATE",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST Turbo bypass F48D",
+          "description": "Testing only. Possible bi-turbo bypass valve command."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F87C"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_ACTIVE_ALTERNATE_7E0_F87C_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF active alternate F87C raw AB",
+          "description": "Testing only. Raw companion for DPF active alternate. Candidate Ford regen/state PID. Watch during known active regen."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_ACTIVE_ALTERNATE_7E0_F87C_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF active alternate F87C",
+          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
         }
       ]
     },
@@ -1652,6 +2600,233 @@
           "name": "Transmission gear engaged",
           "description": "Working; tested 1 and 9. Added as a connectable candidate for transmission gear display if supported by Pelican.",
           "suggestedMetric": "transmissionGear"
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E35"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TCC_DESIRED_SLIP_7E1_1E35_RAW16_AB",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST TCC desired slip 1E35 raw AB",
+          "description": "Testing only. Raw companion for TCC desired slip. Compare against confirmed 1E14 actual slip."
+        },
+        {
+          "id": "EVEREST_TEST_TCC_DESIRED_SLIP_7E1_1E35_CANDIDATE",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 5500,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "TEST TCC desired slip 1E35",
+          "description": "Testing only. Compare against confirmed 1E14 actual slip."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E3C"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_RAW16_AB",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST TCC commanded pressure 1E3C raw AB",
+          "description": "Testing only. Raw companion for TCC commanded pressure. Possible TCC commanded pressure."
+        },
+        {
+          "id": "EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_CANDIDATE",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 3000,
+            "unit": "kilopascal"
+          },
+          "name": "TEST TCC commanded pressure 1E3C",
+          "description": "Testing only. Possible TCC commanded pressure."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C45D"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_4WD_MODE_7E2_C45D_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 4WD mode C45D raw AB",
+          "description": "Testing only. Raw companion for 4WD mode. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_4WD_MODE_7E2_C45D_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 8,
+            "max": 15,
+            "unit": "scalar"
+          },
+          "name": "TEST 4WD mode C45D",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C460"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TRANSFER_CLUTCH_DUTY_7E2_C460_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Transfer clutch duty C460 raw AB",
+          "description": "Testing only. Raw companion for Transfer clutch duty. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_TRANSFER_CLUTCH_DUTY_7E2_C460_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST Transfer clutch duty C460",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C461"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_FRONT_PROP_SPEED_7E2_C461_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Front prop speed C461 raw AB",
+          "description": "Testing only. Raw companion for Front prop speed. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_FRONT_PROP_SPEED_7E2_C461_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 8000,
+            "unit": "rpm"
+          },
+          "name": "TEST Front prop speed C461",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C462"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_REAR_PROP_SPEED_7E2_C462_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Rear prop speed C462 raw AB",
+          "description": "Testing only. Raw companion for Rear prop speed. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_REAR_PROP_SPEED_7E2_C462_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 8000,
+            "unit": "rpm"
+          },
+          "name": "TEST Rear prop speed C462",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C463"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_REAR_LOCKER_STATE_7E2_C463_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Rear locker state C463 raw AB",
+          "description": "Testing only. Raw companion for Rear locker state. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_REAR_LOCKER_STATE_7E2_C463_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST Rear locker state C463",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
         }
       ]
     }
