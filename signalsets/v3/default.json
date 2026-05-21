@@ -4,104 +4,6 @@
       "hdr": "726",
       "rax": "72E",
       "cmd": {
-        "22": "4006"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_BATTERY_SOH_726_4006_RAW16_AB",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Battery SOH 4006 raw AB",
-          "description": "Testing only. Raw companion for Battery SOH. Possible battery state of health."
-        },
-        {
-          "id": "EVEREST_TEST_BATTERY_SOH_726_4006_CANDIDATE",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "unit": "percent"
-          },
-          "name": "TEST Battery SOH 4006",
-          "description": "Testing only. Possible battery state of health."
-        }
-      ]
-    },
-    {
-      "hdr": "726",
-      "rax": "72E",
-      "cmd": {
-        "22": "4007"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_BATTERY_INTERNAL_RESISTANCE_726_4007_RAW16_AB",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Battery internal resistance 4007 raw AB",
-          "description": "Testing only. Raw companion for Battery internal resistance. Possible battery internal resistance; scaling unknown."
-        },
-        {
-          "id": "EVEREST_TEST_BATTERY_INTERNAL_RESISTANCE_726_4007_CANDIDATE",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 16,
-            "max": 100,
-            "unit": "scalar"
-          },
-          "name": "TEST Battery internal resistance 4007",
-          "description": "Testing only. Possible battery internal resistance; scaling unknown."
-        }
-      ]
-    },
-    {
-      "hdr": "726",
-      "rax": "72E",
-      "cmd": {
-        "22": "400A"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_BATTERY_TEMPERATURE_726_400A_RAW16_AB",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Battery temperature 400A raw AB",
-          "description": "Testing only. Raw companion for Battery temperature. Possible battery temperature."
-        },
-        {
-          "id": "EVEREST_TEST_BATTERY_TEMPERATURE_726_400A_CANDIDATE",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 8,
-            "min": -40,
-            "max": 215,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "TEST Battery temperature 400A",
-          "description": "Testing only. Possible battery temperature."
-        }
-      ]
-    },
-    {
-      "hdr": "726",
-      "rax": "72E",
-      "cmd": {
         "22": "4027"
       },
       "freq": 3600,
@@ -347,58 +249,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "01": "06"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_1_0106",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 8,
-            "min": -100,
-            "max": 99.21875,
-            "mul": 100,
-            "div": 128,
-            "add": -100,
-            "unit": "percent"
-          },
-          "name": "Short term fuel trim bank 1 test",
-          "description": "Generic SAE short-term fuel trim Bank 1 candidate exposed for Everest diesel comparison testing. Diesel engines may not use petrol-style closed-loop fuel trim, so this may be unsupported or unhelpful.",
-          "suggestedMetric": "shortTermFuelTrim"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "08"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_2_0108",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 8,
-            "min": -100,
-            "max": 99.21875,
-            "mul": 100,
-            "div": 128,
-            "add": -100,
-            "unit": "percent"
-          },
-          "name": "Short term fuel trim bank 2 test",
-          "description": "Generic SAE short-term fuel trim Bank 2 candidate exposed for Everest diesel comparison testing. The 2.0L diesel may not report this like a petrol engine; keep as test-only unless it proves useful.",
-          "suggestedMetric": "shortTermFuelTrim"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "01": "0B"
       },
       "freq": 2,
@@ -516,39 +366,6 @@
           },
           "name": "TEST MAF extended 0210",
           "description": "Testing only. Compare against generic 0110 MAF."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0233"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_BARO_7E0_0233_RAW16_AB",
-          "path": "TESTING.Boost",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST BARO 0233 raw AB",
-          "description": "Testing only. Raw companion for BARO. Possible barometric pressure."
-        },
-        {
-          "id": "EVEREST_TEST_BARO_7E0_0233_CANDIDATE",
-          "path": "TESTING.Boost",
-          "fmt": {
-            "len": 16,
-            "max": 200,
-            "div": 10,
-            "unit": "kilopascal"
-          },
-          "name": "TEST BARO 0233",
-          "description": "Testing only. Possible barometric pressure."
         }
       ]
     },
@@ -674,39 +491,6 @@
           "name": "Accelerator pedal position",
           "description": "Confirmed responding. Showed 0–4% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
           "suggestedMetric": "throttlePosition"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "032E"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_GENERATOR_DESIRED_VOLTAGE_7E0_032E_RAW16_AB",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Generator desired voltage 032E raw AB",
-          "description": "Testing only. Raw companion for Generator desired voltage. Possible smart alternator target voltage."
-        },
-        {
-          "id": "EVEREST_TEST_GENERATOR_DESIRED_VOLTAGE_7E0_032E_CANDIDATE",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 16,
-            "max": 20,
-            "div": 100,
-            "unit": "volts"
-          },
-          "name": "TEST Generator desired voltage 032E",
-          "description": "Testing only. Possible smart alternator target voltage."
         }
       ]
     },
@@ -1210,40 +994,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "1632"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_GENERATOR_COMMAND_DUTY_7E0_1632_RAW16_AB",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Generator command duty 1632 raw AB",
-          "description": "Testing only. Raw companion for Generator command duty. Possible generator command duty cycle."
-        },
-        {
-          "id": "EVEREST_TEST_GENERATOR_COMMAND_DUTY_7E0_1632_CANDIDATE",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "TEST Generator command duty 1632",
-          "description": "Testing only. Possible generator command duty cycle."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "4195"
       },
       "freq": 30,
@@ -1604,38 +1354,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F411"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_REGEN_COMMANDED_7E0_F411_RAW16_AB",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Regen commanded F411 raw AB",
-          "description": "Testing only. Raw companion for Regen commanded. Candidate Ford regen/state PID. Watch during known active regen."
-        },
-        {
-          "id": "EVEREST_TEST_REGEN_COMMANDED_7E0_F411_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST Regen commanded F411",
-          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F412"
       },
       "freq": 10,
@@ -1896,38 +1614,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F453"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_BITFIELD_7E0_F453_RAW16_AB",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status bitfield F453 raw AB",
-          "description": "Testing only. Raw companion for DPF status bitfield. Candidate Ford regen/state PID. Watch during known active regen."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_BITFIELD_7E0_F453_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status bitfield F453",
-          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F45C"
       },
       "freq": 2,
@@ -2001,7 +1687,7 @@
             "unit": "celsius"
           },
           "name": "TEST EGRT F463 Celsius",
-          "description": "Testing only. Responded with plausible low-temperature value during testing. Possible EGRT / EGR manifold temperature candidate. Needs warm/load validation."
+          "description": "Testing only. Responded with plausible low-temperature value during testing. Possible EGRT / EGR manifold temperature candidate. Needs warm/load validation. Latest screenshots: frozen around raw 500 / 10°C; low confidence but retained because it responds."
         },
         {
           "id": "EVEREST_TEST_EGRT_F463_RAW16_AB",
@@ -2012,7 +1698,7 @@
             "unit": "scalar"
           },
           "name": "TEST EGRT F463 raw AB",
-          "description": "Testing only. Raw companion for F463."
+          "description": "Testing only. Raw companion for F463. Latest screenshots: frozen around raw 500 / 10°C; low confidence but retained because it responds."
         }
       ]
     },
@@ -2278,40 +1964,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F476"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_CHARGE_AIR_COOLER_OUTLET_TEMP_7E0_F476_RAW16_AB",
-          "path": "TESTING.Boost",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Charge air cooler outlet temp F476 raw AB",
-          "description": "Testing only. Raw companion for Charge air cooler outlet temp. Possible post-intercooler temperature."
-        },
-        {
-          "id": "EVEREST_TEST_CHARGE_AIR_COOLER_OUTLET_TEMP_7E0_F476_CANDIDATE",
-          "path": "TESTING.Boost",
-          "fmt": {
-            "len": 8,
-            "min": -40,
-            "max": 215,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "TEST Charge air cooler outlet temp F476",
-          "description": "Testing only. Possible post-intercooler temperature."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F478"
       },
       "freq": 10,
@@ -2393,7 +2045,7 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B raw A",
-          "description": "Testing only. Responded during v0.3/v0.3.1 testing with raw A around 127. Possible DPF/regen status or state byte. Keep for future regen comparison."
+          "description": "Testing only. Responded during v0.3/v0.3.1 testing with raw A around 127. Possible DPF/regen status or state byte. Keep for future regen comparison. Latest screenshots: value stayed at raw A 127 / raw AB 32512 outside regen; keep until active regen capture to check state change."
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW16_AB",
@@ -2404,7 +2056,7 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B raw AB",
-          "description": "Testing only. Raw 16-bit companion for 22F48B. Earlier value 32512 appeared to equal 127*256, suggesting the first byte may be the meaningful state."
+          "description": "Testing only. Raw 16-bit companion for 22F48B. Earlier value 32512 appeared to equal 127*256, suggesting the first byte may be the meaningful state. Latest screenshots: value stayed at raw A 127 / raw AB 32512 outside regen; keep until active regen capture to check state change."
         }
       ]
     },
@@ -2814,160 +2466,6 @@
       ]
     },
     {
-      "hdr": "726",
-      "rax": "72E",
-      "cmd": {
-        "22": "2813"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TPMS_FL_726_2813_PSI",
-          "path": "TESTING.Tires",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "psi"
-          },
-          "name": "TEST TPMS Front left 2813",
-          "description": "Testing only. Ranger-derived tyre pressure candidate from 726/72E using raw / 20 PSI. Validate against dash/known tyre pressures before promotion."
-        }
-      ]
-    },
-    {
-      "hdr": "726",
-      "rax": "72E",
-      "cmd": {
-        "22": "2814"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TPMS_FR_726_2814_PSI",
-          "path": "TESTING.Tires",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "psi"
-          },
-          "name": "TEST TPMS Front right 2814",
-          "description": "Testing only. Ranger-derived tyre pressure candidate from 726/72E using raw / 20 PSI. Validate against dash/known tyre pressures before promotion."
-        }
-      ]
-    },
-    {
-      "hdr": "726",
-      "rax": "72E",
-      "cmd": {
-        "22": "2815"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TPMS_RR_726_2815_PSI",
-          "path": "TESTING.Tires",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "psi"
-          },
-          "name": "TEST TPMS Rear right 2815",
-          "description": "Testing only. Ranger-derived tyre pressure candidate from 726/72E using raw / 20 PSI. Validate against dash/known tyre pressures before promotion."
-        }
-      ]
-    },
-    {
-      "hdr": "726",
-      "rax": "72E",
-      "cmd": {
-        "22": "2816"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TPMS_RL_726_2816_PSI",
-          "path": "TESTING.Tires",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "psi"
-          },
-          "name": "TEST TPMS Rear left 2816",
-          "description": "Testing only. Ranger-derived tyre pressure candidate from 726/72E using raw / 20 PSI. Validate against dash/known tyre pressures before promotion."
-        }
-      ]
-    },
-    {
-      "hdr": "726",
-      "rax": "72E",
-      "cmd": {
-        "22": "2817"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TPMS_2817_RAW16_AB",
-          "path": "TESTING.Tires",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST TPMS unknown A 2817 raw AB",
-          "description": "Testing only. Ranger 2024 command_support listed this 726/72E command without a label. Raw companion retained to see whether Everest responds."
-        },
-        {
-          "id": "EVEREST_TEST_TPMS_2817_DIV20_PSI_CANDIDATE",
-          "path": "TESTING.Tires",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "psi"
-          },
-          "name": "TEST TPMS unknown A 2817 div20",
-          "description": "Testing only. Possible tyre-pressure style decode using raw / 20 PSI, included because adjacent Ranger TPMS PIDs use that scaling."
-        }
-      ]
-    },
-    {
-      "hdr": "726",
-      "rax": "72E",
-      "cmd": {
-        "22": "2818"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TPMS_2818_RAW16_AB",
-          "path": "TESTING.Tires",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST TPMS unknown B 2818 raw AB",
-          "description": "Testing only. Ranger 2024 command_support listed this 726/72E command without a label. Raw companion retained to see whether Everest responds."
-        },
-        {
-          "id": "EVEREST_TEST_TPMS_2818_DIV20_PSI_CANDIDATE",
-          "path": "TESTING.Tires",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "psi"
-          },
-          "name": "TEST TPMS unknown B 2818 div20",
-          "description": "Testing only. Possible tyre-pressure style decode using raw / 20 PSI, included because adjacent Ranger TPMS PIDs use that scaling."
-        }
-      ]
-    },
-    {
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
@@ -3152,7 +2650,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rate 015E",
-          "description": "Testing only. SAE/Ranger-supported fuel rate candidate. Formula raw / 20; displayed as scalar because rate unit support is unconfirmed in this JSON pack."
+          "description": "Testing only. Strong direct fuel-rate candidate. Latest screenshots showed plausible live values around 0.3, 1.4, 5.4 and 13.5, likely L/h style behaviour; compare against load/throttle/019D."
         }
       ]
     },
@@ -3175,7 +2673,7 @@
             "unit": "percent"
           },
           "name": "TEST driver demand torque 0161",
-          "description": "Testing only. SAE/Ranger-supported driver demand percent torque. Compare against throttle, engine load and TCC behaviour."
+          "description": "Testing only. Driver demand torque candidate. Latest screenshots showed low values at light/no load and about 89% under demand; strong testing candidate."
         }
       ]
     },
@@ -3198,7 +2696,7 @@
             "unit": "percent"
           },
           "name": "TEST actual engine torque 0162",
-          "description": "Testing only. SAE/Ranger-supported actual engine percent torque. Compare against engine load, throttle, boost and transmission behaviour."
+          "description": "Testing only. Actual engine torque candidate. Latest screenshots showed 0%, 7%, 48% and 86%, tracking load plausibly; strong testing candidate."
         }
       ]
     },
@@ -3219,7 +2717,7 @@
             "unit": "newtonMeters"
           },
           "name": "TEST engine reference torque 0163",
-          "description": "Testing only. SAE/Ranger-supported engine reference torque. May be static or semi-static; validate plausibility."
+          "description": "Testing only. Engine reference torque candidate. Latest screenshots showed stable 500 N·m, plausible for the 2.0 Bi-Turbo diesel; likely reference/max torque value."
         }
       ]
     },
@@ -3240,7 +2738,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rate alt 019D raw AB",
-          "description": "Testing only. Raw companion for Ranger-supported alternate fuel-rate packet."
+          "description": "Testing only. Raw companion for 019D fuel-rate alternate. Latest screenshots show raw values 3, 29, 62, 155 tracking fuel demand/load."
         },
         {
           "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_DIV50_CANDIDATE",
@@ -3252,7 +2750,43 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rate alt 019D div50",
-          "description": "Testing only. First 16-bit value from Ranger 019D response; Ranger examples decode raw / 50 for alternate fuel rate."
+          "description": "Testing only. Current 019D fuel-rate alternate scaling. Latest screenshots show raw/50 tracks load but reads lower than 015E; keep alongside div10/div20/div100."
+        },
+        {
+          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_DIV10_CANDIDATE",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rate alt 019D div10",
+          "description": "Testing only. Alternate fuel-rate scaling for 019D; latest screenshots show raw values tracking fuel rate/load strongly."
+        },
+        {
+          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_DIV20_CANDIDATE",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rate alt 019D div20",
+          "description": "Testing only. Alternate fuel-rate scaling for 019D; compare against 015E fuel-rate candidate."
+        },
+        {
+          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_DIV100_CANDIDATE",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rate alt 019D div100",
+          "description": "Testing only. Alternate fuel-rate scaling for 019D; compare against 015E and vehicle load."
         }
       ]
     },
@@ -3273,7 +2807,7 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust flow 019E raw AB",
-          "description": "Testing only. Raw companion for Ranger-supported exhaust-flow rate."
+          "description": "Testing only. Raw companion for 019E exhaust-flow candidate. Latest screenshots show raw values moving strongly with load/flow."
         },
         {
           "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV5_CANDIDATE",
@@ -3285,7 +2819,43 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust flow 019E div5",
-          "description": "Testing only. Ranger examples decode raw / 5. Useful for regen/load correlation if Everest responds."
+          "description": "Testing only. Exhaust-flow 019E raw/5 candidate. Latest screenshots show live values 44.4, 100, 178, 339 from raw 222, 501, 890, 1697; strong load/flow candidate."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV10_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E div10",
+          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV20_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E div20",
+          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV50_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 1310.7,
+            "div": 50,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E div50",
+          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
         }
       ]
     },
@@ -3306,7 +2876,7 @@
             "unit": "scalar"
           },
           "name": "TEST EGR command actual packet 0169 raw AB",
-          "description": "Testing only. Ranger-supported EGR command/actual/error packet. Raw-only scout because useful values are not in byte A."
+          "description": "Testing only. Ranger-supported EGR command/actual packet raw scout. Latest screenshots show live raw values around 1792–1883; keep for future packet decoding."
         }
       ]
     },
@@ -3348,7 +2918,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D raw AB",
-          "description": "Testing only. Ranger-supported fuel rail pressure/command/temp packet. Raw-only scout because useful values are offset after support bytes."
+          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding."
         }
       ]
     },
@@ -3369,7 +2939,7 @@
             "unit": "scalar"
           },
           "name": "TEST boost pressure packet 0170 raw AB",
-          "description": "Testing only. Ranger-supported boost pressure command/actual packet. Raw-only scout because useful values are offset after support bytes."
+          "description": "Testing only. Ranger-supported boost pressure packet raw scout. Latest screenshots show live raw values around 1805–1829; keep for future packet decoding."
         }
       ]
     }
