@@ -161,7 +161,7 @@
             "unit": "percent"
           },
           "name": "Battery charge 4028 div255",
-          "description": "Confirmed responding. Formula A*100/255; latest test showed about 32\u201333%. Kept as secondary battery charge value."
+          "description": "Confirmed responding. Formula A*100/255; latest test showed about 32–33%. Kept as secondary battery charge value."
         }
       ]
     },
@@ -672,7 +672,7 @@
             "unit": "percent"
           },
           "name": "Accelerator pedal position",
-          "description": "Confirmed responding. Showed 0\u20134% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
+          "description": "Confirmed responding. Showed 0–4% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
           "suggestedMetric": "throttlePosition"
         }
       ]
@@ -1987,7 +1987,7 @@
             "unit": "newtonMeters"
           },
           "name": "Engine reference torque",
-          "description": "Confirmed responding. Raw N\u00b7m value."
+          "description": "Confirmed responding. Raw N·m value."
         },
         {
           "id": "EVEREST_TEST_EGRT_F463_CELSIUS",
@@ -2119,16 +2119,64 @@
           "description": "Testing only. Possible VGT/turbo vane commanded position."
         },
         {
-          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV32_768",
+          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV100",
           "path": "TESTING.Boost",
           "fmt": {
             "len": 16,
-            "max": 100,
-            "div": 32.768,
+            "max": 655.35,
+            "div": 100,
             "unit": "percent"
           },
-          "name": "TEST VGT commanded F470 div32.768",
-          "description": "Testing only. Alternate 16-bit VGT scaling added after live screenshots showed raw AB around 1800\u20131950 while the previous 8-bit-style candidate displayed about 3%. raw/32.768 gives a more plausible 55\u201360% VGT range. Keep raw AB for comparison."
+          "name": "TEST VGT commanded F470 div100",
+          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 100 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV64",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 1023.984375,
+            "div": 64,
+            "unit": "percent"
+          },
+          "name": "TEST VGT commanded F470 div64",
+          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 64 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV32",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 2047.96875,
+            "div": 32,
+            "unit": "percent"
+          },
+          "name": "TEST VGT commanded F470 div32",
+          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 32 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV20",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "percent"
+          },
+          "name": "TEST VGT commanded F470 div20",
+          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 20 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV10",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "scalar"
+          },
+          "name": "TEST VGT commanded F470 div10",
+          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 10 scalar candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
         }
       ]
     },
@@ -2165,16 +2213,64 @@
           "description": "Testing only. Possible VGT/turbo vane actual position."
         },
         {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV32_768",
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV100",
           "path": "TESTING.Boost",
           "fmt": {
             "len": 16,
-            "max": 100,
-            "div": 32.768,
+            "max": 655.35,
+            "div": 100,
             "unit": "percent"
           },
-          "name": "TEST VGT actual F471 div32.768",
-          "description": "Testing only. Alternate 16-bit VGT scaling added after live screenshots showed raw AB around 1800\u20131950 while the previous 8-bit-style candidate displayed about 3%. raw/32.768 gives a more plausible 55\u201360% VGT range. Keep raw AB for comparison."
+          "name": "TEST VGT actual F471 div100",
+          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 100 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV64",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 1023.984375,
+            "div": 64,
+            "unit": "percent"
+          },
+          "name": "TEST VGT actual F471 div64",
+          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 64 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV32",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 2047.96875,
+            "div": 32,
+            "unit": "percent"
+          },
+          "name": "TEST VGT actual F471 div32",
+          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 32 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV20",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "percent"
+          },
+          "name": "TEST VGT actual F471 div20",
+          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 20 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV10",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "scalar"
+          },
+          "name": "TEST VGT actual F471 div10",
+          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 10 scalar candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
         }
       ]
     },
@@ -2714,6 +2810,566 @@
           },
           "name": "TEST Rear locker state C463",
           "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "2813"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TPMS_FL_726_2813_PSI",
+          "path": "TESTING.Tires",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "psi"
+          },
+          "name": "TEST TPMS Front left 2813",
+          "description": "Testing only. Ranger-derived tyre pressure candidate from 726/72E using raw / 20 PSI. Validate against dash/known tyre pressures before promotion."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "2814"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TPMS_FR_726_2814_PSI",
+          "path": "TESTING.Tires",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "psi"
+          },
+          "name": "TEST TPMS Front right 2814",
+          "description": "Testing only. Ranger-derived tyre pressure candidate from 726/72E using raw / 20 PSI. Validate against dash/known tyre pressures before promotion."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "2815"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TPMS_RR_726_2815_PSI",
+          "path": "TESTING.Tires",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "psi"
+          },
+          "name": "TEST TPMS Rear right 2815",
+          "description": "Testing only. Ranger-derived tyre pressure candidate from 726/72E using raw / 20 PSI. Validate against dash/known tyre pressures before promotion."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "2816"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TPMS_RL_726_2816_PSI",
+          "path": "TESTING.Tires",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "psi"
+          },
+          "name": "TEST TPMS Rear left 2816",
+          "description": "Testing only. Ranger-derived tyre pressure candidate from 726/72E using raw / 20 PSI. Validate against dash/known tyre pressures before promotion."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "2817"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TPMS_2817_RAW16_AB",
+          "path": "TESTING.Tires",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST TPMS unknown A 2817 raw AB",
+          "description": "Testing only. Ranger 2024 command_support listed this 726/72E command without a label. Raw companion retained to see whether Everest responds."
+        },
+        {
+          "id": "EVEREST_TEST_TPMS_2817_DIV20_PSI_CANDIDATE",
+          "path": "TESTING.Tires",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "psi"
+          },
+          "name": "TEST TPMS unknown A 2817 div20",
+          "description": "Testing only. Possible tyre-pressure style decode using raw / 20 PSI, included because adjacent Ranger TPMS PIDs use that scaling."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "2818"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TPMS_2818_RAW16_AB",
+          "path": "TESTING.Tires",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST TPMS unknown B 2818 raw AB",
+          "description": "Testing only. Ranger 2024 command_support listed this 726/72E command without a label. Raw companion retained to see whether Everest responds."
+        },
+        {
+          "id": "EVEREST_TEST_TPMS_2818_DIV20_PSI_CANDIDATE",
+          "path": "TESTING.Tires",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "psi"
+          },
+          "name": "TEST TPMS unknown B 2818 div20",
+          "description": "Testing only. Possible tyre-pressure style decode using raw / 20 PSI, included because adjacent Ranger TPMS PIDs use that scaling."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1E12"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_RANGER_GEAR_7E0_1E12",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 8,
+            "map": {
+              "1": {
+                "description": "Gear 1",
+                "value": "1"
+              },
+              "2": {
+                "description": "Gear 2",
+                "value": "2"
+              },
+              "3": {
+                "description": "Gear 3",
+                "value": "3"
+              },
+              "4": {
+                "description": "Gear 4",
+                "value": "4"
+              },
+              "5": {
+                "description": "Gear 5",
+                "value": "5"
+              },
+              "6": {
+                "description": "Gear 6",
+                "value": "6"
+              },
+              "7": {
+                "description": "Gear 7",
+                "value": "7"
+              },
+              "8": {
+                "description": "Gear 8",
+                "value": "8"
+              },
+              "9": {
+                "description": "Gear 9",
+                "value": "9"
+              },
+              "10": {
+                "description": "Gear 10",
+                "value": "10"
+              }
+            }
+          },
+          "name": "TEST Ranger current gear 1E12",
+          "description": "Testing only. Ranger-derived 7E0 current gear map 1-10. Compare against Everest 7E1 gear signals."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1E1C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_RANGER_TRANS_TEMP_7E0_1E1C_DIV16",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 255,
+            "div": 16,
+            "unit": "celsius"
+          },
+          "name": "TEST Ranger trans temp 7E0 1E1C div16",
+          "description": "Testing only. Ranger-derived 7E0 transmission oil temperature. Compare against Everest confirmed 7E1 1E1C div16 production signal."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1E23"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_RANGER_SHIFTER_STATE_7E0_1E23",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 8,
+            "map": {
+              "10": {
+                "description": "Manual",
+                "value": "MANUAL"
+              },
+              "46": {
+                "description": "Drive",
+                "value": "DRIVE"
+              },
+              "50": {
+                "description": "Neutral",
+                "value": "NEUTRAL"
+              },
+              "60": {
+                "description": "Reverse",
+                "value": "REVERSE"
+              },
+              "70": {
+                "description": "Park",
+                "value": "PARK"
+              }
+            }
+          },
+          "name": "TEST Ranger shifter state 1E23",
+          "description": "Testing only. Ranger-derived shifter-state map. Validate P/R/N/D/M against actual selected shifter position."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "33"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BARO_0133_KPA",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilopascal"
+          },
+          "name": "TEST BARO 0133",
+          "description": "Testing only. SAE/Ranger-supported barometric pressure. Compare against 220233 BARO candidate."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "42"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_CONTROL_MODULE_VOLTAGE_0142",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 16,
+            "max": 65.535,
+            "div": 1000,
+            "unit": "volts"
+          },
+          "name": "TEST control module voltage 0142",
+          "description": "Testing only. SAE/Ranger-supported control module voltage. Compare against aux battery voltage 402A and alternator behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "5E"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_FUEL_RATE_015E_LPH_CANDIDATE",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rate 015E",
+          "description": "Testing only. SAE/Ranger-supported fuel rate candidate. Formula raw / 20; displayed as scalar because rate unit support is unconfirmed in this JSON pack."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "61"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DRIVER_DEMAND_TORQUE_0161",
+          "path": "TESTING.Misc",
+          "fmt": {
+            "len": 8,
+            "min": -125,
+            "max": 130,
+            "add": -125,
+            "unit": "percent"
+          },
+          "name": "TEST driver demand torque 0161",
+          "description": "Testing only. SAE/Ranger-supported driver demand percent torque. Compare against throttle, engine load and TCC behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "62"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ACTUAL_ENGINE_TORQUE_0162",
+          "path": "TESTING.Misc",
+          "fmt": {
+            "len": 8,
+            "min": -125,
+            "max": 130,
+            "add": -125,
+            "unit": "percent"
+          },
+          "name": "TEST actual engine torque 0162",
+          "description": "Testing only. SAE/Ranger-supported actual engine percent torque. Compare against engine load, throttle, boost and transmission behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "63"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ENGINE_REFERENCE_TORQUE_0163",
+          "path": "TESTING.Misc",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "newtonMeters"
+          },
+          "name": "TEST engine reference torque 0163",
+          "description": "Testing only. SAE/Ranger-supported engine reference torque. May be static or semi-static; validate plausibility."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "9D"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_RAW16_AB",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rate alt 019D raw AB",
+          "description": "Testing only. Raw companion for Ranger-supported alternate fuel-rate packet."
+        },
+        {
+          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_DIV50_CANDIDATE",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 1310.7,
+            "div": 50,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rate alt 019D div50",
+          "description": "Testing only. First 16-bit value from Ranger 019D response; Ranger examples decode raw / 50 for alternate fuel rate."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "9E"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E raw AB",
+          "description": "Testing only. Raw companion for Ranger-supported exhaust-flow rate."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV5_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 13107,
+            "div": 5,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E div5",
+          "description": "Testing only. Ranger examples decode raw / 5. Useful for regen/load correlation if Everest responds."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "69"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_69_RAW16_AB",
+          "path": "TESTING.Misc",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST EGR command actual packet 0169 raw AB",
+          "description": "Testing only. Ranger-supported EGR command/actual/error packet. Raw-only scout because useful values are not in byte A."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "6B"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_6B_RAW16_AB",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST EGR temperature packet 016B raw AB",
+          "description": "Testing only. Ranger-supported EGR temperature packet. Raw-only scout because useful temperatures are offset after support bytes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "6D"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_6D_RAW16_AB",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rail packet 016D raw AB",
+          "description": "Testing only. Ranger-supported fuel rail pressure/command/temp packet. Raw-only scout because useful values are offset after support bytes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "70"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_70_RAW16_AB",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST boost pressure packet 0170 raw AB",
+          "description": "Testing only. Ranger-supported boost pressure command/actual packet. Raw-only scout because useful values are offset after support bytes."
         }
       ]
     }
