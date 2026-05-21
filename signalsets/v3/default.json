@@ -2055,76 +2055,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F46B"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_EGT12_7E0_F46B_RAW16_AB",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST EGT12 F46B raw AB",
-          "description": "Testing only. Raw companion for EGT12. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
-        },
-        {
-          "id": "EVEREST_TEST_EGT12_7E0_F46B_CANDIDATE",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "len": 16,
-            "min": -40,
-            "max": 1000,
-            "mul": 0.1,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "TEST EGT12 F46B",
-          "description": "Testing only. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F46C"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_RAW16_AB",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST EGT13 DPF inlet F46C raw AB",
-          "description": "Testing only. Raw companion for EGT13 DPF inlet. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
-        },
-        {
-          "id": "EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_CANDIDATE",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "len": 16,
-            "min": -40,
-            "max": 1000,
-            "mul": 0.1,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "TEST EGT13 DPF inlet F46C",
-          "description": "Testing only. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F46D"
       },
       "freq": 5,
@@ -2187,6 +2117,18 @@
           },
           "name": "TEST VGT commanded F470",
           "description": "Testing only. Possible VGT/turbo vane commanded position."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV32_768",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "div": 32.768,
+            "unit": "percent"
+          },
+          "name": "TEST VGT commanded F470 div32.768",
+          "description": "Testing only. Alternate 16-bit VGT scaling added after live screenshots showed raw AB around 1800\u20131950 while the previous 8-bit-style candidate displayed about 3%. raw/32.768 gives a more plausible 55\u201360% VGT range. Keep raw AB for comparison."
         }
       ]
     },
@@ -2221,6 +2163,18 @@
           },
           "name": "TEST VGT actual F471",
           "description": "Testing only. Possible VGT/turbo vane actual position."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV32_768",
+          "path": "TESTING.Boost",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "div": 32.768,
+            "unit": "percent"
+          },
+          "name": "TEST VGT actual F471 div32.768",
+          "description": "Testing only. Alternate 16-bit VGT scaling added after live screenshots showed raw AB around 1800\u20131950 while the previous 8-bit-style candidate displayed about 3%. raw/32.768 gives a more plausible 55\u201360% VGT range. Keep raw AB for comparison."
         }
       ]
     },
@@ -2297,39 +2251,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F479"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_RAW16_AB",
-          "path": "TESTING.Boost",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Turbo inlet pressure F479 raw AB",
-          "description": "Testing only. Raw companion for Turbo inlet pressure. Possible turbo inlet pressure. Conflicts with some alternator claims, so validate carefully."
-        },
-        {
-          "id": "EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_CANDIDATE",
-          "path": "TESTING.Boost",
-          "fmt": {
-            "len": 16,
-            "max": 300,
-            "div": 10,
-            "unit": "kilopascal"
-          },
-          "name": "TEST Turbo inlet pressure F479",
-          "description": "Testing only. Possible turbo inlet pressure. Conflicts with some alternator claims, so validate carefully."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F47A"
       },
       "freq": 10,
@@ -2388,40 +2309,6 @@
           },
           "name": "TEST DPF status F48B raw AB",
           "description": "Testing only. Raw 16-bit companion for 22F48B. Earlier value 32512 appeared to equal 127*256, suggesting the first byte may be the meaningful state."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F48D"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TURBO_BYPASS_7E0_F48D_RAW16_AB",
-          "path": "TESTING.Boost",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Turbo bypass F48D raw AB",
-          "description": "Testing only. Raw companion for Turbo bypass. Possible bi-turbo bypass valve command."
-        },
-        {
-          "id": "EVEREST_TEST_TURBO_BYPASS_7E0_F48D_CANDIDATE",
-          "path": "TESTING.Boost",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "TEST Turbo bypass F48D",
-          "description": "Testing only. Possible bi-turbo bypass valve command."
         }
       ]
     },
