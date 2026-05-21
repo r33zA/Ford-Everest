@@ -2,7 +2,7 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-05-17 v0.6.4 DPF fullness promoted  
+Version: 2026-05-22 v0.7.2 testing refinement  
 Aligned default file: `default_everest_my25_25_v0_6_4_dpf_promoted.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
@@ -524,3 +524,209 @@ Added:
 3. Transmission page: compare Ranger `7E0` mirrors against existing Everest `7E1` gear/temp signals.
 4. Battery page: compare `0142` module voltage against `402A` aux battery voltage and alternator current.
 5. Regen/load page: watch `019E` exhaust flow against EGTs, engine load, DPF fullness and regen events.
+
+
+---
+
+# v0.7.2 — Live testing refinement and screenshot-space cleanup
+
+Aligned default file: `default_everest_my25_25_v0_7_2_testing_refinement.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built from the latest working v0.7.1 `default.json`.
+- Preserved all production / stable signals unchanged.
+- Analysed latest live screenshot batch covering Regen, Boost, Fuel, Misc, Battery and Tires pages.
+- Removed obvious repeated negative-response / out-of-range candidates from active testing to reduce screenshot clutter.
+- Kept live but weird values under root `TESTING.*` for continued validation.
+- Added alternate scaling candidates for the strongest new live values:
+  - `019D` fuel-rate alternate
+  - `019E` exhaust-flow candidate
+- Kept VGT alternate scaling candidates from v0.7.1 because screenshots confirm the raw 16-bit values are live and useful.
+- No signals were promoted to production in this update.
+
+## Latest screenshot findings
+
+### Strong testing — keep
+
+| Area | PID | Finding | Decision |
+| --- | --- | --- | --- |
+| Fuel | `01015E` | Responded with plausible fuel-rate-style values around `0.3`, `1.4`, `5.4`, `13.5`. | Keep as strong direct fuel-rate candidate. |
+| Fuel | `01019D` | Raw values `3`, `29`, `62`, `155` tracked load/fuel demand; existing `raw / 50` moved with it. | Keep raw and add alternate scaling candidates. |
+| Regen / exhaust flow | `01019E` | Raw values `222`, `501`, `890`, `1697`; `raw / 5` gave `44.4`, `100`, `178`, `339`. | Keep and add alternate scaling candidates. |
+| Engine / torque | `010161` | Driver demand torque showed low values and high demand around `89%`. | Strong testing candidate. |
+| Engine / torque | `010162` | Actual engine torque showed `0%`, `7%`, `48%`, `86%`. | Strong testing candidate. |
+| Engine / torque | `010163` | Engine reference torque held around `500 N·m`. | Strong testing candidate / likely reference torque. |
+| Boost / VGT | `22F470` / `22F471` | Raw 16-bit values are live; original 8-bit candidate stays around fake `3%`. | Keep raw and alternate div10/div20/div32/div64/div100 candidates. |
+
+### Alive scouts — keep
+
+| Area | PID | Finding | Decision |
+| --- | --- | --- | --- |
+| Regen | `22F48B` | Stayed at raw A `127` / raw AB `32512` outside active regen. | Keep until active regen capture. |
+| Boost | `010170` | Raw AB around `1805–1829`; alive but not yet decoded. | Keep raw scout. |
+| Fuel | `01016D` | Raw AB around `1801–1853`; alive but not yet decoded. | Keep raw scout. |
+| EGR / packet | `010169` | Raw AB around `1792–1883`; alive but not yet decoded. | Keep raw scout. |
+| Misc / EGRT | `22F463` | Test EGRT decode stayed around raw `500` / `10°C`; production engine-reference-torque signal remains valid. | Keep test EGRT as low-confidence only. |
+
+### Removed / shelved from active JSON
+
+These repeatedly showed `Negative response. Code: Out of range` in the latest screenshots and were removed from active JSON to save screen space.
+
+| Area | PID | Removed signals |
+| --- | --- | --- |
+| Fuel | `0106` | Short-term fuel trim bank 1 test. |
+| Fuel | `0108` | Short-term fuel trim bank 2 test. |
+| Boost | `220233` | BARO 0233 candidate and raw companion. |
+| Boost | `22F476` | Charge-air-cooler outlet temp candidate and raw companion. |
+| Regen | `22F411` | Regen commanded candidate and raw companion. |
+| Regen | `22F453` | DPF status bitfield candidate and raw companion. |
+| Battery | `224006` | Battery SOH candidate and raw companion. |
+| Battery | `224007` | Battery internal resistance candidate and raw companion. |
+| Battery | `22400A` | Battery temperature candidate and raw companion. |
+| Battery | `22032E` | Generator desired voltage candidate and raw companion. |
+| Battery | `221632` | Generator command duty candidate and raw companion. |
+| Tires | `222813` | TPMS front left candidate. |
+| Tires | `222814` | TPMS front right candidate. |
+| Tires | `222815` | TPMS rear right candidate. |
+| Tires | `222816` | TPMS rear left candidate. |
+| Tires | `222817` | TPMS unknown A candidate and raw companion. |
+| Tires | `222818` | TPMS unknown B candidate and raw companion. |
+
+## Added in v0.7.2
+
+### TESTING.Fuel
+
+| PID | Signal | Purpose |
+| --- | --- | --- |
+| `01019D` | `raw / 10` | Alternate fuel-rate scaling candidate. |
+| `01019D` | `raw / 20` | Alternate fuel-rate scaling candidate. |
+| `01019D` | `raw / 100` | Alternate fuel-rate scaling candidate. |
+
+Existing retained:
+
+- `01019D` raw AB
+- `01019D` `raw / 50`
+- `01015E` direct fuel-rate candidate
+
+### TESTING.Regen
+
+| PID | Signal | Purpose |
+| --- | --- | --- |
+| `01019E` | `raw / 10` | Alternate exhaust-flow scaling candidate. |
+| `01019E` | `raw / 20` | Alternate exhaust-flow scaling candidate. |
+| `01019E` | `raw / 50` | Alternate exhaust-flow scaling candidate. |
+
+Existing retained:
+
+- `01019E` raw AB
+- `01019E` `raw / 5`
+
+## v0.7.2 validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in updated default.json | 104 |
+| Signals in updated default.json | 154 |
+| Root TESTING signals | 88 |
+| Signals with suggestedMetric | 17 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Empty/orphan command entries | 0 |
+| Non-root test signal paths | 0 |
+| JSON validation | Passed |
+| Production signals modified | 0 |
+
+## Validation summary
+
+- Commands: 104
+- Signals: 154
+- Testing signals: 88
+- Duplicate IDs: 0
+- JSON validation: Passed
+- Production signals modified: 0
+- Removed signals: 28
+- Added signals: 6
+
+## Added signal IDs
+
+```text
+EVEREST_TEST_FUEL_RATE_ALT_019D_DIV10_CANDIDATE
+EVEREST_TEST_FUEL_RATE_ALT_019D_DIV20_CANDIDATE
+EVEREST_TEST_FUEL_RATE_ALT_019D_DIV100_CANDIDATE
+EVEREST_TEST_EXHAUST_FLOW_019E_DIV10_CANDIDATE
+EVEREST_TEST_EXHAUST_FLOW_019E_DIV20_CANDIDATE
+EVEREST_TEST_EXHAUST_FLOW_019E_DIV50_CANDIDATE
+```
+
+## Removed signal IDs
+
+```text
+EVEREST_TEST_BATTERY_SOH_726_4006_RAW16_AB
+EVEREST_TEST_BATTERY_SOH_726_4006_CANDIDATE
+EVEREST_TEST_BATTERY_INTERNAL_RESISTANCE_726_4007_RAW16_AB
+EVEREST_TEST_BATTERY_INTERNAL_RESISTANCE_726_4007_CANDIDATE
+EVEREST_TEST_BATTERY_TEMPERATURE_726_400A_RAW16_AB
+EVEREST_TEST_BATTERY_TEMPERATURE_726_400A_CANDIDATE
+EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_1_0106
+EVEREST_TEST_SHORT_TERM_FUEL_TRIM_BANK_2_0108
+EVEREST_TEST_BARO_7E0_0233_RAW16_AB
+EVEREST_TEST_BARO_7E0_0233_CANDIDATE
+EVEREST_TEST_GENERATOR_DESIRED_VOLTAGE_7E0_032E_RAW16_AB
+EVEREST_TEST_GENERATOR_DESIRED_VOLTAGE_7E0_032E_CANDIDATE
+EVEREST_TEST_GENERATOR_COMMAND_DUTY_7E0_1632_RAW16_AB
+EVEREST_TEST_GENERATOR_COMMAND_DUTY_7E0_1632_CANDIDATE
+EVEREST_TEST_REGEN_COMMANDED_7E0_F411_RAW16_AB
+EVEREST_TEST_REGEN_COMMANDED_7E0_F411_CANDIDATE
+EVEREST_TEST_DPF_STATUS_BITFIELD_7E0_F453_RAW16_AB
+EVEREST_TEST_DPF_STATUS_BITFIELD_7E0_F453_CANDIDATE
+EVEREST_TEST_CHARGE_AIR_COOLER_OUTLET_TEMP_7E0_F476_RAW16_AB
+EVEREST_TEST_CHARGE_AIR_COOLER_OUTLET_TEMP_7E0_F476_CANDIDATE
+EVEREST_TEST_TPMS_FL_726_2813_PSI
+EVEREST_TEST_TPMS_FR_726_2814_PSI
+EVEREST_TEST_TPMS_RR_726_2815_PSI
+EVEREST_TEST_TPMS_RL_726_2816_PSI
+EVEREST_TEST_TPMS_2817_RAW16_AB
+EVEREST_TEST_TPMS_2817_DIV20_PSI_CANDIDATE
+EVEREST_TEST_TPMS_2818_RAW16_AB
+EVEREST_TEST_TPMS_2818_DIV20_PSI_CANDIDATE
+```
+
+## Next validation targets
+
+1. Fuel page:
+   - Compare `015E` against `019D` div10/div20/div50/div100 during idle, cruise and moderate acceleration.
+   - The best scaling should rise and fall naturally with throttle/load and return low at idle/coast.
+
+2. Regen / exhaust flow page:
+   - Compare `019E` div5/div10/div20/div50 against engine load, RPM, EGTs and DPF fullness.
+   - Watch closely during an active regen.
+
+3. VGT page:
+   - Continue comparing `F470` and `F471` div20/div32/div64/div100.
+   - Current best candidates remain div32/div64/div100 until throttle/load correlation proves one.
+
+4. Torque page:
+   - Compare `0161` driver demand torque and `0162` actual engine torque against accelerator pedal, engine load, boost and fuel rate.
+
+5. Regen state:
+   - Keep `F48B` until an active regen confirms whether it changes from raw A `127` / raw AB `32512`.
+
+## Commit message
+
+```text
+Refine Everest TESTING pack from latest live captures
+```
+
+## Extended description
+
+```text
+Updated the Ford Everest MY25.25 PID testing pack from the latest live screenshot batch.
+
+This refinement keeps live and useful Ranger-derived candidates, adds alternate scaling for fuel-rate and exhaust-flow candidates, and removes repeated negative-response items that were wasting screenshot space.
+
+Strong retained candidates include fuel rate 015E, fuel-rate alternate 019D, exhaust flow 019E, driver demand torque 0161, actual engine torque 0162, engine reference torque 0163, VGT F470/F471 alternate scaling, and live raw scouts for 0169/016D/0170.
+
+No production or stable signals were modified.
+All experimental work remains under root TESTING.*.
+```
