@@ -392,86 +392,135 @@ This file should remain the single source of truth for Ford Everest MY25.25 PID 
 
 ---
 
-# v0.7.1 — Testing cleanup and VGT scaling pass
+# v0.7.1 — Ranger-derived testing expansion and screenshot cleanup
 
-Aligned default file: `default_everest_my25_25_v0_7_1_testing_cleanup.json`
+Aligned default file: `default_everest_my25_25_v0_7_1_ranger_testing_expansion.json` / `signalsets/v3/default.json` target
 
 ## Update focus
 
-- Built from latest uploaded `default(2).json`.
-- Removed repeatedly out-of-range test PIDs:
-  - `22F46B`
-  - `22F46C`
-  - `22F479`
-  - `22F48D`
-- Added alternate 16-bit scaling candidates for VGT:
-  - `EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV32_768`
-  - `EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV32_768`
-- Preserved raw AB companions for `F470` and `F471`.
-- Preserved production signals unchanged.
-- Root `TESTING.*` rule preserved.
+- Built from the latest uploaded working Everest `default.json`.
+- Used the uploaded latest Ranger `default.json` and 2024/2025 Ranger `command_support` files as test/validation sources only.
+- Preserved production/stable Everest signals.
+- Added Ranger-derived candidates only under root `TESTING.*`.
+- Added alternate VGT 16-bit scaling candidates for `22F470` and `22F471` because raw AB moved while the current A-byte percent candidate stayed around 3%.
+- Shelved obvious repeated out-of-range screenshot clutter from active JSON.
+- Kept useful/weird/alive values in TESTING rather than over-cleaning.
 
-## Decisions from v0.7.0 screenshots
+## Screenshot validation batch — 2026-05-21
 
-| PID | Result | Decision |
+### Strong testing / keep active
+
+| Area | PID | Evidence / decision |
 | --- | --- | --- |
-| `22F46B` | Negative response / out of range | Removed |
-| `22F46C` | Negative response / out of range | Removed |
-| `22F479` | Negative response / out of range | Removed |
-| `22F48D` | Negative response / out of range | Removed |
-| `22F470` | Responding, raw around 1800, old scaling around 3% | Keep; add div32.768 scaling |
-| `22F471` | Responding, raw around 1800–1950, old scaling around 3% | Keep; add div32.768 scaling |
-| `22F46A` | Responding with plausible EGT values | Keep |
-| `22F46D` | Responding with plausible EGT values | Keep |
-| `22F478` | Tracks close to F46D | Keep |
-| `221E35` | Responding with plausible desired TCC slip | Keep |
-| `221E3C` | Responding with plausible TCC pressure/command values | Keep |
+| EGT | `22F46A` | Responded and warmed from about 44°C to 62.3°C. Looks like a real EGT/temperature sensor. |
+| EGT | `22F46D` | Responded around 140–144°C, raw around 1801–1844. Formula `raw * 0.1 - 40` fits the observed values well. |
+| EGT | `22F478` | Responded around 140°C and closely tracked `F46D`; keep as possible multi-EGT/duplicate comparison. |
+| Transmission | `221E35` | Desired slip responded around 2.75–4.25 rpm; very plausible for near-locked TCC behaviour. |
+| Transmission | `221E3C` | Commanded pressure responded and moved with raw around 118–289; strong live TCC command/pressure candidate. |
+| Boost | `22F470` | VGT commanded raw moved around 1820 while A-byte display stayed ~3%; PID looks alive, current scaling suspect. |
+| Boost | `22F471` | VGT actual raw moved around 1900 while A-byte display stayed ~3%; PID looks alive, current scaling suspect. |
 
-## Sanity-check snapshot
+### Shelved from active JSON
+
+| PID | Header | Signal IDs | Reason |
+| --- | --- | --- | --- |
+| `22F46B` | `7E0→7E8` | `EVEREST_TEST_EGT12_7E0_F46B_RAW16_AB, EVEREST_TEST_EGT12_7E0_F46B_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
+| `22F46C` | `7E0→7E8` | `EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_RAW16_AB, EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
+| `22F479` | `7E0→7E8` | `EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_RAW16_AB, EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
+| `22F48D` | `7E0→7E8` | `EVEREST_TEST_TURBO_BYPASS_7E0_F48D_RAW16_AB, EVEREST_TEST_TURBO_BYPASS_7E0_F48D_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
+
+## Ranger-derived additions
+
+### TESTING.Tires
+
+Added tyre-pressure candidates from Ranger `726→72E` commands:
+
+| Position / purpose | PID | Formula |
+| --- | --- | --- |
+| Front left tyre pressure | `222813` | `raw / 20` PSI |
+| Front right tyre pressure | `222814` | `raw / 20` PSI |
+| Rear right tyre pressure | `222815` | `raw / 20` PSI |
+| Rear left tyre pressure | `222816` | `raw / 20` PSI |
+| Unknown TPMS-adjacent A | `222817` | raw AB + `raw / 20` PSI candidate |
+| Unknown TPMS-adjacent B | `222818` | raw AB + `raw / 20` PSI candidate |
+
+### TESTING.Transmission
+
+Added Ranger 7E0 mirror candidates:
+
+| PID | Candidate | Purpose |
+| --- | --- | --- |
+| `221E12` | Current gear map 1–10 | Compare with existing Everest 7E1 gear signals. |
+| `221E1C` | Transmission temperature `raw / 16` | Compare with confirmed Everest 7E1 `1E1C div16`. |
+| `221E23` | Shifter state map | Validate P/R/N/D/M against actual selected shifter position. |
+
+### TESTING.Boost
+
+Added:
+
+| PID | Candidate | Purpose |
+| --- | --- | --- |
+| `010133` | BARO | Compare against existing `220233` BARO candidate. |
+| `010170` | Ranger boost pressure packet raw AB | Raw-only scout; useful boost actual/command values are offset after support bytes in Ranger examples. |
+| `22F470` | VGT commanded alternate scalings | Added `/100`, `/64`, `/32`, `/20`, `/10`. |
+| `22F471` | VGT actual alternate scalings | Added `/100`, `/64`, `/32`, `/20`, `/10`. |
+
+### TESTING.Battery
+
+| PID | Candidate | Purpose |
+| --- | --- | --- |
+| `010142` | Control module voltage `raw / 1000` | Compare against aux battery voltage `22402A` and smart-alternator behaviour. |
+
+### TESTING.Fuel
+
+| PID | Candidate | Purpose |
+| --- | --- | --- |
+| `01015E` | Fuel rate `raw / 20` | Ranger-supported fuel-rate candidate. |
+| `01019D` | Alternate fuel rate raw AB + `raw / 50` | Ranger-supported alternate fuel-rate packet first value. |
+| `01016D` | Fuel rail packet raw AB | Raw-only scout; useful fields are offset after support bytes in Ranger examples. |
+
+### TESTING.Regen
+
+| PID | Candidate | Purpose |
+| --- | --- | --- |
+| `01019E` | Exhaust flow raw AB + `raw / 5` | Useful for load/regen correlation if Everest responds. |
+
+### TESTING.EGT / TESTING.Misc
+
+| PID | Candidate | Purpose |
+| --- | --- | --- |
+| `01016B` | EGR temperature packet raw AB | Raw-only scout for Ranger EGR temperature packet. |
+| `010169` | EGR command/actual packet raw AB | Raw-only scout for Ranger EGR command/actual/error packet. |
+| `010161` | Driver demand torque `A - 125` | Compare against throttle, load, boost and TCC behaviour. |
+| `010162` | Actual engine torque `A - 125` | Compare against throttle, load, boost and TCC behaviour. |
+| `010163` | Engine reference torque | May be static or semi-static; validate plausibility. |
+
+## v0.7.1 validation snapshot
 
 | Check | Result |
 | --- | ---: |
-| Commands | 100 |
-| Signals | 143 |
+| Commands in updated default.json | 121 |
+| Signals in updated default.json | 176 |
+| Root TESTING signals | 110 |
 | Signals with suggestedMetric | 19 |
-| Root TESTING signals | 77 |
-| Removed commands | 4 |
 | Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Non-root test signal paths | 0 |
 | JSON validation | Passed |
 
-## Commit message
+## Removed in v0.7.1
 
-```text
-Clean up failed test PIDs and refine VGT scaling
-```
+| PID | Reason |
+| --- | --- |
+| `22F46B` | Repeated screenshot result: Negative response / out of range. |
+| `22F46C` | Repeated screenshot result: Negative response / out of range. |
+| `22F479` | Repeated screenshot result: Negative response / out of range. |
+| `22F48D` | Repeated screenshot result: Negative response / out of range. |
 
-## Extended description
+## Next validation targets
 
-```text
-Updated the Ford Everest MY25.25 v0.7 testing signalset after live Pelican screenshot validation.
-
-Removed test PIDs that repeatedly returned negative response / out of range:
-- 22F46B
-- 22F46C
-- 22F479
-- 22F48D
-
-Kept the promising live candidates:
-- 22F46A
-- 22F46D
-- 22F478
-- 22F470
-- 22F471
-- 221E35
-- 221E3C
-
-Added alternate 16-bit div32.768 VGT scaling candidates for 22F470 and 22F471. The previous 8-bit style scaling showed around 3%, while the raw AB values around 1800–1950 suggest raw/32.768 may produce a more realistic VGT commanded/actual percentage range.
-
-Production signals remain unchanged. Root TESTING.* structure is preserved.
-
-Validation:
-- JSON parses successfully.
-- No duplicate signal IDs.
-- No non-root testing paths.
-```
-
+1. TPMS page: check whether `2813–2816` show plausible PSI values matching known tyre pressure.
+2. VGT page: compare `/100`, `/64`, `/32`, `/20`, `/10` against idle, cruise and throttle/load changes.
+3. Transmission page: compare Ranger `7E0` mirrors against existing Everest `7E1` gear/temp signals.
+4. Battery page: compare `0142` module voltage against `402A` aux battery voltage and alternator current.
+5. Regen/load page: watch `019E` exhaust flow against EGTs, engine load, DPF fullness and regen events.
