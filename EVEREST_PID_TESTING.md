@@ -390,3 +390,88 @@ The log now includes current validation priorities, active regen capture notes, 
 This file should remain the single source of truth for Ford Everest MY25.25 PID testing notes going forward.
 ```
 
+---
+
+# v0.7.1 — Testing cleanup and VGT scaling pass
+
+Aligned default file: `default_everest_my25_25_v0_7_1_testing_cleanup.json`
+
+## Update focus
+
+- Built from latest uploaded `default(2).json`.
+- Removed repeatedly out-of-range test PIDs:
+  - `22F46B`
+  - `22F46C`
+  - `22F479`
+  - `22F48D`
+- Added alternate 16-bit scaling candidates for VGT:
+  - `EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV32_768`
+  - `EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV32_768`
+- Preserved raw AB companions for `F470` and `F471`.
+- Preserved production signals unchanged.
+- Root `TESTING.*` rule preserved.
+
+## Decisions from v0.7.0 screenshots
+
+| PID | Result | Decision |
+| --- | --- | --- |
+| `22F46B` | Negative response / out of range | Removed |
+| `22F46C` | Negative response / out of range | Removed |
+| `22F479` | Negative response / out of range | Removed |
+| `22F48D` | Negative response / out of range | Removed |
+| `22F470` | Responding, raw around 1800, old scaling around 3% | Keep; add div32.768 scaling |
+| `22F471` | Responding, raw around 1800–1950, old scaling around 3% | Keep; add div32.768 scaling |
+| `22F46A` | Responding with plausible EGT values | Keep |
+| `22F46D` | Responding with plausible EGT values | Keep |
+| `22F478` | Tracks close to F46D | Keep |
+| `221E35` | Responding with plausible desired TCC slip | Keep |
+| `221E3C` | Responding with plausible TCC pressure/command values | Keep |
+
+## Sanity-check snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands | 100 |
+| Signals | 143 |
+| Signals with suggestedMetric | 19 |
+| Root TESTING signals | 77 |
+| Removed commands | 4 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+
+## Commit message
+
+```text
+Clean up failed test PIDs and refine VGT scaling
+```
+
+## Extended description
+
+```text
+Updated the Ford Everest MY25.25 v0.7 testing signalset after live Pelican screenshot validation.
+
+Removed test PIDs that repeatedly returned negative response / out of range:
+- 22F46B
+- 22F46C
+- 22F479
+- 22F48D
+
+Kept the promising live candidates:
+- 22F46A
+- 22F46D
+- 22F478
+- 22F470
+- 22F471
+- 221E35
+- 221E3C
+
+Added alternate 16-bit div32.768 VGT scaling candidates for 22F470 and 22F471. The previous 8-bit style scaling showed around 3%, while the raw AB values around 1800–1950 suggest raw/32.768 may produce a more realistic VGT commanded/actual percentage range.
+
+Production signals remain unchanged. Root TESTING.* structure is preserved.
+
+Validation:
+- JSON parses successfully.
+- No duplicate signal IDs.
+- No non-root testing paths.
+```
+
