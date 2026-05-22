@@ -901,3 +901,74 @@ Oil changes:
 No production/stable signals were modified.
 All experimental work remains under root TESTING.*.
 ```
+
+
+---
+
+# v0.7.4 — Negative response cleanup pass
+
+Aligned default file: `default_everest_my25_25_v0_7_4_negative_response_cleanup.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built from v0.7.3 Boost + Oil Testing Expansion.
+- Removed first-pass items reported as `Negative response. Code: Out of range`.
+- Preserved production/stable signals unchanged.
+- Preserved live/weird/suspect candidates that were not reported as out-of-range.
+- Kept all remaining experimental work under root `TESTING.*`.
+
+## Removed / shelved in v0.7.4
+
+These items were removed from active testing to reduce screenshot clutter. They can be reintroduced later only if a new header, command format, or FORScan evidence suggests a better path.
+
+| Area | Removed items |
+| --- | --- |
+| 4x4 `7E0` transfer-case candidates | `C45D`, `C460`, `C461`, `C462`, `C463` on `7E0→7E8` |
+| Boost1 MAP/BARO/TCBP candidates | `0210`, `16AE`, `1440`, `1442`, `03CA`, `03CB` |
+| Boost2 commanded/actual candidates | `0187`, `018A`, `1247`, `1248`, `16B0`, `16B1`, `16B2`, `0170/6B raw packet` |
+| Boost3 actuator candidates | `116E`, `16C0`, `16C1`, `16C2`, `16C3` |
+| Oil pressure candidates | `11A6`, `11A7`, `0415`, `034D`, `1340`, `1341`, `1342`, `1350`, `1351`, `1431`, `1438`, `1439` |
+| Regen candidates | `F412`, `F413`, `F450`, `F87C` |
+| Ranger transmission mirror candidates | `7E0 1E1C`, `7E0 1E23` |
+
+## Important retained candidates
+
+The cleanup does **not** reject the whole boost/oil direction. It only removes commands that came back out-of-range in this first test pass.
+
+Retained for further testing:
+
+- Existing production MAP/manifold pressure and air-temperature signals.
+- Existing confirmed DPF and transmission production signals.
+- Existing VGT `F470/F471` alternate scaling candidates unless separately rejected.
+- Boost candidates not listed in the negative-response pass.
+- 4x4 candidates on alternate headers not reported as out-of-range.
+- Any live, static, weird, or scaling-suspect values not explicitly reported as out-of-range.
+
+## v0.7.4 sanity-check snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in default.json | 111 |
+| Signals in default.json | 172 |
+| Root TESTING signals | 106 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Production signals modified | 0 |
+| Removed signals | 86 |
+| Added signals | 0 |
+
+## Commit message
+
+```text
+Remove first-pass negative-response TESTING candidates
+```
+
+## Extended description
+
+```text
+Cleaned the Ford Everest MY25.25 v0.7.3 testing pack after the first negative-response pass.
+
+Removed commands and signals reported as `Negative response. Code: Out of range`, including unsupported 7E0 4x4 candidates, several boost commanded/actual candidates, oil-pressure candidates, selected regen candidates, and Ranger transmission mirror candidates.
+
+No production/stable signals were modified. Remaining live, weird, raw, scaling-suspect, and untested candidates were preserved for further validation.
+```
