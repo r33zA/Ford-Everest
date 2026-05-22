@@ -28,7 +28,7 @@
             "max": 1825,
             "unit": "scalar"
           },
-          "name": "Battery age scalar",
+          "name": "Battery age raw counter",
           "description": "Confirmed responding. Raw age counter; likely days. Latest test showed 153."
         }
       ]
@@ -62,8 +62,8 @@
             "div": 255,
             "unit": "percent"
           },
-          "name": "Battery charge 4028 div255",
-          "description": "Confirmed responding. Formula A*100/255; latest test showed about 32\u201333%. Kept as secondary battery charge value."
+          "name": "Battery charge 4028 div255 compare",
+          "description": "Confirmed responding. Formula A*100/255; latest test showed about 32–33%. Kept as secondary battery charge value."
         }
       ]
     },
@@ -115,204 +115,38 @@
       ]
     },
     {
-      "hdr": "760",
-      "rax": "768",
-      "cmd": {
-        "22": "2B06"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "FORD_FR_VSS",
-          "path": "Movement.WheelSpeed",
-          "fmt": {
-            "len": 8,
-            "max": 200,
-            "unit": "kilometersPerHour"
-          },
-          "name": "Front right wheel speed",
-          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
-        }
-      ]
-    },
-    {
-      "hdr": "760",
-      "rax": "768",
-      "cmd": {
-        "22": "2B07"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "FORD_FL_VSS",
-          "path": "Movement.WheelSpeed",
-          "fmt": {
-            "len": 8,
-            "max": 200,
-            "unit": "kilometersPerHour"
-          },
-          "name": "Front left wheel speed",
-          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
-        }
-      ]
-    },
-    {
-      "hdr": "760",
-      "rax": "768",
-      "cmd": {
-        "22": "2B08"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "FORD_RR_VSS",
-          "path": "Movement.WheelSpeed",
-          "fmt": {
-            "len": 8,
-            "max": 200,
-            "unit": "kilometersPerHour"
-          },
-          "name": "Rear right wheel speed",
-          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
-        }
-      ]
-    },
-    {
-      "hdr": "760",
-      "rax": "768",
-      "cmd": {
-        "22": "2B09"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "FORD_RL_VSS",
-          "path": "Movement.WheelSpeed",
-          "fmt": {
-            "len": 8,
-            "max": 200,
-            "unit": "kilometersPerHour"
-          },
-          "name": "Rear left wheel speed",
-          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
-        }
-      ]
-    },
-    {
-      "hdr": "760",
-      "rax": "768",
-      "cmd": {
-        "22": "2B0C"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "FORD_LAT_ANG",
-          "path": "Movement.BodyMotion",
-          "fmt": {
-            "len": 8,
-            "min": -90,
-            "max": 90,
-            "sign": true,
-            "unit": "degrees"
-          },
-          "name": "Lateral angle",
-          "description": "Working Ford lateral-angle parameter. Observed about -1 deg; verify orientation on level ground."
-        }
-      ]
-    },
-    {
-      "hdr": "760",
-      "rax": "768",
-      "cmd": {
-        "22": "2B11"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "FORD_LAT_G",
-          "path": "Movement.BodyMotion",
-          "fmt": {
-            "len": 16,
-            "min": -1,
-            "max": 1,
-            "div": 50,
-            "sign": true,
-            "unit": "scalar"
-          },
-          "name": "Lateral acceleration",
-          "description": "Working Ford lateral-acceleration parameter. Formula raw/50; observed live values around -0.14 to 0.4."
-        }
-      ]
-    },
-    {
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "01": "0B"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_GENERIC_MAP_010B",
-          "path": "Engine.Boost.Generic",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "kilopascal"
-          },
-          "name": "Generic MAP",
-          "description": "Generic SAE MAP value. Confirmed responding; latest test showed 15."
-        },
-        {
-          "id": "EVEREST_TEST_GENERIC_MAP_010B_GAUGE_KPA_FIXED",
-          "path": "TESTING.Boost1",
-          "fmt": {
-            "len": 8,
-            "min": -101,
-            "max": 154,
-            "add": -101,
-            "unit": "kilopascal"
-          },
-          "name": "TEST Generic MAP gauge boost 010B fixed offset",
-          "description": "Testing only. Generic MAP converted to approximate gauge boost using fixed sea-level offset A-101 kPa. Watch for 255 kPa absolute cap under high load."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "10"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_GENERIC_MAF_0110",
-          "path": "Engine.Generic",
-          "fmt": {
-            "len": 16,
-            "max": 655.35,
-            "div": 100,
-            "unit": "gramsPerSecond"
-          },
-          "name": "Air flow rate from mass air flow sensor",
-          "description": "Generic SAE MAF airflow value. Useful diesel air-side signal if supported; added as mass air flow connectable/fallback.",
-          "suggestedMetric": "massAirFlow"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "2F"
+        "22": "0551"
       },
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_GENERIC_FUEL_LEVEL_012F",
-          "path": "Fuel.Generic",
+          "id": "EVEREST_ALTERNATOR_CURRENT_0551",
+          "path": "Battery",
+          "fmt": {
+            "len": 16,
+            "max": 250,
+            "div": 64,
+            "unit": "ampere"
+          },
+          "name": "Alternator current output",
+          "description": "Working/plausible."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0707"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_GRILL_SHUTTER_DUTY_CYCLE_0707",
+          "path": "Body",
           "fmt": {
             "len": 8,
             "max": 100,
@@ -320,122 +154,8 @@
             "div": 255,
             "unit": "percent"
           },
-          "name": "Generic fuel level",
-          "description": "Working backup/comparison.",
-          "suggestedMetric": "fuelTankLevel"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "A6"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_ODOMETER_01A6",
-          "path": "Movement",
-          "fmt": {
-            "len": 32,
-            "max": 429496729.5,
-            "mul": 0.1,
-            "unit": "kilometers"
-          },
-          "name": "Odometer",
-          "description": "Working candidate; confirm exact dash odometer.",
-          "suggestedMetric": "odometer"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0301"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_MAP_SENSOR_VOLTAGE_0301",
-          "path": "Engine.Boost",
-          "fmt": {
-            "len": 16,
-            "max": 5,
-            "mul": 0.0009765625,
-            "unit": "volts"
-          },
-          "name": "Manifold absolute pressure sensor voltage",
-          "description": "Confirmed responding. Formula val * 0.0009765625."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0307"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_LPFP_DUTY_0307",
-          "path": "Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 100,
-            "mul": 0.0030517578,
-            "unit": "percent"
-          },
-          "name": "Low pressure fuel pump commanded duty cycle",
-          "description": "Confirmed responding. Formula val * 0.0030517578."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0324"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_HPFP_SENSOR_VOLTAGE_0324",
-          "path": "Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 5,
-            "div": 204.6,
-            "unit": "volts"
-          },
-          "name": "High pressure fuel rail sensor voltage",
-          "description": "Confirmed responding. Formula val / 204.6."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "032B"
-      },
-      "freq": 1,
-      "signals": [
-        {
-          "id": "EVEREST_ACCEL_PEDAL_032B",
-          "path": "Control",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "Accelerator pedal position",
-          "description": "Confirmed responding. Showed 0\u20134% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
-          "suggestedMetric": "throttlePosition"
+          "name": "Grille shutter duty cycle",
+          "description": "Confirmed responding. Formula A*100/255."
         }
       ]
     },
@@ -465,21 +185,22 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "03DC"
+        "22": "0604"
       },
       "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_HPFP_DESIRED_03DC",
-          "path": "Fuel",
+          "id": "EVEREST_AC_REFRIGERANT_PRESSURE_0604",
+          "path": "Climate",
           "fmt": {
             "len": 16,
-            "max": 3500,
-            "mul": 1.4503773969,
-            "unit": "psi"
+            "min": -32768,
+            "max": 32767,
+            "sign": true,
+            "unit": "kilopascal"
           },
-          "name": "High pressure fuel pressure desired",
-          "description": "Confirmed responding. Formula val * 1.4503773969."
+          "name": "A/C refrigerant pressure",
+          "description": "Confirmed responding. Raw signed kPa; sanity check units/value."
         }
       ]
     },
@@ -487,22 +208,22 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "041F"
+        "22": "9800"
       },
       "freq": 30,
       "signals": [
         {
-          "id": "EVEREST_LPFP_DESIRED_041F",
-          "path": "Fuel",
+          "id": "EVEREST_AC_PRESSURE_SENSOR_VOLTAGE_9800",
+          "path": "Climate",
           "fmt": {
-            "len": 8,
-            "max": 110,
-            "mul": 435,
-            "div": 1000,
-            "unit": "psi"
+            "len": 16,
+            "max": 5,
+            "div": 1024,
+            "sign": true,
+            "unit": "volts"
           },
-          "name": "Fuel pressure, low desired",
-          "description": "Confirmed responding. Formula A*435/1000."
+          "name": "A/C compressor pressure sensor voltage",
+          "description": "Confirmed responding. Formula val / 1024."
         }
       ]
     },
@@ -510,20 +231,88 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "0440"
+        "22": "F446"
       },
-      "freq": 10,
+      "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_TEST_DPF_REGEN_STATUS_0440_RAW8_A",
-          "path": "TESTING.Regen",
+          "id": "EVEREST_AMBIENT_AIR_TEMP_F446",
+          "path": "Climate",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Ambient air temperature",
+          "description": "Working; close to dash ambient."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "032B"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_ACCEL_PEDAL_032B",
+          "path": "Control",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Accelerator pedal position",
+          "description": "Confirmed responding. Showed 0–4% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
+          "suggestedMetric": "throttlePosition"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F421"
+      },
+      "freq": 60,
+      "signals": [
+        {
+          "id": "EVEREST_DISTANCE_WITH_MIL_F421",
+          "path": "DTCs",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "kilometers"
+          },
+          "name": "Distance with MIL",
+          "description": "Confirmed responding."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F430"
+      },
+      "freq": 60,
+      "signals": [
+        {
+          "id": "EVEREST_WARMUPS_SINCE_DTC_CLEAR_F430",
+          "path": "DTCs",
           "fmt": {
             "len": 8,
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST DPF regen status 0440 raw A",
-          "description": "Testing only. Responded with valid zero during testing. Possible regen-status bitfield; keep for future comparison during active regen."
+          "name": "Warm-ups since DTC clear",
+          "description": "Confirmed responding."
         }
       ]
     },
@@ -531,22 +320,21 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "0462"
+        "22": "F431"
       },
-      "freq": 30,
+      "freq": 60,
       "signals": [
         {
-          "id": "EVEREST_WASTEGATE_DUTY_CYCLE_0462",
-          "path": "Engine.Boost",
+          "id": "EVEREST_DISTANCE_SINCE_DTC_CLEAR_F431",
+          "path": "DTCs",
           "fmt": {
             "len": 16,
-            "max": 100,
-            "mul": 100,
-            "div": 32768,
-            "unit": "percent"
+            "max": 65535,
+            "unit": "kilometers"
           },
-          "name": "Wastegate duty cycle",
-          "description": "Confirmed responding. Formula val*100/32768."
+          "name": "Distance since DTC clear",
+          "description": "Working diagnostic distance counter. Added as distance since DTCs cleared connectable.",
+          "suggestedMetric": "distanceSinceDTCsCleared"
         }
       ]
     },
@@ -576,227 +364,22 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "051C"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_AIR_CHARGE_TEMP_051C",
-          "path": "Engine",
-          "fmt": {
-            "len": 8,
-            "max": 200,
-            "min": -40,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "Intercooler air charge temperature",
-          "description": "Working."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0522"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_FUEL_TEMP_0522",
-          "path": "Fuel",
-          "fmt": {
-            "len": 8,
-            "max": 200,
-            "min": -40,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "Fuel temperature",
-          "description": "Working."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "052E"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_EGR_OPEN_052E",
-          "path": "Emissions.EGR",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "EGR open percentage",
-          "description": "Working."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0548"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_LPFP_ACTUAL_0548",
-          "path": "Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 200,
-            "mul": 10000,
-            "div": 137892,
-            "sign": true,
-            "unit": "psi"
-          },
-          "name": "Fuel pressure, low actual",
-          "description": "Confirmed responding. Formula val*10000/137892."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "054B"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_OIL_LIFE_REMAINING_054B",
-          "path": "Maintenance",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "unit": "percent"
-          },
-          "name": "Oil life remaining",
-          "description": "Confirmed responding. Latest test showed 47%. Preferred raw-percent oil life signal."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "054D"
+        "22": "0685"
       },
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_LPFP_SENSOR_VOLTAGE_054D",
-          "path": "Fuel",
+          "id": "EVEREST_ADBLUE_TEMP_0685",
+          "path": "Emissions.AdBlue",
           "fmt": {
-            "len": 16,
-            "max": 5,
-            "div": 1024,
-            "sign": true,
-            "unit": "volts"
-          },
-          "name": "Fuel pressure sensor voltage, low",
-          "description": "Confirmed responding. Formula val / 1024."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0551"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_ALTERNATOR_CURRENT_0551",
-          "path": "Battery",
-          "fmt": {
-            "len": 16,
-            "max": 250,
-            "div": 64,
-            "unit": "ampere"
-          },
-          "name": "Alternator current output",
-          "description": "Working/plausible."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0569"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_EGT_PRE_TURBO_0569",
-          "path": "Emissions.Exhaust",
-          "fmt": {
-            "len": 16,
-            "max": 1500,
-            "div": 32,
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
             "unit": "celsius"
           },
-          "name": "Exhaust manifold EGT pre-turbo",
-          "description": "Working/plausible."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "05FC"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_CYL_HEAD_TEMP_SENSOR_2_05FC",
-          "path": "Engine",
-          "fmt": {
-            "len": 16,
-            "min": -512,
-            "max": 511.984375,
-            "div": 64,
-            "sign": true,
-            "unit": "celsius"
-          },
-          "name": "Cylinder head temperature sensor 2",
-          "description": "Confirmed responding. Formula val / 64."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0604"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_AC_REFRIGERANT_PRESSURE_0604",
-          "path": "Climate",
-          "fmt": {
-            "len": 16,
-            "min": -32768,
-            "max": 32767,
-            "sign": true,
-            "unit": "kilopascal"
-          },
-          "name": "A/C refrigerant pressure",
-          "description": "Confirmed responding. Raw signed kPa; sanity check units/value."
+          "name": "AdBlue tank temperature",
+          "description": "Confirmed responding. AdBlue tank temperature."
         }
       ]
     },
@@ -849,57 +432,13 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "0685"
+        "22": "052E"
       },
-      "freq": 10,
+      "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_ADBLUE_TEMP_0685",
-          "path": "Emissions.AdBlue",
-          "fmt": {
-            "len": 8,
-            "max": 215,
-            "min": -40,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "AdBlue tank temperature",
-          "description": "Confirmed responding. AdBlue tank temperature."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0700"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_IAT_FAULT_0700",
-          "path": "Engine",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "Intake temperature fault",
-          "description": "Confirmed responding. Showed 0; likely no intake temperature fault."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "0707"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_GRILL_SHUTTER_DUTY_CYCLE_0707",
-          "path": "Body",
+          "id": "EVEREST_EGR_OPEN_052E",
+          "path": "Emissions.EGR",
           "fmt": {
             "len": 8,
             "max": 100,
@@ -907,8 +446,8 @@
             "div": 255,
             "unit": "percent"
           },
-          "name": "Grill shutter duty cycle",
-          "description": "Confirmed responding. Formula A*100/255."
+          "name": "EGR open percentage",
+          "description": "Working."
         }
       ]
     },
@@ -916,68 +455,21 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "1279"
+        "22": "0569"
       },
-      "freq": 30,
+      "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_IAT_SENSOR_VOLTAGE_1279",
-          "path": "Engine",
+          "id": "EVEREST_EGT_PRE_TURBO_0569",
+          "path": "Emissions.Exhaust",
           "fmt": {
             "len": 16,
-            "max": 5,
-            "mul": 5,
-            "div": 1023,
-            "unit": "volts"
+            "max": 1500,
+            "div": 32,
+            "unit": "celsius"
           },
-          "name": "Intake temperature sensor voltage",
-          "description": "Responds but showed 0 V during test. Keep as low-confidence candidate; compare later."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "4195"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "FORD_DTE_DISP",
-          "path": "Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 6553.5,
-            "div": 10,
-            "unit": "kilometers"
-          },
-          "name": "Distance to empty, displayed",
-          "description": "Confirmed against dash at 336 km. Formula raw/10. Added as fuel range connectable.",
-          "suggestedMetric": "fuelRange"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "9800"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_AC_PRESSURE_SENSOR_VOLTAGE_9800",
-          "path": "Climate",
-          "fmt": {
-            "len": 16,
-            "max": 5,
-            "div": 1024,
-            "sign": true,
-            "unit": "volts"
-          },
-          "name": "A/C compressor pressure sensor voltage",
-          "description": "Confirmed responding. Formula val / 1024."
+          "name": "Exhaust manifold EGT pre-turbo",
+          "description": "Working/plausible."
         }
       ]
     },
@@ -1033,44 +525,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F40B"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_MANIFOLD_PRESSURE_F40B",
-          "path": "Engine.Boost",
-          "fmt": {
-            "len": 8,
-            "max": 36,
-            "mul": 10000,
-            "div": 68947,
-            "unit": "psi"
-          },
-          "name": "Manifold pressure",
-          "description": "Confirmed responding. Formula A*10000/68947."
-        },
-        {
-          "id": "EVEREST_TEST_MANIFOLD_PRESSURE_F40B_GAUGE_PSI_FIXED",
-          "path": "TESTING.Boost1",
-          "fmt": {
-            "len": 8,
-            "min": -14.5,
-            "max": 21.5,
-            "mul": 10000,
-            "div": 68947,
-            "add": -14.5,
-            "unit": "psi"
-          },
-          "name": "TEST F40B calculated boost fixed offset",
-          "description": "Testing only. F40B manifold pressure converted to approximate gauge boost by subtracting fixed 14.5 psi atmospheric offset. Live BARO-based boost would be better if supported."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F40C"
       },
       "freq": 30,
@@ -1094,64 +548,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F40D"
-      },
-      "freq": 1,
-      "signals": [
-        {
-          "id": "EVEREST_SPEED_FORD_EXTENDED_F40D",
-          "path": "Movement",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "kilometersPerHour"
-          },
-          "name": "Vehicle speed Ford extended raw",
-          "description": "Confirmed working Ford extended vehicle speed. Raw value reads about 4 km/h below dashboard; kept as raw speed connectable.",
-          "suggestedMetric": "speed"
-        },
-        {
-          "id": "EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED",
-          "path": "Movement",
-          "fmt": {
-            "len": 8,
-            "max": 259,
-            "add": 4,
-            "unit": "kilometersPerHour"
-          },
-          "name": "Vehicle speed Ford extended corrected",
-          "description": "Ford extended vehicle speed with +4 km/h display correction to better match the dashboard. Use this as the practical speed connectable.",
-          "suggestedMetric": "speed"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F40F"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_INTAKE_AIR_TEMP_F40F",
-          "path": "Engine",
-          "fmt": {
-            "len": 8,
-            "max": 215,
-            "min": -40,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "Intake air temperature",
-          "description": "Working."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F41F"
       },
       "freq": 30,
@@ -1166,173 +562,6 @@
           },
           "name": "Engine run time",
           "description": "Confirmed responding. Raw seconds."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F421"
-      },
-      "freq": 60,
-      "signals": [
-        {
-          "id": "EVEREST_DISTANCE_WITH_MIL_F421",
-          "path": "DTCs",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "kilometers"
-          },
-          "name": "Distance with MIL",
-          "description": "Confirmed responding."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F42F"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_FUEL_REMAINING_F42F",
-          "path": "Fuel",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "Fuel remaining",
-          "description": "Working. Equation A*100/255.",
-          "suggestedMetric": "fuelTankLevel"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F430"
-      },
-      "freq": 60,
-      "signals": [
-        {
-          "id": "EVEREST_WARMUPS_SINCE_DTC_CLEAR_F430",
-          "path": "DTCs",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "Warm-ups since DTC clear",
-          "description": "Confirmed responding."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F431"
-      },
-      "freq": 60,
-      "signals": [
-        {
-          "id": "EVEREST_DISTANCE_SINCE_DTC_CLEAR_F431",
-          "path": "DTCs",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "kilometers"
-          },
-          "name": "Distance since DTC clear",
-          "description": "Working diagnostic distance counter. Added as distance since DTCs cleared connectable.",
-          "suggestedMetric": "distanceSinceDTCsCleared"
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F446"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_AMBIENT_AIR_TEMP_F446",
-          "path": "Climate",
-          "fmt": {
-            "len": 8,
-            "max": 215,
-            "min": -40,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "Ambient air temperature",
-          "description": "Working; close to dash ambient."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F451"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_RAW16_AB",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF regen request F451 raw AB",
-          "description": "Testing only. Raw companion for DPF regen request. Candidate Ford regen/state PID. Watch during known active regen."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF regen request F451",
-          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F45C"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_ENGINE_OIL_TEMP_F45C",
-          "path": "Engine",
-          "fmt": {
-            "len": 8,
-            "max": 215,
-            "min": -40,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "Engine oil temperature",
-          "description": "Working. Equation A-40. Added as engine oil temperature connectable.",
-          "suggestedMetric": "engineOilTemperature"
         }
       ]
     },
@@ -1375,7 +604,1025 @@
             "unit": "newtonMeters"
           },
           "name": "Engine reference torque",
-          "description": "Confirmed responding. Raw N\u00b7m value."
+          "description": "Confirmed responding. Raw N·m value."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "051C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_AIR_CHARGE_TEMP_051C",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Intercooler air charge temperature",
+          "description": "Working."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "05FC"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_CYL_HEAD_TEMP_SENSOR_2_05FC",
+          "path": "Engine",
+          "fmt": {
+            "len": 16,
+            "min": -512,
+            "max": 511.984375,
+            "div": 64,
+            "sign": true,
+            "unit": "celsius"
+          },
+          "name": "Cylinder head temperature sensor 2",
+          "description": "Confirmed responding. Formula val / 64."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0700"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_IAT_FAULT_0700",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "Intake temperature fault status",
+          "description": "Confirmed responding. Showed 0; likely no intake temperature fault."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1279"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_IAT_SENSOR_VOLTAGE_1279",
+          "path": "Engine",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "mul": 5,
+            "div": 1023,
+            "unit": "volts"
+          },
+          "name": "Intake air temperature sensor voltage",
+          "description": "Responds but showed 0 V during test. Keep as low-confidence candidate; compare later."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F40F"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_INTAKE_AIR_TEMP_F40F",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Intake air temperature",
+          "description": "Working."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F45C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_ENGINE_OIL_TEMP_F45C",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Engine oil temperature",
+          "description": "Working. Equation A-40. Added as engine oil temperature connectable.",
+          "suggestedMetric": "engineOilTemperature"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0301"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_MAP_SENSOR_VOLTAGE_0301",
+          "path": "Engine",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "mul": 0.0009765625,
+            "unit": "volts"
+          },
+          "name": "Manifold absolute pressure sensor voltage",
+          "description": "Confirmed responding. Formula val * 0.0009765625."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0462"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_WASTEGATE_DUTY_CYCLE_0462",
+          "path": "Engine",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "mul": 100,
+            "div": 32768,
+            "unit": "percent"
+          },
+          "name": "Wastegate duty cycle",
+          "description": "Confirmed responding. Formula val*100/32768."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F40B"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_MANIFOLD_PRESSURE_F40B",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 36,
+            "mul": 10000,
+            "div": 68947,
+            "unit": "psi"
+          },
+          "name": "Manifold pressure",
+          "description": "Confirmed responding. Formula A*10000/68947."
+        },
+        {
+          "id": "EVEREST_TEST_MANIFOLD_PRESSURE_F40B_GAUGE_PSI_FIXED",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 8,
+            "min": -14.5,
+            "max": 21.5,
+            "mul": 10000,
+            "div": 68947,
+            "add": -14.5,
+            "unit": "psi"
+          },
+          "name": "TEST F40B calculated boost fixed offset",
+          "description": "Testing only. F40B manifold pressure converted to approximate gauge boost by subtracting fixed 14.5 psi atmospheric offset. Live BARO-based boost would be better if supported."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "054B"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_OIL_LIFE_REMAINING_054B",
+          "path": "Engine",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "unit": "percent"
+          },
+          "name": "Oil life remaining",
+          "description": "Confirmed responding. Latest test showed 47%. Preferred raw-percent oil life signal."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "0B"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "GENERIC_MAP_010B",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilopascal"
+          },
+          "name": "Generic manifold absolute pressure",
+          "description": "Generic SAE OBD-II MAP value, confirmed responding on the Everest. Kept under Engine.Generic because it is not an Everest-specific Ford enhanced PID."
+        },
+        {
+          "id": "EVEREST_TEST_GENERIC_MAP_010B_GAUGE_KPA_FIXED",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 8,
+            "min": -101,
+            "max": 154,
+            "add": -101,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Generic MAP gauge boost 010B fixed offset",
+          "description": "Testing only. Generic MAP converted to approximate gauge boost using fixed sea-level offset A-101 kPa. Watch for 255 kPa absolute cap under high load."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "10"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_MAF_0110",
+          "path": "Engine.Generic",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "gramsPerSecond"
+          },
+          "name": "Generic mass air flow rate",
+          "description": "Generic SAE MAF airflow value. Useful diesel air-side signal if supported; added as mass air flow connectable/fallback.",
+          "suggestedMetric": "massAirFlow"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "4195"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_DTE_DISP",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilometers"
+          },
+          "name": "Distance to empty displayed",
+          "description": "Confirmed against dash at 336 km. Formula raw/10. Added as fuel range connectable.",
+          "suggestedMetric": "fuelRange"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F42F"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_FUEL_REMAINING_F42F",
+          "path": "Fuel",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Fuel remaining",
+          "description": "Working. Equation A*100/255.",
+          "suggestedMetric": "fuelTankLevel"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0522"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_FUEL_TEMP_0522",
+          "path": "Fuel",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Fuel temperature",
+          "description": "Working."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0307"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_DUTY_0307",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 100,
+            "mul": 0.0030517578,
+            "unit": "percent"
+          },
+          "name": "Low-pressure fuel pump commanded duty cycle",
+          "description": "Confirmed responding. Formula val * 0.0030517578."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0324"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_HPFP_SENSOR_VOLTAGE_0324",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "div": 204.6,
+            "unit": "volts"
+          },
+          "name": "High-pressure fuel rail sensor voltage",
+          "description": "Confirmed responding. Formula val / 204.6."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "03DC"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_HPFP_DESIRED_03DC",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 3500,
+            "mul": 1.4503773969,
+            "unit": "psi"
+          },
+          "name": "High-pressure fuel pressure desired",
+          "description": "Confirmed responding. Formula val * 1.4503773969."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "041F"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_DESIRED_041F",
+          "path": "Fuel",
+          "fmt": {
+            "len": 8,
+            "max": 110,
+            "mul": 435,
+            "div": 1000,
+            "unit": "psi"
+          },
+          "name": "Low-pressure fuel pressure desired",
+          "description": "Confirmed responding. Formula A*435/1000."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0548"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_ACTUAL_0548",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "mul": 10000,
+            "div": 137892,
+            "sign": true,
+            "unit": "psi"
+          },
+          "name": "Low-pressure fuel pressure actual",
+          "description": "Confirmed responding. Formula val*10000/137892."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "054D"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_LPFP_SENSOR_VOLTAGE_054D",
+          "path": "Fuel",
+          "fmt": {
+            "len": 16,
+            "max": 5,
+            "div": 1024,
+            "sign": true,
+            "unit": "volts"
+          },
+          "name": "Low-pressure fuel pressure sensor voltage",
+          "description": "Confirmed responding. Formula val / 1024."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "2F"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_GENERIC_FUEL_LEVEL_012F",
+          "path": "Fuel.Generic",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Generic fuel level",
+          "description": "Working backup/comparison.",
+          "suggestedMetric": "fuelTankLevel"
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F40D"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_SPEED_FORD_EXTENDED_F40D",
+          "path": "Movement",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Vehicle speed Ford extended raw",
+          "description": "Confirmed working Ford extended vehicle speed. Raw value reads about 4 km/h below dashboard; kept as raw speed connectable.",
+          "suggestedMetric": "speed"
+        },
+        {
+          "id": "EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED",
+          "path": "Movement",
+          "fmt": {
+            "len": 8,
+            "max": 259,
+            "add": 4,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Vehicle speed Ford extended corrected",
+          "description": "Ford extended vehicle speed with +4 km/h display correction to better match the dashboard. Use this as the practical speed connectable.",
+          "suggestedMetric": "speed"
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B06"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_FR_VSS",
+          "path": "Movement",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Front right wheel speed",
+          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B07"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_FL_VSS",
+          "path": "Movement",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Front left wheel speed",
+          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B08"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_RR_VSS",
+          "path": "Movement",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Rear right wheel speed",
+          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B09"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_RL_VSS",
+          "path": "Movement",
+          "fmt": {
+            "len": 8,
+            "max": 200,
+            "unit": "kilometersPerHour"
+          },
+          "name": "Rear left wheel speed",
+          "description": "Confirmed working Ford wheel speed PID. Promoted from testing. Confirmed Ford wheel-speed PID; kept as a parameter only, not a speed connectable."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B0C"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_LAT_ANG",
+          "path": "Movement",
+          "fmt": {
+            "len": 8,
+            "min": -90,
+            "max": 90,
+            "sign": true,
+            "unit": "degrees"
+          },
+          "name": "Lateral angle",
+          "description": "Working Ford lateral-angle parameter. Observed about -1 deg; verify orientation on level ground."
+        }
+      ]
+    },
+    {
+      "hdr": "760",
+      "rax": "768",
+      "cmd": {
+        "22": "2B11"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "FORD_LAT_G",
+          "path": "Movement",
+          "fmt": {
+            "len": 16,
+            "min": -1,
+            "max": 1,
+            "div": 50,
+            "sign": true,
+            "unit": "scalar"
+          },
+          "name": "Lateral acceleration",
+          "description": "Working Ford lateral-acceleration parameter. Formula raw/50; observed live values around -0.14 to 0.4."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "A6"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_ODOMETER_01A6",
+          "path": "Trips",
+          "fmt": {
+            "len": 32,
+            "max": 429496729.5,
+            "mul": 0.1,
+            "unit": "kilometers"
+          },
+          "name": "Odometer",
+          "description": "Working candidate; confirm exact dash odometer.",
+          "suggestedMetric": "odometer"
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E1C"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TRANS_TEMP_1E1C_DIV16",
+          "path": "Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "div": 16,
+            "unit": "celsius"
+          },
+          "name": "Transmission fluid temperature",
+          "description": "Promoted to primary Everest transmission-fluid-temperature candidate after Pelican drive comparison. Same 7E1 221E1C TCM response as the 5/72 value; div16 warm-up and operating range looked more plausible against coolant, oil temperature, speed/load, and normal 10-speed behaviour. Validate against FORScan/factory scan data when available.",
+          "suggestedMetric": "transmissionFluidTemperature"
+        },
+        {
+          "id": "EVEREST_TRANS_TEMP_1E1C_5_72",
+          "path": "Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 200,
+            "mul": 5,
+            "div": 72,
+            "add": -17,
+            "unit": "celsius"
+          },
+          "name": "Transmission fluid temperature compare",
+          "description": "Comparison/legacy transmission fluid temperature decode using 5/72 scaling. Retained beside the preferred div16 Everest transmission temperature for validation only; no suggestedMetric."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E12"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GEAR_COMMANDED_7E1_1E12",
+          "path": "Transmission",
+          "fmt": {
+            "len": 8,
+            "max": 10,
+            "unit": "scalar"
+          },
+          "name": "Transmission gear commanded",
+          "description": "Working; tested 1 and 9."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E1F"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_GEAR_ENGAGED_7E1_1E1F",
+          "path": "Transmission",
+          "fmt": {
+            "len": 8,
+            "max": 10,
+            "unit": "scalar"
+          },
+          "name": "Transmission gear engaged",
+          "description": "Working; tested 1 and 9. Added as a connectable candidate for transmission gear display if supported by Pelican.",
+          "suggestedMetric": "transmissionGear"
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E14"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TCC_SLIP_1E14",
+          "path": "Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 5500,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Torque converter slip speed",
+          "description": "Confirmed working torque converter slip RPM."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E15"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_OSS_1E15_RPM",
+          "path": "Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 10000,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Transmission output shaft speed",
+          "description": "Confirmed working as driveline output shaft RPM. Not direct road speed without conversion."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E16"
+      },
+      "freq": 1,
+      "signals": [
+        {
+          "id": "EVEREST_ISS_TSS_1E16_RPM",
+          "path": "Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 10000,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "Transmission input shaft speed",
+          "description": "Confirmed working as input/turbine shaft RPM. Not direct road speed."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0440"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_STATUS_0440_RAW8_A",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF regen status 0440 raw A",
+          "description": "Testing only. Responded with valid zero during testing. Possible regen-status bitfield; keep for future comparison during active regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F451"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF regen request F451 raw AB",
+          "description": "Testing only. Raw companion for DPF regen request. Candidate Ford regen/state PID. Watch during known active regen."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF regen request F451",
+          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F48B"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW8_A",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status F48B raw A",
+          "description": "Testing only. Responded during v0.3/v0.3.1 testing with raw A around 127. Possible DPF/regen status or state byte. Keep for future regen comparison. Latest screenshots: value stayed at raw A 127 / raw AB 32512 outside regen; keep until active regen capture to check state change."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status F48B raw AB",
+          "description": "Testing only. Raw 16-bit companion for 22F48B. Earlier value 32512 appeared to equal 127*256, suggesting the first byte may be the meaningful state. Latest screenshots: value stayed at raw A 127 / raw AB 32512 outside regen; keep until active regen capture to check state change."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "9E"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E raw AB",
+          "description": "Testing only. Raw companion for 019E exhaust-flow candidate. Latest screenshots show raw values moving strongly with load/flow."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV5_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 13107,
+            "div": 5,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E div5",
+          "description": "Testing only. Exhaust-flow 019E raw/5 candidate. Latest screenshots show live values 44.4, 100, 178, 339 from raw 222, 501, 890, 1697; strong load/flow candidate."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV10_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E div10",
+          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV20_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 3276.75,
+            "div": 20,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E div20",
+          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV50_CANDIDATE",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 1310.7,
+            "div": 50,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust flow 019E div50",
+          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
         }
       ]
     },
@@ -1446,6 +1693,393 @@
           },
           "name": "TEST EGT14 DPF outlet F46D",
           "description": "Testing only. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F478"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_RAW16_AB",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust multi-EGT F478 raw AB",
+          "description": "Testing only. PID is alive and appears packet-like, but decode is not confirmed. Keep raw first word for future EGT/regen analysis."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_CANDIDATE_C",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "len": 16,
+            "min": -40,
+            "max": 1000,
+            "mul": 0.1,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "TEST exhaust multi-EGT F478 candidate",
+          "description": "Testing only. Candidate formula raw*0.1 - 40 C for first word. Needs comparison against existing EGT 220569 and active regen behaviour before promotion."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E35"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TCC_DESIRED_SLIP_7E1_1E35_RAW16_AB",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST TCC desired slip 1E35 raw AB",
+          "description": "Testing only. Raw companion for TCC desired slip. Compare against confirmed 1E14 actual slip."
+        },
+        {
+          "id": "EVEREST_TEST_TCC_DESIRED_SLIP_7E1_1E35_CANDIDATE",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 5500,
+            "div": 4,
+            "unit": "rpm"
+          },
+          "name": "TEST TCC desired slip 1E35",
+          "description": "Testing only. Compare against confirmed 1E14 actual slip."
+        }
+      ]
+    },
+    {
+      "hdr": "7E1",
+      "rax": "7E9",
+      "cmd": {
+        "22": "1E3C"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_RAW16_AB",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST TCC commanded pressure 1E3C raw AB",
+          "description": "Testing only. Raw companion for TCC commanded pressure. Possible TCC commanded pressure."
+        },
+        {
+          "id": "EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_CANDIDATE",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 16,
+            "max": 3000,
+            "unit": "kilopascal"
+          },
+          "name": "TEST TCC commanded pressure 1E3C",
+          "description": "Testing only. Possible TCC commanded pressure."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1E12"
+      },
+      "freq": 2,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_RANGER_GEAR_7E0_1E12",
+          "path": "TESTING.Transmission",
+          "fmt": {
+            "len": 8,
+            "map": {
+              "1": {
+                "description": "Gear 1",
+                "value": "1"
+              },
+              "2": {
+                "description": "Gear 2",
+                "value": "2"
+              },
+              "3": {
+                "description": "Gear 3",
+                "value": "3"
+              },
+              "4": {
+                "description": "Gear 4",
+                "value": "4"
+              },
+              "5": {
+                "description": "Gear 5",
+                "value": "5"
+              },
+              "6": {
+                "description": "Gear 6",
+                "value": "6"
+              },
+              "7": {
+                "description": "Gear 7",
+                "value": "7"
+              },
+              "8": {
+                "description": "Gear 8",
+                "value": "8"
+              },
+              "9": {
+                "description": "Gear 9",
+                "value": "9"
+              },
+              "10": {
+                "description": "Gear 10",
+                "value": "10"
+              }
+            }
+          },
+          "name": "TEST Ranger current gear 1E12",
+          "description": "Testing only. Ranger-derived 7E0 current gear map 1-10. Compare against Everest 7E1 gear signals."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C45D"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_4WD_MODE_7E2_C45D_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 4WD mode C45D raw AB",
+          "description": "Testing only. Raw companion for 4WD mode. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_4WD_MODE_7E2_C45D_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 8,
+            "max": 15,
+            "unit": "scalar"
+          },
+          "name": "TEST 4WD mode C45D",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C460"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TRANSFER_CLUTCH_DUTY_7E2_C460_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Transfer clutch duty C460 raw AB",
+          "description": "Testing only. Raw companion for Transfer clutch duty. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_TRANSFER_CLUTCH_DUTY_7E2_C460_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST Transfer clutch duty C460",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C461"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_FRONT_PROP_SPEED_7E2_C461_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Front prop speed C461 raw AB",
+          "description": "Testing only. Raw companion for Front prop speed. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_FRONT_PROP_SPEED_7E2_C461_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 8000,
+            "unit": "rpm"
+          },
+          "name": "TEST Front prop speed C461",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C462"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_REAR_PROP_SPEED_7E2_C462_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Rear prop speed C462 raw AB",
+          "description": "Testing only. Raw companion for Rear prop speed. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_REAR_PROP_SPEED_7E2_C462_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 8000,
+            "unit": "rpm"
+          },
+          "name": "TEST Rear prop speed C462",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E2",
+      "rax": "7EA",
+      "cmd": {
+        "22": "C463"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_REAR_LOCKER_STATE_7E2_C463_RAW16_AB",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Rear locker state C463 raw AB",
+          "description": "Testing only. Raw companion for Rear locker state. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        },
+        {
+          "id": "EVEREST_TEST_REAR_LOCKER_STATE_7E2_C463_CANDIDATE",
+          "path": "TESTING.4x4",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST Rear locker state C463",
+          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "42"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_CONTROL_MODULE_VOLTAGE_0142",
+          "path": "TESTING.Battery",
+          "fmt": {
+            "len": 16,
+            "max": 65.535,
+            "div": 1000,
+            "unit": "volts"
+          },
+          "name": "TEST control module voltage 0142",
+          "description": "Testing only. SAE/Ranger-supported control module voltage. Compare against aux battery voltage 402A and alternator behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "33"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BARO_0133_KPA",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilopascal"
+          },
+          "name": "TEST BARO 0133",
+          "description": "Testing only. SAE/Ranger-supported barometric pressure. Compare against 220233 BARO candidate."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "70"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_70_RAW16_AB",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST boost pressure packet 0170 raw AB",
+          "description": "Testing only. Raw companion for SAE/Ranger boost-control packet 0170. Latest captures showed live but small movement around raw 1805-1821; keep as alive scout for load/WOT comparison."
         }
       ]
     },
@@ -1641,41 +2275,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F478"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_RAW16_AB",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST exhaust multi-EGT F478 raw AB",
-          "description": "Testing only. PID is alive and appears packet-like, but decode is not confirmed. Keep raw first word for future EGT/regen analysis."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_CANDIDATE_C",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "len": 16,
-            "min": -40,
-            "max": 1000,
-            "mul": 0.1,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "TEST exhaust multi-EGT F478 candidate",
-          "description": "Testing only. Candidate formula raw*0.1 - 40 C for first word. Needs comparison against existing EGT 220569 and active regen behaviour before promotion."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F47A"
       },
       "freq": 10,
@@ -1709,515 +2308,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F48B"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW8_A",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status F48B raw A",
-          "description": "Testing only. Responded during v0.3/v0.3.1 testing with raw A around 127. Possible DPF/regen status or state byte. Keep for future regen comparison. Latest screenshots: value stayed at raw A 127 / raw AB 32512 outside regen; keep until active regen capture to check state change."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW16_AB",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status F48B raw AB",
-          "description": "Testing only. Raw 16-bit companion for 22F48B. Earlier value 32512 appeared to equal 127*256, suggesting the first byte may be the meaningful state. Latest screenshots: value stayed at raw A 127 / raw AB 32512 outside regen; keep until active regen capture to check state change."
-        }
-      ]
-    },
-    {
-      "hdr": "7E1",
-      "rax": "7E9",
-      "cmd": {
-        "22": "1E12"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_GEAR_COMMANDED_7E1_1E12",
-          "path": "Transmission",
-          "fmt": {
-            "len": 8,
-            "max": 10,
-            "unit": "scalar"
-          },
-          "name": "Transmission gear commanded",
-          "description": "Working; tested 1 and 9."
-        }
-      ]
-    },
-    {
-      "hdr": "7E1",
-      "rax": "7E9",
-      "cmd": {
-        "22": "1E14"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_TCC_SLIP_1E14",
-          "path": "Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 5500,
-            "div": 4,
-            "unit": "rpm"
-          },
-          "name": "Torque converter slip speed",
-          "description": "Confirmed working torque converter slip RPM."
-        }
-      ]
-    },
-    {
-      "hdr": "7E1",
-      "rax": "7E9",
-      "cmd": {
-        "22": "1E15"
-      },
-      "freq": 1,
-      "signals": [
-        {
-          "id": "EVEREST_OSS_1E15_RPM",
-          "path": "Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 10000,
-            "div": 4,
-            "unit": "rpm"
-          },
-          "name": "Output shaft speed OSS 1E15",
-          "description": "Confirmed working as driveline output shaft RPM. Not direct road speed without conversion."
-        }
-      ]
-    },
-    {
-      "hdr": "7E1",
-      "rax": "7E9",
-      "cmd": {
-        "22": "1E16"
-      },
-      "freq": 1,
-      "signals": [
-        {
-          "id": "EVEREST_ISS_TSS_1E16_RPM",
-          "path": "Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 10000,
-            "div": 4,
-            "unit": "rpm"
-          },
-          "name": "Input shaft speed ISS/TSS 1E16",
-          "description": "Confirmed working as input/turbine shaft RPM. Not direct road speed."
-        }
-      ]
-    },
-    {
-      "hdr": "7E1",
-      "rax": "7E9",
-      "cmd": {
-        "22": "1E1C"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_TRANS_TEMP_1E1C_DIV16",
-          "path": "Transmission.Everest",
-          "fmt": {
-            "len": 16,
-            "max": 200,
-            "div": 16,
-            "unit": "celsius"
-          },
-          "name": "Transmission fluid temperature Everest div16",
-          "description": "Promoted to primary Everest transmission-fluid-temperature candidate after Pelican drive comparison. Same 7E1 221E1C TCM response as the 5/72 value; div16 warm-up and operating range looked more plausible against coolant, oil temperature, speed/load, and normal 10-speed behaviour. Validate against FORScan/factory scan data when available.",
-          "suggestedMetric": "transmissionFluidTemperature"
-        },
-        {
-          "id": "EVEREST_TRANS_TEMP_1E1C_5_72",
-          "path": "Transmission.Generic",
-          "fmt": {
-            "len": 16,
-            "max": 200,
-            "mul": 5,
-            "div": 72,
-            "add": -17,
-            "unit": "celsius"
-          },
-          "name": "Transmission fluid temperature 5/72 compare",
-          "description": "Comparison/legacy scaling for the same 7E1 221E1C TCM response. Kept for validation only; current Pelican drive comparison suggests this reads lower than expected, so div16 is now the preferred active Everest transmission-temperature candidate."
-        }
-      ]
-    },
-    {
-      "hdr": "7E1",
-      "rax": "7E9",
-      "cmd": {
-        "22": "1E1F"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_GEAR_ENGAGED_7E1_1E1F",
-          "path": "Transmission",
-          "fmt": {
-            "len": 8,
-            "max": 10,
-            "unit": "scalar"
-          },
-          "name": "Transmission gear engaged",
-          "description": "Working; tested 1 and 9. Added as a connectable candidate for transmission gear display if supported by Pelican.",
-          "suggestedMetric": "transmissionGear"
-        }
-      ]
-    },
-    {
-      "hdr": "7E1",
-      "rax": "7E9",
-      "cmd": {
-        "22": "1E35"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TCC_DESIRED_SLIP_7E1_1E35_RAW16_AB",
-          "path": "TESTING.Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST TCC desired slip 1E35 raw AB",
-          "description": "Testing only. Raw companion for TCC desired slip. Compare against confirmed 1E14 actual slip."
-        },
-        {
-          "id": "EVEREST_TEST_TCC_DESIRED_SLIP_7E1_1E35_CANDIDATE",
-          "path": "TESTING.Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 5500,
-            "div": 4,
-            "unit": "rpm"
-          },
-          "name": "TEST TCC desired slip 1E35",
-          "description": "Testing only. Compare against confirmed 1E14 actual slip."
-        }
-      ]
-    },
-    {
-      "hdr": "7E1",
-      "rax": "7E9",
-      "cmd": {
-        "22": "1E3C"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_RAW16_AB",
-          "path": "TESTING.Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST TCC commanded pressure 1E3C raw AB",
-          "description": "Testing only. Raw companion for TCC commanded pressure. Possible TCC commanded pressure."
-        },
-        {
-          "id": "EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_CANDIDATE",
-          "path": "TESTING.Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 3000,
-            "unit": "kilopascal"
-          },
-          "name": "TEST TCC commanded pressure 1E3C",
-          "description": "Testing only. Possible TCC commanded pressure."
-        }
-      ]
-    },
-    {
-      "hdr": "7E2",
-      "rax": "7EA",
-      "cmd": {
-        "22": "C45D"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_4WD_MODE_7E2_C45D_RAW16_AB",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST 4WD mode C45D raw AB",
-          "description": "Testing only. Raw companion for 4WD mode. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        },
-        {
-          "id": "EVEREST_TEST_4WD_MODE_7E2_C45D_CANDIDATE",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 8,
-            "max": 15,
-            "unit": "scalar"
-          },
-          "name": "TEST 4WD mode C45D",
-          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        }
-      ]
-    },
-    {
-      "hdr": "7E2",
-      "rax": "7EA",
-      "cmd": {
-        "22": "C460"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TRANSFER_CLUTCH_DUTY_7E2_C460_RAW16_AB",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Transfer clutch duty C460 raw AB",
-          "description": "Testing only. Raw companion for Transfer clutch duty. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        },
-        {
-          "id": "EVEREST_TEST_TRANSFER_CLUTCH_DUTY_7E2_C460_CANDIDATE",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "TEST Transfer clutch duty C460",
-          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        }
-      ]
-    },
-    {
-      "hdr": "7E2",
-      "rax": "7EA",
-      "cmd": {
-        "22": "C461"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_FRONT_PROP_SPEED_7E2_C461_RAW16_AB",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Front prop speed C461 raw AB",
-          "description": "Testing only. Raw companion for Front prop speed. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        },
-        {
-          "id": "EVEREST_TEST_FRONT_PROP_SPEED_7E2_C461_CANDIDATE",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 16,
-            "max": 8000,
-            "unit": "rpm"
-          },
-          "name": "TEST Front prop speed C461",
-          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        }
-      ]
-    },
-    {
-      "hdr": "7E2",
-      "rax": "7EA",
-      "cmd": {
-        "22": "C462"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_REAR_PROP_SPEED_7E2_C462_RAW16_AB",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Rear prop speed C462 raw AB",
-          "description": "Testing only. Raw companion for Rear prop speed. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        },
-        {
-          "id": "EVEREST_TEST_REAR_PROP_SPEED_7E2_C462_CANDIDATE",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 16,
-            "max": 8000,
-            "unit": "rpm"
-          },
-          "name": "TEST Rear prop speed C462",
-          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        }
-      ]
-    },
-    {
-      "hdr": "7E2",
-      "rax": "7EA",
-      "cmd": {
-        "22": "C463"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_REAR_LOCKER_STATE_7E2_C463_RAW16_AB",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Rear locker state C463 raw AB",
-          "description": "Testing only. Raw companion for Rear locker state. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        },
-        {
-          "id": "EVEREST_TEST_REAR_LOCKER_STATE_7E2_C463_CANDIDATE",
-          "path": "TESTING.4x4",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST Rear locker state C463",
-          "description": "Testing only. Possible 4x4/transfer case value on header 7E2. Test safely during mode changes."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "1E12"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_RANGER_GEAR_7E0_1E12",
-          "path": "TESTING.Transmission",
-          "fmt": {
-            "len": 8,
-            "map": {
-              "1": {
-                "description": "Gear 1",
-                "value": "1"
-              },
-              "2": {
-                "description": "Gear 2",
-                "value": "2"
-              },
-              "3": {
-                "description": "Gear 3",
-                "value": "3"
-              },
-              "4": {
-                "description": "Gear 4",
-                "value": "4"
-              },
-              "5": {
-                "description": "Gear 5",
-                "value": "5"
-              },
-              "6": {
-                "description": "Gear 6",
-                "value": "6"
-              },
-              "7": {
-                "description": "Gear 7",
-                "value": "7"
-              },
-              "8": {
-                "description": "Gear 8",
-                "value": "8"
-              },
-              "9": {
-                "description": "Gear 9",
-                "value": "9"
-              },
-              "10": {
-                "description": "Gear 10",
-                "value": "10"
-              }
-            }
-          },
-          "name": "TEST Ranger current gear 1E12",
-          "description": "Testing only. Ranger-derived 7E0 current gear map 1-10. Compare against Everest 7E1 gear signals."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "33"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_BARO_0133_KPA",
-          "path": "TESTING.Boost1",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "kilopascal"
-          },
-          "name": "TEST BARO 0133",
-          "description": "Testing only. SAE/Ranger-supported barometric pressure. Compare against 220233 BARO candidate."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "42"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_CONTROL_MODULE_VOLTAGE_0142",
-          "path": "TESTING.Battery",
-          "fmt": {
-            "len": 16,
-            "max": 65.535,
-            "div": 1000,
-            "unit": "volts"
-          },
-          "name": "TEST control module voltage 0142",
-          "description": "Testing only. SAE/Ranger-supported control module voltage. Compare against aux battery voltage 402A and alternator behaviour."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "01": "5E"
       },
       "freq": 5,
@@ -2233,73 +2323,6 @@
           },
           "name": "TEST fuel rate 015E",
           "description": "Testing only. Strong direct fuel-rate candidate. Latest screenshots showed plausible live values around 0.3, 1.4, 5.4 and 13.5, likely L/h style behaviour; compare against load/throttle/019D."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "61"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_DRIVER_DEMAND_TORQUE_0161",
-          "path": "TESTING.Misc",
-          "fmt": {
-            "len": 8,
-            "min": -125,
-            "max": 130,
-            "add": -125,
-            "unit": "percent"
-          },
-          "name": "TEST driver demand torque 0161",
-          "description": "Testing only. Driver/requested torque demand candidate. Latest captures showed plausible behaviour: near 0% while coasting/foot-off and up to about 100% during hard takeoff."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "62"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_ACTUAL_ENGINE_TORQUE_0162",
-          "path": "TESTING.Misc",
-          "fmt": {
-            "len": 8,
-            "min": -125,
-            "max": 130,
-            "add": -125,
-            "unit": "percent"
-          },
-          "name": "TEST actual engine torque 0162",
-          "description": "Testing only. Actual/delivered engine torque candidate. Latest captures showed plausible behaviour: near 0% while coasting/foot-off and up to about 93-95% during hard takeoff."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "63"
-      },
-      "freq": 30,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_ENGINE_REFERENCE_TORQUE_0163",
-          "path": "TESTING.Misc",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "newtonMeters"
-          },
-          "name": "TEST engine reference torque 0163",
-          "description": "Testing only. Engine reference torque candidate. Latest captures showed stable 500 N\u00b7m, plausible for the 2.0 Bi-Turbo diesel reference/max torque value."
         }
       ]
     },
@@ -2376,68 +2399,87 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "01": "9E"
+        "01": "6D"
       },
-      "freq": 5,
+      "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_RAW16_AB",
-          "path": "TESTING.Regen",
+          "id": "EVEREST_TEST_RANGER_PACKET_6D_RAW16_AB",
+          "path": "TESTING.Fuel",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST exhaust flow 019E raw AB",
-          "description": "Testing only. Raw companion for 019E exhaust-flow candidate. Latest screenshots show raw values moving strongly with load/flow."
-        },
+          "name": "TEST fuel rail packet 016D raw AB",
+          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "61"
+      },
+      "freq": 5,
+      "signals": [
         {
-          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV5_CANDIDATE",
-          "path": "TESTING.Regen",
+          "id": "EVEREST_TEST_DRIVER_DEMAND_TORQUE_0161",
+          "path": "TESTING.Misc",
+          "fmt": {
+            "len": 8,
+            "min": -125,
+            "max": 130,
+            "add": -125,
+            "unit": "percent"
+          },
+          "name": "TEST driver demand torque 0161",
+          "description": "Testing only. Driver/requested torque demand candidate. Latest captures showed plausible behaviour: near 0% while coasting/foot-off and up to about 100% during hard takeoff."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "62"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ACTUAL_ENGINE_TORQUE_0162",
+          "path": "TESTING.Misc",
+          "fmt": {
+            "len": 8,
+            "min": -125,
+            "max": 130,
+            "add": -125,
+            "unit": "percent"
+          },
+          "name": "TEST actual engine torque 0162",
+          "description": "Testing only. Actual/delivered engine torque candidate. Latest captures showed plausible behaviour: near 0% while coasting/foot-off and up to about 93-95% during hard takeoff."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "01": "63"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_ENGINE_REFERENCE_TORQUE_0163",
+          "path": "TESTING.Misc",
           "fmt": {
             "len": 16,
-            "max": 13107,
-            "div": 5,
-            "unit": "scalar"
+            "max": 65535,
+            "unit": "newtonMeters"
           },
-          "name": "TEST exhaust flow 019E div5",
-          "description": "Testing only. Exhaust-flow 019E raw/5 candidate. Latest screenshots show live values 44.4, 100, 178, 339 from raw 222, 501, 890, 1697; strong load/flow candidate."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV10_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 6553.5,
-            "div": 10,
-            "unit": "scalar"
-          },
-          "name": "TEST exhaust flow 019E div10",
-          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV20_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "scalar"
-          },
-          "name": "TEST exhaust flow 019E div20",
-          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV50_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 1310.7,
-            "div": 50,
-            "unit": "scalar"
-          },
-          "name": "TEST exhaust flow 019E div50",
-          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
+          "name": "TEST engine reference torque 0163",
+          "description": "Testing only. Engine reference torque candidate. Latest captures showed stable 500 N·m, plausible for the 2.0 Bi-Turbo diesel reference/max torque value."
         }
       ]
     },
@@ -2459,48 +2501,6 @@
           },
           "name": "TEST EGR command actual packet 0169 raw AB",
           "description": "Testing only. Raw companion for SAE/Ranger EGR command/actual packet 0169. Latest captures showed live movement around raw 1792-1846; keep as alive scout for correlation against EGR open percentage, RPM and load."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "6D"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_6D_RAW16_AB",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel rail packet 016D raw AB",
-          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801\u20131853; keep for future packet decoding."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "70"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_70_RAW16_AB",
-          "path": "TESTING.Boost2",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST boost pressure packet 0170 raw AB",
-          "description": "Testing only. Raw companion for SAE/Ranger boost-control packet 0170. Latest captures showed live but small movement around raw 1805-1821; keep as alive scout for load/WOT comparison."
         }
       ]
     }
