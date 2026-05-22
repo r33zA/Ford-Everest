@@ -772,7 +772,7 @@ Added / retained candidates include:
 
 | PID | Purpose | Notes |
 | --- | --- | --- |
-| `010B` | Generic MAP gauge boost fixed offset | Uses `A - 101 kPa`; watch for 255 kPa absolute cap under load. |
+| `010B` | Generic manifold absolute pressure gauge boost fixed offset | Uses `A - 101 kPa`; watch for 255 kPa absolute cap under load. |
 | `22F40B` | F40B calculated boost fixed offset | Uses existing F40B manifold pressure formula minus fixed 14.5 psi. |
 | `2216AD` | Next-Gen MAP HP / Sensor 1 | Raw + `raw / 100 kPa`; KOEO should be near BARO if correct. |
 | `2216AE` | Next-Gen BARO | Raw + `raw / 100 kPa`; should stay close to atmospheric pressure. |
@@ -1127,4 +1127,153 @@ Removed the frozen F463 EGRT testing decode and raw companion from active TESTIN
 Updated testing notes for the 0161 driver demand torque, 0162 actual engine torque, and 0163 engine reference torque candidates. Coasting produced near-zero torque values, while hard takeoff produced near-maximum demand/actual torque, strengthening confidence in these signals.
 
 Preserved live raw scouts 0169 and 0170 for further correlation. No production or stable signals were modified.
+```
+
+
+---
+
+# v0.7.7 — Path and name housekeeping
+
+Aligned default file: `default_everest_my25_25_v0_7_7_path_name_housekeeping.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Tidied production signal paths so Everest-specific working PIDs sit at the root of their main category where practical.
+- Kept generic SAE / comparison signals under the relevant `*.Generic` path.
+- Preserved the existing Emissions structure for now.
+- Moved movement subcategory items into root `Movement` as requested.
+- Moved odometer into `Trips`.
+- Moved oil life remaining into root `Engine`.
+- Polished several visible names for consistency without changing signal IDs, formulas or suggested metrics.
+- Reordered commands so related PIDs sit closer together in the file and UI grouping is easier to scan.
+
+## Path changes
+
+| Signal | Old path | New path |
+| --- | --- | --- |
+| `EVEREST_MAP_SENSOR_VOLTAGE_0301` | `Engine.Boost` | `Engine` |
+| `EVEREST_WASTEGATE_DUTY_CYCLE_0462` | `Engine.Boost` | `Engine` |
+| `EVEREST_MANIFOLD_PRESSURE_F40B` | `Engine.Boost` | `Engine` |
+| `EVEREST_OIL_LIFE_REMAINING_054B` | `Maintenance` | `Engine` |
+| `GENERIC_MAP_010B` | `Engine.Boost.Generic` | `Engine.Generic` |
+| `FORD_FR_VSS` | `Movement.WheelSpeed` | `Movement` |
+| `FORD_FL_VSS` | `Movement.WheelSpeed` | `Movement` |
+| `FORD_RR_VSS` | `Movement.WheelSpeed` | `Movement` |
+| `FORD_RL_VSS` | `Movement.WheelSpeed` | `Movement` |
+| `FORD_LAT_ANG` | `Movement.BodyMotion` | `Movement` |
+| `FORD_LAT_G` | `Movement.BodyMotion` | `Movement` |
+| `EVEREST_ODOMETER_01A6` | `Movement` | `Trips` |
+| `EVEREST_TRANS_TEMP_1E1C_DIV16` | `Transmission.Everest` | `Transmission` |
+
+
+## Name polish
+
+| Signal | Old name | New name |
+| --- | --- | --- |
+| `EVEREST_BATTERY_AGE_SCALAR_4027` | Battery age scalar | Battery age raw counter |
+| `EVEREST_BATTERY_CHARGE_4028_DIV255` | Battery charge 4028 div255 | Battery charge 4028 div255 compare |
+| `EVEREST_GRILL_SHUTTER_DUTY_CYCLE_0707` | Grill shutter duty cycle | Grille shutter duty cycle |
+| `EVEREST_IAT_FAULT_0700` | Intake temperature fault | Intake temperature fault status |
+| `EVEREST_IAT_SENSOR_VOLTAGE_1279` | Intake temperature sensor voltage | Intake air temperature sensor voltage |
+| `EVEREST_GENERIC_MAF_0110` | Air flow rate from mass air flow sensor | Generic mass air flow rate |
+| `FORD_DTE_DISP` | Distance to empty, displayed | Distance to empty displayed |
+| `EVEREST_LPFP_DUTY_0307` | Low pressure fuel pump commanded duty cycle | Low-pressure fuel pump commanded duty cycle |
+| `EVEREST_HPFP_SENSOR_VOLTAGE_0324` | High pressure fuel rail sensor voltage | High-pressure fuel rail sensor voltage |
+| `EVEREST_HPFP_DESIRED_03DC` | High pressure fuel pressure desired | High-pressure fuel pressure desired |
+| `EVEREST_LPFP_DESIRED_041F` | Fuel pressure, low desired | Low-pressure fuel pressure desired |
+| `EVEREST_LPFP_ACTUAL_0548` | Fuel pressure, low actual | Low-pressure fuel pressure actual |
+| `EVEREST_LPFP_SENSOR_VOLTAGE_054D` | Fuel pressure sensor voltage, low | Low-pressure fuel pressure sensor voltage |
+| `EVEREST_TRANS_TEMP_1E1C_DIV16` | Transmission fluid temperature Everest div16 | Transmission fluid temperature |
+| `EVEREST_TRANS_TEMP_1E1C_5_72` | Transmission fluid temperature 5/72 compare | Transmission fluid temperature compare |
+| `EVEREST_OSS_1E15_RPM` | Output shaft speed OSS 1E15 | Transmission output shaft speed |
+| `EVEREST_ISS_TSS_1E16_RPM` | Input shaft speed ISS/TSS 1E16 | Transmission input shaft speed |
+
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 90 |
+| Signals | 129 |
+| Testing signals | 63 |
+| Duplicate IDs | 0 |
+| JSON validation | Passed |
+| Non-root testing paths remaining | 0 |
+| Production signal IDs changed | 0 |
+| Formula changes | 0 |
+| Removed signals | 0 |
+| Added signals | 0 |
+
+## Commit message
+
+```text
+Tidy Everest PID paths and visible signal names
+```
+
+## Extended description
+
+```text
+Tidied the Ford Everest MY25.25 signal pack paths and visible names after v0.7.6.
+
+Everest-specific working PIDs were moved to the root of their main categories where requested, movement subcategory items were flattened into Movement, odometer was moved to Trips, oil life was moved to Engine, and generic SAE comparison signals were kept under the relevant Generic category.
+
+No signal IDs, formulas, suggested metrics, production commands or TESTING formulas were changed. Existing Emissions structure was preserved.
+```
+
+
+---
+
+# v0.7.8 — Generic and transmission display cleanup
+
+Aligned default file: `default_everest_my25_25_v0_7_8_generic_transmission_cleanup.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Renamed the generic SAE MAP signal for clearer app display.
+- Removed the Everest prefix from the generic MAP signal ID so it is clearly a generic OBD-II signal rather than an Everest-specific Ford enhanced PID.
+- Moved the 5/72 transmission-temperature comparison signal from `Transmission.Generic` to root `Transmission`.
+- Renamed the 5/72 comparison signal to sit more cleanly beside the preferred div16 transmission-fluid-temperature signal.
+- No formulas, commands, suggested metrics, TESTING formulas, or production/stable logic were changed.
+
+## Specific changes
+
+| Signal | Previous | Updated | Reason |
+| --- | --- | --- | --- |
+| Generic MAP signal ID | `EVEREST_GENERIC_MAP_010B` | `GENERIC_MAP_010B` | `010B` is a generic SAE OBD-II MAP PID, not an Everest-specific Ford enhanced PID. |
+| Generic MAP visible name | `Generic MAP` | `Generic manifold absolute pressure` | Clearer display in the app. |
+| Transmission temp 5/72 path | `Transmission.Generic` | `Transmission` | This is an Everest transmission comparison decode, not a generic OBD item. |
+| Transmission temp 5/72 visible name | `Generic transmission temperature compare 5/72` | `Transmission fluid temperature compare` | Cleaner display beside the preferred transmission temperature signal. |
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 90 |
+| Signals | 129 |
+| Testing signals | 63 |
+| Duplicate IDs | 0 |
+| JSON validation | Passed |
+| Non-root testing paths | 0 |
+| Formula changes | 0 |
+| Signal ID changes | 1 |
+| Path changes | 1 |
+| Removed signals | 0 |
+| Added signals | 0 |
+
+## Commit message
+
+```text
+Clarify generic MAP and transmission compare display
+```
+
+## Extended description
+
+```text
+Tidied two display/path issues in the Ford Everest MY25.25 signal pack.
+
+The generic SAE MAP PID 010B now uses the signal ID GENERIC_MAP_010B and visible name Generic manifold absolute pressure, making it clearer that the PID is generic OBD-II rather than Everest-specific.
+
+The 5/72 transmission-fluid-temperature comparison signal was moved from Transmission.Generic to root Transmission and renamed Transmission fluid temperature compare so it sits beside the preferred div16 transmission temperature signal.
+
+No formulas, commands, suggested metrics, production logic, or TESTING formulas were changed.
 ```
