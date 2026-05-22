@@ -62,8 +62,8 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 | `engineSpeed` | `EVEREST_ENGINE_SPEED_F40C` | Engine speed | `22F40C` |
 | `fuelRange` | `FORD_DTE_DISP` | Distance to empty, displayed | `224195` |
 | `fuelTankLevel` | `EVEREST_FUEL_REMAINING_F42F` | Fuel remaining | `22F42F` |
-| `fuelTankLevel` | `EVEREST_GENERIC_FUEL_LEVEL_012F` | Generic fuel level | `012F` |
-| `massAirFlow` | `EVEREST_GENERIC_MAF_0110` | Air flow rate from mass air flow sensor | `0110` |
+| `fuelTankLevel` | `GENERIC_FUEL_LEVEL_012F` | Generic fuel level | `012F` |
+| `massAirFlow` | `GENERIC_MAF_0110` | Air flow rate from mass air flow sensor | `0110` |
 | `odometer` | `EVEREST_ODOMETER_01A6` | Odometer | `01A6` |
 | `speed` | `EVEREST_SPEED_FORD_EXTENDED_F40D` | Vehicle speed Ford extended raw | `22F40D` |
 | `speed` | `EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED` | Vehicle speed Ford extended corrected | `22F40D` |
@@ -1175,7 +1175,7 @@ Aligned default file: `default_everest_my25_25_v0_7_7_path_name_housekeeping.jso
 | `EVEREST_GRILL_SHUTTER_DUTY_CYCLE_0707` | Grill shutter duty cycle | Grille shutter duty cycle |
 | `EVEREST_IAT_FAULT_0700` | Intake temperature fault | Intake temperature fault status |
 | `EVEREST_IAT_SENSOR_VOLTAGE_1279` | Intake temperature sensor voltage | Intake air temperature sensor voltage |
-| `EVEREST_GENERIC_MAF_0110` | Air flow rate from mass air flow sensor | Generic mass air flow rate |
+| `GENERIC_MAF_0110` | Air flow rate from mass air flow sensor | Generic mass air flow rate |
 | `FORD_DTE_DISP` | Distance to empty, displayed | Distance to empty displayed |
 | `EVEREST_LPFP_DUTY_0307` | Low pressure fuel pump commanded duty cycle | Low-pressure fuel pump commanded duty cycle |
 | `EVEREST_HPFP_SENSOR_VOLTAGE_0324` | High pressure fuel rail sensor voltage | High-pressure fuel rail sensor voltage |
@@ -1276,4 +1276,67 @@ The generic SAE MAP PID 010B now uses the signal ID GENERIC_MAP_010B and visible
 The 5/72 transmission-fluid-temperature comparison signal was moved from Transmission.Generic to root Transmission and renamed Transmission fluid temperature compare so it sits beside the preferred div16 transmission temperature signal.
 
 No formulas, commands, suggested metrics, production logic, or TESTING formulas were changed.
+```
+
+
+# v0.7.9 — Generic ID and engine path cleanup
+
+Aligned default file: `default_everest_my25_25_v0_7_9_generic_id_and_engine_path_cleanup.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Clarified remaining generic SAE signal IDs so they do not appear Everest-specific in the app.
+- Kept generic SAE working signals under their category `.Generic` paths.
+- Moved grille shutter duty cycle from `Body` to `Engine` because it is an engine thermal / airflow management signal.
+- No formulas, commands, suggested metrics, production logic or TESTING signals were changed.
+
+## Generic SAE naming rule locked in
+
+| Signal type | ID style | Path rule |
+| --- | --- | --- |
+| Generic SAE Mode 01 PID | `GENERIC_*` | `Category.Generic` |
+| Everest/Ford-specific confirmed PID | `EVEREST_*` | Root category |
+| Experimental / uncertain PID | `EVEREST_TEST_*` | `TESTING.*` |
+
+## Changes made
+
+| Item | Previous | Updated |
+| --- | --- | --- |
+| Generic MAF ID | `EVEREST_GENERIC_MAF_0110` | `GENERIC_MAF_0110` |
+| Generic MAF path | `Engine.Generic` | unchanged |
+| Generic fuel level ID | `EVEREST_GENERIC_FUEL_LEVEL_012F` | `GENERIC_FUEL_LEVEL_012F` |
+| Generic fuel level path | `Fuel.Generic` | unchanged |
+| Grille shutter duty path | `Body` | `Engine` |
+
+## v0.7.9 validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 90 |
+| Signals | 129 |
+| Testing signals | 63 |
+| Duplicate IDs | 0 |
+| JSON validation | Passed |
+| Formula changes | 0 |
+| Path changes | 1 |
+| Signal ID changes | 2 |
+| Removed signals | 0 |
+| Added signals | 0 |
+
+## Commit message
+
+```text
+Clarify generic IDs and move grille shutter to Engine
+```
+
+## Extended description
+
+```text
+Tidied the Ford Everest MY25.25 signal pack after v0.7.8.
+
+Renamed remaining generic SAE working signal IDs so they no longer use the EVEREST_GENERIC prefix: GENERIC_MAF_0110 and GENERIC_FUEL_LEVEL_012F. These remain under their relevant Generic category paths because they are generic SAE Mode 01 PIDs, not Everest-specific Ford enhanced PIDs.
+
+Moved grille shutter duty cycle from Body to Engine because it belongs with engine airflow and thermal-management signals.
+
+No formulas, commands, suggested metrics, TESTING signals or production logic were changed.
 ```
