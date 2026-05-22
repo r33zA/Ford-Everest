@@ -401,7 +401,7 @@
             "unit": "percent"
           },
           "name": "DPF / exhaust filter fullness",
-          "description": "Everest-confirmed. Formula raw / 100. Matched the vehicle exhaust-filter display through a full regen cycle: high/full, cleaning, and post-regen near zero. Promoted from validation after live Pelican testing.",
+          "description": "Everest-confirmed. Formula raw / 100. Validated during a captured active DPF regen: fullness dropped from about 76.7% at session start to about 17.7% after completion, matching the vehicle DPF/exhaust-filter display and screenshots. Strong production signal.",
           "suggestedMetric": "dpfSootLoad"
         }
       ]
@@ -424,7 +424,7 @@
             "unit": "kilometers"
           },
           "name": "Distance since DPF regen",
-          "description": "Everest-confirmed. Formula raw / 10 km. Counted up with driving distance, reset to 0 km at regen completion, then immediately started counting up again. Promoted from validation after live Pelican testing."
+          "description": "Everest-confirmed. Formula raw / 10 km. Validated during captured regen completion: distance since regen reset from about 125.8 km to 0.5 km, then immediately counted upward again. Strong production signal."
         }
       ]
     },
@@ -1476,27 +1476,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "0440"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_DPF_REGEN_STATUS_0440_RAW8_A",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF regen status 0440 raw A",
-          "description": "Testing only. Responded with valid zero during testing. Possible regen-status bitfield; keep for future comparison during active regen."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F451"
       },
       "freq": 10,
@@ -1509,8 +1488,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST DPF regen request F451 raw AB",
-          "description": "Testing only. Raw companion for DPF regen request. Candidate Ford regen/state PID. Watch during known active regen."
+          "name": "TEST DPF regen state/request F451 raw AB",
+          "description": "Testing only. Raw companion for F451. During captured regen the decoded F451 candidate showed value 4. Keep as evidence/raw companion until the state meaning is confirmed outside regen."
         },
         {
           "id": "EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_CANDIDATE",
@@ -1520,40 +1499,8 @@
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST DPF regen request F451",
-          "description": "Testing only. Candidate Ford regen/state PID. Watch during known active regen."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "F48B"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW8_A",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status F48B raw A",
-          "description": "Testing only. Responded during v0.3/v0.3.1 testing with raw A around 127. Possible DPF/regen status or state byte. Keep for future regen comparison. Latest screenshots: value stayed at raw A 127 / raw AB 32512 outside regen; keep until active regen capture to check state change."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_F48B_RAW16_AB",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status F48B raw AB",
-          "description": "Testing only. Raw 16-bit companion for 22F48B. Earlier value 32512 appeared to equal 127*256, suggesting the first byte may be the meaningful state. Latest screenshots: value stayed at raw A 127 / raw AB 32512 outside regen; keep until active regen capture to check state change."
+          "name": "TEST DPF regen state/request F451",
+          "description": "Testing only. Responded with value 4 during captured active DPF regen while DPF fullness fell and distance-since-regen reset. Keep for non-regen comparison to determine whether 4 means active/requested/allowed or another state."
         }
       ]
     },
@@ -1574,7 +1521,7 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust flow 019E raw AB",
-          "description": "Testing only. Raw companion for 019E exhaust-flow candidate. Latest screenshots show raw values moving strongly with load/flow."
+          "description": "Testing only. Raw companion for 019E exhaust-flow candidate. Captured active regen/load testing showed strong movement from about 185 to 3583 raw, closely tracking exhaust/load changes. Keep for scaling comparison."
         },
         {
           "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV5_CANDIDATE",
@@ -1586,7 +1533,7 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust flow 019E div5",
-          "description": "Testing only. Exhaust-flow 019E raw/5 candidate. Latest screenshots show live values 44.4, 100, 178, 339 from raw 222, 501, 890, 1697; strong load/flow candidate."
+          "description": "Testing only. Exhaust-flow 019E raw/5 candidate. Alive and responsive during active regen/load capture, but likely high. Keep for comparison against div10/div20/div50 and EGT/load."
         },
         {
           "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV10_CANDIDATE",
@@ -1598,7 +1545,7 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust flow 019E div10",
-          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
+          "description": "Testing only. Exhaust-flow 019E raw/10 candidate. Alive and responsive during active regen/load capture. Keep for comparison; div20 currently looks more plausible."
         },
         {
           "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV20_CANDIDATE",
@@ -1609,8 +1556,8 @@
             "div": 20,
             "unit": "scalar"
           },
-          "name": "TEST exhaust flow 019E div20",
-          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
+          "name": "TEST exhaust flow 019E div20 likely",
+          "description": "Testing only. Exhaust-flow 019E raw/20 candidate. Active regen/load capture showed strong correlation with flow/load; current best scaling candidate among div5/div10/div20/div50, pending more validation against RPM/load/EGT."
         },
         {
           "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV50_CANDIDATE",
@@ -1622,7 +1569,7 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust flow 019E div50",
-          "description": "Testing only. Alternate exhaust-flow scaling for 019E; compare against engine load, EGT and regen behaviour."
+          "description": "Testing only. Exhaust-flow 019E raw/50 candidate. Alive and responsive during active regen/load capture, but may be low. Keep for comparison against div20."
         }
       ]
     },
