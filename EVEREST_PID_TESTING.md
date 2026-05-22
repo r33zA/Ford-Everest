@@ -1340,3 +1340,88 @@ Moved grille shutter duty cycle from Body to Engine because it belongs with engi
 
 No formulas, commands, suggested metrics, TESTING signals or production logic were changed.
 ```
+
+# v0.7.10 — DPF regen validation update
+
+Aligned default file: `default_everest_my25_25_v0_7_10_dpf_regen_validation.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Updated DPF/regen notes after a captured active DPF regeneration event in Pelican and screenshots.
+- Strengthened validation descriptions for the confirmed DPF fullness and distance-since-regen production signals.
+- Kept `F451` as a live regen state/request candidate after it showed value `4` during the captured regen.
+- Marked `019E` exhaust-flow testing as strongly alive and noted `div20` as the current likely-best scaling candidate.
+- Removed low-value regen testing clutter where the visible decode did not help during the active regen capture.
+
+## Captured regen evidence
+
+During the captured regen event:
+
+- `EVEREST_DPF_FULLNESS_0610` dropped from approximately `76.7%` at session start to approximately `17.7%` after completion.
+- Visible screenshots showed the DPF fullness moving through approximately `48%` and then down to approximately `19%`.
+- `EVEREST_DISTANCE_SINCE_DPF_REGEN_0614` reset from approximately `125.8 km` to `0.5 km`, then immediately began counting upward again.
+- This strongly confirms both `220610` and `220614` as production DPF signals.
+
+## Regen testing decisions
+
+| Signal | Decision | Reason |
+| --- | --- | --- |
+| `EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_CANDIDATE` | Keep | Responded with value `4` during active regen; needs non-regen comparison. |
+| `EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_RAW16_AB` | Keep | Raw companion for F451. |
+| `EVEREST_TEST_DPF_REGEN_STATUS_0440_RAW8_A` | Removed | Stayed `0` during captured active regen; not useful as active-regen status. |
+| `EVEREST_TEST_DPF_STATUS_F48B_RAW8_A` | Removed from active JSON | Visible decode stayed fixed at `127`; database showed later packet bytes changed, but current A-byte decode is not useful. |
+| `EVEREST_TEST_DPF_STATUS_F48B_RAW16_AB` | Removed from active JSON | Visible decode stayed fixed at `32512`; packet may still be useful if byte-offset decoding becomes available later. |
+
+## Exhaust flow `019E`
+
+`019E` moved strongly during the regen/load drive and is now a strong testing candidate.
+
+Observed raw examples:
+
+| Raw AB | div5 | div10 | div20 | div50 |
+| ---: | ---: | ---: | ---: | ---: |
+| 185 | 37.0 | 18.5 | 9.3 | 3.7 |
+| 751 | 150.2 | 75.1 | 37.6 | 15.0 |
+| 2588 | 517.6 | 258.8 | 129.4 | 51.8 |
+| 3583 | 716.6 | 358.3 | 179.2 | 71.7 |
+
+Current read:
+
+- `div20` looks like the most plausible current scaling candidate.
+- `div5`, `div10`, `div50`, and raw AB are kept for comparison.
+- Continue comparing against RPM, load, EGT and regen state.
+
+## v0.7.10 validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 88 |
+| Signals | 126 |
+| Testing signals | 60 |
+| Duplicate IDs | 0 |
+| JSON validation | Passed |
+| Formula changes | 0 |
+| Production signal formulas modified | 0 |
+| Removed commands | 2 |
+| Removed signals | 3 |
+| Added signals | 0 |
+
+## Commit message
+
+```text
+Validate DPF regen behaviour and trim low-value regen tests
+```
+
+## Extended description
+
+```text
+Updated the Ford Everest MY25.25 signal pack after a captured active DPF regeneration event.
+
+The regen capture confirmed DPF fullness 220610 falling from high soot load to post-regen values, and confirmed distance-since-DPF-regen 220614 resetting from approximately 125.8 km to 0.5 km before counting upward again.
+
+Updated descriptions for the confirmed DPF production signals, kept F451 as a live regen state/request candidate after it showed value 4 during active regen, and strengthened exhaust-flow 019E notes with div20 marked as the current likely-best scaling candidate.
+
+Removed low-value regen testing clutter where the visible decode did not help during active regen: 0440 raw A and F48B A/AB. The F48B packet may still contain useful later bytes, but the current visible A/AB decodes stayed fixed and are not useful in the app view.
+
+No production formulas, confirmed signal IDs, or non-regen testing formulas were changed.
+```
