@@ -730,3 +730,174 @@ Strong retained candidates include fuel rate 015E, fuel-rate alternate 019D, exh
 No production or stable signals were modified.
 All experimental work remains under root TESTING.*.
 ```
+
+---
+
+# v0.7.3 — Boost + Oil Testing Expansion
+
+Aligned default file: `default_everest_my25_25_v0_7_3_boost_oil_testing_expansion.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built from v0.7.2 testing refinement.
+- Preserved all production/stable signals unchanged.
+- Split the previous large `TESTING.Boost` page into smaller screenshot-friendly groups:
+  - `TESTING.Boost1` — MAP, BARO, TCBP and calculated/fixed-offset boost candidates.
+  - `TESTING.Boost2` — commanded vs actual boost candidates and boost packet scouts.
+  - `TESTING.Boost3` — VGT / wastegate / turbo actuator command-vs-feedback candidates.
+  - `TESTING.Boost4` — deeper speculative turbo stage pressure, actuator, bypass and turbo-speed candidates.
+- Added a new root `TESTING.Oil` group for engine oil pressure, oil pressure switch, virtual EOP, sensor voltage and variable oil-pump duty candidates.
+- Did not reintroduce previously shelved repeated out-of-range clutter.
+- Did not reinterpret `22F40F`; it remains the existing intake-air-temperature signal, not a MAP signal.
+- Did not move `22F450` into oil pressure because it already exists in regen testing and external notes conflict on its meaning.
+
+## v0.7.3 sanity-check snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in current default.json | 153 |
+| Signals in current default.json | 258 |
+| Root TESTING signals | 192 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Production signals modified | 0 |
+
+## Boost group split
+
+### TESTING.Boost1 — MAP / BARO / calculated boost
+
+Purpose: find clean absolute pressure sources and practical gauge-boost estimates.
+
+Added / retained candidates include:
+
+| PID | Purpose | Notes |
+| --- | --- | --- |
+| `010B` | Generic MAP gauge boost fixed offset | Uses `A - 101 kPa`; watch for 255 kPa absolute cap under load. |
+| `22F40B` | F40B calculated boost fixed offset | Uses existing F40B manifold pressure formula minus fixed 14.5 psi. |
+| `2216AD` | Next-Gen MAP HP / Sensor 1 | Raw + `raw / 100 kPa`; KOEO should be near BARO if correct. |
+| `2216AE` | Next-Gen BARO | Raw + `raw / 100 kPa`; should stay close to atmospheric pressure. |
+| `2216AF` | MAP Sensor 2 / post-intercooler / interstage candidate | Raw + `raw / 100 kPa`; compare with 16AD under load. |
+| `221440` | Older Ford MAP absolute candidate | Raw + `raw * 0.25 kPa` + `raw * 0.03625 psi`. |
+| `221442` | Older Ford BARO candidate | Raw + `raw * 0.25 kPa` + `raw * 0.03625 psi`. |
+| `2203CA` | TCBP actual candidate | Raw + `raw * 0.25 kPa` + `raw / 100 kPa`. |
+| `2203CB` | TCBP desired candidate | Raw + `raw * 0.25 kPa` + `raw / 100 kPa`. |
+
+### TESTING.Boost2 — commanded vs actual boost
+
+Purpose: identify whether the PCM exposes desired boost, actual boost and boost error directly.
+
+| PID | Purpose | Notes |
+| --- | --- | --- |
+| `2216B0` | Panther boost desired | `raw * 0.01 - 100 kPa` gauge candidate. |
+| `2216B1` | Panther boost actual | `raw * 0.01 - 100 kPa` gauge candidate. |
+| `2216B2` | Panther boost error | Signed `raw * 0.01 kPa`; sign direction needs validation. |
+| `221247` | MAP actual | Raw + `raw / 10 kPa`. |
+| `221248` | MAP desired | Raw + `raw / 10 kPa`. |
+| `220187` | Extended actual MAP scout | Raw only; published formula references B/C bytes. |
+| `22018A` | Extended desired MAP scout | Raw only; published formula references B/C bytes. |
+| `0170` | SAE boost-control packet scout | Possible multi-turbo commanded/measured packet; keep even if short captures look flat. |
+
+### TESTING.Boost3 — turbo actuator control
+
+Purpose: compare command vs feedback for VGT, HP turbo and LP wastegate behaviour.
+
+| PID | Purpose | Notes |
+| --- | --- | --- |
+| `22F470` | Existing VGT commanded alternates | Kept, moved into Boost3. Previous screenshots showed raw movement with wrong original 8-bit scaling. |
+| `22F471` | Existing VGT actual alternates | Kept, moved into Boost3. `div32`, `div64` and `div100` remain especially interesting. |
+| `2216C0` | HP VGT desired | Raw + `A*100/255`. |
+| `2216C1` | HP VGT actual | Raw + `A*100/255`. |
+| `2216C2` | LP wastegate desired | Raw + `A*100/255`. |
+| `2216C3` | LP wastegate actual | Raw + `A*100/255`. |
+| `22116E` | Ford VGT commanded position | Raw + `A*100/255`. |
+
+### TESTING.Boost4 — speculative turbo stage / deep actuator candidates
+
+Purpose: broader turbo-only hunting page for inter-stage pressure, bypass valve, actuator control and turbo speed candidates.
+
+Added candidates:
+
+```text
+221249, 22124A, 22124B, 22124C, 22124D
+221260, 221261, 221262, 221263, 221264
+221265, 221266, 221267, 221268, 221269, 22126A
+221290, 221291
+```
+
+Most Boost4 signals are intentionally speculative. Keep anything that responds and changes with RPM/load/boost. Shelve anything repeatedly returning negative response / out of range to save screenshot space.
+
+## TESTING.Oil — engine oil pressure investigation
+
+Purpose: determine whether this Everest exposes true variable oil pressure, only a binary pressure switch, a PCM virtual oil-pressure estimate, or only variable oil-pump control/duty data.
+
+Added candidates:
+
+| PID | Purpose | Formula candidates |
+| --- | --- | --- |
+| `2211A6` | Next-Gen EOP actual candidate | Raw, raw kPa, raw × 0.145038 psi. |
+| `2211A7` | Oil pressure sensor voltage | Raw, raw / 1000 V. |
+| `220415` | Ford oil pressure candidate | A kPa, raw kPa, raw × 0.145038 psi. |
+| `221439` | Oil pressure switch/status | Raw A. |
+| `221438` | Virtual/calculated EOP | Raw, raw × 0.1 kPa. |
+| `221431` | Oil pressure control solenoid / variable pump duty | Raw, A × 100 / 255 %. |
+| `22034D` | Alternate EOP candidate | Raw, A × 4 kPa, A × 0.579 psi. |
+| `221340` | EOP actual candidate | Raw, raw / 10 kPa. |
+| `221341` | EOP desired / target candidate | Raw, raw / 10 kPa. |
+| `221342` | EOP variant candidate | Raw, raw / 10 kPa. |
+| `221350` | EOP alternate candidate | Raw, raw / 10 kPa. |
+| `221351` | EOP downstream / filter delta candidate | Raw, raw / 10 kPa. |
+
+## Oil validation notes
+
+| State | What to expect if true pressure | What to expect if switch only |
+| --- | --- | --- |
+| KOEO | Near zero pressure / low voltage | 0 / not OK |
+| Start engine | Pressure rises quickly | Flips to 1 / OK |
+| Cold idle | Higher pressure than warm idle | Stays 1 |
+| Warm idle | Lower but stable pressure | Stays 1 |
+| Rev / load | Pressure should rise | Still stays 1 |
+
+If a value instantly jumps to one fixed number and never moves with RPM, oil temperature or load, treat it as a switch/status or bad scaling rather than true pressure.
+
+## Boost validation notes
+
+For MAP/BARO candidates:
+
+- KOEO: MAP should be close to BARO, roughly 95–105 kPa depending on local weather/elevation.
+- Idle: diesel MAP should stay close to BARO; gauge boost should be near 0.
+- Load: actual boost should rise cleanly.
+- If a value flatlines near 250–255 kPa absolute, it is likely hitting the generic single-byte MAP cap.
+
+For commanded vs actual boost:
+
+- Desired and actual should broadly track during steady throttle.
+- Brief overshoot during sudden throttle is normal.
+- Persistent desired high + actual low + high actuator duty suggests possible boost leak/restriction or wrong scaling.
+
+## Commit message
+
+```text
+Add Boost and Oil TESTING expansion for Everest MY25.25
+```
+
+## Extended description
+
+```text
+Built v0.7.3 from the v0.7.2 Ford Everest MY25.25 testing refinement.
+
+This update expands boost investigation into smaller screenshot-friendly root TESTING groups and adds a new TESTING.Oil group.
+
+Boost changes:
+- Split TESTING.Boost into Boost1, Boost2, Boost3 and Boost4.
+- Added Next-Gen MAP/BARO/TCBP candidates.
+- Added commanded-vs-actual boost candidates.
+- Added VGT, HP VGT and LP wastegate command/feedback candidates.
+- Added speculative turbo-stage, actuator, bypass and turbo-speed candidates.
+
+Oil changes:
+- Added actual oil pressure, desired/virtual oil pressure, sensor voltage, switch/status and variable oil-pump duty candidates.
+- Kept oil pressure candidates under TESTING.Oil only until live behaviour proves whether this vehicle exposes true pressure or only switch/proxy data.
+
+No production/stable signals were modified.
+All experimental work remains under root TESTING.*.
+```
