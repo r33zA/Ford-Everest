@@ -263,6 +263,19 @@
           },
           "name": "Generic MAP",
           "description": "Generic SAE MAP value. Confirmed responding; latest test showed 15."
+        },
+        {
+          "id": "EVEREST_TEST_GENERIC_MAP_010B_GAUGE_KPA_FIXED",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 8,
+            "min": -101,
+            "max": 154,
+            "add": -101,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Generic MAP gauge boost 010B fixed offset",
+          "description": "Testing only. Generic MAP converted to approximate gauge boost using fixed sea-level offset A-101 kPa. Watch for 255 kPa absolute cap under high load."
         }
       ]
     },
@@ -346,7 +359,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_MAF_EXTENDED_7E0_0210_RAW16_AB",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost1",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -357,7 +370,7 @@
         },
         {
           "id": "EVEREST_TEST_MAF_EXTENDED_7E0_0210_CANDIDATE",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost1",
           "fmt": {
             "len": 16,
             "max": 500,
@@ -379,7 +392,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_MAP_BOOST_GAUGE_7E0_0247_RAW16_AB",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost1",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -390,7 +403,7 @@
         },
         {
           "id": "EVEREST_TEST_MAP_BOOST_GAUGE_7E0_0247_CANDIDATE",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost1",
           "fmt": {
             "len": 16,
             "min": -14.5,
@@ -1266,6 +1279,21 @@
           },
           "name": "Manifold pressure",
           "description": "Confirmed responding. Formula A*10000/68947."
+        },
+        {
+          "id": "EVEREST_TEST_MANIFOLD_PRESSURE_F40B_GAUGE_PSI_FIXED",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 8,
+            "min": -14.5,
+            "max": 21.5,
+            "mul": 10000,
+            "div": 68947,
+            "add": -14.5,
+            "unit": "psi"
+          },
+          "name": "TEST F40B calculated boost fixed offset",
+          "description": "Testing only. F40B manifold pressure converted to approximate gauge boost by subtracting fixed 14.5 psi atmospheric offset. Live BARO-based boost would be better if supported."
         }
       ]
     },
@@ -1782,7 +1810,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_RAW16_AB",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -1793,7 +1821,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_CANDIDATE",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 8,
             "max": 100,
@@ -1806,7 +1834,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV100",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 655.35,
@@ -1818,7 +1846,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV64",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 1023.984375,
@@ -1830,7 +1858,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV32",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 2047.96875,
@@ -1842,7 +1870,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV20",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 3276.75,
@@ -1854,7 +1882,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV10",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 6553.5,
@@ -1876,7 +1904,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_RAW16_AB",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -1887,7 +1915,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_CANDIDATE",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 8,
             "max": 100,
@@ -1900,7 +1928,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV100",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 655.35,
@@ -1912,7 +1940,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV64",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 1023.984375,
@@ -1924,7 +1952,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV32",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 2047.96875,
@@ -1936,7 +1964,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV20",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 3276.75,
@@ -1948,7 +1976,7 @@
         },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV10",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost3",
           "fmt": {
             "len": 16,
             "max": 6553.5,
@@ -2005,7 +2033,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_RAW16_AB",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost4",
           "fmt": {
             "len": 16,
             "max": 65535,
@@ -2016,7 +2044,7 @@
         },
         {
           "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_CANDIDATE",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost4",
           "fmt": {
             "len": 16,
             "max": 200000,
@@ -2599,7 +2627,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_BARO_0133_KPA",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost1",
           "fmt": {
             "len": 8,
             "max": 255,
@@ -2932,14 +2960,1688 @@
       "signals": [
         {
           "id": "EVEREST_TEST_RANGER_PACKET_70_RAW16_AB",
-          "path": "TESTING.Boost",
+          "path": "TESTING.Boost2",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
           "name": "TEST boost pressure packet 0170 raw AB",
-          "description": "Testing only. Ranger-supported boost pressure packet raw scout. Latest screenshots show live raw values around 1805–1829; keep for future packet decoding."
+          "description": "Testing only. SAE boost-control packet raw scout. Possible multi-turbo commanded/measured boost packet; keep even if short captures look flat."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16AD"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_16AD_RAW16_AB",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST MAP HP / Sensor 1 16AD raw AB",
+          "description": "Testing only. Raw companion for Next-Gen boost candidate MAP HP / Sensor 1."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_16AD_KPA_DIV100",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "kilopascal"
+          },
+          "name": "TEST MAP HP / Sensor 1 16AD div100 kPa",
+          "description": "Testing only. Next-Gen boost/MAP/BARO candidate using raw/100 kPa. KOEO MAP and BARO should be near local atmospheric pressure if correct."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16AE"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_16AE_RAW16_AB",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST BARO 16AE raw AB",
+          "description": "Testing only. Raw companion for Next-Gen boost candidate BARO."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_16AE_KPA_DIV100",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "kilopascal"
+          },
+          "name": "TEST BARO 16AE div100 kPa",
+          "description": "Testing only. Next-Gen boost/MAP/BARO candidate using raw/100 kPa. KOEO MAP and BARO should be near local atmospheric pressure if correct."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16AF"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_16AF_RAW16_AB",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST MAP Sensor 2 / post-intercooler pressure 16AF raw AB",
+          "description": "Testing only. Raw companion for Next-Gen boost candidate MAP Sensor 2 / post-intercooler pressure."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_16AF_KPA_DIV100",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "kilopascal"
+          },
+          "name": "TEST MAP Sensor 2 / post-intercooler pressure 16AF div100 kPa",
+          "description": "Testing only. Next-Gen boost/MAP/BARO candidate using raw/100 kPa. KOEO MAP and BARO should be near local atmospheric pressure if correct."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1440"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_1440_RAW16_AB",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Ford MAP absolute 1440 raw AB",
+          "description": "Testing only. Raw companion for older Ford diesel boost candidate Ford MAP absolute."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_1440_KPA_MUL025",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 16383.75,
+            "mul": 0.25,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Ford MAP absolute 1440 x0.25 kPa",
+          "description": "Testing only. Older Ford diesel pressure scaling raw*0.25 kPa."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_1440_PSI_MUL003625",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 2375,
+            "mul": 0.03625,
+            "unit": "psi"
+          },
+          "name": "TEST Ford MAP absolute 1440 x0.03625 psi",
+          "description": "Testing only. Older Ford diesel pressure scaling raw*0.03625 psi absolute. Subtract BARO for gauge boost if this proves alive."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1442"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_1442_RAW16_AB",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Ford BARO absolute 1442 raw AB",
+          "description": "Testing only. Raw companion for older Ford diesel boost candidate Ford BARO absolute."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_1442_KPA_MUL025",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 16383.75,
+            "mul": 0.25,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Ford BARO absolute 1442 x0.25 kPa",
+          "description": "Testing only. Older Ford diesel pressure scaling raw*0.25 kPa."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_1442_PSI_MUL003625",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 2375,
+            "mul": 0.03625,
+            "unit": "psi"
+          },
+          "name": "TEST Ford BARO absolute 1442 x0.03625 psi",
+          "description": "Testing only. Older Ford diesel pressure scaling raw*0.03625 psi absolute. Subtract BARO for gauge boost if this proves alive."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "03CA"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_03CA_RAW16_AB",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST TCBP actual 03CA raw AB",
+          "description": "Testing only. Raw companion for throttle/compressor boost pressure candidate TCBP actual."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_03CA_KPA_MUL025",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 16383.75,
+            "mul": 0.25,
+            "unit": "kilopascal"
+          },
+          "name": "TEST TCBP actual 03CA x0.25 kPa",
+          "description": "Testing only. TCBP candidate with Ford pressure scaling raw*0.25 kPa."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_03CA_KPA_DIV100",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "kilopascal"
+          },
+          "name": "TEST TCBP actual 03CA div100 kPa",
+          "description": "Testing only. TCBP candidate alternate raw/100 kPa scaling."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "03CB"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_03CB_RAW16_AB",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST TCBP desired 03CB raw AB",
+          "description": "Testing only. Raw companion for throttle/compressor boost pressure candidate TCBP desired."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_03CB_KPA_MUL025",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 16383.75,
+            "mul": 0.25,
+            "unit": "kilopascal"
+          },
+          "name": "TEST TCBP desired 03CB x0.25 kPa",
+          "description": "Testing only. TCBP candidate with Ford pressure scaling raw*0.25 kPa."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_03CB_KPA_DIV100",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "kilopascal"
+          },
+          "name": "TEST TCBP desired 03CB div100 kPa",
+          "description": "Testing only. TCBP candidate alternate raw/100 kPa scaling."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16B0"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_16B0_RAW16_AB",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Panther boost desired 16B0 raw AB",
+          "description": "Testing only. Raw companion for Panther desired boost candidate."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_16B0_KPA_GAUGE",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "min": -100,
+            "max": 555.35,
+            "div": 100,
+            "add": -100,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Panther boost desired 16B0 gauge kPa",
+          "description": "Testing only. Panther desired boost candidate using raw*0.01-100 kPa gauge. Compare desired vs actual under load."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16B1"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_16B1_RAW16_AB",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Panther boost actual 16B1 raw AB",
+          "description": "Testing only. Raw companion for Panther actual boost candidate."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_16B1_KPA_GAUGE",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "min": -100,
+            "max": 555.35,
+            "div": 100,
+            "add": -100,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Panther boost actual 16B1 gauge kPa",
+          "description": "Testing only. Panther actual boost candidate using raw*0.01-100 kPa gauge. Compare desired vs actual under load."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16B2"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_16B2_RAW16_AB",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Panther boost error 16B2 raw AB",
+          "description": "Testing only. Raw companion for Panther boost error candidate."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_16B2_ERROR_KPA_SIGNED",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "min": -327.68,
+            "max": 327.67,
+            "div": 100,
+            "sign": true,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Panther boost error 16B2 signed kPa",
+          "description": "Testing only. Signed boost error candidate. Positive/negative direction requires validation against desired and actual boost."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1247"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_1247_RAW16_AB",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST MAP actual 1247 raw AB",
+          "description": "Testing only. Raw companion for Ford MAP actual pressure candidate."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_1247_KPA_DIV10",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST MAP actual 1247 div10 kPa",
+          "description": "Testing only. Ford MAP actual pressure candidate using raw/10 kPa absolute. Subtract BARO for gauge boost if correct."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1248"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_1248_RAW16_AB",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST MAP desired 1248 raw AB",
+          "description": "Testing only. Raw companion for Ford MAP desired pressure candidate."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_1248_KPA_DIV10",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST MAP desired 1248 div10 kPa",
+          "description": "Testing only. Ford MAP desired pressure candidate using raw/10 kPa absolute. Subtract BARO for gauge boost if correct."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0187"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_0187_RAW16_AB",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST extended actual MAP 0187 raw AB",
+          "description": "Testing only. Raw scout for extended actual MAP. Published formulas refer to B/C bytes, so keep raw until byte layout is confirmed."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "018A"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_018A_RAW16_AB",
+          "path": "TESTING.Boost2",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST extended desired MAP 018A raw AB",
+          "description": "Testing only. Raw scout for extended desired MAP. Published formulas refer to B/C bytes, so keep raw until byte layout is confirmed."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16C0"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_16C0_RAW16_AB",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST HP VGT desired 16C0 raw AB",
+          "description": "Testing only. Raw companion for Panther turbo actuator candidate HP VGT desired."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_16C0_PERCENT_A",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST HP VGT desired 16C0 percent A",
+          "description": "Testing only. Panther turbo actuator candidate using A*100/255 percent. Validate against boost desired/actual and RPM/load."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16C1"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_16C1_RAW16_AB",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST HP VGT actual 16C1 raw AB",
+          "description": "Testing only. Raw companion for Panther turbo actuator candidate HP VGT actual."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_16C1_PERCENT_A",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST HP VGT actual 16C1 percent A",
+          "description": "Testing only. Panther turbo actuator candidate using A*100/255 percent. Validate against boost desired/actual and RPM/load."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16C2"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_16C2_RAW16_AB",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST LP wastegate desired 16C2 raw AB",
+          "description": "Testing only. Raw companion for Panther turbo actuator candidate LP wastegate desired."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_16C2_PERCENT_A",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST LP wastegate desired 16C2 percent A",
+          "description": "Testing only. Panther turbo actuator candidate using A*100/255 percent. Validate against boost desired/actual and RPM/load."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "16C3"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_16C3_RAW16_AB",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST LP wastegate actual 16C3 raw AB",
+          "description": "Testing only. Raw companion for Panther turbo actuator candidate LP wastegate actual."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_16C3_PERCENT_A",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST LP wastegate actual 16C3 percent A",
+          "description": "Testing only. Panther turbo actuator candidate using A*100/255 percent. Validate against boost desired/actual and RPM/load."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "116E"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_VGT_COMMAND_POSITION_7E0_116E_RAW16_AB",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Ford VGT commanded position 116E raw AB",
+          "description": "Testing only. Raw companion for Ford VGT commanded position candidate."
+        },
+        {
+          "id": "EVEREST_TEST_VGT_COMMAND_POSITION_7E0_116E_PERCENT_A",
+          "path": "TESTING.Boost3",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST Ford VGT commanded position 116E percent A",
+          "description": "Testing only. Ford VGT commanded position candidate using A*100/255 percent."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1249"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_1249_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST turbo stage / LP outlet pressure 1249 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo stage pressure candidate turbo stage / LP outlet pressure."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_1249_KPA_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST turbo stage / LP outlet pressure 1249 div10 kPa",
+          "description": "Testing only. Speculative turbo stage pressure candidate using raw/10 kPa. Validate KOEO and under load before trusting."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "124A"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_124A_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST turbo stage / HP inlet pressure 124A raw AB",
+          "description": "Testing only. Raw companion for speculative turbo stage pressure candidate turbo stage / HP inlet pressure."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_124A_KPA_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST turbo stage / HP inlet pressure 124A div10 kPa",
+          "description": "Testing only. Speculative turbo stage pressure candidate using raw/10 kPa. Validate KOEO and under load before trusting."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "124B"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_124B_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST inter-stage pressure actual 124B raw AB",
+          "description": "Testing only. Raw companion for speculative turbo stage pressure candidate inter-stage pressure actual."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_124B_KPA_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST inter-stage pressure actual 124B div10 kPa",
+          "description": "Testing only. Speculative turbo stage pressure candidate using raw/10 kPa. Validate KOEO and under load before trusting."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "124C"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_124C_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST inter-stage pressure desired 124C raw AB",
+          "description": "Testing only. Raw companion for speculative turbo stage pressure candidate inter-stage pressure desired."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_124C_KPA_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST inter-stage pressure desired 124C div10 kPa",
+          "description": "Testing only. Speculative turbo stage pressure candidate using raw/10 kPa. Validate KOEO and under load before trusting."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "124D"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_124D_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST charge-air cooler outlet pressure 124D raw AB",
+          "description": "Testing only. Raw companion for speculative turbo stage pressure candidate charge-air cooler outlet pressure."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_STAGE_124D_KPA_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST charge-air cooler outlet pressure 124D div10 kPa",
+          "description": "Testing only. Speculative turbo stage pressure candidate using raw/10 kPa. Validate KOEO and under load before trusting."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1260"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1260_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST turbo actuator scout 1 1260 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate turbo actuator scout 1."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1260_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST turbo actuator scout 1 1260 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1261"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1261_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST turbo actuator scout 2 1261 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate turbo actuator scout 2."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1261_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST turbo actuator scout 2 1261 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1262"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1262_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST turbo actuator scout 3 1262 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate turbo actuator scout 3."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1262_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST turbo actuator scout 3 1262 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1263"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1263_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST HP turbo wastegate commanded 1263 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate HP turbo wastegate commanded."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1263_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST HP turbo wastegate commanded 1263 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1264"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1264_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST HP turbo wastegate actual 1264 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate HP turbo wastegate actual."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1264_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST HP turbo wastegate actual 1264 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1265"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1265_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST LP turbo wastegate commanded 1265 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate LP turbo wastegate commanded."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1265_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST LP turbo wastegate commanded 1265 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1266"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1266_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST LP turbo wastegate actual 1266 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate LP turbo wastegate actual."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1266_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST LP turbo wastegate actual 1266 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1267"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1267_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST turbo bypass valve commanded 1267 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate turbo bypass valve commanded."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1267_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST turbo bypass valve commanded 1267 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1268"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1268_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST turbo bypass valve actual 1268 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate turbo bypass valve actual."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1268_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST turbo bypass valve actual 1268 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1269"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1269_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST turbo position error / deviation 1269 raw AB",
+          "description": "Testing only. Raw companion for speculative turbo actuator/control candidate turbo position error / deviation."
+        },
+        {
+          "id": "EVEREST_TEST_BOOST_ACTUATOR_1269_DIV10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "percent"
+          },
+          "name": "TEST turbo position error / deviation 1269 div10",
+          "description": "Testing only. Speculative turbo actuator/control candidate using raw/10. Unit may be percent or scalar; validate behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "126A"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_BOOST_STATUS_126A_RAW8_A",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST turbo control status 126A raw A",
+          "description": "Testing only. Possible turbo control bitfield/status flags. Raw only."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1290"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TURBO_SPEED_1290_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST HP turbo speed 1290 raw AB",
+          "description": "Testing only. Raw companion for speculative HP turbo speed candidate."
+        },
+        {
+          "id": "EVEREST_TEST_TURBO_SPEED_1290_RPM_X10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 655350,
+            "mul": 10,
+            "unit": "rpm"
+          },
+          "name": "TEST HP turbo speed 1290 rpm x10",
+          "description": "Testing only. Speculative turbo speed candidate using raw*10 rpm. Validate against load/RPM changes; likely to be high if real."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1291"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_TURBO_SPEED_1291_RAW16_AB",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST LP turbo speed 1291 raw AB",
+          "description": "Testing only. Raw companion for speculative LP turbo speed candidate."
+        },
+        {
+          "id": "EVEREST_TEST_TURBO_SPEED_1291_RPM_X10",
+          "path": "TESTING.Boost4",
+          "fmt": {
+            "len": 16,
+            "max": 655350,
+            "mul": 10,
+            "unit": "rpm"
+          },
+          "name": "TEST LP turbo speed 1291 rpm x10",
+          "description": "Testing only. Speculative turbo speed candidate using raw*10 rpm. Validate against load/RPM changes; likely to be high if real."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "11A6"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_11A6_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Engine oil pressure 11A6 raw AB",
+          "description": "Testing only. Raw companion for Next-Gen engine oil pressure candidate."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_11A6_KPA_RAW",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Engine oil pressure 11A6 raw kPa",
+          "description": "Testing only. Candidate EOP raw-as-kPa scaling."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_11A6_PSI_MUL0145038",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 9503,
+            "mul": 0.145038,
+            "unit": "psi"
+          },
+          "name": "TEST Engine oil pressure 11A6 psi",
+          "description": "Testing only. Candidate EOP raw kPa converted to psi using raw*0.145038."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "11A7"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_SENSOR_VOLTAGE_11A7_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Oil pressure sensor voltage 11A7 raw AB",
+          "description": "Testing only. Raw companion for EOP sensor voltage candidate."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_SENSOR_VOLTAGE_11A7_VOLTS_DIV1000",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65.535,
+            "div": 1000,
+            "unit": "volts"
+          },
+          "name": "TEST Oil pressure sensor voltage 11A7",
+          "description": "Testing only. EOP sensor voltage candidate using raw/1000 V. KOEO should be low if a real voltage signal exists."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0415"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_0415_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Ford oil pressure 0415 raw AB",
+          "description": "Testing only. Raw companion for Ford oil pressure candidate 0415."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_0415_A_KPA",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Ford oil pressure 0415 A kPa",
+          "description": "Testing only. One-byte Ford oil pressure candidate using A as kPa."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_0415_RAW_KPA",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Ford oil pressure 0415 raw kPa",
+          "description": "Testing only. Two-byte Ford oil pressure candidate using raw AB as kPa."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_0415_RAW_PSI",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 9503,
+            "mul": 0.145038,
+            "unit": "psi"
+          },
+          "name": "TEST Ford oil pressure 0415 raw psi",
+          "description": "Testing only. Two-byte Ford oil pressure candidate converted to psi."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1439"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_SWITCH_1439_RAW8_A",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST Oil pressure switch 1439 raw A",
+          "description": "Testing only. Possible binary oil pressure switch/status. KOEO should differ from engine running if correct."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1438"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_VIRTUAL_OIL_PRESSURE_1438_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Virtual oil pressure 1438 raw AB",
+          "description": "Testing only. Raw companion for possible PCM-calculated/virtual oil pressure."
+        },
+        {
+          "id": "EVEREST_TEST_VIRTUAL_OIL_PRESSURE_1438_KPA_MUL01",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "mul": 0.1,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Virtual oil pressure 1438 x0.1 kPa",
+          "description": "Testing only. Possible PCM-calculated EOP using raw*0.1 kPa."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1431"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_CONTROL_SOLENOID_1431_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Oil pressure control solenoid 1431 raw AB",
+          "description": "Testing only. Raw companion for possible variable oil pump/pressure control solenoid duty."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_CONTROL_SOLENOID_1431_PERCENT_A",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "TEST Oil pressure control solenoid 1431 percent A",
+          "description": "Testing only. Possible variable oil pump control duty using A*100/255 percent. Not pressure; correlate with RPM/load/oil temp."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "034D"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_ALT_034D_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Oil pressure alternate 034D raw AB",
+          "description": "Testing only. Raw companion for alternate Ford EOP candidate 034D."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_ALT_034D_A_X4_KPA",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 8,
+            "max": 1020,
+            "mul": 4,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Oil pressure alternate 034D A x4 kPa",
+          "description": "Testing only. Alternate one-byte EOP candidate using A*4 kPa."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_ALT_034D_A_X0579_PSI",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 8,
+            "max": 147.645,
+            "mul": 0.579,
+            "unit": "psi"
+          },
+          "name": "TEST Oil pressure alternate 034D A x0.579 psi",
+          "description": "Testing only. Alternate one-byte EOP candidate using A*0.579 psi."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1340"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1340_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Engine oil pressure actual 1340 raw AB",
+          "description": "Testing only. Raw companion for Engine oil pressure actual candidate."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1340_KPA_DIV10",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Engine oil pressure actual 1340 div10 kPa",
+          "description": "Testing only. Engine oil pressure actual candidate using raw/10 kPa. Validate cold start, warm idle and rev behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1341"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1341_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Engine oil pressure desired 1341 raw AB",
+          "description": "Testing only. Raw companion for Engine oil pressure desired candidate."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1341_KPA_DIV10",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Engine oil pressure desired 1341 div10 kPa",
+          "description": "Testing only. Engine oil pressure desired candidate using raw/10 kPa. Validate cold start, warm idle and rev behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1342"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1342_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Engine oil pressure variant 1342 raw AB",
+          "description": "Testing only. Raw companion for Engine oil pressure variant candidate."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1342_KPA_DIV10",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Engine oil pressure variant 1342 div10 kPa",
+          "description": "Testing only. Engine oil pressure variant candidate using raw/10 kPa. Validate cold start, warm idle and rev behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1350"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1350_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Engine oil pressure alternate 1350 raw AB",
+          "description": "Testing only. Raw companion for Engine oil pressure alternate candidate."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1350_KPA_DIV10",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Engine oil pressure alternate 1350 div10 kPa",
+          "description": "Testing only. Engine oil pressure alternate candidate using raw/10 kPa. Validate cold start, warm idle and rev behaviour."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "1351"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1351_RAW16_AB",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST Engine oil pressure downstream / filter delta 1351 raw AB",
+          "description": "Testing only. Raw companion for Engine oil pressure downstream / filter delta candidate."
+        },
+        {
+          "id": "EVEREST_TEST_OIL_PRESSURE_1351_KPA_DIV10",
+          "path": "TESTING.Oil",
+          "fmt": {
+            "len": 16,
+            "max": 6553.5,
+            "div": 10,
+            "unit": "kilopascal"
+          },
+          "name": "TEST Engine oil pressure downstream / filter delta 1351 div10 kPa",
+          "description": "Testing only. Engine oil pressure downstream / filter delta candidate using raw/10 kPa. Validate cold start, warm idle and rev behaviour."
         }
       ]
     }
