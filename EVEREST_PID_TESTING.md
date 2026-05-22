@@ -972,3 +972,159 @@ Removed commands and signals reported as `Negative response. Code: Out of range`
 
 No production/stable signals were modified. Remaining live, weird, raw, scaling-suspect, and untested candidates were preserved for further validation.
 ```
+
+
+---
+
+# v0.7.5 — Boost4 negative-response cleanup
+
+Aligned default file: `default_everest_my25_25_v0_7_5_boost4_negative_response_cleanup.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built from v0.7.4 negative-response cleanup.
+- Removed additional screenshot-confirmed `Negative response. Code: Out of range` candidates from the boost testing pages.
+- Most removed items were from `TESTING.Boost4`, plus remaining dead MAP/pressure items in `TESTING.Boost1`.
+- Preserved all production/stable signals.
+- Preserved remaining live, weird, raw, scaling-suspect, and not-yet-rejected TESTING candidates.
+
+## Screenshot evidence summary
+
+The following groups/items were reported or shown as repeated out-of-range and removed from active JSON to reduce screen clutter.
+
+### Removed commands
+
+| Command | Area | Reason |
+| --- | --- | --- |
+| `220247` | Boost1 / MAP boost gauge | Negative response / out of range. |
+| `2216AD` | Boost1 / MAP HP sensor 1 | Negative response / out of range. |
+| `2216AF` | Boost1 / MAP sensor 2 / post-intercooler pressure | Negative response / out of range. |
+| `221249` | Boost4 / turbo stage LP outlet pressure | Negative response / out of range. |
+| `22124A` | Boost4 / turbo stage HP inlet pressure | Negative response / out of range. |
+| `22124B` | Boost4 / inter-stage pressure actual | Negative response / out of range. |
+| `22124C` | Boost4 / inter-stage pressure desired | Negative response / out of range. |
+| `22124D` | Boost4 / charge-air cooler outlet pressure | Negative response / out of range. |
+| `221260` | Boost4 / turbo actuator scout 1 | Negative response / out of range. |
+| `221261` | Boost4 / turbo actuator scout 2 | Negative response / out of range. |
+| `221262` | Boost4 / turbo actuator scout 3 | Negative response / out of range. |
+| `221263` | Boost4 / HP turbo wastegate commanded | Negative response / out of range. |
+| `221264` | Boost4 / HP turbo wastegate actual | Negative response / out of range. |
+| `221265` | Boost4 / LP turbo wastegate commanded | Negative response / out of range. |
+| `221266` | Boost4 / LP turbo wastegate actual | Negative response / out of range. |
+| `221267` | Boost4 / turbo bypass valve commanded | Negative response / out of range. |
+| `221268` | Boost4 / turbo bypass valve actual | Negative response / out of range. |
+| `221269` | Boost4 / turbo position error / deviation | Negative response / out of range. |
+| `22126A` | Boost4 / turbo control status flags | Negative response / out of range. |
+| `221290` | Boost4 / HP turbo speed | Negative response / out of range. |
+| `221291` | Boost4 / LP turbo speed | Negative response / out of range. |
+
+## Decision notes
+
+- `010142` control module voltage was **not** removed in this pass because the screenshot showed no red negative-response text; it only appeared blank/unpopulated. Retest before shelving.
+- This cleanup does not mean these PIDs are impossible on all Ford/Ranger/Everest variants; only that they are not responding on this MY25.25 Everest test path/header.
+- Do not re-add these unless a later source gives a better header, byte path, or evidence from this vehicle.
+
+## v0.7.5 sanity-check snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in current default.json | 90 |
+| Signals in current default.json | 131 |
+| Root TESTING signals | 65 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Production signals modified | 0 |
+| Removed commands | 21 |
+| Removed signals | 41 |
+
+## Commit message
+
+```text
+Remove additional Boost4 negative-response candidates
+```
+
+## Extended description
+
+```text
+Cleaned the Ford Everest MY25.25 v0.7.4 testing pack after additional screenshot-confirmed negative-response results.
+
+Removed remaining unsupported MAP/boost candidates and the Boost4 speculative turbo-stage, actuator, bypass, wastegate and turbo-speed commands that returned `Negative response. Code: Out of range`.
+
+No production/stable signals were modified. Remaining live, weird, raw, scaling-suspect and unresolved TESTING candidates were preserved.
+```
+
+
+---
+
+# v0.7.6 — Torque refinement and frozen EGRT cleanup
+
+Aligned default file: `default_everest_my25_25_v0_7_6_torque_refinement.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built from v0.7.5 Boost4 negative-response cleanup.
+- Removed the frozen `F463` EGRT testing decode and raw companion from active `TESTING.Misc`.
+- Preserved the responding production/reference `F463` engine reference torque signal.
+- Updated notes for the strong torque candidates `0161`, `0162`, and `0163`.
+- Preserved live raw scouts `0169` and `0170` for future correlation.
+- No production/stable signals were modified.
+
+## Latest live-capture observations
+
+### Torque candidates
+
+| Signal | PID | Observed behaviour | Decision |
+| --- | --- | --- | --- |
+| `EVEREST_TEST_DRIVER_DEMAND_TORQUE_0161` | `010161` | Near 0% while coasting/foot-off; up to about 100% during hard takeoff. | Very high confidence testing candidate. |
+| `EVEREST_TEST_ACTUAL_ENGINE_TORQUE_0162` | `010162` | Near 0% while coasting/foot-off; up to about 93-95% during hard takeoff. | Very high confidence testing candidate. |
+| `EVEREST_TEST_ENGINE_REFERENCE_TORQUE_0163` | `010163` | Stable at 500 N·m across captures. | Plausible engine reference/max torque value; keep for scaling context. |
+
+The coasting 0% result is important evidence. It supports the interpretation that `0161` is driver/requested torque demand and `0162` is actual/delivered engine torque rather than random load-like noise.
+
+### Live raw scouts retained
+
+| Signal | PID | Observed behaviour | Decision |
+| --- | --- | --- | --- |
+| `EVEREST_TEST_RANGER_PACKET_70_RAW16_AB` | `010170` | Alive with small movement around raw 1805-1821. | Keep as boost-control packet raw scout. |
+| `EVEREST_TEST_RANGER_PACKET_69_RAW16_AB` | `010169` | Alive and moving around raw 1792-1846. | Keep as EGR/air-path packet raw scout. |
+
+### Frozen EGRT candidate removed
+
+| Signal | PID | Observed behaviour | Decision |
+| --- | --- | --- | --- |
+| `EVEREST_TEST_EGRT_F463_CELSIUS` | `22F463` | Frozen at 10°C across captures. | Removed from active testing. |
+| `EVEREST_TEST_EGRT_F463_RAW16_AB` | `22F463` | Frozen at raw 500 across captures. | Removed from active testing. |
+
+The `F463` EGRT decode did not behave like a live EGR/exhaust temperature value. It stayed fixed through idle, coasting, traffic-light state, and hard takeoff. This made it low-value screenshot clutter.
+
+## v0.7.6 sanity-check snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in current default.json | 90 |
+| Signals in current default.json | 129 |
+| Root TESTING signals | 63 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Production signals modified | 0 |
+| Removed commands | 0 |
+| Removed signals | 2 |
+| Added signals | 0 |
+
+## Commit message
+
+```text
+Remove frozen EGRT testing decode and strengthen torque notes
+```
+
+## Extended description
+
+```text
+Tidied the Ford Everest MY25.25 v0.7.5 testing pack after live torque and scout captures.
+
+Removed the frozen F463 EGRT testing decode and raw companion from active TESTING.Misc after repeated captures showed a fixed 10°C / raw 500 value across multiple vehicle states.
+
+Updated testing notes for the 0161 driver demand torque, 0162 actual engine torque, and 0163 engine reference torque candidates. Coasting produced near-zero torque values, while hard takeoff produced near-maximum demand/actual torque, strengthening confidence in these signals.
+
+Preserved live raw scouts 0169 and 0170 for further correlation. No production or stable signals were modified.
+```
