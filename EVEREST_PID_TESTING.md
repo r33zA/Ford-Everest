@@ -1425,3 +1425,83 @@ Removed low-value regen testing clutter where the visible decode did not help du
 
 No production formulas, confirmed signal IDs, or non-regen testing formulas were changed.
 ```
+
+# v0.7.11 — Current gear alt promotion and DPF wording refinement
+
+Aligned default file: `default_everest_my25_25_v0_7_11_gear_alt_promotion.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Promoted the 7E0/221E12 current gear candidate from `TESTING.Transmission` to production `Transmission`.
+- Kept the promoted gear signal labelled as an alternate because another working transmission gear indicator already exists.
+- Softened the DPF fullness description to reflect that the signal is strongly DPF/soot-load related, but dash display correlation is still under observation.
+
+## Gear promotion evidence
+
+`EVEREST_TEST_RANGER_GEAR_7E0_1E12` was promoted after live comparison against the vehicle dash.
+
+User validation:
+
+- Pelican app gear matched the dash gear.
+- The value changed at the same time as dash gear changes.
+- Screenshot-labelled states included stopped/idle, moving, uphill load, cruising around 70–80 km/h, and hard acceleration.
+- Observed values included `1`, `4`, `5`, and `8`, with earlier captures showing a broader plausible range.
+
+Promoted signal:
+
+| Previous ID | New ID | Path | Name |
+| --- | --- | --- | --- |
+| `EVEREST_TEST_RANGER_GEAR_7E0_1E12` | `EVEREST_CURRENT_GEAR_ALT_1E12` | `Transmission` | `Transmission current gear alt` |
+
+Current read:
+
+- Very high confidence current-gear signal.
+- Kept as `_ALT` because another working gear indicator remains available.
+- Formula/map unchanged.
+- Header/command unchanged: `7E0 / 221E12`.
+
+## DPF fullness wording refinement
+
+`EVEREST_DPF_FULLNESS_0610` remains a strong production DPF fullness / soot-load signal.
+
+Reason for wording refinement:
+
+- Regen behaviour is validated by the captured active regen event.
+- `220610` dropped strongly through the regen.
+- `220614` reset at regen completion.
+- However, the dash display may be rounded, smoothed, or modelled differently, so dash percentage correlation remains under observation.
+
+No DPF formula was changed.
+
+## v0.7.11 validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 88 |
+| Signals | 126 |
+| Testing signals | 59 |
+| Duplicate IDs | 0 |
+| JSON validation | Passed |
+| Formula changes | 0 |
+| Production signal formulas modified | 0 |
+| Promoted signals | 1 |
+| Path changes | 1 |
+| Signal ID changes | 1 |
+| Removed signals | 0 |
+| Added signals | 0 |
+
+## Commit message
+
+```text
+Promote alternate current gear signal
+```
+
+## Extended description
+
+```text
+Promoted the Ford Everest MY25.25 7E0/221E12 current gear candidate from TESTING.Transmission into the production Transmission category after live validation against the vehicle dash.
+
+The promoted gear signal matched the dash gear and changed at the same time as dash gear changes during real driving. It is labelled as an alternate current-gear signal because another working transmission gear indicator already exists.
+
+Also refined the DPF fullness 220610 description to keep the signal production-ready while noting that dash display percentage correlation remains under observation. No DPF, transmission, testing, or production formulas were changed.
+```
