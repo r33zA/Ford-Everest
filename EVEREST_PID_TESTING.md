@@ -1505,3 +1505,96 @@ The promoted gear signal matched the dash gear and changed at the same time as d
 
 Also refined the DPF fullness 220610 description to keep the signal production-ready while noting that dash display percentage correlation remains under observation. No DPF, transmission, testing, or production formulas were changed.
 ```
+
+
+---
+
+## v0.7.12 — Torque promotion and TESTING cleanup
+
+### Update focus
+
+- Promoted the torque trio from `TESTING.Misc` into production `Engine` after repeated labelled screenshot validation.
+- Removed the `Battery` category and `TESTING.Battery` items from the active JSON.
+- Removed the `TESTING.4x4` group from the active JSON.
+- Consolidated sparse boost testing groups:
+  - `TESTING.Boost2` moved into `TESTING.Boost1`.
+  - `TESTING.Boost4` moved into `TESTING.Boost1`.
+  - `TESTING.Boost3` renamed to `TESTING.VGT`.
+- No formulas were changed in this update.
+
+### Promoted torque signals
+
+| Signal ID | Name | Path | Evidence |
+| --- | --- | --- | --- |
+| `EVEREST_DRIVER_DEMAND_TORQUE_0161` | Engine driver demand torque | `Engine` | Labelled screenshots showed near 0% stopped/coasting, low values during light cruise, and ~100% during hard takeoff. |
+| `EVEREST_ACTUAL_ENGINE_TORQUE_0162` | Engine actual torque | `Engine` | Labelled screenshots showed near 0% stopped/coasting, low values during light cruise, and high values during hard acceleration/load. |
+| `EVEREST_ENGINE_REFERENCE_TORQUE_0163` | Engine reference torque | `Engine` | Stable 500 N·m value across captures; plausible reference scalar for the 2.0L Bi-Turbo diesel. |
+
+### Screenshot evidence used
+
+The latest labelled screenshot set included:
+
+- `stopped.PNG` — both demand and actual torque at 0%.
+- `coasting.PNG` — both demand and actual torque at 0%.
+- `chilled 50km.PNG` — light-load torque values around 7–11%.
+- `hard take off(1).PNG` — demand around 101% and actual around 96%.
+- Additional moving/load screenshots showed plausible mid-range torque values.
+
+This gives enough behavioural validation to promote the torque trio out of testing.
+
+### Removed from active JSON
+
+| Area | Removed | Reason |
+| --- | --- | --- |
+| `Battery` | Root battery/alternator/BMS-style signals | User requested complete Battery removal; app also only showed limited auxiliary 12V battery information. |
+| `TESTING.Battery` | `0142` control module voltage test | Repeatedly blank/no useful app-visible value. |
+| `TESTING.4x4` | `7E2 C45D/C460/C461/C462/C463` candidates | Repeatedly blank/out-of-range/no useful app-visible value; removed to reduce screenshot clutter. |
+
+### Boost / VGT path cleanup
+
+| Previous path | New path | Notes |
+| --- | --- | --- |
+| `TESTING.Boost1` | `TESTING.Boost1` | Kept as the main boost/MAP/BARO testing group. |
+| `TESTING.Boost2` | `TESTING.Boost1` | Merged because it only contained one live raw packet item. |
+| `TESTING.Boost4` | `TESTING.Boost1` | Merged to keep boost pressure/scout items together. |
+| `TESTING.Boost3` | `TESTING.VGT` | Renamed because this group is really VGT commanded/actual scaling work. |
+
+### Current notes carried forward
+
+- `F451` remains unresolved: value `4` was observed during an active regen event and also during normal/non-regen driving, so `4` does **not** by itself mean active regeneration.
+- `019E` exhaust flow remains testing-only. `div20` is still the likely-best visible scaling candidate, but units are not confirmed.
+- `F46D` and `F478` remain strong EGT candidates but are not promoted yet.
+- `220610` remains production but wording stays cautious: strong DPF fullness / soot-load candidate, validated by regen drop and distance reset behaviour; dash display correlation still under observation.
+
+### Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands in current default.json | 77 |
+| Signals in current default.json | 108 |
+| Testing signals | 45 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Production signal formulas modified | 0 |
+| Promoted signals | 3 |
+| Removed commands | 11 |
+| Removed signals | 18 |
+| Added signals | 0 |
+
+### Commit message
+
+```text
+Promote torque signals and clean testing groups
+```
+
+### Extended description
+
+```text
+Promoted the Ford Everest MY25.25 torque trio from TESTING.Misc into the production Engine category after repeated labelled screenshot validation across stopped, coasting, light cruise, load and hard takeoff states.
+
+The promoted signals are driver demand torque 0161, actual engine torque 0162 and engine reference torque 0163. The torque values behaved consistently with vehicle state: 0% while stopped or coasting, low values during light driving, and high values during hard acceleration/load. The reference torque remained stable at 500 N·m.
+
+Removed the Battery and TESTING.Battery sections from the active JSON, and removed the TESTING.4x4 candidates after repeated blank/out-of-range/no-useful-value results. Consolidated sparse boost testing paths by moving Boost2 and Boost4 items into Boost1, and renamed Boost3 to TESTING.VGT because those signals are VGT commanded/actual scaling work.
+
+No formulas were changed in this update.
+```
