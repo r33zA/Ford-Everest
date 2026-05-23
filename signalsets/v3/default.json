@@ -401,7 +401,7 @@
             "unit": "percent"
           },
           "name": "DPF / exhaust filter fullness",
-          "description": "Everest-confirmed. Formula raw / 100. Validated during a captured active DPF regen: fullness dropped from about 76.7% at session start to about 17.7% after completion, matching the vehicle DPF/exhaust-filter display and screenshots. Strong production signal.",
+          "description": "Everest-confirmed DPF fullness / soot-load signal. Formula raw / 100. Validated during captured active DPF regen by a strong drop from high soot load to post-regen values, alongside the distance-since-regen reset. Dash display correlation is still being monitored because the vehicle display may be rounded, smoothed or modelled differently.",
           "suggestedMetric": "dpfSootLoad"
         }
       ]
@@ -1752,8 +1752,8 @@
       "freq": 2,
       "signals": [
         {
-          "id": "EVEREST_TEST_RANGER_GEAR_7E0_1E12",
-          "path": "TESTING.Transmission",
+          "id": "EVEREST_CURRENT_GEAR_ALT_1E12",
+          "path": "Transmission",
           "fmt": {
             "len": 8,
             "map": {
@@ -1799,8 +1799,8 @@
               }
             }
           },
-          "name": "TEST Ranger current gear 1E12",
-          "description": "Testing only. Ranger-derived 7E0 current gear map 1-10. Compare against Everest 7E1 gear signals."
+          "name": "Transmission current gear alt",
+          "description": "Promoted from TESTING.Transmission in v0.7.11. 7E0/221E12 matched the dash gear during live driving and changed at the same time as the dash gear display. Kept as an alternate current-gear signal because another working transmission gear indicator already exists."
         }
       ]
     },
