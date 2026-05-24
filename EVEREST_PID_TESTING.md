@@ -1698,3 +1698,55 @@ Removed the misleading F47A rpm candidate after it stayed fixed, while retaining
 
 No production formulas were changed.
 ```
+
+---
+
+# v0.7.14 — Connectable tidy
+
+Aligned default file: `default_everest_my25_25_v0_7_14_connectable_tidy.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Tidied connectable assignments only.
+- Removed the fuel-level connectable from the generic SAE fuel-level PID because the Everest-specific `22F42F` fuel remaining signal is preferred.
+- Ensured the primary `7E1/221E1F` transmission current gear signal remains the `transmissionGear` connectable.
+- Added the intercooler / charge-air temperature signal as a custom connectable.
+- Left `GENERIC_MAF_0110` as the active `massAirFlow` connectable because there is still no confirmed Everest-specific enhanced MAF replacement.
+- No formulas, commands, paths, or signal IDs were changed.
+
+## Connectable changes
+
+| Signal | PID | Change | Reason |
+| --- | --- | --- | --- |
+| `GENERIC_FUEL_LEVEL_012F` | `012F` | Removed `fuelTankLevel` suggested metric | Generic SAE fuel level is useful as a comparison, but `EVEREST_FUEL_REMAINING_F42F` is the preferred Everest-specific fuel-level connectable. |
+| `EVEREST_GEAR_ENGAGED_7E1_1E1F` | `221E1F` | Ensured `transmissionGear` suggested metric remains active | This is the primary current-gear signal. |
+| `EVEREST_AIR_CHARGE_TEMP_051C` | `22051C` | Added custom `intercoolerAirChargeTemperature` suggested metric | Useful charge-air / post-intercooler temperature connectable. |
+| `GENERIC_MAF_0110` | `0110` | Kept `massAirFlow` suggested metric | Generic SAE MAF remains the only confirmed airflow connectable until an Everest-specific enhanced MAF is proven. |
+
+## v0.7.14 validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in updated default.json | 82 |
+| Signals in updated default.json | 117 |
+| Root TESTING signals | 47 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Formula changes | 0 |
+| Command/path changes | 0 |
+| Signal ID changes | 0 |
+
+## Commit message
+
+```text
+Tidy connectable assignments
+```
+
+## Extended description
+
+```text
+Tidied connectable assignments in the Ford Everest MY25.25 signal pack. Removed the fuelTankLevel connectable from the generic SAE fuel-level PID so the Everest-specific F42F fuel remaining signal remains the preferred fuel-level source. Ensured the primary 7E1/221E1F transmission current gear signal remains the transmissionGear connectable, and added the intercooler air charge temperature signal as a custom intercoolerAirChargeTemperature connectable.
+
+Kept GENERIC_MAF_0110 as the active massAirFlow connectable because no confirmed Everest-specific enhanced MAF replacement is currently available. No formulas, commands, paths, or signal IDs were changed.
+```
+
