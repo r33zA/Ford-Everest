@@ -1815,3 +1815,123 @@ Removed unsupported suggestedMetric assignments from DPF fullness, intercooler a
 
 Kept supported connectables including engine oil temperature and generic mass air flow rate. No formulas, paths, signal IDs, commands, or testing signals were changed.
 ```
+
+---
+
+# v0.7.16 — Pelican schema alignment and packet byte-offset scouts
+
+Aligned default file: `default_everest_my25_25_v0_7_16_pelican_schema_alignment.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Carefully aligned the active file with the Pelican extended PID schema documentation.
+- Did **not** delete any commands or signals.
+- Did **not** hide existing visible signals.
+- Did **not** change production formulas.
+- Added Pelican `fmt.bix` byte-offset test decodes for known packet-style responses where later bytes may contain useful data.
+- Aligned electric-current units from `ampere` to Pelican's documented `amps` unit.
+- Aligned lateral acceleration from generic `scalar` to Pelican's documented `gravity` unit.
+- Added missing `unit: scalar` to the promoted alternate current-gear map so every signal format has a unit field.
+
+## Pelican schema notes applied
+
+Pelican's extended PID schema supports:
+
+- top-level `commands`
+- optional `signalGroups`
+- command properties such as `hdr`, `rax`, `freq`, `tmo`, `fcm1`
+- signal properties such as `id`, `path`, `fmt`, `name`, `description`, `hidden`, and `suggestedMetric`
+- format properties including `len`, `max`, `unit`, `bix`, `sign`, `min`, `add`, `mul`, `div`, `nullmin`, and `nullmax`
+
+The important new one for this project is `fmt.bix`, which allows decoding values that start later in a packet response instead of only reading the first A/B bytes.
+
+## Added byte-offset TESTING scouts
+
+These were added because earlier Pelican database captures showed that some packet responses had later bytes changing while the first visible A/B decode looked static or incomplete.
+
+### TESTING.Regen
+
+| PID | Added signal | Purpose |
+| --- | --- | --- |
+| `220610` | `EVEREST_TEST_DPF_FULLNESS_0610_CD_RAW16` | Raw second 16-bit word using `bix: 16`. |
+| `220610` | `EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100` | Second 16-bit word using `raw / 100`; compare with dash DPF display and regen behaviour. |
+| `22F48B` | `EVEREST_TEST_DPF_STATUS_F48B_BYTE_C_RAW8` | Byte C raw scout. |
+| `22F48B` | `EVEREST_TEST_DPF_STATUS_F48B_CD_RAW16` | Byte C/D raw scout. |
+| `22F48B` | `EVEREST_TEST_DPF_STATUS_F48B_BYTE_E_RAW8` | Byte E raw scout. |
+| `22F48B` | `EVEREST_TEST_DPF_STATUS_F48B_EF_RAW16` | Byte E/F raw scout. |
+| `22F48B` | `EVEREST_TEST_DPF_STATUS_F48B_BYTE_G_RAW8` | Byte G raw scout. |
+
+### TESTING.Boost1
+
+| PID | Added signal | Purpose |
+| --- | --- | --- |
+| `010170` | `EVEREST_TEST_RANGER_PACKET_70_CD_RAW16` | Byte C/D raw scout for the SAE/Ranger boost-control packet. |
+| `010170` | `EVEREST_TEST_RANGER_PACKET_70_EF_RAW16` | Byte E/F raw scout for the SAE/Ranger boost-control packet. |
+| `22F47A` | `EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_CD_RAW16` | Byte C/D raw scout for the F47A turbo packet. |
+| `22F47A` | `EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_EF_RAW16` | Byte E/F raw scout for the F47A turbo packet. |
+
+### TESTING.Fuel
+
+| PID | Added signal | Purpose |
+| --- | --- | --- |
+| `01016D` | `EVEREST_TEST_RANGER_PACKET_6D_CD_RAW16` | Byte C/D raw scout for the fuel-rail packet. |
+| `01016D` | `EVEREST_TEST_RANGER_PACKET_6D_EF_RAW16` | Byte E/F raw scout for the fuel-rail packet. |
+
+### TESTING.Misc
+
+| PID | Added signal | Purpose |
+| --- | --- | --- |
+| `010169` | `EVEREST_TEST_RANGER_PACKET_69_CD_RAW16` | Byte C/D raw scout for the EGR command/actual packet. |
+| `010169` | `EVEREST_TEST_RANGER_PACKET_69_EF_RAW16` | Byte E/F raw scout for the EGR command/actual packet. |
+
+## Unit alignment
+
+| Signal | Previous unit | New unit | Reason |
+| --- | --- | --- | --- |
+| `EVEREST_BATTERY_CURRENT_402B_726` | `ampere` | `amps` | Pelican documents electric current as `amps`. |
+| `EVEREST_ALTERNATOR_CURRENT_0551` | `ampere` | `amps` | Pelican documents electric current as `amps`. |
+| `FORD_LAT_G` | `scalar` | `gravity` | Pelican has a dedicated acceleration unit for g-force. |
+| `EVEREST_CURRENT_GEAR_ALT_1E12` | missing unit | `scalar` | Pelican format requires a unit; this is a scalar/enumerated gear display. |
+
+## Things deliberately not changed
+
+- No existing commands were removed.
+- No existing signals were removed.
+- No existing visible signals were hidden.
+- No production formulas were changed.
+- No new `nullmin` or `nullmax` was added yet; sentinel handling for TCC `1023` and gear raw `70` still needs more confirmation.
+- No `tmo` or `fcm1` values were added yet; keep those for commands that prove they need longer timeout or multi-frame handling.
+- No `signalGroups` were added yet; optional future tidy-up only.
+
+## Validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands | 83 |
+| Signals | 132 |
+| Root TESTING signals | 62 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Commands removed | 0 |
+| Signals removed | 0 |
+| Existing formulas changed | 0 |
+| New byte-offset scouts added | 15 |
+| Unit alignment changes | 4 |
+
+## Commit message
+
+```text
+Align Everest PID pack with Pelican schema
+```
+
+## Extended description
+
+```text
+Aligned the Ford Everest MY25.25 signal pack more closely with Pelican's extended PID schema without deleting any commands or signals.
+
+Added fmt.bix byte-offset TESTING scouts for packet-style responses including DPF 0610, DPF status F48B, SAE boost packet 0170, EGR packet 0169, fuel-rail packet 016D, and F47A turbo packet. These preserve existing first-word decodes while allowing later bytes in multi-field responses to be inspected in Pelican.
+
+Aligned documented units by changing battery and alternator current from ampere to amps, changing lateral acceleration to gravity, and adding a scalar unit to the promoted alternate current gear map.
+
+No production formulas, paths, signal IDs, existing commands, or existing signals were removed. Existing visible PIDs remain visible.
+```
