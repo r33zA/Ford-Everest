@@ -1750,3 +1750,68 @@ Tidied connectable assignments in the Ford Everest MY25.25 signal pack. Removed 
 Kept GENERIC_MAF_0110 as the active massAirFlow connectable because no confirmed Everest-specific enhanced MAF replacement is currently available. No formulas, commands, paths, or signal IDs were changed.
 ```
 
+
+---
+
+# v0.7.15 — Pelican connectable alignment pass
+
+Aligned default file: `default_everest_my25_25_v0_7_15_pelican_connectable_alignment.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Performed a Pelican connectable alignment pass only.
+- Did **not** delete any commands or signals.
+- Removed unsupported `suggestedMetric` / connectable assignments from signals that remain fully visible and usable as normal Pelican widgets.
+- Kept supported/working connectables including Mass Airflow and Engine Oil Temperature.
+
+## Connectables removed only
+
+| Signal ID | Signal name | Removed suggestedMetric | Reason |
+| --- | --- | --- | --- |
+| `EVEREST_DPF_FULLNESS_0610` | DPF / exhaust filter fullness | `dpfSootLoad` | Does not appear as a Pelican connectable; signal remains visible under Emissions.DPF. |
+| `EVEREST_AIR_CHARGE_TEMP_051C` | Intercooler air charge temperature | `intercoolerAirChargeTemperature` | Does not appear as a Pelican connectable; signal remains visible under Engine. |
+| `EVEREST_GEAR_ENGAGED_7E1_1E1F` | Transmission current gear | `transmissionGear` | Does not appear as a Pelican connectable; signal remains visible under Transmission. |
+
+## Connectables retained
+
+| Signal ID | Signal name | suggestedMetric | Reason |
+| --- | --- | --- | --- |
+| `EVEREST_ENGINE_OIL_TEMP_F45C` | Engine oil temperature | `engineOilTemperature` | Pelican supports engine oil temperature connectables and this one appears correctly. |
+| `GENERIC_MAF_0110` | Generic mass air flow rate | `massAirFlow` | Pelican supports Mass Airflow connectables; keep the working generic SAE MAF until an Everest-specific enhanced MAF is confirmed. |
+| `EVEREST_TRANS_TEMP_1E1C_DIV16` | Transmission fluid temperature | `transmissionFluidTemperature` | Retained pending continued Pelican behaviour checks. |
+
+## Important rule added
+
+Visible PID signals and Pelican connectables are different things. Unsupported connectable assignments can be removed without removing the signal itself. Any PID in the file can still be shown as a visible widget in Pelican.
+
+## Validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands | 82 |
+| Signals | 117 |
+| Root TESTING signals | 47 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Commands removed | 0 |
+| Signals removed | 0 |
+| Formulas changed | 0 |
+| Paths changed | 0 |
+| Signal IDs changed | 0 |
+| Connectable assignments removed | 3 |
+
+## Commit message
+
+```text
+Align Pelican connectable assignments
+```
+
+## Extended description
+
+```text
+Performed a Pelican connectable alignment pass without deleting any commands or signals.
+
+Removed unsupported suggestedMetric assignments from DPF fullness, intercooler air charge temperature, and transmission current gear because they do not appear as Pelican connectables. The signals remain fully visible and usable as normal Pelican widgets.
+
+Kept supported connectables including engine oil temperature and generic mass air flow rate. No formulas, paths, signal IDs, commands, or testing signals were changed.
+```
