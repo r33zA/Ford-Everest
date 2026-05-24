@@ -401,8 +401,7 @@
             "unit": "percent"
           },
           "name": "DPF / exhaust filter fullness",
-          "description": "Everest-confirmed DPF fullness / soot-load signal. Formula raw / 100. Validated during captured active DPF regen by a strong drop from high soot load to post-regen values, alongside the distance-since-regen reset. Dash display correlation is still being monitored because the vehicle display may be rounded, smoothed or modelled differently.",
-          "suggestedMetric": "dpfSootLoad"
+          "description": "Everest-confirmed DPF fullness / soot-load signal. Formula raw / 100. Validated during captured active DPF regen by a strong drop from high soot load to post-regen values, alongside the distance-since-regen reset. Dash display correlation is still being monitored because the vehicle display may be rounded, smoothed or modelled differently."
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_RAW16_AB",
@@ -638,8 +637,7 @@
             "unit": "celsius"
           },
           "name": "Intercooler air charge temperature",
-          "description": "Working charge-air / post-intercooler temperature candidate. Added as a custom connectable using intercoolerAirChargeTemperature.",
-          "suggestedMetric": "intercoolerAirChargeTemperature"
+          "description": "Working charge-air / post-intercooler temperature candidate. Added as a custom connectable using intercoolerAirChargeTemperature."
         }
       ]
     },
@@ -1440,8 +1438,7 @@
             "unit": "scalar"
           },
           "name": "Transmission current gear",
-          "description": "Working current gear indicator from 7E1/221E1F. Primary current-gear connectable. Use alongside the alternate 7E0/221E12 current gear signal for comparison.",
-          "suggestedMetric": "transmissionGear"
+          "description": "Working current gear indicator from 7E1/221E1F. Primary current-gear connectable. Use alongside the alternate 7E0/221E12 current gear signal for comparison."
         }
       ]
     },
