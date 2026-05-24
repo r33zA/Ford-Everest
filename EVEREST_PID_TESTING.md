@@ -1598,3 +1598,99 @@ Removed the Battery and TESTING.Battery sections from the active JSON, and remov
 
 No formulas were changed in this update.
 ```
+
+---
+
+# v0.7.12 — Gear alt, torque promotion and DPF packet refinement
+
+Aligned default file: `default_everest_my25_25_v0_7_12_gear_torque_dpf_refinement.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built from the uploaded current `default(6).json`.
+- Promoted the SAE torque signals from testing into the main `Engine` category:
+  - `EVEREST_DRIVER_DEMAND_TORQUE_0161`
+  - `EVEREST_ACTUAL_ENGINE_TORQUE_0162`
+  - `EVEREST_ENGINE_REFERENCE_TORQUE_0163`
+- Confirmed `EVEREST_CURRENT_GEAR_ALT_1E12` remains promoted as an alternate current-gear signal because it matched the dash gear changes during live driving.
+- Added a raw `0610` DPF packet companion under `TESTING.Regen` so the confirmed DPF fullness calculation can be watched beside its raw first word.
+- Added raw value `70` handling to `EVEREST_CURRENT_GEAR_ALT_1E12` as `Not in gear / unavailable`.
+- Confirmed `TESTING.Battery` and `TESTING.4x4` are not present in the active JSON.
+- Confirmed boost testing is consolidated into `TESTING.Boost1` and VGT testing lives separately under `TESTING.VGT`.
+
+## Production / promoted changes
+
+| Signal | PID | Path | Decision |
+| --- | --- | --- | --- |
+| `EVEREST_DRIVER_DEMAND_TORQUE_0161` | `0161` | `Engine` | Promoted. Live value tracks driver torque demand and can show 0% while coasting. |
+| `EVEREST_ACTUAL_ENGINE_TORQUE_0162` | `0162` | `Engine` | Promoted. Live value tracks actual delivered torque/load and can show 0% while coasting. |
+| `EVEREST_ENGINE_REFERENCE_TORQUE_0163` | `0163` | `Engine` | Promoted. Stable around 500 N·m; useful for interpreting percent torque values. |
+| `EVEREST_CURRENT_GEAR_ALT_1E12` | `221E12` | `Transmission` | Promoted alternate gear signal. Confirmed to match dash gear changes. Raw `70` now maps to not-in-gear/unavailable. |
+
+## DPF / regen testing addition
+
+| Signal | PID | Path | Purpose |
+| --- | --- | --- | --- |
+| `EVEREST_TEST_DPF_FULLNESS_0610_RAW16_AB` | `220610` | `TESTING.Regen` | Raw first-word companion for the promoted DPF fullness signal. Useful while monitoring why dash fullness and Pelican value may not always visually match. |
+
+## Current testing layout
+
+```text
+TESTING
+├── Boost1
+├── VGT
+├── Regen
+├── EGT
+├── Transmission
+├── Fuel
+└── Misc
+```
+
+Removed/absent from active JSON:
+
+```text
+TESTING.Battery
+TESTING.4x4
+TESTING.Boost2
+TESTING.Boost3
+TESTING.Boost4
+```
+
+## v0.7.12 validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in updated default.json | 77 |
+| Signals in updated default.json | 109 |
+| Root TESTING signals | 46 |
+| Signals with suggestedMetric | 16 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Non-root test signal paths | 0 |
+
+## Notes for next testing
+
+- Keep watching `EVEREST_DPF_FULLNESS_0610` against the dash after a few normal drives and one future regen.
+- Watch the raw `0610` companion beside the promoted value when possible.
+- `1E12` gear alt is now good enough to keep as an alternate alongside the existing gear signal.
+- Torque is now out of testing; gather more screenshots/logs only if the values look wrong under steady throttle, coasting, hill load, or regen.
+
+## Commit message
+
+```text
+Promote Everest torque and refine gear/DPF testing
+```
+
+## Extended description
+
+```text
+Updated the Ford Everest MY25.25 PID set to promote the live SAE torque signals into the main Engine category and retain the confirmed 7E0 current-gear signal as an alternate production gear indicator.
+
+The current gear alternate now maps raw value 70 to a not-in-gear/unavailable state after that value appeared at stopped/end-state in log data.
+
+Added a raw 0610 DPF fullness companion under TESTING.Regen so the promoted DPF fullness value can be compared against its raw first word while monitoring dash correlation.
+
+Confirmed TESTING.Battery and TESTING.4x4 are removed from the active JSON, with boost testing consolidated under TESTING.Boost1 and VGT testing kept under TESTING.VGT.
+
+Validated the JSON for duplicate IDs and structure after the update.
+```
