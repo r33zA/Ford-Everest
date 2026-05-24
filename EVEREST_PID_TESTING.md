@@ -1599,98 +1599,102 @@ Removed the Battery and TESTING.Battery sections from the active JSON, and remov
 No formulas were changed in this update.
 ```
 
+
 ---
 
-# v0.7.12 — Gear alt, torque promotion and DPF packet refinement
+# v0.7.13 — Battery restoration, boost comparison cleanup and gear naming tidy
 
-Aligned default file: `default_everest_my25_25_v0_7_12_gear_torque_dpf_refinement.json` / `signalsets/v3/default.json` target
+Aligned default file: `default_everest_my25_25_v0_7_13_battery_boost_gear_cleanup.json` / `signalsets/v3/default.json` target
 
 ## Update focus
 
-- Built from the uploaded current `default(6).json`.
-- Promoted the SAE torque signals from testing into the main `Engine` category:
-  - `EVEREST_DRIVER_DEMAND_TORQUE_0161`
-  - `EVEREST_ACTUAL_ENGINE_TORQUE_0162`
-  - `EVEREST_ENGINE_REFERENCE_TORQUE_0163`
-- Confirmed `EVEREST_CURRENT_GEAR_ALT_1E12` remains promoted as an alternate current-gear signal because it matched the dash gear changes during live driving.
-- Added a raw `0610` DPF packet companion under `TESTING.Regen` so the confirmed DPF fullness calculation can be watched beside its raw first word.
-- Added raw value `70` handling to `EVEREST_CURRENT_GEAR_ALT_1E12` as `Not in gear / unavailable`.
-- Confirmed `TESTING.Battery` and `TESTING.4x4` are not present in the active JSON.
-- Confirmed boost testing is consolidated into `TESTING.Boost1` and VGT testing lives separately under `TESTING.VGT`.
+- Built from the uploaded current working `default(6).json` baseline.
+- Restored the previously working production `Battery` section from the 74b0e3f/reference `default-2.json` battery-rich file.
+- Did **not** restore the dead `TESTING.Battery` / `0142` control-module-voltage candidate.
+- Kept `TESTING.4x4` removed.
+- Added unit-matching boost comparison signals so generic MAP and F40B can be compared in both kPa and psi.
+- Increased F40B polling frequency from 30 seconds to 5 seconds because the latest drive showed F40B lag was likely polling-rate related.
+- Kept BARO `0133` and renamed it as a reference value because the drive log showed it working at about 100–101 kPa.
+- Removed the fixed F47A rpm candidate, but kept the F47A raw scout.
+- Tidied current-gear names so the main and alternate gear indicators sit together cleanly in the app.
+- Added raw `70` map handling for the alternate gear signal as `Not in gear / unavailable`.
 
-## Production / promoted changes
+## Restored production Battery signals
 
 | Signal | PID | Path | Decision |
 | --- | --- | --- | --- |
-| `EVEREST_DRIVER_DEMAND_TORQUE_0161` | `0161` | `Engine` | Promoted. Live value tracks driver torque demand and can show 0% while coasting. |
-| `EVEREST_ACTUAL_ENGINE_TORQUE_0162` | `0162` | `Engine` | Promoted. Live value tracks actual delivered torque/load and can show 0% while coasting. |
-| `EVEREST_ENGINE_REFERENCE_TORQUE_0163` | `0163` | `Engine` | Promoted. Stable around 500 N·m; useful for interpreting percent torque values. |
-| `EVEREST_CURRENT_GEAR_ALT_1E12` | `221E12` | `Transmission` | Promoted alternate gear signal. Confirmed to match dash gear changes. Raw `70` now maps to not-in-gear/unavailable. |
+| `EVEREST_AUX_12V_BATTERY_AGE_HOURS_4027` | `224027` | `Battery` | Restored from known-good battery section. |
+| `EVEREST_BATTERY_AGE_SCALAR_4027` | `224027` | `Battery` | Restored raw age counter. |
+| `EVEREST_BATTERY_SOC_4028_726` | `224028` | `Battery` | Restored state-of-charge value. |
+| `EVEREST_BATTERY_CHARGE_4028_DIV255` | `224028` | `Battery` | Restored comparison charge scaling. |
+| `EVEREST_AUX_12V_BATTERY_VOLTAGE_402A` | `22402A` | `Battery` | Restored confirmed aux 12V battery voltage and `starterBatteryVoltage` suggested metric. |
+| `EVEREST_BATTERY_CURRENT_402B_726` | `22402B` | `Battery` | Restored aux 12V battery current; sign direction still needs confirmation. |
+| `EVEREST_ALTERNATOR_CURRENT_0551` | `220551` | `Battery` | Restored alternator current output. |
 
-## DPF / regen testing addition
+## Not restored
 
-| Signal | PID | Path | Purpose |
-| --- | --- | --- | --- |
-| `EVEREST_TEST_DPF_FULLNESS_0610_RAW16_AB` | `220610` | `TESTING.Regen` | Raw first-word companion for the promoted DPF fullness signal. Useful while monitoring why dash fullness and Pelican value may not always visually match. |
+| Signal / group | Reason |
+| --- | --- |
+| `TESTING.Battery` | Previous cleanup intentionally removed dead/low-value battery testing clutter. |
+| `EVEREST_TEST_CONTROL_MODULE_VOLTAGE_0142` | Dead/unhelpful test item; do not confuse with the working production aux battery voltage. |
+| `TESTING.4x4` | Remains removed after repeated out-of-range/no-useful-value results and user direction. |
 
-## Current testing layout
+## Boost changes
 
-```text
-TESTING
-├── Boost1
-├── VGT
-├── Regen
-├── EGT
-├── Transmission
-├── Fuel
-└── Misc
-```
+| Signal | Change |
+| --- | --- |
+| `EVEREST_TEST_GENERIC_MAP_010B_GAUGE_KPA_FIXED` | Kept. Fast-updating generic MAP gauge boost in kPa. |
+| `EVEREST_TEST_GENERIC_MAP_010B_GAUGE_PSI_FIXED` | Added. Same generic MAP fixed-offset boost estimate in psi for direct comparison against F40B. |
+| `EVEREST_TEST_MANIFOLD_PRESSURE_F40B_GAUGE_PSI_FIXED` | Kept. F40B fixed-offset boost in psi. |
+| `EVEREST_TEST_MANIFOLD_PRESSURE_F40B_GAUGE_KPA_FIXED` | Added. F40B fixed-offset boost in kPa for direct comparison against generic MAP. |
+| `22F40B` command frequency | Changed from `30` to `5` to reduce visible lag. |
+| `EVEREST_TEST_BARO_0133_KPA` | Kept and renamed to `TEST BARO reference 0133`; drive log showed expected stable 100–101 kPa. |
+| `EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_CANDIDATE` | Removed because the rpm candidate stayed fixed and looked misleading. |
+| `EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_RAW16_AB` | Kept as `TEST F47A turbo packet raw AB` low-confidence raw scout. |
 
-Removed/absent from active JSON:
+## Gear naming cleanup
 
-```text
-TESTING.Battery
-TESTING.4x4
-TESTING.Boost2
-TESTING.Boost3
-TESTING.Boost4
-```
+| Signal | Previous name | Updated name |
+| --- | --- | --- |
+| `EVEREST_GEAR_ENGAGED_7E1_1E1F` | `Transmission gear engaged` | `Transmission current gear` |
+| `EVEREST_CURRENT_GEAR_ALT_1E12` | `Transmission current gear alt` | unchanged |
 
-## v0.7.12 validation snapshot
+`EVEREST_CURRENT_GEAR_ALT_1E12` also now maps raw `70` as `Not in gear / unavailable`, based on stopped/end-state log evidence where raw `70` appeared and should not display as a literal gear number.
+
+## Safety rule added
+
+Production/root category signals must not be removed during TESTING cleanup unless the exact signal IDs are explicitly listed for removal. Test cleanup should target `TESTING.*` only unless otherwise approved.
+
+## v0.7.13 validation snapshot
 
 | Check | Result |
 | --- | ---: |
-| Commands in updated default.json | 77 |
-| Signals in updated default.json | 109 |
-| Root TESTING signals | 46 |
-| Signals with suggestedMetric | 16 |
+| Commands in updated default.json | 82 |
+| Signals in updated default.json | 117 |
+| Root TESTING signals | 47 |
 | Duplicate signal IDs | 0 |
 | JSON validation | Passed |
-| Non-root test signal paths | 0 |
-
-## Notes for next testing
-
-- Keep watching `EVEREST_DPF_FULLNESS_0610` against the dash after a few normal drives and one future regen.
-- Watch the raw `0610` companion beside the promoted value when possible.
-- `1E12` gear alt is now good enough to keep as an alternate alongside the existing gear signal.
-- Torque is now out of testing; gather more screenshots/logs only if the values look wrong under steady throttle, coasting, hill load, or regen.
+| Production battery signals restored | 7 |
+| Removed TESTING.Battery items | 0 newly removed; remains absent |
+| Removed TESTING.4x4 items | 0 newly removed; remains absent |
+| Removed misleading F47A rpm candidate | 1 |
+| Added boost comparison signals | 2 |
+| Production signal formulas changed | 0 |
 
 ## Commit message
 
 ```text
-Promote Everest torque and refine gear/DPF testing
+Restore Battery signals and tidy boost/gear testing
 ```
 
 ## Extended description
 
 ```text
-Updated the Ford Everest MY25.25 PID set to promote the live SAE torque signals into the main Engine category and retain the confirmed 7E0 current-gear signal as an alternate production gear indicator.
+Restored the production Battery section that was accidentally lost during earlier testing cleanup. The restored signals include aux 12V battery voltage, battery SOC, battery current, alternator current, battery age and the secondary 4028 div255 charge comparison. The dead TESTING.Battery 0142 control-module-voltage candidate was not restored.
 
-The current gear alternate now maps raw value 70 to a not-in-gear/unavailable state after that value appeared at stopped/end-state in log data.
+Tidied boost comparison testing by adding matching psi/kPa fixed-offset boost estimates for generic 010B MAP and Ford F40B manifold pressure. F40B polling was increased from 30 seconds to 5 seconds after drive testing showed the visible delay was likely caused by polling frequency. BARO 0133 was retained and renamed as a reference value after logs showed stable 100–101 kPa behaviour.
 
-Added a raw 0610 DPF fullness companion under TESTING.Regen so the promoted DPF fullness value can be compared against its raw first word while monitoring dash correlation.
+Removed the misleading F47A rpm candidate after it stayed fixed, while retaining the raw F47A packet scout. Renamed the main transmission gear signal to Transmission current gear and kept the 7E0/221E12 promoted signal as Transmission current gear alt, including raw 70 mapped as Not in gear / unavailable.
 
-Confirmed TESTING.Battery and TESTING.4x4 are removed from the active JSON, with boost testing consolidated under TESTING.Boost1 and VGT testing kept under TESTING.VGT.
-
-Validated the JSON for duplicate IDs and structure after the update.
+No production formulas were changed.
 ```
