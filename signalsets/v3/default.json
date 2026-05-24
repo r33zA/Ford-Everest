@@ -133,7 +133,7 @@
             "unit": "percent"
           },
           "name": "Accelerator pedal position",
-          "description": "Confirmed responding. Showed 0–4% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
+          "description": "Confirmed responding. Showed 0\u20134% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
           "suggestedMetric": "throttlePosition"
         }
       ]
@@ -267,6 +267,17 @@
           "name": "DPF / exhaust filter fullness",
           "description": "Everest-confirmed DPF fullness / soot-load signal. Formula raw / 100. Validated during captured active DPF regen by a strong drop from high soot load to post-regen values, alongside the distance-since-regen reset. Dash display correlation is still being monitored because the vehicle display may be rounded, smoothed or modelled differently.",
           "suggestedMetric": "dpfSootLoad"
+        },
+        {
+          "id": "EVEREST_TEST_DPF_FULLNESS_0610_RAW16_AB",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF fullness 0610 raw AB",
+          "description": "Testing companion for the confirmed DPF fullness packet. Shows the raw first 16-bit word used by EVEREST_DPF_FULLNESS_0610 before /100 scaling. Keep while monitoring dash correlation."
         }
       ]
     },
@@ -468,7 +479,7 @@
             "unit": "newtonMeters"
           },
           "name": "Engine reference torque",
-          "description": "Confirmed responding. Raw N·m value."
+          "description": "Confirmed responding. Raw N\u00b7m value."
         }
       ]
     },
@@ -1660,11 +1671,16 @@
               "10": {
                 "description": "Gear 10",
                 "value": "10"
+              },
+              "70": {
+                "description": "Not in gear / unavailable",
+                "value": "N/A"
               }
-            }
+            },
+            "max": 70
           },
           "name": "Transmission current gear alt",
-          "description": "Promoted from TESTING.Transmission in v0.7.11. 7E0/221E12 matched the dash gear during live driving and changed at the same time as the dash gear display. Kept as an alternate current-gear signal because another working transmission gear indicator already exists."
+          "description": "Promoted alternate current-gear signal from 7E0 221E12. Confirmed to match dash gear changes during live driving. Raw 70 was observed at stopped/end-state and is mapped as not in gear / unavailable."
         }
       ]
     },
@@ -2039,7 +2055,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D raw AB",
-          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding."
+          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801\u20131853; keep for future packet decoding."
         }
       ]
     },
@@ -2061,8 +2077,8 @@
             "add": -125,
             "unit": "percent"
           },
-          "name": "Engine driver demand torque",
-          "description": "Promoted from testing after repeated labelled captures showed correct behaviour across stopped, coasting, light cruising, uphill/load and hard takeoff states. Tracks driver torque demand: near 0% stopped/coasting and up to about 100% during hard takeoff."
+          "name": "Driver demand torque",
+          "description": "Promoted from testing. SAE Mode 01 PID 61. Confirmed live: rises with accelerator/load demand and can show 0% while coasting."
         }
       ]
     },
@@ -2084,8 +2100,8 @@
             "add": -125,
             "unit": "percent"
           },
-          "name": "Engine actual torque",
-          "description": "Promoted from testing after repeated labelled captures showed correct behaviour across stopped, coasting, light cruising, uphill/load and hard takeoff states. Tracks delivered engine torque: near 0% stopped/coasting and high values under hard acceleration."
+          "name": "Actual engine torque",
+          "description": "Promoted from testing. SAE Mode 01 PID 62. Confirmed live: tracks delivered engine torque/load and can show 0% while coasting."
         }
       ]
     },
@@ -2106,7 +2122,7 @@
             "unit": "newtonMeters"
           },
           "name": "Engine reference torque",
-          "description": "Promoted from testing with 0161/0162 torque signals. Observed stable 500 N·m reference value, plausible as the torque reference scalar for the 2.0L Bi-Turbo diesel."
+          "description": "Promoted from testing. SAE Mode 01 PID 63. Confirmed stable around 500 N\u00b7m; useful reference value for torque percent interpretation."
         }
       ]
     },
