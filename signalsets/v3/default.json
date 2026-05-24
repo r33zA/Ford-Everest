@@ -107,10 +107,10 @@
             "min": -127,
             "max": 128,
             "add": -127,
-            "unit": "ampere"
+            "unit": "amps"
           },
           "name": "Aux 12V battery current",
-          "description": "Working on 726. Formula A-127; sign direction still needs confirmation."
+          "description": "Working on 726. Formula A-127; sign direction still needs confirmation. Unit aligned to Pelican schema: amps."
         }
       ]
     },
@@ -129,10 +129,10 @@
             "len": 16,
             "max": 250,
             "div": 64,
-            "unit": "ampere"
+            "unit": "amps"
           },
           "name": "Alternator current output",
-          "description": "Working/plausible."
+          "description": "Working/plausible. Unit aligned to Pelican schema: amps."
         }
       ]
     },
@@ -412,7 +412,32 @@
             "unit": "scalar"
           },
           "name": "TEST DPF fullness 0610 raw AB",
-          "description": "Testing companion for the confirmed DPF fullness packet. Shows the raw first 16-bit word used by EVEREST_DPF_FULLNESS_0610 before /100 scaling. Keep while monitoring dash correlation."
+          "description": "Testing companion for the confirmed DPF fullness packet. Shows the raw first 16-bit word used by EVEREST_DPF_FULLNESS_0610 before /100 scaling. Keep while monitoring dash correlation. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_FULLNESS_0610_CD_RAW16",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "bix": 16,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF 0610 byte CD raw",
+          "description": "Testing only. Pelican bix-based byte-offset decode for the second 16-bit word of PID 220610. Added after DB logs showed later bytes in the 0610 packet moving independently of the promoted first-word DPF fullness value."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "bix": 16,
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "percent"
+          },
+          "name": "TEST DPF 0610 byte CD div100",
+          "description": "Testing only. Pelican bix-based byte-offset decode for the second 16-bit word of PID 220610 using raw/100. Compare against dash DPF display, DPF fullness, exhaust flow, and regen events."
         }
       ]
     },
@@ -1333,10 +1358,10 @@
             "max": 1,
             "div": 50,
             "sign": true,
-            "unit": "scalar"
+            "unit": "gravity"
           },
           "name": "Lateral acceleration",
-          "description": "Working Ford lateral-acceleration parameter. Formula raw/50; observed live values around -0.14 to 0.4."
+          "description": "Working Ford lateral-acceleration parameter. Formula raw/50; observed live values around -0.14 to 0.4. Unit aligned to Pelican schema: gravity."
         }
       ]
     },
@@ -1838,10 +1863,11 @@
                 "value": "N/A"
               }
             },
-            "max": 70
+            "max": 70,
+            "unit": "scalar"
           },
           "name": "Transmission current gear alt",
-          "description": "Promoted from TESTING.Transmission in v0.7.11. 7E0/221E12 matched the dash gear during live driving and changed at the same time as the dash gear display. Kept as an alternate current-gear signal because another working transmission current gear indicator already exists. Raw 70 is mapped as not in gear / unavailable based on stopped/end-state log evidence."
+          "description": "Promoted from TESTING.Transmission in v0.7.11. 7E0/221E12 matched the dash gear during live driving and changed at the same time as the dash gear display. Kept as an alternate current-gear signal because another working transmission current gear indicator already exists. Raw 70 is mapped as not in gear / unavailable based on stopped/end-state log evidence. Added scalar unit for Pelican schema alignment."
         }
       ]
     },
@@ -1883,7 +1909,31 @@
             "unit": "scalar"
           },
           "name": "TEST boost pressure packet 0170 raw AB",
-          "description": "Testing only. Raw companion for SAE/Ranger boost-control packet 0170. Latest captures showed live but small movement around raw 1805-1821; keep as alive scout for load/WOT comparison."
+          "description": "Testing only. Raw companion for SAE/Ranger boost-control packet 0170. Latest captures showed live but small movement around raw 1805-1821; keep as alive scout for load/WOT comparison. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_70_CD_RAW16",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "bix": 16,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST boost pressure packet 0170 cd raw16",
+          "description": "Testing only. Pelican bix-based byte-offset scout for boost pressure packet 0170. Added to inspect later packet words without relying only on the first A/B word."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_70_EF_RAW16",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "bix": 32,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST boost pressure packet 0170 ef raw16",
+          "description": "Testing only. Pelican bix-based byte-offset scout for boost pressure packet 0170. Added to inspect later packet words without relying only on the first A/B word."
         }
       ]
     },
@@ -2092,7 +2142,31 @@
             "unit": "scalar"
           },
           "name": "TEST F47A turbo packet raw AB",
-          "description": "Testing only. Raw first-word companion for F47A. The previous rpm candidate stayed fixed and has been removed; keep raw AB only as a low-confidence scout because later packet bytes may still contain useful data if byte offsets become available."
+          "description": "Testing only. Raw first-word companion for F47A. The previous rpm candidate stayed fixed and has been removed; keep raw AB only as a low-confidence scout because later packet bytes may still contain useful data if byte offsets become available. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+        },
+        {
+          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_CD_RAW16",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "bix": 16,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST F47A turbo packet cd raw16",
+          "description": "Testing only. Pelican bix-based byte-offset scout for F47A turbo packet. Added to inspect later packet words without relying only on the first A/B word."
+        },
+        {
+          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_EF_RAW16",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "bix": 32,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST F47A turbo packet ef raw16",
+          "description": "Testing only. Pelican bix-based byte-offset scout for F47A turbo packet. Added to inspect later packet words without relying only on the first A/B word."
         }
       ]
     },
@@ -2204,7 +2278,31 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D raw AB",
-          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding."
+          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_6D_CD_RAW16",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "bix": 16,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rail packet 016D cd raw16",
+          "description": "Testing only. Pelican bix-based byte-offset scout for fuel rail packet 016D. Added to inspect later packet words without relying only on the first A/B word."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_6D_EF_RAW16",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "bix": 32,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rail packet 016D ef raw16",
+          "description": "Testing only. Pelican bix-based byte-offset scout for fuel rail packet 016D. Added to inspect later packet words without relying only on the first A/B word."
         }
       ]
     },
@@ -2292,7 +2390,101 @@
             "unit": "scalar"
           },
           "name": "TEST EGR command actual packet 0169 raw AB",
-          "description": "Testing only. Raw companion for SAE/Ranger EGR command/actual packet 0169. Latest captures showed live movement around raw 1792-1846; keep as alive scout for correlation against EGR open percentage, RPM and load."
+          "description": "Testing only. Raw companion for SAE/Ranger EGR command/actual packet 0169. Latest captures showed live movement around raw 1792-1846; keep as alive scout for correlation against EGR open percentage, RPM and load. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_69_CD_RAW16",
+          "path": "TESTING.Misc",
+          "fmt": {
+            "bix": 16,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST EGR command actual packet 0169 cd raw16",
+          "description": "Testing only. Pelican bix-based byte-offset scout for EGR command actual packet 0169. Added to inspect later packet words without relying only on the first A/B word."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_69_EF_RAW16",
+          "path": "TESTING.Misc",
+          "fmt": {
+            "bix": 32,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST EGR command actual packet 0169 ef raw16",
+          "description": "Testing only. Pelican bix-based byte-offset scout for EGR command actual packet 0169. Added to inspect later packet words without relying only on the first A/B word."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "F48B"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_C_RAW8",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "bix": 16,
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status F48B byte C raw",
+          "description": "Testing only. Pelican bix-based byte C raw scout for F48B. Earlier active-regen DB evidence showed later bytes in the F48B packet changed while first A/AB decodes appeared fixed."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_CD_RAW16",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "bix": 16,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status F48B byte CD raw",
+          "description": "Testing only. Pelican bix-based second-word raw scout for F48B. Use for regen-state packet investigation only."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_E_RAW8",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "bix": 32,
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status F48B byte E raw",
+          "description": "Testing only. Pelican bix-based byte E raw scout for F48B. Added because later bytes changed during captured regen."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_EF_RAW16",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "bix": 32,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status F48B byte EF raw",
+          "description": "Testing only. Pelican bix-based third-word raw scout for F48B. Use for regen-state packet investigation only."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_G_RAW8",
+          "path": "TESTING.Regen",
+          "fmt": {
+            "bix": 48,
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status F48B byte G raw",
+          "description": "Testing only. Pelican bix-based byte G raw scout for F48B where response length allows. Added for packet analysis; not a production signal."
         }
       ]
     }
