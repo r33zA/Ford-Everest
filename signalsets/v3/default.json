@@ -1,6 +1,142 @@
 {
   "commands": [
     {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "4027"
+      },
+      "freq": 3600,
+      "signals": [
+        {
+          "id": "EVEREST_AUX_12V_BATTERY_AGE_HOURS_4027",
+          "path": "Battery",
+          "fmt": {
+            "len": 16,
+            "max": 1572840,
+            "mul": 24,
+            "unit": "hours"
+          },
+          "name": "Aux 12V battery age",
+          "description": "Confirmed responding on 726. Displays raw days converted to hours (A*24)."
+        },
+        {
+          "id": "EVEREST_BATTERY_AGE_SCALAR_4027",
+          "path": "Battery",
+          "fmt": {
+            "len": 16,
+            "max": 1825,
+            "unit": "scalar"
+          },
+          "name": "Battery age raw counter",
+          "description": "Confirmed responding. Raw age counter; likely days. Latest test showed 153."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "4028"
+      },
+      "freq": 10,
+      "signals": [
+        {
+          "id": "EVEREST_BATTERY_SOC_4028_726",
+          "path": "Battery",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "unit": "percent"
+          },
+          "name": "Aux 12V battery state of charge",
+          "description": "Confirmed responding on 726. Raw percent-style value."
+        },
+        {
+          "id": "EVEREST_BATTERY_CHARGE_4028_DIV255",
+          "path": "Battery",
+          "fmt": {
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Battery charge 4028 div255 compare",
+          "description": "Confirmed responding. Formula A*100/255; latest test showed about 32–33%. Kept as secondary battery charge value."
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "402A"
+      },
+      "freq": 30,
+      "signals": [
+        {
+          "id": "EVEREST_AUX_12V_BATTERY_VOLTAGE_402A",
+          "path": "Battery",
+          "fmt": {
+            "len": 8,
+            "max": 18.75,
+            "div": 20,
+            "add": 6,
+            "unit": "volts"
+          },
+          "name": "Aux 12V battery voltage",
+          "description": "Confirmed responding on 726. Formula A/20 + 6.",
+          "suggestedMetric": "starterBatteryVoltage"
+        }
+      ]
+    },
+    {
+      "hdr": "726",
+      "rax": "72E",
+      "cmd": {
+        "22": "402B"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_BATTERY_CURRENT_402B_726",
+          "path": "Battery",
+          "fmt": {
+            "len": 8,
+            "min": -127,
+            "max": 128,
+            "add": -127,
+            "unit": "ampere"
+          },
+          "name": "Aux 12V battery current",
+          "description": "Working on 726. Formula A-127; sign direction still needs confirmation."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
+        "22": "0551"
+      },
+      "freq": 5,
+      "signals": [
+        {
+          "id": "EVEREST_ALTERNATOR_CURRENT_0551",
+          "path": "Battery",
+          "fmt": {
+            "len": 16,
+            "max": 250,
+            "div": 64,
+            "unit": "ampere"
+          },
+          "name": "Alternator current output",
+          "description": "Working/plausible."
+        }
+      ]
+    },
+    {
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
@@ -133,7 +269,7 @@
             "unit": "percent"
           },
           "name": "Accelerator pedal position",
-          "description": "Confirmed responding. Showed 0\u20134% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
+          "description": "Confirmed responding. Showed 0–4% during testing. Used as the practical throttle-position connectable on this diesel because generic throttle-position candidates were rejected.",
           "suggestedMetric": "throttlePosition"
         }
       ]
@@ -479,7 +615,7 @@
             "unit": "newtonMeters"
           },
           "name": "Engine reference torque",
-          "description": "Confirmed responding. Raw N\u00b7m value."
+          "description": "Confirmed responding. Raw N·m value."
         }
       ]
     },
@@ -672,7 +808,7 @@
       "cmd": {
         "22": "F40B"
       },
-      "freq": 30,
+      "freq": 5,
       "signals": [
         {
           "id": "EVEREST_MANIFOLD_PRESSURE_F40B",
@@ -701,6 +837,19 @@
           },
           "name": "TEST F40B calculated boost fixed offset",
           "description": "Testing only. F40B manifold pressure converted to approximate gauge boost by subtracting fixed 14.5 psi atmospheric offset. Live BARO-based boost would be better if supported."
+        },
+        {
+          "id": "EVEREST_TEST_MANIFOLD_PRESSURE_F40B_GAUGE_KPA_FIXED",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 8,
+            "min": -100,
+            "max": 155,
+            "add": -100,
+            "unit": "kilopascal"
+          },
+          "name": "TEST F40B calculated boost kPa fixed offset",
+          "description": "Testing only. F40B manifold pressure treated as kPa absolute and converted to approximate gauge boost by subtracting fixed 100 kPa atmospheric offset. Added to compare against Generic MAP gauge boost in the same unit family. Live BARO-based boost would be better if supported."
         }
       ]
     },
@@ -756,6 +905,21 @@
           },
           "name": "TEST Generic MAP gauge boost 010B fixed offset",
           "description": "Testing only. Generic MAP converted to approximate gauge boost using fixed sea-level offset A-101 kPa. Watch for 255 kPa absolute cap under high load."
+        },
+        {
+          "id": "EVEREST_TEST_GENERIC_MAP_010B_GAUGE_PSI_FIXED",
+          "path": "TESTING.Boost1",
+          "fmt": {
+            "len": 8,
+            "min": -14.65,
+            "max": 22.34,
+            "mul": 10000,
+            "div": 68947,
+            "add": -14.65,
+            "unit": "psi"
+          },
+          "name": "TEST Generic MAP gauge boost 010B psi fixed offset",
+          "description": "Testing only. Generic MAP converted to approximate gauge boost in psi using fixed sea-level offset. Formula approximately A*0.145038-14.65. Added so 010B can be compared directly against the F40B psi boost candidate. Watch for the 255 kPa absolute cap under high load."
         }
       ]
     },
@@ -1275,8 +1439,8 @@
             "max": 10,
             "unit": "scalar"
           },
-          "name": "Transmission gear engaged",
-          "description": "Working; tested 1 and 9. Added as a connectable candidate for transmission gear display if supported by Pelican.",
+          "name": "Transmission current gear",
+          "description": "Working current gear indicator from 7E1/221E1F. Use alongside the alternate 7E0/221E12 current gear signal for comparison.",
           "suggestedMetric": "transmissionGear"
         }
       ]
@@ -1680,7 +1844,7 @@
             "max": 70
           },
           "name": "Transmission current gear alt",
-          "description": "Promoted alternate current-gear signal from 7E0 221E12. Confirmed to match dash gear changes during live driving. Raw 70 was observed at stopped/end-state and is mapped as not in gear / unavailable."
+          "description": "Promoted from TESTING.Transmission in v0.7.11. 7E0/221E12 matched the dash gear during live driving and changed at the same time as the dash gear display. Kept as an alternate current-gear signal because another working transmission current gear indicator already exists. Raw 70 is mapped as not in gear / unavailable based on stopped/end-state log evidence."
         }
       ]
     },
@@ -1700,8 +1864,8 @@
             "max": 255,
             "unit": "kilopascal"
           },
-          "name": "TEST BARO 0133",
-          "description": "Testing only. SAE/Ranger-supported barometric pressure. Compare against 220233 BARO candidate."
+          "name": "TEST BARO reference 0133",
+          "description": "Testing only. SAE barometric pressure reference. Recent drive log showed a stable 100-101 kPa, which is expected for BARO. Keep as boost-reference data rather than treating it as dead because it changes slowly."
         }
       ]
     },
@@ -1930,20 +2094,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST LP turbo speed or alternate turbo value F47A raw AB",
-          "description": "Testing only. Raw companion for LP turbo speed or alternate turbo value. Possible LP turbo speed or alternate turbo value."
-        },
-        {
-          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_CANDIDATE",
-          "path": "TESTING.Boost1",
-          "fmt": {
-            "len": 16,
-            "max": 200000,
-            "mul": 10,
-            "unit": "rpm"
-          },
-          "name": "TEST LP turbo speed or alternate turbo value F47A",
-          "description": "Testing only. Possible LP turbo speed or alternate turbo value."
+          "name": "TEST F47A turbo packet raw AB",
+          "description": "Testing only. Raw first-word companion for F47A. The previous rpm candidate stayed fixed and has been removed; keep raw AB only as a low-confidence scout because later packet bytes may still contain useful data if byte offsets become available."
         }
       ]
     },
@@ -2055,7 +2207,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D raw AB",
-          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801\u20131853; keep for future packet decoding."
+          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding."
         }
       ]
     },
@@ -2122,7 +2274,7 @@
             "unit": "newtonMeters"
           },
           "name": "Engine reference torque",
-          "description": "Promoted from testing. SAE Mode 01 PID 63. Confirmed stable around 500 N\u00b7m; useful reference value for torque percent interpretation."
+          "description": "Promoted from testing. SAE Mode 01 PID 63. Confirmed stable around 500 N·m; useful reference value for torque percent interpretation."
         }
       ]
     },
