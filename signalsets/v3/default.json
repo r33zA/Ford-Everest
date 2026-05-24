@@ -638,7 +638,8 @@
             "unit": "celsius"
           },
           "name": "Intercooler air charge temperature",
-          "description": "Working."
+          "description": "Working charge-air / post-intercooler temperature candidate. Added as a custom connectable using intercoolerAirChargeTemperature.",
+          "suggestedMetric": "intercoolerAirChargeTemperature"
         }
       ]
     },
@@ -1171,8 +1172,7 @@
             "unit": "percent"
           },
           "name": "Generic fuel level",
-          "description": "Generic SAE OBD-II fuel level, confirmed responding on the Everest. Kept under Fuel.Generic because it is not an Everest-specific Ford enhanced PID.",
-          "suggestedMetric": "fuelTankLevel"
+          "description": "Generic SAE OBD-II fuel level, confirmed responding on the Everest. Kept under Fuel.Generic because it is not an Everest-specific Ford enhanced PID. Not used as the active fuel-level connectable; Everest-specific F42F is preferred."
         }
       ]
     },
@@ -1440,7 +1440,7 @@
             "unit": "scalar"
           },
           "name": "Transmission current gear",
-          "description": "Working current gear indicator from 7E1/221E1F. Use alongside the alternate 7E0/221E12 current gear signal for comparison.",
+          "description": "Working current gear indicator from 7E1/221E1F. Primary current-gear connectable. Use alongside the alternate 7E0/221E12 current gear signal for comparison.",
           "suggestedMetric": "transmissionGear"
         }
       ]
