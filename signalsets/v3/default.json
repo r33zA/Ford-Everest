@@ -405,18 +405,18 @@
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_RAW16_AB",
-          "path": "TESTING.Regen",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
           "name": "TEST DPF fullness 0610 raw AB",
-          "description": "Testing companion for the confirmed DPF fullness packet. Shows the raw first 16-bit word used by EVEREST_DPF_FULLNESS_0610 before /100 scaling. Keep while monitoring dash correlation. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+          "description": "Testing companion for the confirmed DPF fullness packet. Shows the raw first 16-bit word used by EVEREST_DPF_FULLNESS_0610 before /100 scaling. Keep while monitoring dash correlation. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_CD_RAW16",
-          "path": "TESTING.Regen",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 16,
             "len": 16,
@@ -424,11 +424,11 @@
             "unit": "scalar"
           },
           "name": "TEST DPF 0610 byte CD raw",
-          "description": "Testing only. Pelican bix-based byte-offset decode for the second 16-bit word of PID 220610. Added after DB logs showed later bytes in the 0610 packet moving independently of the promoted first-word DPF fullness value."
+          "description": "Testing only. Pelican bix-based byte-offset decode for the second 16-bit word of PID 220610. Added after DB logs showed later bytes in the 0610 packet moving independently of the promoted first-word DPF fullness value. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100",
-          "path": "TESTING.Regen",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 16,
             "len": 16,
@@ -437,7 +437,7 @@
             "unit": "percent"
           },
           "name": "TEST DPF 0610 byte CD div100",
-          "description": "Testing only. Pelican bix-based byte-offset decode for the second 16-bit word of PID 220610 using raw/100. Compare against dash DPF display, DPF fullness, exhaust flow, and regen events."
+          "description": "Testing only. Pelican bix-based byte-offset decode for the second 16-bit word of PID 220610 using raw/100. Compare against dash DPF display, DPF fullness, exhaust flow, and regen events. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         }
       ]
     },
@@ -1902,18 +1902,18 @@
       "signals": [
         {
           "id": "EVEREST_TEST_RANGER_PACKET_70_RAW16_AB",
-          "path": "TESTING.Boost1",
+          "path": "TESTING.Boost_BIX",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
           "name": "TEST boost pressure packet 0170 raw AB",
-          "description": "Testing only. Raw companion for SAE/Ranger boost-control packet 0170. Latest captures showed live but small movement around raw 1805-1821; keep as alive scout for load/WOT comparison. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+          "description": "Testing only. Raw companion for SAE/Ranger boost-control packet 0170. Latest captures showed live but small movement around raw 1805-1821; keep as alive scout for load/WOT comparison. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_70_CD_RAW16",
-          "path": "TESTING.Boost1",
+          "path": "TESTING.Boost_BIX",
           "fmt": {
             "bix": 16,
             "len": 16,
@@ -1921,11 +1921,11 @@
             "unit": "scalar"
           },
           "name": "TEST boost pressure packet 0170 cd raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for boost pressure packet 0170. Added to inspect later packet words without relying only on the first A/B word."
+          "description": "Testing only. Pelican bix-based byte-offset scout for boost pressure packet 0170. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_70_EF_RAW16",
-          "path": "TESTING.Boost1",
+          "path": "TESTING.Boost_BIX",
           "fmt": {
             "bix": 32,
             "len": 16,
@@ -1933,7 +1933,7 @@
             "unit": "scalar"
           },
           "name": "TEST boost pressure packet 0170 ef raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for boost pressure packet 0170. Added to inspect later packet words without relying only on the first A/B word."
+          "description": "Testing only. Pelican bix-based byte-offset scout for boost pressure packet 0170. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         }
       ]
     },
@@ -2135,18 +2135,18 @@
       "signals": [
         {
           "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_RAW16_AB",
-          "path": "TESTING.Boost1",
+          "path": "TESTING.Turbo_BIX",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
           "name": "TEST F47A turbo packet raw AB",
-          "description": "Testing only. Raw first-word companion for F47A. The previous rpm candidate stayed fixed and has been removed; keep raw AB only as a low-confidence scout because later packet bytes may still contain useful data if byte offsets become available. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+          "description": "Testing only. Raw first-word companion for F47A. The previous rpm candidate stayed fixed and has been removed; keep raw AB only as a low-confidence scout because later packet bytes may still contain useful data if byte offsets become available. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_CD_RAW16",
-          "path": "TESTING.Boost1",
+          "path": "TESTING.Turbo_BIX",
           "fmt": {
             "bix": 16,
             "len": 16,
@@ -2154,11 +2154,11 @@
             "unit": "scalar"
           },
           "name": "TEST F47A turbo packet cd raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for F47A turbo packet. Added to inspect later packet words without relying only on the first A/B word."
+          "description": "Testing only. Pelican bix-based byte-offset scout for F47A turbo packet. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_EF_RAW16",
-          "path": "TESTING.Boost1",
+          "path": "TESTING.Turbo_BIX",
           "fmt": {
             "bix": 32,
             "len": 16,
@@ -2166,7 +2166,7 @@
             "unit": "scalar"
           },
           "name": "TEST F47A turbo packet ef raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for F47A turbo packet. Added to inspect later packet words without relying only on the first A/B word."
+          "description": "Testing only. Pelican bix-based byte-offset scout for F47A turbo packet. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         }
       ]
     },
@@ -2271,18 +2271,18 @@
       "signals": [
         {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_RAW16_AB",
-          "path": "TESTING.Fuel",
+          "path": "TESTING.Fuel_BIX",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D raw AB",
-          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_CD_RAW16",
-          "path": "TESTING.Fuel",
+          "path": "TESTING.Fuel_BIX",
           "fmt": {
             "bix": 16,
             "len": 16,
@@ -2290,11 +2290,11 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D cd raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for fuel rail packet 016D. Added to inspect later packet words without relying only on the first A/B word."
+          "description": "Testing only. Pelican bix-based byte-offset scout for fuel rail packet 016D. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_EF_RAW16",
-          "path": "TESTING.Fuel",
+          "path": "TESTING.Fuel_BIX",
           "fmt": {
             "bix": 32,
             "len": 16,
@@ -2302,7 +2302,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D ef raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for fuel rail packet 016D. Added to inspect later packet words without relying only on the first A/B word."
+          "description": "Testing only. Pelican bix-based byte-offset scout for fuel rail packet 016D. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         }
       ]
     },
@@ -2383,18 +2383,18 @@
       "signals": [
         {
           "id": "EVEREST_TEST_RANGER_PACKET_69_RAW16_AB",
-          "path": "TESTING.Misc",
+          "path": "TESTING.EGR_BIX",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
           "name": "TEST EGR command actual packet 0169 raw AB",
-          "description": "Testing only. Raw companion for SAE/Ranger EGR command/actual packet 0169. Latest captures showed live movement around raw 1792-1846; keep as alive scout for correlation against EGR open percentage, RPM and load. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix."
+          "description": "Testing only. Raw companion for SAE/Ranger EGR command/actual packet 0169. Latest captures showed live movement around raw 1792-1846; keep as alive scout for correlation against EGR open percentage, RPM and load. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_69_CD_RAW16",
-          "path": "TESTING.Misc",
+          "path": "TESTING.EGR_BIX",
           "fmt": {
             "bix": 16,
             "len": 16,
@@ -2402,11 +2402,11 @@
             "unit": "scalar"
           },
           "name": "TEST EGR command actual packet 0169 cd raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for EGR command actual packet 0169. Added to inspect later packet words without relying only on the first A/B word."
+          "description": "Testing only. Pelican bix-based byte-offset scout for EGR command actual packet 0169. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_69_EF_RAW16",
-          "path": "TESTING.Misc",
+          "path": "TESTING.EGR_BIX",
           "fmt": {
             "bix": 32,
             "len": 16,
@@ -2414,7 +2414,7 @@
             "unit": "scalar"
           },
           "name": "TEST EGR command actual packet 0169 ef raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for EGR command actual packet 0169. Added to inspect later packet words without relying only on the first A/B word."
+          "description": "Testing only. Pelican bix-based byte-offset scout for EGR command actual packet 0169. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         }
       ]
     },
@@ -2428,7 +2428,7 @@
       "signals": [
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_C_RAW8",
-          "path": "TESTING.Regen",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 16,
             "len": 8,
@@ -2436,11 +2436,11 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte C raw",
-          "description": "Testing only. Pelican bix-based byte C raw scout for F48B. Earlier active-regen DB evidence showed later bytes in the F48B packet changed while first A/AB decodes appeared fixed."
+          "description": "Testing only. Pelican bix-based byte C raw scout for F48B. Earlier active-regen DB evidence showed later bytes in the F48B packet changed while first A/AB decodes appeared fixed. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_CD_RAW16",
-          "path": "TESTING.Regen",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 16,
             "len": 16,
@@ -2448,11 +2448,11 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte CD raw",
-          "description": "Testing only. Pelican bix-based second-word raw scout for F48B. Use for regen-state packet investigation only."
+          "description": "Testing only. Pelican bix-based second-word raw scout for F48B. Use for regen-state packet investigation only. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_E_RAW8",
-          "path": "TESTING.Regen",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 32,
             "len": 8,
@@ -2460,11 +2460,11 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte E raw",
-          "description": "Testing only. Pelican bix-based byte E raw scout for F48B. Added because later bytes changed during captured regen."
+          "description": "Testing only. Pelican bix-based byte E raw scout for F48B. Added because later bytes changed during captured regen. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_EF_RAW16",
-          "path": "TESTING.Regen",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 32,
             "len": 16,
@@ -2472,11 +2472,11 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte EF raw",
-          "description": "Testing only. Pelican bix-based third-word raw scout for F48B. Use for regen-state packet investigation only."
+          "description": "Testing only. Pelican bix-based third-word raw scout for F48B. Use for regen-state packet investigation only. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_G_RAW8",
-          "path": "TESTING.Regen",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 48,
             "len": 8,
@@ -2484,7 +2484,7 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte G raw",
-          "description": "Testing only. Pelican bix-based byte G raw scout for F48B where response length allows. Added for packet analysis; not a production signal."
+          "description": "Testing only. Pelican bix-based byte G raw scout for F48B where response length allows. Added for packet analysis; not a production signal. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         }
       ]
     }
