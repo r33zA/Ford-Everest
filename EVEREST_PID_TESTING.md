@@ -1935,3 +1935,141 @@ Aligned documented units by changing battery and alternator current from ampere 
 
 No production formulas, paths, signal IDs, existing commands, or existing signals were removed. Existing visible PIDs remain visible.
 ```
+
+---
+
+# v0.7.17 — Dedicated BIX packet resurrection groups
+
+Aligned default file: `default_everest_my25_25_v0_7_17_bix_group_resurrection_pack.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built from v0.7.16 Pelican schema alignment.
+- Did **not** delete any commands, signals, formulas, paths, or IDs.
+- Did **not** restore any PID that previously returned `Negative response. Code: Out of range`.
+- Reorganised the packet / byte-offset scouts into dedicated screenshot-friendly BIX groups.
+- Kept normal TESTING pages cleaner by separating first-word formula testing from multi-byte packet exploration.
+
+## BIX grouping rule
+
+BIX groups are only for PIDs that previously responded with data but were hard to interpret because the first A/B decode was frozen, misleading, low-value, or incomplete.
+
+| Previous result | v0.7.17 decision |
+| --- | --- |
+| Responded with packet data but A/B was weak or incomplete | Keep / test in a `_BIX` group |
+| Responded and first-word value is already useful | Leave in the normal TESTING group |
+| Repeated `Negative response. Code: Out of range` | Do not resurrect |
+
+## Dedicated BIX groups
+
+### `TESTING.Regen_BIX`
+
+Purpose: DPF / regen packet fields where useful values may live after the first word.
+
+| PID | Signals |
+| --- | --- |
+| `220610` | raw AB, byte C/D raw, byte C/D `/100` |
+| `22F48B` | byte C, byte C/D, byte E, byte E/F, byte G |
+
+Notes:
+
+- `220610` remains the production DPF fullness / soot-load candidate using first word `raw / 100`.
+- Extra `220610` C/D fields are for comparison only, especially because dash display correlation is still being monitored.
+- `22F48B` was not re-added because it was out-of-range; it was re-added because previous raw database evidence showed later bytes changed during regen while A/AB stayed visually unhelpful.
+
+### `TESTING.Boost_BIX`
+
+Purpose: SAE / Ranger boost-control packet byte-offset scouting.
+
+| PID | Signals |
+| --- | --- |
+| `010170` | raw AB, byte C/D raw, byte E/F raw |
+
+Notes:
+
+- `0170` previously responded and moved slightly in A/B, but may contain useful commanded/actual boost fields later in the packet.
+- Keep as raw/scout only until behaviour is understood against MAP, BARO, VGT, RPM and load.
+
+### `TESTING.EGR_BIX`
+
+Purpose: EGR command / actual packet byte-offset scouting.
+
+| PID | Signals |
+| --- | --- |
+| `010169` | raw AB, byte C/D raw, byte E/F raw |
+
+Notes:
+
+- `0169` is alive and changes, but first-word interpretation is not decoded.
+- Compare against EGR open percentage `22052E`, RPM, load, fuel rate, exhaust flow and regen state.
+
+### `TESTING.Fuel_BIX`
+
+Purpose: fuel rail / fuel-system packet byte-offset scouting.
+
+| PID | Signals |
+| --- | --- |
+| `01016D` | raw AB, byte C/D raw, byte E/F raw |
+
+Notes:
+
+- `016D` previously responded as a packet-style fuel-rail candidate.
+- Keep as raw/scout only until a useful byte/scale relationship is proven against known fuel pressure and load values.
+
+### `TESTING.Turbo_BIX`
+
+Purpose: turbo packet byte-offset scouting where first-word display was misleading.
+
+| PID | Signals |
+| --- | --- |
+| `22F47A` | raw AB, byte C/D raw, byte E/F raw |
+
+Notes:
+
+- Earlier F47A rpm-style decode stayed fixed and was not trustworthy as turbo speed.
+- The packet is retained only as raw byte-offset scouting; do not interpret it as turbo speed until later bytes show plausible behaviour.
+
+## Not resurrected
+
+The following categories remain out of the active JSON unless a new header/module or strong new evidence appears:
+
+- PIDs repeatedly returning `Negative response. Code: Out of range`.
+- Dead TPMS candidates `222813–222818`.
+- Dead 7E2 / 4x4 candidates.
+- Dead oil-pressure candidates.
+- Dead boost/oil 2216xx candidates.
+- Dead EGT candidates `22F46B` / `22F46C`.
+- Dead turbo candidates `22F479` / `22F48D`.
+- Dead regen / charge-air candidates such as `22F411`, `22F453`, `22F476`.
+
+## v0.7.17 validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in updated default.json | 83 |
+| Signals in updated default.json | 132 |
+| Root TESTING signals | 62 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Commands removed | 0 |
+| Signals removed | 0 |
+| Existing formulas changed | 0 |
+| BIX scout signals moved into dedicated groups | 20 |
+
+## Commit message
+
+```text
+Group packet byte-offset scouts into dedicated BIX testing pages
+```
+
+## Extended description
+
+```text
+Built v0.7.17 from the Pelican-aligned v0.7.16 Ford Everest MY25.25 signal pack.
+
+This update keeps all existing commands and signals, but reorganises packet-style byte-offset scouts into dedicated TESTING.*_BIX groups. The BIX groups cover DPF/regen packet fields, boost packet 0170, EGR packet 0169, fuel rail packet 016D and turbo packet F47A.
+
+Only PIDs that previously responded with data but had weak, frozen, misleading or incomplete first-word decodes were included. PIDs that previously returned Negative response / out of range were not resurrected.
+
+No production formulas, signal IDs, command definitions or visible non-testing signals were removed.
+```
