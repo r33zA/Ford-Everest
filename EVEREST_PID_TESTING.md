@@ -2073,3 +2073,149 @@ Only PIDs that previously responded with data but had weak, frozen, misleading o
 
 No production formulas, signal IDs, command definitions or visible non-testing signals were removed.
 ```
+---
+
+# v0.7.18 — Shifted BIX scout pack
+
+Aligned default file: `default_everest_my25_25_v0_7_18_shifted_bix_scout_pack.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built from v0.7.17 BIX group resurrection pack.
+- Did **not** delete any commands, signals, formulas, paths, or IDs.
+- Did **not** promote any testing signal.
+- Did **not** change any production formulas or production signal definitions.
+- Added shifted `fmt.bix` byte-pair scouts after DB evidence from a real drive showed several packet-style payloads may include a leading packet/status byte.
+- Added extra `220610` EF/GH DPF packet scouts because the drive showed EF mirroring the production DPF fullness value and GH drifting higher than AB/EF.
+
+## Why shifted BIX scouts were added
+
+Several packet-style PIDs appeared to decode poorly when only even byte-pairs were exposed:
+
+```text
+AB = bix 0
+CD = bix 16
+EF = bix 32
+```
+
+The latest DB drive suggested the useful 16-bit fields may begin one byte later:
+
+```text
+BC = bix 8
+DE = bix 24
+FG = bix 40
+```
+
+This update keeps all existing AB/CD/EF scouts and adds shifted BC/DE/FG scouts beside them. Nothing is interpreted or promoted yet.
+
+## Added shifted BIX groups
+
+### `TESTING.Boost_BIX`
+
+| PID | Added scouts | Purpose |
+| --- | --- | --- |
+| `010170` | BC raw16, DE raw16, FG raw16 | Check whether boost/control packet values sit after a leading packet/status byte. Compare against MAP `010B`, F40B, BARO, VGT, RPM and load. |
+
+### `TESTING.EGR_BIX`
+
+| PID | Added scouts | Purpose |
+| --- | --- | --- |
+| `010169` | BC raw16, DE raw16, FG raw16 | Check shifted EGR command/actual/error packet fields. Compare against EGR open `22052E`, RPM, load, fuel rate, exhaust flow and regen state. |
+
+### `TESTING.Fuel_BIX`
+
+| PID | Added scouts | Purpose |
+| --- | --- | --- |
+| `01016D` | BC raw16, DE raw16, FG raw16 | Check shifted fuel-system / fuel-rail packet fields. Compare against fuel-rate candidates, RPM, load and future known fuel-pressure references. |
+
+### `TESTING.Turbo_BIX`
+
+| PID | Added scouts | Purpose |
+| --- | --- | --- |
+| `22F47A` | BC raw16, DE raw16, FG raw16 | Check shifted turbo packet fields. Latest drive suggested DE/FG may move usefully while earlier turbo-speed-style interpretation was misleading. Do not call this turbo speed yet. |
+
+### `TESTING.Regen_BIX`
+
+| PID | Added scouts | Purpose |
+| --- | --- | --- |
+| `22F48B` | BC raw16, DE raw16, FG raw16 | Check shifted DPF/regen-status packet fields during active regen and normal driving. |
+| `220610` | EF raw16, EF `/100`, GH raw16, GH `/100` | Compare extra DPF packet words against production DPF fullness, dash exhaust-filter display, CD, distance since regen and active regen events. |
+
+## Important interpretation notes
+
+- `220610` AB remains the production DPF fullness / soot-load estimate using `raw / 100`.
+- `220610` EF looked like a possible duplicate/mirror of AB in this drive, but it stays testing-only until repeated.
+- `220610` GH looked more interesting because it drifted higher than AB/EF late in the drive.
+- Shifted packet scouts are raw evidence-gathering only.
+- No shifted packet field should be promoted until it correlates across multiple labelled states.
+
+## Added signal IDs
+
+```text
+EVEREST_TEST_DPF_FULLNESS_0610_EF_RAW16
+EVEREST_TEST_DPF_FULLNESS_0610_EF_DIV100
+EVEREST_TEST_DPF_FULLNESS_0610_GH_RAW16
+EVEREST_TEST_DPF_FULLNESS_0610_GH_DIV100
+EVEREST_TEST_RANGER_PACKET_70_BC_RAW16
+EVEREST_TEST_RANGER_PACKET_70_DE_RAW16
+EVEREST_TEST_RANGER_PACKET_70_FG_RAW16
+EVEREST_TEST_RANGER_PACKET_6D_BC_RAW16
+EVEREST_TEST_RANGER_PACKET_6D_DE_RAW16
+EVEREST_TEST_RANGER_PACKET_6D_FG_RAW16
+EVEREST_TEST_RANGER_PACKET_69_BC_RAW16
+EVEREST_TEST_RANGER_PACKET_69_DE_RAW16
+EVEREST_TEST_RANGER_PACKET_69_FG_RAW16
+EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_BC_RAW16
+EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_DE_RAW16
+EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_FG_RAW16
+EVEREST_TEST_DPF_STATUS_F48B_BC_RAW16
+EVEREST_TEST_DPF_STATUS_F48B_DE_RAW16
+EVEREST_TEST_DPF_STATUS_F48B_FG_RAW16
+```
+
+## v0.7.18 validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in updated default.json | 83 |
+| Signals in updated default.json | 151 |
+| Root TESTING signals | 81 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Commands removed | 0 |
+| Signals removed | 0 |
+| Existing formulas changed | 0 |
+| Production signals modified | 0 |
+| Added shifted / extra BIX scout signals | 19 |
+
+## Validation summary
+
+- Commands: 83
+- Signals: 151
+- Testing signals: 81
+- Duplicate IDs: 0
+- JSON validation: Passed
+- Production signals modified: 0
+- Removed signals: 0
+- Added signals: 19
+- Path changes: 0
+- Formula changes: 0
+- Connectable changes: 0
+
+## Commit message
+
+```text
+Add shifted BIX packet scouts for Everest PID testing
+```
+
+## Extended description
+
+```text
+Built v0.7.18 from the Ford Everest MY25.25 v0.7.17 BIX group resurrection pack.
+
+This update adds shifted byte-pair BIX scouts for packet-style PIDs where real drive DB evidence suggested useful 16-bit fields may begin after a leading packet/status byte. Existing AB/CD/EF scouts were preserved and new BC/DE/FG raw16 scouts were added for boost packet 0170, EGR packet 0169, fuel packet 016D, turbo packet F47A and regen/status packet F48B.
+
+The update also adds extra 220610 EF and GH DPF packet scouts, including raw16 and raw/100 versions, so the extra packet words can be compared against the production DPF fullness value, the dash exhaust-filter display, distance since regen and active regen events.
+
+No production signals, formulas, connectables, command definitions, paths or existing testing items were removed or changed.
+```
