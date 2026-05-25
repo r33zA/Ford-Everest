@@ -1512,8 +1512,8 @@
             "max": 10,
             "unit": "scalar"
           },
-          "name": "Transmission current gear",
-          "description": "Working current gear indicator from 7E1/221E1F. Primary current-gear connectable. Use alongside the alternate 7E0/221E12 current gear signal for comparison."
+          "name": "Transmission internal gear state",
+          "description": "Working 7E1/221E1F transmission gear-state signal, but downgraded in v0.7.19 because it can be misleading in Park. User-observed Park state showed this signal displaying 10 while 7E0/221E12 correctly showed N/A; during driven 1st gear both signals showed 1. Keep as a useful internal/engaged gear-state reference while driving, but do not use as the driver-facing selected/current gear connectable."
         }
       ]
     },
@@ -1916,8 +1916,9 @@
             "max": 70,
             "unit": "scalar"
           },
-          "name": "Transmission current gear alt",
-          "description": "Promoted from TESTING.Transmission in v0.7.11. 7E0/221E12 matched the dash gear during live driving and changed at the same time as the dash gear display. Kept as an alternate current-gear signal because another working transmission current gear indicator already exists. Raw 70 is mapped as not in gear / unavailable based on stopped/end-state log evidence. Added scalar unit for Pelican schema alignment."
+          "name": "Transmission current gear",
+          "description": "Promoted as the preferred driver-facing transmission current gear signal in v0.7.19. 7E0/221E12 matched the dash gear during live driving, changed at the same time as the dash gear display, and showed N/A in Park while the older 7E1/221E1F signal misleadingly showed 10. Raw 70 is mapped as not in gear / unavailable based on stopped/Park evidence. Added as the transmissionGear connectable.",
+          "suggestedMetric": "transmissionGear"
         }
       ]
     },
