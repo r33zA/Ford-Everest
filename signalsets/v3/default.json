@@ -438,6 +438,56 @@
           },
           "name": "TEST DPF 0610 byte CD div100",
           "description": "Testing only. Pelican bix-based byte-offset decode for the second 16-bit word of PID 220610 using raw/100. Compare against dash DPF display, DPF fullness, exhaust flow, and regen events. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_FULLNESS_0610_EF_RAW16",
+          "path": "TESTING.Regen_BIX",
+          "fmt": {
+            "bix": 32,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF 0610 byte EF raw",
+          "description": "Testing only. Pelican bix-based byte-offset decode for the third 16-bit word of PID 220610. Added in v0.7.18 after DB evidence showed EF mirrored the production AB fullness value during the drive. Keep as a packet-layout check only until repeat evidence confirms whether it is a duplicate field."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_FULLNESS_0610_EF_DIV100",
+          "path": "TESTING.Regen_BIX",
+          "fmt": {
+            "bix": 32,
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "percent"
+          },
+          "name": "TEST DPF 0610 byte EF div100",
+          "description": "Testing only. Third 16-bit word of PID 220610 using raw/100. Added in v0.7.18 to compare against production DPF fullness, dash exhaust-filter display, CD div100 and GH div100 during regen/non-regen captures."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_FULLNESS_0610_GH_RAW16",
+          "path": "TESTING.Regen_BIX",
+          "fmt": {
+            "bix": 48,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF 0610 byte GH raw",
+          "description": "Testing only. Pelican bix-based byte-offset decode for the fourth 16-bit word of PID 220610. Added in v0.7.18 after DB evidence showed GH began close to AB/EF but drifted higher later in the drive."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_FULLNESS_0610_GH_DIV100",
+          "path": "TESTING.Regen_BIX",
+          "fmt": {
+            "bix": 48,
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "percent"
+          },
+          "name": "TEST DPF 0610 byte GH div100",
+          "description": "Testing only. Fourth 16-bit word of PID 220610 using raw/100. Compare against dash exhaust-filter display, production DPF fullness, CD div100, EF div100, distance since regen and active regen status before interpreting."
         }
       ]
     },
@@ -1934,6 +1984,42 @@
           },
           "name": "TEST boost pressure packet 0170 ef raw16",
           "description": "Testing only. Pelican bix-based byte-offset scout for boost pressure packet 0170. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_70_BC_RAW16",
+          "path": "TESTING.Boost_BIX",
+          "fmt": {
+            "bix": 8,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 0170 boost packet BC raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for SAE/Ranger-style 0170 boost-control packet. Added in v0.7.18 because DB payloads appear to have a leading packet/status byte, making BC/DE/FG more plausible than only AB/CD/EF. Compare against MAP 010B, F40B, BARO, VGT, RPM and load."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_70_DE_RAW16",
+          "path": "TESTING.Boost_BIX",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 0170 boost packet DE raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for SAE/Ranger-style 0170 boost-control packet. Added in v0.7.18 because DB payloads appear to have a leading packet/status byte, making BC/DE/FG more plausible than only AB/CD/EF. Compare against MAP 010B, F40B, BARO, VGT, RPM and load."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_70_FG_RAW16",
+          "path": "TESTING.Boost_BIX",
+          "fmt": {
+            "bix": 40,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 0170 boost packet FG raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for SAE/Ranger-style 0170 boost-control packet. Added in v0.7.18 because DB payloads appear to have a leading packet/status byte, making BC/DE/FG more plausible than only AB/CD/EF. Compare against MAP 010B, F40B, BARO, VGT, RPM and load."
         }
       ]
     },
@@ -2167,6 +2253,42 @@
           },
           "name": "TEST F47A turbo packet ef raw16",
           "description": "Testing only. Pelican bix-based byte-offset scout for F47A turbo packet. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+        },
+        {
+          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_BC_RAW16",
+          "path": "TESTING.Turbo_BIX",
+          "fmt": {
+            "bix": 8,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST F47A turbo packet BC raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for F47A turbo packet. Added in v0.7.18 after DB evidence suggested useful movement may sit on shifted pairs, especially DE/FG, while earlier turbo-speed-style decoding was misleading. Do not interpret as turbo speed yet."
+        },
+        {
+          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_DE_RAW16",
+          "path": "TESTING.Turbo_BIX",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST F47A turbo packet DE raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for F47A turbo packet. Added in v0.7.18 after DB evidence suggested useful movement may sit on shifted pairs, especially DE/FG, while earlier turbo-speed-style decoding was misleading. Do not interpret as turbo speed yet."
+        },
+        {
+          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_FG_RAW16",
+          "path": "TESTING.Turbo_BIX",
+          "fmt": {
+            "bix": 40,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST F47A turbo packet FG raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for F47A turbo packet. Added in v0.7.18 after DB evidence suggested useful movement may sit on shifted pairs, especially DE/FG, while earlier turbo-speed-style decoding was misleading. Do not interpret as turbo speed yet."
         }
       ]
     },
@@ -2303,6 +2425,42 @@
           },
           "name": "TEST fuel rail packet 016D ef raw16",
           "description": "Testing only. Pelican bix-based byte-offset scout for fuel rail packet 016D. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_6D_BC_RAW16",
+          "path": "TESTING.Fuel_BIX",
+          "fmt": {
+            "bix": 8,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 016D fuel packet BC raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for SAE/Ranger-style 016D fuel-system packet. Added in v0.7.18 because DB payloads appear to have a leading packet/status byte. Compare against fuel-rate candidates, load, RPM and rail/fuel-system behaviour."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_6D_DE_RAW16",
+          "path": "TESTING.Fuel_BIX",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 016D fuel packet DE raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for SAE/Ranger-style 016D fuel-system packet. Added in v0.7.18 because DB payloads appear to have a leading packet/status byte. Compare against fuel-rate candidates, load, RPM and rail/fuel-system behaviour."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_6D_FG_RAW16",
+          "path": "TESTING.Fuel_BIX",
+          "fmt": {
+            "bix": 40,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 016D fuel packet FG raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for SAE/Ranger-style 016D fuel-system packet. Added in v0.7.18 because DB payloads appear to have a leading packet/status byte. Compare against fuel-rate candidates, load, RPM and rail/fuel-system behaviour."
         }
       ]
     },
@@ -2415,6 +2573,42 @@
           },
           "name": "TEST EGR command actual packet 0169 ef raw16",
           "description": "Testing only. Pelican bix-based byte-offset scout for EGR command actual packet 0169. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_69_BC_RAW16",
+          "path": "TESTING.EGR_BIX",
+          "fmt": {
+            "bix": 8,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 0169 EGR packet BC raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for SAE/Ranger-style 0169 EGR command/actual/error packet. Added in v0.7.18 because DB payloads appear to have a leading packet/status byte. Compare against EGR open 052E, RPM, load, fuel rate, exhaust flow and regen state."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_69_DE_RAW16",
+          "path": "TESTING.EGR_BIX",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 0169 EGR packet DE raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for SAE/Ranger-style 0169 EGR command/actual/error packet. Added in v0.7.18 because DB payloads appear to have a leading packet/status byte. Compare against EGR open 052E, RPM, load, fuel rate, exhaust flow and regen state."
+        },
+        {
+          "id": "EVEREST_TEST_RANGER_PACKET_69_FG_RAW16",
+          "path": "TESTING.EGR_BIX",
+          "fmt": {
+            "bix": 40,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST 0169 EGR packet FG raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for SAE/Ranger-style 0169 EGR command/actual/error packet. Added in v0.7.18 because DB payloads appear to have a leading packet/status byte. Compare against EGR open 052E, RPM, load, fuel rate, exhaust flow and regen state."
         }
       ]
     },
@@ -2485,6 +2679,42 @@
           },
           "name": "TEST DPF status F48B byte G raw",
           "description": "Testing only. Pelican bix-based byte G raw scout for F48B where response length allows. Added for packet analysis; not a production signal. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_BC_RAW16",
+          "path": "TESTING.Regen_BIX",
+          "fmt": {
+            "bix": 8,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST F48B regen/status packet BC raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for F48B DPF/regen-status packet. Added in v0.7.18 because DB payloads appear to carry useful later bytes while first-word display remains visually unhelpful. Compare during active regen and normal driving before interpreting."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_DE_RAW16",
+          "path": "TESTING.Regen_BIX",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST F48B regen/status packet DE raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for F48B DPF/regen-status packet. Added in v0.7.18 because DB payloads appear to carry useful later bytes while first-word display remains visually unhelpful. Compare during active regen and normal driving before interpreting."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_FG_RAW16",
+          "path": "TESTING.Regen_BIX",
+          "fmt": {
+            "bix": 40,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST F48B regen/status packet FG raw",
+          "description": "Testing only. Shifted 16-bit byte-pair scout for F48B DPF/regen-status packet. Added in v0.7.18 because DB payloads appear to carry useful later bytes while first-word display remains visually unhelpful. Compare during active regen and normal driving before interpreting."
         }
       ]
     }
