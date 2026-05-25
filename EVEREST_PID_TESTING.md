@@ -2219,3 +2219,104 @@ The update also adds extra 220610 EF and GH DPF packet scouts, including raw16 a
 
 No production signals, formulas, connectables, command definitions, paths or existing testing items were removed or changed.
 ```
+
+
+---
+
+# v0.7.19 — Transmission gear connectable cleanup
+
+Aligned default file: `default_everest_my25_25_v0_7_19_gear_connectable_cleanup.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built from v0.7.18 shifted BIX scout pack.
+- Promoted `EVEREST_CURRENT_GEAR_ALT_1E12` as the preferred driver-facing current gear signal.
+- Added `suggestedMetric: transmissionGear` to `EVEREST_CURRENT_GEAR_ALT_1E12`.
+- Downgraded `EVEREST_GEAR_ENGAGED_7E1_1E1F` to an internal gear-state reference.
+- Removed any `transmissionGear` connectable assignment from `EVEREST_GEAR_ENGAGED_7E1_1E1F`.
+- No formulas, paths, commands, BIX scouts, testing signals, or production category structure were otherwise changed.
+
+## Evidence
+
+User-observed live Pelican screenshots showed the following:
+
+| Vehicle state | `EVEREST_GEAR_ENGAGED_7E1_1E1F` | `EVEREST_CURRENT_GEAR_ALT_1E12` | Interpretation |
+| --- | ---: | ---: | --- |
+| Park | `10` | `N/A` | `1E1F` can be misleading in Park; `1E12` better represents driver-facing gear state. |
+| Driven 1st gear | `1` | `1` | Both agree while actually driving in 1st gear. |
+
+Additional observed context:
+
+- In Park, torque converter slip was near zero at about `10 rpm`.
+- In driven 1st gear, torque converter slip rose to about `804 rpm`.
+- This supports treating `1E12` as the better selected/current gear display candidate, while retaining `1E1F` as a useful internal/engaged gear-state reference.
+
+## Signal decisions
+
+| Signal | Old role | New role | Decision |
+| --- | --- | --- | --- |
+| `EVEREST_CURRENT_GEAR_ALT_1E12` | Transmission current gear alt | Transmission current gear | Promoted to preferred driver-facing gear signal and assigned `transmissionGear`. |
+| `EVEREST_GEAR_ENGAGED_7E1_1E1F` | Transmission current gear | Transmission internal gear state | Downgraded; kept visible but no longer used as `transmissionGear`. |
+
+## Updated signal wording
+
+### `EVEREST_CURRENT_GEAR_ALT_1E12`
+
+- Name: `Transmission current gear`
+- Description updated to note that it matched dash gear during live driving, changed at the same time as the dash display, and showed `N/A` in Park while the old `1E1F` signal showed misleading `10`.
+- Connectable added: `transmissionGear`
+
+### `EVEREST_GEAR_ENGAGED_7E1_1E1F`
+
+- Name: `Transmission internal gear state`
+- Description updated to note that it remains useful while driving but can be misleading in Park.
+- Connectable removed: `transmissionGear`, if present.
+
+## v0.7.19 validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands in updated default.json | 83 |
+| Signals in updated default.json | 151 |
+| Root TESTING signals | 81 |
+| Duplicate signal IDs | 0 |
+| JSON validation | Passed |
+| Commands removed | 0 |
+| Signals removed | 0 |
+| Added signals | 0 |
+| Formula changes | 0 |
+| Path changes | 0 |
+| Connectable changes | 2 |
+| Production signals modified | 2 |
+
+## Validation summary
+
+- Commands: 83
+- Signals: 151
+- Testing signals: 81
+- Duplicate IDs: 0
+- JSON validation: Passed
+- Production signals modified: 2
+- Removed signals: 0
+- Added signals: 0
+- Path changes: 0
+- Formula changes: 0
+- Connectable changes: 2
+
+## Commit message
+
+```text
+Promote Everest 1E12 as transmission gear connectable
+```
+
+## Extended description
+
+```text
+Built v0.7.19 from the Ford Everest MY25.25 v0.7.18 shifted BIX scout pack.
+
+This update promotes EVEREST_CURRENT_GEAR_ALT_1E12 as the preferred driver-facing transmission current gear signal after live Pelican screenshots showed it correctly displaying N/A in Park and matching 1st gear while driving. The signal has been renamed to Transmission current gear and assigned the transmissionGear suggestedMetric.
+
+The older EVEREST_GEAR_ENGAGED_7E1_1E1F signal has been downgraded to Transmission internal gear state because it can show misleading values in Park, including 10 while the vehicle is parked. It remains visible and useful as a transmission internal/engaged gear-state reference while driving, but is no longer treated as the driver-facing transmissionGear connectable.
+
+No commands, formulas, paths, testing signals, shifted BIX scouts, or existing production categories were removed or otherwise changed.
+```
