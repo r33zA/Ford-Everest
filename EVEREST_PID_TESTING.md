@@ -74,25 +74,25 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 
 | Group | PID / cmd | ECU | Signal | Status | Decision / notes |
 | --- | --- | --- | --- | --- | --- |
-| DPF | `220610` | `7E0→7E8` | DPF / exhaust filter fullness | Works | Active; formula raw/100 percent; matched dash regen/fullness behaviour. |
-| DPF | `220614` | `7E0→7E8` | Distance since DPF regen | Works | Active; formula raw/10 km; reset at regen completion. |
-| Transmission | `221E1C div16` | `7E1→7E9` | Transmission fluid temperature Everest div16 | Works / chosen | Preferred current Everest-specific scaling; active transmissionFluidTemperature connectable. |
-| Transmission | `221E1C 5/72` | `7E1→7E9` | Transmission fluid temperature 5/72 compare | Comparison / legacy | Retained for validation only; no suggestedMetric. |
-| Transmission | `221E1F` | `7E1→7E9` | Transmission gear engaged | Works | Active as transmissionGear. |
-| Emissions | `22052E` | `7E0→7E8` | EGR open percentage | Works | Active. |
-| Emissions | `220569` | `7E0→7E8` | EGT pre-turbo | Works / plausible | Active. |
-| Fuel / range | `22F42F` | `7E0→7E8` | Fuel remaining | Works | Active as fuelTankLevel. |
-| Fuel / range | `012F` | `7E0→7E8` | Generic fuel level | Works | Backup/comparison fuelTankLevel. |
-| Fuel / range | `224195` | `7E0→7E8` | Distance to empty, displayed | Works | Matched dash; active as fuelRange. |
-| Movement | `01A6` | `7E0→7E8` | Odometer | Works | Active as odometer. |
-| Movement | `22F40D` | `7E0→7E8` | Vehicle speed Ford extended raw/corrected | Works | Corrected signal retained as practical dash-matching speed. |
-| Control | `22032B` | `7E0→7E8` | Accelerator pedal position | Works | Practical throttlePosition connectable. |
-| Engine | `22F404` | `7E0→7E8` | Engine load | Works | Active as engineLoad. |
-| Engine | `22F405` | `7E0→7E8` | Coolant temperature | Works | Active as engineCoolantTemperature. |
-| Engine | `22F40C` | `7E0→7E8` | Engine speed | Works | Active as engineSpeed. |
-| Engine | `22F45C` | `7E0→7E8` | Engine oil temperature | Works | Active as engineOilTemperature; continue sanity checking long term. |
-| AdBlue | `220487` | `7E0→7E8` | AdBlue tank level | Works | Best AdBlue quantity signal. |
-| Battery | `22402A` | `726→72E` | Aux 12V battery voltage | Works | Active as starterBatteryVoltage. |
+| DPF | `220610` | `7E0 7E8` | DPF / exhaust filter fullness | Works | Active; formula raw/100 percent; matched dash regen/fullness behaviour. |
+| DPF | `220614` | `7E0 7E8` | Distance since DPF regen | Works | Active; formula raw/10 km; reset at regen completion. |
+| Transmission | `221E1C div16` | `7E1 7E9` | Transmission fluid temperature Everest div16 | Works / chosen | Preferred current Everest-specific scaling; active transmissionFluidTemperature connectable. |
+| Transmission | `221E1C 5/72` | `7E1 7E9` | Transmission fluid temperature 5/72 compare | Comparison / legacy | Retained for validation only; no suggestedMetric. |
+| Transmission | `221E1F` | `7E1 7E9` | Transmission gear engaged | Works | Active as transmissionGear. |
+| Emissions | `22052E` | `7E0 7E8` | EGR open percentage | Works | Active. |
+| Emissions | `220569` | `7E0 7E8` | EGT pre-turbo | Works / plausible | Active. |
+| Fuel / range | `22F42F` | `7E0 7E8` | Fuel remaining | Works | Active as fuelTankLevel. |
+| Fuel / range | `012F` | `7E0 7E8` | Generic fuel level | Works | Backup/comparison fuelTankLevel. |
+| Fuel / range | `224195` | `7E0 7E8` | Distance to empty, displayed | Works | Matched dash; active as fuelRange. |
+| Movement | `01A6` | `7E0 7E8` | Odometer | Works | Active as odometer. |
+| Movement | `22F40D` | `7E0 7E8` | Vehicle speed Ford extended raw/corrected | Works | Corrected signal retained as practical dash-matching speed. |
+| Control | `22032B` | `7E0 7E8` | Accelerator pedal position | Works | Practical throttlePosition connectable. |
+| Engine | `22F404` | `7E0 7E8` | Engine load | Works | Active as engineLoad. |
+| Engine | `22F405` | `7E0 7E8` | Coolant temperature | Works | Active as engineCoolantTemperature. |
+| Engine | `22F40C` | `7E0 7E8` | Engine speed | Works | Active as engineSpeed. |
+| Engine | `22F45C` | `7E0 7E8` | Engine oil temperature | Works | Active as engineOilTemperature; continue sanity checking long term. |
+| AdBlue | `220487` | `7E0 7E8` | AdBlue tank level | Works | Best AdBlue quantity signal. |
+| Battery | `22402A` | `726 72E` | Aux 12V battery voltage | Works | Active as starterBatteryVoltage. |
 
 ## Shelved / not carried forward from v0.3.1
 
@@ -200,15 +200,15 @@ Purpose: find an active regen state / phase / request / inhibit value.
 
 | PID | Header | Purpose |
 | --- | --- | --- |
-| `220440` | `7E0→7E8` | Existing survivor; possible regen bitfield, previously valid zero. |
-| `22F48B` | `7E0→7E8` | Existing survivor; possible DPF/regen status byte, previously `127` / `32512`. |
-| `22F411` | `7E0→7E8` | Regen commanded candidate. |
-| `22F412` | `7E0→7E8` | Regen inhibit candidate. |
-| `22F413` | `7E0→7E8` | Regen request candidate. |
-| `22F450` | `7E0→7E8` | Common Ford active regen candidate. |
-| `22F451` | `7E0→7E8` | Regen request candidate. |
-| `22F453` | `7E0→7E8` | DPF status bitfield candidate. |
-| `22F87C` | `7E0→7E8` | Alternate DPF active candidate. |
+| `220440` | `7E0 7E8` | Existing survivor; possible regen bitfield, previously valid zero. |
+| `22F48B` | `7E0 7E8` | Existing survivor; possible DPF/regen status byte, previously `127` / `32512`. |
+| `22F411` | `7E0 7E8` | Regen commanded candidate. |
+| `22F412` | `7E0 7E8` | Regen inhibit candidate. |
+| `22F413` | `7E0 7E8` | Regen request candidate. |
+| `22F450` | `7E0 7E8` | Common Ford active regen candidate. |
+| `22F451` | `7E0 7E8` | Regen request candidate. |
+| `22F453` | `7E0 7E8` | DPF status bitfield candidate. |
+| `22F87C` | `7E0 7E8` | Alternate DPF active candidate. |
 
 ### TESTING.EGT
 
@@ -216,12 +216,12 @@ Purpose: identify additional exhaust temperature sensors and improve regen therm
 
 | PID | Header | Purpose |
 | --- | --- | --- |
-| `22F478` | `7E0→7E8` | Existing survivor; packet-like multi-EGT candidate. |
-| `22F463` | `7E0→7E8` | Existing survivor; possible EGRT / EGR manifold temp, low confidence. |
-| `22F46A` | `7E0→7E8` | EGT11 candidate. |
-| `22F46B` | `7E0→7E8` | EGT12 candidate. |
-| `22F46C` | `7E0→7E8` | EGT13 / DPF inlet candidate. |
-| `22F46D` | `7E0→7E8` | EGT14 / DPF outlet candidate. |
+| `22F478` | `7E0 7E8` | Existing survivor; packet-like multi-EGT candidate. |
+| `22F463` | `7E0 7E8` | Existing survivor; possible EGRT / EGR manifold temp, low confidence. |
+| `22F46A` | `7E0 7E8` | EGT11 candidate. |
+| `22F46B` | `7E0 7E8` | EGT12 candidate. |
+| `22F46C` | `7E0 7E8` | EGT13 / DPF inlet candidate. |
+| `22F46D` | `7E0 7E8` | EGT14 / DPF outlet candidate. |
 
 ### TESTING.Boost
 
@@ -229,15 +229,15 @@ Purpose: identify boost, VGT, turbo-bypass, and bi-turbo behaviour.
 
 | PID | Header | Purpose |
 | --- | --- | --- |
-| `220210` | `7E0→7E8` | Extended MAF candidate; compare against generic `0110`. |
-| `220233` | `7E0→7E8` | BARO candidate. |
-| `220247` | `7E0→7E8` | MAP / gauge boost candidate. |
-| `22F470` | `7E0→7E8` | VGT commanded candidate. |
-| `22F471` | `7E0→7E8` | VGT actual candidate. |
-| `22F476` | `7E0→7E8` | Charge air cooler / post-intercooler temp candidate. |
-| `22F479` | `7E0→7E8` | Turbo inlet pressure candidate; note possible conflict with internet alternator claims. |
-| `22F47A` | `7E0→7E8` | LP turbo speed / alternate turbo value candidate. |
-| `22F48D` | `7E0→7E8` | Turbo bypass candidate. |
+| `220210` | `7E0 7E8` | Extended MAF candidate; compare against generic `0110`. |
+| `220233` | `7E0 7E8` | BARO candidate. |
+| `220247` | `7E0 7E8` | MAP / gauge boost candidate. |
+| `22F470` | `7E0 7E8` | VGT commanded candidate. |
+| `22F471` | `7E0 7E8` | VGT actual candidate. |
+| `22F476` | `7E0 7E8` | Charge air cooler / post-intercooler temp candidate. |
+| `22F479` | `7E0 7E8` | Turbo inlet pressure candidate; note possible conflict with internet alternator claims. |
+| `22F47A` | `7E0 7E8` | LP turbo speed / alternate turbo value candidate. |
+| `22F48D` | `7E0 7E8` | Turbo bypass candidate. |
 
 ### TESTING.Transmission
 
@@ -245,8 +245,8 @@ Purpose: expand torque converter lockup/slip understanding.
 
 | PID | Header | Purpose |
 | --- | --- | --- |
-| `221E35` | `7E1→7E9` | TCC desired slip candidate; compare against confirmed `1E14` actual slip. |
-| `221E3C` | `7E1→7E9` | TCC commanded pressure candidate. |
+| `221E35` | `7E1 7E9` | TCC desired slip candidate; compare against confirmed `1E14` actual slip. |
+| `221E3C` | `7E1 7E9` | TCC commanded pressure candidate. |
 
 ### TESTING.4x4
 
@@ -256,11 +256,11 @@ Tested on both likely paths:
 
 | PID | Header(s) | Purpose |
 | --- | --- | --- |
-| `22C45D` | `7E2→7EA`, `7E0→7E8` | 4WD mode candidate. |
-| `22C460` | `7E2→7EA`, `7E0→7E8` | Transfer clutch duty candidate. |
-| `22C461` | `7E2→7EA`, `7E0→7E8` | Front prop speed candidate. |
-| `22C462` | `7E2→7EA`, `7E0→7E8` | Rear prop speed candidate. |
-| `22C463` | `7E2→7EA`, `7E0→7E8` | Rear locker / eLSD state candidate. |
+| `22C45D` | `7E2 7EA`, `7E0 7E8` | 4WD mode candidate. |
+| `22C460` | `7E2 7EA`, `7E0 7E8` | Transfer clutch duty candidate. |
+| `22C461` | `7E2 7EA`, `7E0 7E8` | Front prop speed candidate. |
+| `22C462` | `7E2 7EA`, `7E0 7E8` | Rear prop speed candidate. |
+| `22C463` | `7E2 7EA`, `7E0 7E8` | Rear locker / eLSD state candidate. |
 
 ### TESTING.Battery
 
@@ -268,11 +268,11 @@ Purpose: extend already-working BMS / smart-charging visibility without clutteri
 
 | PID | Header | Purpose |
 | --- | --- | --- |
-| `224006` | `726→72E` | Battery SOH candidate. |
-| `224007` | `726→72E` | Battery internal resistance candidate. |
-| `22400A` | `726→72E` | Battery temperature candidate. |
-| `22032E` | `7E0→7E8` | Generator desired voltage candidate. |
-| `221632` | `7E0→7E8` | Generator command duty candidate. |
+| `224006` | `726 72E` | Battery SOH candidate. |
+| `224007` | `726 72E` | Battery internal resistance candidate. |
+| `22400A` | `726 72E` | Battery temperature candidate. |
+| `22032E` | `7E0 7E8` | Generator desired voltage candidate. |
+| `221632` | `7E0 7E8` | Generator command duty candidate. |
 
 ## Removed in v0.7.0
 
@@ -424,16 +424,16 @@ Aligned default file: `default_everest_my25_25_v0_7_1_ranger_testing_expansion.j
 
 | PID | Header | Signal IDs | Reason |
 | --- | --- | --- | --- |
-| `22F46B` | `7E0→7E8` | `EVEREST_TEST_EGT12_7E0_F46B_RAW16_AB, EVEREST_TEST_EGT12_7E0_F46B_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
-| `22F46C` | `7E0→7E8` | `EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_RAW16_AB, EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
-| `22F479` | `7E0→7E8` | `EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_RAW16_AB, EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
-| `22F48D` | `7E0→7E8` | `EVEREST_TEST_TURBO_BYPASS_7E0_F48D_RAW16_AB, EVEREST_TEST_TURBO_BYPASS_7E0_F48D_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
+| `22F46B` | `7E0 7E8` | `EVEREST_TEST_EGT12_7E0_F46B_RAW16_AB, EVEREST_TEST_EGT12_7E0_F46B_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
+| `22F46C` | `7E0 7E8` | `EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_RAW16_AB, EVEREST_TEST_EGT13_DPF_INLET_7E0_F46C_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
+| `22F479` | `7E0 7E8` | `EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_RAW16_AB, EVEREST_TEST_TURBO_INLET_PRESSURE_7E0_F479_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
+| `22F48D` | `7E0 7E8` | `EVEREST_TEST_TURBO_BYPASS_7E0_F48D_RAW16_AB, EVEREST_TEST_TURBO_BYPASS_7E0_F48D_CANDIDATE` | Repeated screenshot result: Negative response / out of range. Shelved to save active screenshot space. |
 
 ## Ranger-derived additions
 
 ### TESTING.Tires
 
-Added tyre-pressure candidates from Ranger `726→72E` commands:
+Added tyre-pressure candidates from Ranger `726 72E` commands:
 
 | Position / purpose | PID | Formula |
 | --- | --- | --- |
@@ -556,7 +556,7 @@ Aligned default file: `default_everest_my25_25_v0_7_2_testing_refinement.json` /
 | Regen / exhaust flow | `01019E` | Raw values `222`, `501`, `890`, `1697`; `raw / 5` gave `44.4`, `100`, `178`, `339`. | Keep and add alternate scaling candidates. |
 | Engine / torque | `010161` | Driver demand torque showed low values and high demand around `89%`. | Strong testing candidate. |
 | Engine / torque | `010162` | Actual engine torque showed `0%`, `7%`, `48%`, `86%`. | Strong testing candidate. |
-| Engine / torque | `010163` | Engine reference torque held around `500 N·m`. | Strong testing candidate / likely reference torque. |
+| Engine / torque | `010163` | Engine reference torque held around `500 N m`. | Strong testing candidate / likely reference torque. |
 | Boost / VGT | `22F470` / `22F471` | Raw 16-bit values are live; original 8-bit candidate stays around fake `3%`. | Keep raw and alternate div10/div20/div32/div64/div100 candidates. |
 
 ### Alive scouts — keep
@@ -923,7 +923,7 @@ These items were removed from active testing to reduce screenshot clutter. They 
 
 | Area | Removed items |
 | --- | --- |
-| 4x4 `7E0` transfer-case candidates | `C45D`, `C460`, `C461`, `C462`, `C463` on `7E0→7E8` |
+| 4x4 `7E0` transfer-case candidates | `C45D`, `C460`, `C461`, `C462`, `C463` on `7E0 7E8` |
 | Boost1 MAP/BARO/TCBP candidates | `0210`, `16AE`, `1440`, `1442`, `03CA`, `03CB` |
 | Boost2 commanded/actual candidates | `0187`, `018A`, `1247`, `1248`, `16B0`, `16B1`, `16B2`, `0170/6B raw packet` |
 | Boost3 actuator candidates | `116E`, `16C0`, `16C1`, `16C2`, `16C3` |
@@ -1077,7 +1077,7 @@ Aligned default file: `default_everest_my25_25_v0_7_6_torque_refinement.json` / 
 | --- | --- | --- | --- |
 | `EVEREST_TEST_DRIVER_DEMAND_TORQUE_0161` | `010161` | Near 0% while coasting/foot-off; up to about 100% during hard takeoff. | Very high confidence testing candidate. |
 | `EVEREST_TEST_ACTUAL_ENGINE_TORQUE_0162` | `010162` | Near 0% while coasting/foot-off; up to about 93-95% during hard takeoff. | Very high confidence testing candidate. |
-| `EVEREST_TEST_ENGINE_REFERENCE_TORQUE_0163` | `010163` | Stable at 500 N·m across captures. | Plausible engine reference/max torque value; keep for scaling context. |
+| `EVEREST_TEST_ENGINE_REFERENCE_TORQUE_0163` | `010163` | Stable at 500 N m across captures. | Plausible engine reference/max torque value; keep for scaling context. |
 
 The coasting 0% result is important evidence. It supports the interpretation that `0161` is driver/requested torque demand and `0162` is actual/delivered engine torque rather than random load-like noise.
 
@@ -1528,7 +1528,7 @@ Also refined the DPF fullness 220610 description to keep the signal production-r
 | --- | --- | --- | --- |
 | `EVEREST_DRIVER_DEMAND_TORQUE_0161` | Engine driver demand torque | `Engine` | Labelled screenshots showed near 0% stopped/coasting, low values during light cruise, and ~100% during hard takeoff. |
 | `EVEREST_ACTUAL_ENGINE_TORQUE_0162` | Engine actual torque | `Engine` | Labelled screenshots showed near 0% stopped/coasting, low values during light cruise, and high values during hard acceleration/load. |
-| `EVEREST_ENGINE_REFERENCE_TORQUE_0163` | Engine reference torque | `Engine` | Stable 500 N·m value across captures; plausible reference scalar for the 2.0L Bi-Turbo diesel. |
+| `EVEREST_ENGINE_REFERENCE_TORQUE_0163` | Engine reference torque | `Engine` | Stable 500 N m value across captures; plausible reference scalar for the 2.0L Bi-Turbo diesel. |
 
 ### Screenshot evidence used
 
@@ -1592,7 +1592,7 @@ Promote torque signals and clean testing groups
 ```text
 Promoted the Ford Everest MY25.25 torque trio from TESTING.Misc into the production Engine category after repeated labelled screenshot validation across stopped, coasting, light cruise, load and hard takeoff states.
 
-The promoted signals are driver demand torque 0161, actual engine torque 0162 and engine reference torque 0163. The torque values behaved consistently with vehicle state: 0% while stopped or coasting, low values during light driving, and high values during hard acceleration/load. The reference torque remained stable at 500 N·m.
+The promoted signals are driver demand torque 0161, actual engine torque 0162 and engine reference torque 0163. The torque values behaved consistently with vehicle state: 0% while stopped or coasting, low values during light driving, and high values during hard acceleration/load. The reference torque remained stable at 500 N m.
 
 Removed the Battery and TESTING.Battery sections from the active JSON, and removed the TESTING.4x4 candidates after repeated blank/out-of-range/no-useful-value results. Consolidated sparse boost testing paths by moving Boost2 and Boost4 items into Boost1, and renamed Boost3 to TESTING.VGT because those signals are VGT commanded/actual scaling work.
 
@@ -2073,250 +2073,148 @@ Only PIDs that previously responded with data but had weak, frozen, misleading o
 
 No production formulas, signal IDs, command definitions or visible non-testing signals were removed.
 ```
+
 ---
 
-# v0.7.18 — Shifted BIX scout pack
+# v0.7.18 — Shifted packet scout pack
 
-Aligned default file: `default_everest_my25_25_v0_7_18_shifted_bix_scout_pack.json` / `signalsets/v3/default.json` target
+Aligned default file: `default_everest_my25_25_v0_7_18_shifted_packet_scout_pack.json` / `signalsets/v3/default.json` target
 
 ## Update focus
 
-- Built from v0.7.17 BIX group resurrection pack.
-- Did **not** delete any commands, signals, formulas, paths, or IDs.
-- Did **not** promote any testing signal.
-- Did **not** change any production formulas or production signal definitions.
-- Added shifted `fmt.bix` byte-pair scouts after DB evidence from a real drive showed several packet-style payloads may include a leading packet/status byte.
-- Added extra `220610` EF/GH DPF packet scouts because the drive showed EF mirroring the production DPF fullness value and GH drifting higher than AB/EF.
+- Built directly from the uploaded v0.7.17 working JSON.
+- Preserved all production commands, signals, formulas, paths, IDs and connectables.
+- Preserved all existing raw and BIX companion signals.
+- Added one-byte-shifted packet scouts after the latest drive showed a stable leading support/status byte in several packet-style responses.
+- Added individual EGR packet byte scouts and percentage comparisons.
+- Strengthened testing notes for TCC desired slip and commanded pressure.
+- Did not promote any new signals.
+- Did not remove any commands or signals.
 
-## Why shifted BIX scouts were added
+## Latest-drive findings incorporated
 
-Several packet-style PIDs appeared to decode poorly when only even byte-pairs were exposed:
+### DPF fullness `220610`
 
-```text
-AB = bix 0
-CD = bix 16
-EF = bix 32
-```
+The production `raw / 100` signal matched the dashboard during normal driving:
 
-The latest DB drive suggested the useful 16-bit fields may begin one byte later:
+| Dashboard display | Logged `220610` |
+| ---: | ---: |
+| 85% | about 85.1% |
+| 86% | about 85.6–85.8% |
 
-```text
-BC = bix 8
-DE = bix 24
-FG = bix 40
-```
+This supports the dashboard rounding the underlying hundredths-of-a-percent value. The production signal remains unchanged.
 
-This update keeps all existing AB/CD/EF scouts and adds shifted BC/DE/FG scouts beside them. Nothing is interpreted or promoted yet.
+The second 16-bit packet word moved independently at roughly 6.9–10.6 when scaled `/100`. It remains useful but unidentified and stays under `TESTING.Regen_BIX`.
 
-## Added shifted BIX groups
+### Packet prefix / shifted-field finding
 
-### `TESTING.Boost_BIX`
+Latest packets for Mode 01 `0170`, `0169` and `016D` began with a stable `0x07` byte. Existing AB/CD/EF scouts therefore combine the prefix with the first useful data byte.
 
-| PID | Added scouts | Purpose |
-| --- | --- | --- |
-| `010170` | BC raw16, DE raw16, FG raw16 | Check whether boost/control packet values sit after a leading packet/status byte. Compare against MAP `010B`, F40B, BARO, VGT, RPM and load. |
+v0.7.18 adds shifted fields beginning at `bix: 8` and later offsets while preserving the existing scouts.
 
-### `TESTING.EGR_BIX`
+### Boost / VGT
 
-| PID | Added scouts | Purpose |
-| --- | --- | --- |
-| `010169` | BC raw16, DE raw16, FG raw16 | Check shifted EGR command/actual/error packet fields. Compare against EGR open `22052E`, RPM, load, fuel rate, exhaust flow and regen state. |
+`0170` and `F470` produced very similar multi-field packets at matching vehicle states. This strongly suggests related boost/VGT command data, but engineering units remain unresolved.
 
-### `TESTING.Fuel_BIX`
+Added shifted raw scouts for:
 
-| PID | Added scouts | Purpose |
-| --- | --- | --- |
-| `01016D` | BC raw16, DE raw16, FG raw16 | Check shifted fuel-system / fuel-rail packet fields. Compare against fuel-rate candidates, RPM, load and future known fuel-pressure references. |
+- `010170`
+- `22F470`
+- `22F471`
 
-### `TESTING.Turbo_BIX`
+The new `TESTING.VGT_BIX` group separates shifted VGT packet work from the existing alternate-scaling widgets in `TESTING.VGT`.
 
-| PID | Added scouts | Purpose |
-| --- | --- | --- |
-| `22F47A` | BC raw16, DE raw16, FG raw16 | Check shifted turbo packet fields. Latest drive suggested DE/FG may move usefully while earlier turbo-speed-style interpretation was misleading. Do not call this turbo speed yet. |
+### EGR packet `0169`
 
-### `TESTING.Regen_BIX`
+Added individual shifted byte B, C and D raw/percent scouts plus BC/CD 16-bit companions.
 
-| PID | Added scouts | Purpose |
-| --- | --- | --- |
-| `22F48B` | BC raw16, DE raw16, FG raw16 | Check shifted DPF/regen-status packet fields during active regen and normal driving. |
-| `220610` | EF raw16, EF `/100`, GH raw16, GH `/100` | Compare extra DPF packet words against production DPF fullness, dash exhaust-filter display, CD, distance since regen and active regen events. |
+Observed byte values produced plausible percentage-style ranges, but commanded/actual/error identities remain unresolved.
 
-## Important interpretation notes
+### Fuel packet `016D`
 
-- `220610` AB remains the production DPF fullness / soot-load estimate using `raw / 100`.
-- `220610` EF looked like a possible duplicate/mirror of AB in this drive, but it stays testing-only until repeated.
-- `220610` GH looked more interesting because it drifted higher than AB/EF late in the drive.
-- Shifted packet scouts are raw evidence-gathering only.
-- No shifted packet field should be promoted until it correlates across multiple labelled states.
+Added shifted BC and DE 16-bit fields plus byte F raw.
 
-## Added signal IDs
+The two shifted 16-bit values rose strongly with load and closely tracked one another, making them strong requested-versus-actual fuel-pressure candidates. Formula and units remain unresolved.
 
-```text
-EVEREST_TEST_DPF_FULLNESS_0610_EF_RAW16
-EVEREST_TEST_DPF_FULLNESS_0610_EF_DIV100
-EVEREST_TEST_DPF_FULLNESS_0610_GH_RAW16
-EVEREST_TEST_DPF_FULLNESS_0610_GH_DIV100
-EVEREST_TEST_RANGER_PACKET_70_BC_RAW16
-EVEREST_TEST_RANGER_PACKET_70_DE_RAW16
-EVEREST_TEST_RANGER_PACKET_70_FG_RAW16
-EVEREST_TEST_RANGER_PACKET_6D_BC_RAW16
-EVEREST_TEST_RANGER_PACKET_6D_DE_RAW16
-EVEREST_TEST_RANGER_PACKET_6D_FG_RAW16
-EVEREST_TEST_RANGER_PACKET_69_BC_RAW16
-EVEREST_TEST_RANGER_PACKET_69_DE_RAW16
-EVEREST_TEST_RANGER_PACKET_69_FG_RAW16
-EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_BC_RAW16
-EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_DE_RAW16
-EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_FG_RAW16
-EVEREST_TEST_DPF_STATUS_F48B_BC_RAW16
-EVEREST_TEST_DPF_STATUS_F48B_DE_RAW16
-EVEREST_TEST_DPF_STATUS_F48B_FG_RAW16
-```
+### Turbo packet `F47A`
+
+Added correctly shifted BC, DE and FG fields.
+
+Latest data showed live paired values in DE and FG, but they do not yet support a turbo-speed interpretation. All new names deliberately use turbo packet/control wording rather than RPM.
+
+### TCC `1E35` and `1E3C`
+
+Latest drive strongly supported:
+
+- `1E35 raw/4` as desired TCC slip.
+- `1023 rpm` as a likely open/unlocked converter sentinel.
+- `1E3C` as a live TCC apply-pressure or command value.
+
+Descriptions were strengthened, but both signals remain under `TESTING.Transmission`. The `kilopascal` unit for `1E3C` remains provisional.
+
+### MAP comparison
+
+Generic MAP `010B` and Ford `F40B` tracked as near-duplicate 8-bit MAP sources and both reached the apparent 255 kPa absolute ceiling. No production changes were made.
+
+## New packet scouts
+
+| Group | PID | Added scouts |
+| --- | --- | ---: |
+| `TESTING.Boost_BIX` | `010170` | 4 |
+| `TESTING.EGR_BIX` | `010169` | 8 |
+| `TESTING.Fuel_BIX` | `01016D` | 3 |
+| `TESTING.VGT_BIX` | `22F470` | 4 |
+| `TESTING.VGT_BIX` | `22F471` | 4 |
+| `TESTING.Turbo_BIX` | `22F47A` | 3 |
+| **Total** |  | **26** |
+
+## Things deliberately not changed
+
+- No production signals or formulas changed.
+- No production paths changed.
+- No commands or signals were removed.
+- Existing raw companion signals remain available.
+- No unsupported or previously dead PIDs were restored.
+- No new `suggestedMetric` values were added or removed.
+- No `hidden`, `nullmin`, `nullmax`, `tmo`, `fcm1` or `signalGroups` fields were added.
+- TCC `1023` was not hidden or nulled because the sentinel interpretation still needs repeat validation.
+- No fuel-pressure, EGR, VGT or turbo packet field was promoted or assigned final engineering units.
 
 ## v0.7.18 validation snapshot
 
 | Check | Result |
 | --- | ---: |
 | Commands in updated default.json | 83 |
-| Signals in updated default.json | 151 |
-| Root TESTING signals | 81 |
+| Signals in updated default.json | 158 |
+| Root TESTING signals | 88 |
 | Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Non-root testing paths | 0 |
 | JSON validation | Passed |
 | Commands removed | 0 |
 | Signals removed | 0 |
-| Existing formulas changed | 0 |
 | Production signals modified | 0 |
-| Added shifted / extra BIX scout signals | 19 |
-
-## Validation summary
-
-- Commands: 83
-- Signals: 151
-- Testing signals: 81
-- Duplicate IDs: 0
-- JSON validation: Passed
-- Production signals modified: 0
-- Removed signals: 0
-- Added signals: 19
-- Path changes: 0
-- Formula changes: 0
-- Connectable changes: 0
+| New shifted packet scouts | 26 |
+| Testing descriptions updated | 2 |
+| Formula changes to existing signals | 0 |
+| Connectable changes | 0 |
 
 ## Commit message
 
 ```text
-Add shifted BIX packet scouts for Everest PID testing
+Add shifted packet scouts for Everest PID v0.7.18
 ```
 
 ## Extended description
 
 ```text
-Built v0.7.18 from the Ford Everest MY25.25 v0.7.17 BIX group resurrection pack.
+Built Ford Everest MY25.25 PID pack v0.7.18 directly from the uploaded v0.7.17 source-of-truth files.
 
-This update adds shifted byte-pair BIX scouts for packet-style PIDs where real drive DB evidence suggested useful 16-bit fields may begin after a leading packet/status byte. Existing AB/CD/EF scouts were preserved and new BC/DE/FG raw16 scouts were added for boost packet 0170, EGR packet 0169, fuel packet 016D, turbo packet F47A and regen/status packet F48B.
+The latest drive showed that several packet-style responses begin with a stable support/status byte, causing the existing AB/CD/EF views to be offset from the strongest live fields. This update preserves every existing command and signal while adding one-byte-shifted BIX scouts for boost packet 0170, EGR packet 0169, fuel packet 016D, VGT packets F470/F471 and turbo packet F47A.
 
-The update also adds extra 220610 EF and GH DPF packet scouts, including raw16 and raw/100 versions, so the extra packet words can be compared against the production DPF fullness value, the dash exhaust-filter display, distance since regen and active regen events.
+Individual byte and percentage scouts were added for the EGR packet, and shifted requested-versus-actual candidates were added for the fuel packet. A dedicated TESTING.VGT_BIX group now holds shifted VGT packet fields while the existing TESTING.VGT scaling comparisons remain untouched.
 
-No production signals, formulas, connectables, command definitions, paths or existing testing items were removed or changed.
-```
+Testing descriptions for TCC desired slip and commanded pressure were strengthened after the drive showed a coherent transition from the likely 1023 rpm open-converter sentinel to low desired slip as pressure applied.
 
-
----
-
-# v0.7.19 — Transmission gear connectable cleanup
-
-Aligned default file: `default_everest_my25_25_v0_7_19_gear_connectable_cleanup.json` / `signalsets/v3/default.json` target
-
-## Update focus
-
-- Built from v0.7.18 shifted BIX scout pack.
-- Promoted `EVEREST_CURRENT_GEAR_ALT_1E12` as the preferred driver-facing current gear signal.
-- Added `suggestedMetric: transmissionGear` to `EVEREST_CURRENT_GEAR_ALT_1E12`.
-- Downgraded `EVEREST_GEAR_ENGAGED_7E1_1E1F` to an internal gear-state reference.
-- Removed any `transmissionGear` connectable assignment from `EVEREST_GEAR_ENGAGED_7E1_1E1F`.
-- No formulas, paths, commands, BIX scouts, testing signals, or production category structure were otherwise changed.
-
-## Evidence
-
-User-observed live Pelican screenshots showed the following:
-
-| Vehicle state | `EVEREST_GEAR_ENGAGED_7E1_1E1F` | `EVEREST_CURRENT_GEAR_ALT_1E12` | Interpretation |
-| --- | ---: | ---: | --- |
-| Park | `10` | `N/A` | `1E1F` can be misleading in Park; `1E12` better represents driver-facing gear state. |
-| Driven 1st gear | `1` | `1` | Both agree while actually driving in 1st gear. |
-
-Additional observed context:
-
-- In Park, torque converter slip was near zero at about `10 rpm`.
-- In driven 1st gear, torque converter slip rose to about `804 rpm`.
-- This supports treating `1E12` as the better selected/current gear display candidate, while retaining `1E1F` as a useful internal/engaged gear-state reference.
-
-## Signal decisions
-
-| Signal | Old role | New role | Decision |
-| --- | --- | --- | --- |
-| `EVEREST_CURRENT_GEAR_ALT_1E12` | Transmission current gear alt | Transmission current gear | Promoted to preferred driver-facing gear signal and assigned `transmissionGear`. |
-| `EVEREST_GEAR_ENGAGED_7E1_1E1F` | Transmission current gear | Transmission internal gear state | Downgraded; kept visible but no longer used as `transmissionGear`. |
-
-## Updated signal wording
-
-### `EVEREST_CURRENT_GEAR_ALT_1E12`
-
-- Name: `Transmission current gear`
-- Description updated to note that it matched dash gear during live driving, changed at the same time as the dash display, and showed `N/A` in Park while the old `1E1F` signal showed misleading `10`.
-- Connectable added: `transmissionGear`
-
-### `EVEREST_GEAR_ENGAGED_7E1_1E1F`
-
-- Name: `Transmission internal gear state`
-- Description updated to note that it remains useful while driving but can be misleading in Park.
-- Connectable removed: `transmissionGear`, if present.
-
-## v0.7.19 validation snapshot
-
-| Check | Result |
-| --- | ---: |
-| Commands in updated default.json | 83 |
-| Signals in updated default.json | 151 |
-| Root TESTING signals | 81 |
-| Duplicate signal IDs | 0 |
-| JSON validation | Passed |
-| Commands removed | 0 |
-| Signals removed | 0 |
-| Added signals | 0 |
-| Formula changes | 0 |
-| Path changes | 0 |
-| Connectable changes | 2 |
-| Production signals modified | 2 |
-
-## Validation summary
-
-- Commands: 83
-- Signals: 151
-- Testing signals: 81
-- Duplicate IDs: 0
-- JSON validation: Passed
-- Production signals modified: 2
-- Removed signals: 0
-- Added signals: 0
-- Path changes: 0
-- Formula changes: 0
-- Connectable changes: 2
-
-## Commit message
-
-```text
-Promote Everest 1E12 as transmission gear connectable
-```
-
-## Extended description
-
-```text
-Built v0.7.19 from the Ford Everest MY25.25 v0.7.18 shifted BIX scout pack.
-
-This update promotes EVEREST_CURRENT_GEAR_ALT_1E12 as the preferred driver-facing transmission current gear signal after live Pelican screenshots showed it correctly displaying N/A in Park and matching 1st gear while driving. The signal has been renamed to Transmission current gear and assigned the transmissionGear suggestedMetric.
-
-The older EVEREST_GEAR_ENGAGED_7E1_1E1F signal has been downgraded to Transmission internal gear state because it can show misleading values in Park, including 10 while the vehicle is parked. It remains visible and useful as a transmission internal/engaged gear-state reference while driving, but is no longer treated as the driver-facing transmissionGear connectable.
-
-No commands, formulas, paths, testing signals, shifted BIX scouts, or existing production categories were removed or otherwise changed.
+No production signals, formulas, paths, IDs, commands or connectables were changed or removed. No testing signal was promoted.
 ```
