@@ -2218,3 +2218,127 @@ Testing descriptions for TCC desired slip and commanded pressure were strengthen
 
 No production signals, formulas, paths, IDs, commands or connectables were changed or removed. No testing signal was promoted.
 ```
+
+---
+
+# v0.7.19 — Ranger validation candidates
+
+Aligned default file: `default_everest_my25_25_v0_7_19_ranger_validation_candidates.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built directly from the complete v0.7.18 shifted packet scout pack.
+- Preserved all production and existing TESTING commands and signals.
+- Added a Ranger-derived shifter-position candidate using `221E23`.
+- Added generic SAE Mode 01 PID `0123` raw and scaled fuel-rail-pressure comparisons.
+- Added a `7E0 7E8` transmission-temperature mirror using `221E1C raw/16`.
+- Did not restore failed Everest TPMS, `0142`, `0144`, catalyst-temperature or ambient-temperature candidates.
+- No signals were promoted.
+- No commands or signals were removed.
+
+## Added candidates
+
+### TESTING.Transmission — shifter position `221E23`
+
+Added:
+
+- `EVEREST_TEST_SHIFTER_POSITION_7E0_1E23`
+
+Ranger-derived map:
+
+| Raw | Position |
+| ---: | --- |
+| 10 | Manual |
+| 46 | Drive |
+| 50 | Neutral |
+| 60 | Reverse |
+| 70 | Park |
+
+Purpose:
+
+- Validate selected shifter position independently from current transmission gear.
+- Compare against `EVEREST_CURRENT_GEAR_ALT_1E12`.
+- Check every position while stationary and using normal safe operating procedures.
+
+### TESTING.Fuel — generic fuel rail pressure `0123`
+
+Added:
+
+- `GENERIC_TEST_FUEL_RAIL_PRESSURE_0123_RAW`
+- `GENERIC_TEST_FUEL_RAIL_PRESSURE_0123_KPA`
+
+Formula:
+
+```text
+raw * 10 kPa
+```
+
+Purpose:
+
+- Compare generic actual rail-pressure behaviour against shifted `016D` BC and DE packet fields.
+- Help determine whether `016D` contains requested-versus-actual fuel rail pressure.
+- Keep both raw and scaled companions until the relationship is confirmed.
+
+### TESTING.Transmission — `7E0` transmission-temperature mirror
+
+Added:
+
+- `EVEREST_TEST_TRANS_TEMP_7E0_1E1C_DIV16`
+
+Formula:
+
+```text
+raw / 16 °C
+```
+
+Purpose:
+
+- Compare the Ranger-supported `7E0 7E8` response with the working Everest `7E1 7E9` production transmission-fluid-temperature signal.
+- Check whether the values, update rate and availability match.
+- This mirror does not replace or modify the production signal.
+
+## Deliberately not added
+
+- Ranger TPMS `2813–2816`: previously rejected on the Everest with negative/out-of-range responses.
+- Generic control-module voltage `0142`: previously rejected; production `22402A` is stronger.
+- Generic equivalence ratio `0144`: previously rejected on this diesel.
+- Generic catalyst temperatures `013C` and `013D`: lower priority than current Ford-specific EGT signals.
+- Generic ambient temperature `0146`: unnecessary because the Everest-specific ambient-temperature signal already works.
+
+## v0.7.19 validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands | 86 |
+| Signals | 162 |
+| Testing signals | 92 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Non-root testing paths | 0 |
+| JSON validation | Passed |
+| Production signals modified | 0 |
+| Removed signals | 0 |
+| Added signals | 4 |
+| Added commands | 3 |
+| Existing formula changes | 0 |
+| Connectable changes | 0 |
+
+## Commit message
+
+```text
+Add Ranger validation candidates for Everest PID v0.7.19
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.19 directly from the complete v0.7.18 source files.
+
+Added a Ranger-derived shifter-position candidate using PID 221E23 with Park, Reverse, Neutral, Drive and Manual mappings. This provides a selected-shifter-state comparison independent from the existing current-gear signals.
+
+Added generic SAE Mode 01 PID 0123 as raw and raw*10 kPa fuel-rail-pressure comparisons. These signals are intended to help identify the shifted 016D BC and DE packet fields as requested-versus-actual rail pressure.
+
+Added a 7E0 7E8 mirror of PID 221E1C using raw/16 °C for comparison against the working Everest 7E1 7E9 transmission-fluid-temperature signal.
+
+No production signals, formulas, paths, IDs, commands or connectables were modified or removed. Failed Everest TPMS, 0142 and 0144 candidates were not restored.
+```
