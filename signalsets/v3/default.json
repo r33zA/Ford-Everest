@@ -639,7 +639,7 @@
             "unit": "newtonMeters"
           },
           "name": "Engine reference torque",
-          "description": "Confirmed responding. Raw N·m value."
+          "description": "Confirmed responding. Raw N m value."
         }
       ]
     },
@@ -2585,7 +2585,7 @@
             "unit": "newtonMeters"
           },
           "name": "Engine reference torque",
-          "description": "Promoted from testing. SAE Mode 01 PID 63. Confirmed stable around 500 N·m; useful reference value for torque percent interpretation."
+          "description": "Promoted from testing. SAE Mode 01 PID 63. Confirmed stable around 500 N m; useful reference value for torque percent interpretation."
         }
       ]
     },
@@ -2810,81 +2810,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "1E23"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_SHIFTER_POSITION_7E0_1E23",
-          "path": "TESTING.Transmission",
-          "fmt": {
-            "len": 8,
-            "unit": "scalar",
-            "map": {
-              "10": {
-                "description": "Manual",
-                "value": "MANUAL"
-              },
-              "46": {
-                "description": "Drive",
-                "value": "DRIVE"
-              },
-              "50": {
-                "description": "Neutral",
-                "value": "NEUTRAL"
-              },
-              "60": {
-                "description": "Reverse",
-                "value": "REVERSE"
-              },
-              "70": {
-                "description": "Park",
-                "value": "PARK"
-              }
-            }
-          },
-          "name": "TEST transmission shifter position",
-          "description": "Testing only. Ranger-derived 221E23 shifter-position map on 7E0→7E8. Validate Park, Reverse, Neutral, Drive and Manual independently from current transmission gear. Compare against EVEREST_CURRENT_GEAR_ALT_1E12 and the production current-gear signal."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "01": "23"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "GENERIC_TEST_FUEL_RAIL_PRESSURE_0123_RAW",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST generic fuel rail pressure raw",
-          "description": "Testing only. Raw 16-bit SAE Mode 01 PID 23 companion. Compare against the scaled value and shifted 016D BC/DE packet fields."
-        },
-        {
-          "id": "GENERIC_TEST_FUEL_RAIL_PRESSURE_0123_KPA",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 655350,
-            "mul": 10,
-            "unit": "kilopascal"
-          },
-          "name": "TEST generic fuel rail gauge pressure",
-          "description": "Testing only. SAE Mode 01 PID 23 fuel rail gauge pressure using raw*10 kPa. Compare against shifted 016D BC and DE fields to identify requested-versus-actual rail pressure behaviour."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "1E1C"
       },
       "freq": 2,
@@ -2899,7 +2824,7 @@
             "unit": "celsius"
           },
           "name": "TEST transmission temperature 7E0 mirror",
-          "description": "Testing only. Ranger-derived 7E0→7E8 mirror of PID 221E1C using raw/16 °C. Compare against the working Everest 7E1→7E9 production transmission-fluid-temperature signal for value, update rate and availability."
+          "description": "Testing only. Ranger-derived 7E0 7E8 mirror of PID 221E1C using raw/16 °C. Latest session produced valid responses for approximately 99.6% of requests, with only 4 transient NRC 0x31 responses from 1045 requests. Keep for comparison against the working Everest 7E1 7E9 production transmission-fluid-temperature signal; compare value, update rate and availability."
         }
       ]
     }
