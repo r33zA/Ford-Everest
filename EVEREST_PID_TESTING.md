@@ -2342,3 +2342,118 @@ Added a 7E0 7E8 mirror of PID 221E1C using raw/16 °C for comparison against the
 
 No production signals, formulas, paths, IDs, commands or connectables were modified or removed. Failed Everest TPMS, 0142 and 0144 candidates were not restored.
 ```
+
+---
+
+# v0.7.20 — Negative-response cleanup
+
+Aligned default file: `default_everest_my25_25_v0_7_20_negative_response_cleanup.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Built directly from the uploaded v0.7.19 working JSON and testing log.
+- Removed the two Ranger-derived commands that returned persistent `Negative response. Code: Out of range`.
+- Kept the working `7E0 7E8 221E1C` transmission-temperature mirror.
+- Preserved all production signals and all other existing TESTING signals.
+- No new commands or signals were added.
+- No connectables were changed.
+
+## Session negative-response review
+
+The latest Pelican session returned NRC `0x31` (`Request Out Of Range`) for the following candidates:
+
+| PID | ECU path | Negative responses | Total responses | Decision |
+| --- | --- | ---: | ---: | --- |
+| `221E23` | `7E0 7E8` | 4 | 4 | Removed; persistent failure |
+| `0123` | `7E0 7E8` | 2 | 2 | Removed; persistent failure |
+| `221E1C` | `7E0 7E8` | 4 | 1045 | Kept; transient failure only |
+
+## Removed commands
+
+### `7E0 7E8 221E23`
+
+Removed signal:
+
+- `EVEREST_TEST_SHIFTER_POSITION_7E0_1E23`
+
+Reason:
+
+- Returned `7F 22 31` for every request in the latest session.
+- The Ranger shifter-position definition is not supported through this Everest PCM path.
+- Keeping it would add screenshot clutter without useful data.
+
+### `7E0 7E8 0123`
+
+Removed signals:
+
+- `GENERIC_TEST_FUEL_RAIL_PRESSURE_0123_RAW`
+- `GENERIC_TEST_FUEL_RAIL_PRESSURE_0123_KPA`
+
+Reason:
+
+- Returned `7F 01 31` for every request in the latest session.
+- The shifted `016D` packet fields remain the stronger fuel-pressure investigation route.
+
+## Retained command
+
+### `7E0 7E8 221E1C`
+
+Retained signal:
+
+- `EVEREST_TEST_TRANS_TEMP_7E0_1E1C_DIV16`
+
+Reason:
+
+- Approximately 99.6% of requests returned valid data.
+- Only 4 transient out-of-range responses occurred from 1045 requests.
+- This remains useful for comparing value, update rate and availability against the working `7E1 7E9` production transmission-temperature signal.
+
+The signal description was updated to record this evidence.
+
+## Deliberately unchanged
+
+- No production commands or signals changed.
+- No production formulas changed.
+- No production paths changed.
+- No connectables changed.
+- No existing shifted packet scouts were removed.
+- No previously shelved TPMS, `0142`, `0144`, catalyst-temperature or other failed candidates were restored.
+- No new signals were promoted.
+
+## v0.7.20 validation snapshot
+
+| Check | Result |
+| --- | ---: |
+| Commands | 84 |
+| Signals | 159 |
+| Testing signals | 89 |
+| Commands removed | 2 |
+| Signals removed | 3 |
+| Signals added | 0 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Non-root TESTING paths | 0 |
+| Production signals modified | 0 |
+| Testing descriptions updated | 1 |
+| JSON validation | Passed |
+| Connectable changes | 0 |
+
+## Commit message
+
+```text
+Remove unsupported Ranger candidates for Everest PID v0.7.20
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.20 directly from the uploaded v0.7.19 source-of-truth files.
+
+Removed Ranger-derived PID 221E23 shifter position after the latest Pelican session returned NRC 0x31 Request Out Of Range for every request.
+
+Removed generic Mode 01 PID 0123 fuel rail pressure after every request also returned NRC 0x31. The shifted 016D packet fields remain active as the stronger fuel-pressure investigation path.
+
+Retained the Ranger-derived 7E0 7E8 PID 221E1C transmission-temperature mirror because approximately 99.6% of its requests returned valid data. Its testing description now records the small number of transient negative responses and the reason it remains useful.
+
+No production signals, formulas, paths, IDs, commands or connectables were modified. No new signals were added or promoted.
+```
