@@ -2457,3 +2457,96 @@ Retained the Ranger-derived 7E0 7E8 PID 221E1C transmission-temperature mirror b
 
 No production signals, formulas, paths, IDs, commands or connectables were modified. No new signals were added or promoted.
 ```
+
+---
+
+# v0.7.21 — Validation-drive TESTING cleanup and promotions
+
+Aligned default file: `default_everest_my25_25_v0_7_21_testing_evidence_cleanup.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Analysed 48,811 Pelican database records and 42 supporting screenshots from a roughly 98-minute mixed-speed validation drive.
+- Kept all unrelated production signals unchanged.
+- Promoted generic fuel rate `015E raw/20` into `Fuel.Generic` after plausible live behaviour and near-perfect correlation with the independent `019D` fuel-rate packet.
+- Promoted TCC desired slip `221E35 raw/4` into `Transmission` after repeated open/unlocked sentinel and locked-state validation.
+- Removed the failed `7E0 7E8 221E1C` transmission-temperature mirror after responder-aware analysis proved that all five mirror requests returned NRC `0x31`.
+- Removed `F451` because value `4` was observed both during active regeneration and throughout normal/non-regen driving and therefore does not identify active regen.
+- Pruned rejected exhaust-flow, fuel-rate, VGT and packet-alignment variants while retaining useful raw companions and correctly aligned live fields.
+- Replaced the misleading combined F471 word scouts with individual byte-B, byte-C and final-state scouts.
+
+## Important responder-aware correction
+
+The previous v0.7.20 log treated the `7E0` transmission-temperature mirror as approximately 99.6% responsive. That figure combined two commands sharing the same text `221E1C`:
+
+| Route | Valid | NRC 0x31 | Decision |
+| --- | ---: | ---: | --- |
+| Production `7E1 7E9 221E1C` | 2,848 | 0 | Preserve unchanged |
+| TESTING mirror `7E0 7E8 221E1C` | 0 | 5 | Removed |
+
+## Promotions
+
+| Signal | New path | Evidence |
+| --- | --- | --- |
+| `GENERIC_FUEL_RATE_015E` | `Fuel.Generic` | 20/20 valid; plausible 12.7-19.7 L/h-style drive values; correlation with 019D `r=0.99999`. |
+| `EVEREST_TCC_DESIRED_SLIP_1E35` | `Transmission` | Earlier open/unlocked 1023 rpm sentinel followed by 0-5 rpm near lock; latest drive 22/22 valid at 0-5 rpm during highway operation. |
+
+The TCC raw companion remains under `TESTING.Transmission`. The `1E3C` candidate remains testing-only and was relabelled as an apply-command scalar because kilopascal scaling is not proven.
+
+## Removed testing clutter
+
+- Complete failed commands/signals: `7E0 221E1C` mirror and `22F451`.
+- Exhaust flow: removed `019E /5`, `/10` and `/50`; retained raw and the best `/20` candidate.
+- Fuel-rate alternate: removed all decoded `019D` divisor variants; retained raw only.
+- VGT: removed misaligned F470/F471 percent and divisor candidates.
+- F470: retained shifted BC, DE and final-state word; removed all-zero shifted FG.
+- F471: replaced combined/misaligned shifted fields with individual byte B, byte C and final-state byte F.
+- F47A: retained the raw companion plus shifted DE and FG; removed overlapping CD/EF and all-zero shifted BC.
+- F48B: retained individual C/E/G bytes; removed redundant CD/EF words whose low bytes stayed zero.
+- 0170 and 016D: retained raw companions and useful shifted fields; removed overlapping unshifted CD/EF fields and the all-zero 0170 shifted FG field.
+- Boost comparison: removed duplicate F40B calculated-gauge widgets; retained generic 010B gauge calculations and both production absolute-MAP signals.
+
+## Retained high-value TESTING work
+
+- `220610` secondary CD word and /100 view.
+- `019E` raw and /20 candidate.
+- `1E3C` TCC apply-command raw/scalar.
+- `0170` shifted BC, DE and final state.
+- `F470` shifted BC, DE and final state.
+- `F471` individual B/C paired bytes and final state.
+- `F47A` shifted DE and FG.
+- `016D` shifted BC/DE pair and byte F.
+- `0169` EGR packet scouts pending a better-sampled drive.
+- `F48B` C/E/G bytes pending a confirmed active regeneration.
+
+## Validation-drive evidence
+
+| Candidate | Evidence | Result |
+| --- | --- | --- |
+| `019E` vs generic MAF | 79 paired samples, `r=0.959`; /20 median approximately 0.92× MAF | Keep raw + /20 only |
+| F470 shifted BC/DE | 70 responses, `r=0.983` | Keep paired shifted fields |
+| F471 bytes B/C | 70 responses, `r=0.993`, median difference 0.5 | Use individual byte scouts |
+| F47A shifted DE/FG | 71 responses, `r=0.976` | Keep both shifted fields |
+| 016D shifted BC/DE | 5 responses, `r=0.9991`, median difference 10 | Strong requested/actual candidate; keep testing |
+| F48B | 28 responses, only three non-regen states | Keep individual bytes pending regen |
+
+## Privacy note
+
+The Pelican database contains the full VIN. Keep the database private or sanitise it before public sharing. No VIN or other full vehicle identifier is reproduced in this log.
+
+## Commit message
+
+```text
+Clean and promote validated Everest signals for v0.7.21
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.21 directly from the supplied v0.7.20 JSON and testing log.
+
+Promoted confirmed generic fuel rate 015E and TCC desired slip 1E35, corrected the responder-specific assessment of the failed 7E0 transmission-temperature mirror, removed the non-discriminating F451 regen candidate, and pruned misleading or redundant TESTING scaling variants.
+
+Preserved all unrelated production signals, stable formulas, connectables and battery signals. Retained raw companions for useful unresolved packet families and replaced combined F471 word decoding with correctly aligned individual byte scouts.
+```
+
