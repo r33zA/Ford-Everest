@@ -2,8 +2,8 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-05-22 v0.7.2 testing refinement  
-Aligned default file: `default_everest_my25_25_v0_6_4_dpf_promoted.json` / `signalsets/v3/default.json` target  
+Version: 2026-07-22 v0.7.22 regeneration packet breakthrough  
+Aligned default file: `default_everest_my25_25_v0_7_22_regen_packet_breakthrough.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
 ## Update focus
@@ -2548,5 +2548,130 @@ Built Ford Everest MY25.25 PID pack v0.7.21 directly from the supplied v0.7.20 J
 Promoted confirmed generic fuel rate 015E and TCC desired slip 1E35, corrected the responder-specific assessment of the failed 7E0 transmission-temperature mirror, removed the non-discriminating F451 regen candidate, and pruned misleading or redundant TESTING scaling variants.
 
 Preserved all unrelated production signals, stable formulas, connectables and battery signals. Retained raw companions for useful unresolved packet families and replaced combined F471 word decoding with correctly aligned individual byte scouts.
+```
+
+---
+
+# v0.7.22 — Confirmed regeneration and packet-state breakthrough
+
+Aligned default file: `default_everest_my25_25_v0_7_22_regen_packet_breakthrough.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Analysed 29,216 Pelican responses and 80 timestamped screenshots from a roughly 59-minute drive.
+- Captured a confirmed automatic DPF regeneration from sustained onset through completion.
+- Identified F48B byte D as the strongest active-regeneration state candidate to date.
+- Corrected three misaligned EGT/exhaust packet decodes and replaced them with shifted packet scouts.
+- Restored the second 019D word after it diverged specifically during active regeneration.
+- Preserved all established production signals and formulas.
+
+## Confirmed regeneration timeline
+
+| Time | Evidence |
+| --- | --- |
+| 08:24:09 | 220610 reached 73.53%; sustained decline began shortly afterward. |
+| 08:31:54 | Vehicle stationary; 220610 at 52.06% and secondary word at 4.12. |
+| 08:32-08:42 | Elevated-flow stationary burn continued. |
+| 08:42:43 | F48B changed from active-burn to post-burn state. |
+| 08:43:16 | Production EGR reopened from 0% to approximately 34%. |
+| 08:43:24 | Distance since DPF regen reset from 213.3 km to 0 km. |
+| 08:43:38 | 220610 reached 25.90%. |
+
+Overall 220610 reduction was 47.63 percentage points across approximately 19.5 minutes, averaging 2.45 percentage points per minute.
+
+## F48B active-regeneration evidence
+
+| State | C | D | E | G |
+| --- | ---: | ---: | ---: | ---: |
+| Previous normal driving | 243-244 | 0 | 232-233 | 131 |
+| Active regeneration | 218→166 | 1 | 1 | 139 |
+| Immediately post-regeneration | 121→112 | 0 | 180 | 107 |
+
+Byte D returned to zero approximately 41 seconds before the distance-since-regen reset. It is added as both a raw scout and an `offon` testing candidate. It remains under `TESTING.Regen_BIX` pending confirmation in one more regeneration.
+
+Byte C correlated strongly with production DPF fullness during the active burn (`r=0.994`) and is more likely another scaled soot/load model than a simple status value.
+
+## DPF model clarification
+
+- Production `EVEREST_DPF_FULLNESS_0610` remains valid and unchanged at raw/100.
+- It tracked the dashboard closely early in the burn but diverged in the final phase; the dashboard reached 15% while 220610 was still approximately 28%.
+- The secondary CD word fell from approximately 10-11 before regen to 0.11 immediately before completion.
+- CD /100 is therefore retained as an unknown scalar rather than incorrectly labelled percent.
+- Distance since regen reset to 0 km, independently confirming completion.
+
+## 019D fuel packet
+
+The two 019D words were normally identical. During active regeneration one captured response became:
+
+```text
+00 2C | 00 45
+44    | 69
+```
+
+The second CD word is restored as a raw scout. It may expose base versus total fuel rate, requested versus actual rate, or regeneration-related additional fuelling. No engineering scaling is assigned.
+
+## EGT / exhaust packet corrections
+
+### F46A
+
+- Removed the misaligned raw*0.1-40 °C candidate.
+- Preserved the raw companion.
+- Response begins with a stable 0x03 support byte; exact byte meanings remain unresolved.
+
+### F46D
+
+- Removed the misaligned raw*0.1-40 °C candidate.
+- Added shifted BC and DE raw scouts.
+- Added shifted BC/DE raw/32 temperature comparisons.
+- BC and DE correlated at `r=0.9995` and produced approximately 201-226 °C under /32.
+- Added byte F as a state/reference scout.
+
+### F478
+
+- Removed the misaligned raw*0.1-40 °C candidate.
+- Added shifted BC and DE raw scouts plus /32 comparisons.
+- BC produced approximately 122-128 °C and DE approximately 202-207 °C under /32.
+- Shifted FG duplicated DE in every sample and was deliberately not added.
+
+## Other useful confirmation
+
+- Production EGR was 0% during active regeneration and reopened to approximately 34% after completion.
+- `019E /20` rose to approximately 30-33 during the elevated-flow stationary burn and remains the best exhaust-flow scaling candidate.
+- F470/F471 final states changed 13 seconds before the F48B completion transition; descriptions now record this correlation without treating them as confirmed regen flags.
+- TCC desired slip again showed the 1023 rpm open/unlocked sentinel while stationary, supporting its v0.7.21 production promotion.
+
+## Removed signals
+
+- `EVEREST_TEST_EGT11_7E0_F46A_CANDIDATE`
+- `EVEREST_TEST_EGT14_DPF_OUTLET_7E0_F46D_CANDIDATE`
+- `EVEREST_TEST_EXHAUST_MULTI_EGT_F478_CANDIDATE_C`
+
+All three were alive but decoded from a word containing the packet support byte and were therefore invalid as temperature widgets. Their raw companions remain.
+
+## Added signals
+
+- F48B byte D raw and active/on-off candidate.
+- 019D second/CD raw word.
+- F46D shifted BC/DE raw, shifted BC/DE /32 and byte F.
+- F478 shifted BC/DE raw and shifted BC/DE /32.
+
+## Privacy note
+
+The source Pelican database contains the full VIN. Keep it private or sanitise it before public sharing. No VIN or full vehicle identifier is reproduced here.
+
+## Commit message
+
+```text
+Add confirmed regen packet scouts for Everest PID v0.7.22
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.22 directly from the supplied v0.7.21 default.json, testing log and README.
+
+Recorded a confirmed automatic DPF regeneration, added the high-confidence F48B byte-D active-regeneration candidate, restored the second 019D word after regen-specific divergence, and replaced three misaligned EGT candidates with correctly shifted packet scouts.
+
+Preserved all established production formulas, paths, IDs, connectables and battery signals. No new regen or EGT signal was promoted prematurely; the strongest new candidates remain clearly separated under TESTING pending repeat confirmation.
 ```
 
