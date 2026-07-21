@@ -846,34 +846,6 @@
           },
           "name": "Manifold pressure",
           "description": "Confirmed responding. Formula A*10000/68947."
-        },
-        {
-          "id": "EVEREST_TEST_MANIFOLD_PRESSURE_F40B_GAUGE_PSI_FIXED",
-          "path": "TESTING.Boost1",
-          "fmt": {
-            "len": 8,
-            "min": -14.5,
-            "max": 21.5,
-            "mul": 10000,
-            "div": 68947,
-            "add": -14.5,
-            "unit": "psi"
-          },
-          "name": "TEST F40B calculated boost fixed offset",
-          "description": "Testing only. F40B manifold pressure converted to approximate gauge boost by subtracting fixed 14.5 psi atmospheric offset. Live BARO-based boost would be better if supported."
-        },
-        {
-          "id": "EVEREST_TEST_MANIFOLD_PRESSURE_F40B_GAUGE_KPA_FIXED",
-          "path": "TESTING.Boost1",
-          "fmt": {
-            "len": 8,
-            "min": -100,
-            "max": 155,
-            "add": -100,
-            "unit": "kilopascal"
-          },
-          "name": "TEST F40B calculated boost kPa fixed offset",
-          "description": "Testing only. F40B manifold pressure treated as kPa absolute and converted to approximate gauge boost by subtracting fixed 100 kPa atmospheric offset. Added to compare against Generic MAP gauge boost in the same unit family. Live BARO-based boost would be better if supported."
         }
       ]
     },
@@ -1537,38 +1509,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F451"
-      },
-      "freq": 10,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_RAW16_AB",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF regen state/request F451 raw AB",
-          "description": "Testing only. Raw companion for F451. During captured regen the decoded F451 candidate showed value 4. Keep as evidence/raw companion until the state meaning is confirmed outside regen."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_REGEN_REQUEST_7E0_F451_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF regen state/request F451",
-          "description": "Testing only. Responded with value 4 during captured active DPF regen while DPF fullness fell and distance-since-regen reset. Keep for non-regen comparison to determine whether 4 means active/requested/allowed or another state."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "01": "9E"
       },
       "freq": 5,
@@ -1585,30 +1525,6 @@
           "description": "Testing only. Raw companion for 019E exhaust-flow candidate. Captured active regen/load testing showed strong movement from about 185 to 3583 raw, closely tracking exhaust/load changes. Keep for scaling comparison."
         },
         {
-          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV5_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 13107,
-            "div": 5,
-            "unit": "scalar"
-          },
-          "name": "TEST exhaust flow 019E div5",
-          "description": "Testing only. Exhaust-flow 019E raw/5 candidate. Alive and responsive during active regen/load capture, but likely high. Keep for comparison against div10/div20/div50 and EGT/load."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV10_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 6553.5,
-            "div": 10,
-            "unit": "scalar"
-          },
-          "name": "TEST exhaust flow 019E div10",
-          "description": "Testing only. Exhaust-flow 019E raw/10 candidate. Alive and responsive during active regen/load capture. Keep for comparison; div20 currently looks more plausible."
-        },
-        {
           "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV20_CANDIDATE",
           "path": "TESTING.Regen",
           "fmt": {
@@ -1618,19 +1534,7 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust flow 019E div20 likely",
-          "description": "Testing only. Exhaust-flow 019E raw/20 candidate. Active regen/load capture showed strong correlation with flow/load; current best scaling candidate among div5/div10/div20/div50, pending more validation against RPM/load/EGT."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV50_CANDIDATE",
-          "path": "TESTING.Regen",
-          "fmt": {
-            "len": 16,
-            "max": 1310.7,
-            "div": 50,
-            "unit": "scalar"
-          },
-          "name": "TEST exhaust flow 019E div50",
-          "description": "Testing only. Exhaust-flow 019E raw/50 candidate. Alive and responsive during active regen/load capture, but may be low. Keep for comparison against div20."
+          "description": "Testing only. Sole retained engineering-scale candidate for 019E. Across 79 validation samples it correlated strongly with generic MAF (r=0.959); raw/20 was the closest tested scale, with a median value about 0.92 times MAF. Exact identity and unit remain unconfirmed."
         }
       ]
     },
@@ -1756,19 +1660,19 @@
             "unit": "scalar"
           },
           "name": "TEST TCC desired slip 1E35 raw AB",
-          "description": "Testing only. Raw companion for TCC desired slip. Compare against confirmed 1E14 actual slip."
+          "description": "Testing raw companion retained for the promoted TCC desired-slip signal. Raw 4092 corresponds to the observed 1023 rpm open/unlocked sentinel under the confirmed raw/4 decode."
         },
         {
-          "id": "EVEREST_TEST_TCC_DESIRED_SLIP_7E1_1E35_CANDIDATE",
-          "path": "TESTING.Transmission",
+          "id": "EVEREST_TCC_DESIRED_SLIP_1E35",
+          "path": "Transmission",
           "fmt": {
             "len": 16,
             "max": 5500,
             "div": 4,
             "unit": "rpm"
           },
-          "name": "TEST TCC desired slip 1E35",
-          "description": "Strong testing candidate. Formula raw/4 rpm. Latest drive showed 1023 rpm with commanded pressure at zero during an open/unlocked converter state, then about 4–5 rpm as pressure applied and slip approached zero. Treat 1023 rpm as a likely sentinel/open-converter value until repeated."
+          "name": "TCC desired slip",
+          "description": "Confirmed transmission torque-converter-clutch desired slip using raw/4 rpm. Captures showed 1023 rpm while the converter was open/unlocked, followed by low single-digit desired slip as TCC apply command increased; the validation drive showed 0-5 rpm during locked or near-locked highway operation. Treat 1023 rpm as an open/unlocked sentinel rather than literal controlled slip."
         }
       ]
     },
@@ -1797,10 +1701,10 @@
           "fmt": {
             "len": 16,
             "max": 3000,
-            "unit": "kilopascal"
+            "unit": "scalar"
           },
-          "name": "TEST TCC commanded pressure 1E3C",
-          "description": "Strong live TCC apply-command candidate. Latest drive showed zero while the converter appeared open, then rising values as desired slip fell from the 1023 rpm sentinel toward 4–5 rpm and zero. Current kilopascal unit is provisional and not yet proven."
+          "name": "TEST TCC apply command scalar 1E3C",
+          "description": "Testing only. Strong TCC apply-command quantity: 22/22 validation-drive responses were valid and it moved coherently with desired slip and converter engagement. Exact pressure scaling and engineering unit remain unproven, so this is intentionally exposed as a scalar rather than kilopascal."
         }
       ]
     },
@@ -1912,30 +1816,6 @@
           "description": "Testing only. Raw companion for SAE/Ranger boost-control packet 0170. Latest captures showed live but small movement around raw 1805-1821; keep as alive scout for load/WOT comparison. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
-          "id": "EVEREST_TEST_RANGER_PACKET_70_CD_RAW16",
-          "path": "TESTING.Boost_BIX",
-          "fmt": {
-            "bix": 16,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST boost pressure packet 0170 cd raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for boost pressure packet 0170. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_70_EF_RAW16",
-          "path": "TESTING.Boost_BIX",
-          "fmt": {
-            "bix": 32,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST boost pressure packet 0170 ef raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for boost pressure packet 0170. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
           "id": "EVEREST_TEST_RANGER_PACKET_70_SHIFTED_BC_RAW16",
           "path": "TESTING.Boost_BIX",
           "fmt": {
@@ -1945,7 +1825,7 @@
             "unit": "scalar"
           },
           "name": "TEST boost packet 0170 shifted BC raw",
-          "description": "Testing only. One-byte-shifted 16-bit field from Mode 01 PID 70 using bix 8. Latest drive showed the packet begins with a stable 0x07 prefix, making this BC field a stronger command/actual boost-control candidate than the original AB decode."
+          "description": "Testing only. Correctly aligned 0170 packet field after the constant leading 0x07 support byte. Live in all 20 validation responses. Compare with shifted DE and the retained final state word; engineering meaning remains unresolved."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_70_SHIFTED_DE_RAW16",
@@ -1957,19 +1837,7 @@
             "unit": "scalar"
           },
           "name": "TEST boost packet 0170 shifted DE raw",
-          "description": "Testing only. One-byte-shifted second 16-bit field from Mode 01 PID 70 using bix 24. Compare against shifted BC, F470 packet fields, MAP, BARO, load and accelerator position."
-        },
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_70_SHIFTED_FG_RAW16",
-          "path": "TESTING.Boost_BIX",
-          "fmt": {
-            "bix": 40,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST boost packet 0170 shifted FG raw",
-          "description": "Testing only. One-byte-shifted third 16-bit field from Mode 01 PID 70 using bix 40. Retained as a raw packet scout until its state relationship is understood."
+          "description": "Testing only. Correctly aligned second live 0170 packet field after the constant leading 0x07 support byte. The intervening shifted FG field was always zero and was removed."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_70_SHIFTED_IJ_RAW16",
@@ -2005,79 +1873,6 @@
           "description": "Testing only. Raw companion for VGT commanded. Possible VGT/turbo vane commanded position."
         },
         {
-          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_CANDIDATE",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "TEST VGT commanded F470",
-          "description": "Testing only. Possible VGT/turbo vane commanded position."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV100",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 655.35,
-            "div": 100,
-            "unit": "percent"
-          },
-          "name": "TEST VGT commanded F470 div100",
-          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 100 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV64",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 1023.984375,
-            "div": 64,
-            "unit": "percent"
-          },
-          "name": "TEST VGT commanded F470 div64",
-          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 64 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV32",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 2047.96875,
-            "div": 32,
-            "unit": "percent"
-          },
-          "name": "TEST VGT commanded F470 div32",
-          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 32 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV20",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "percent"
-          },
-          "name": "TEST VGT commanded F470 div20",
-          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 20 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_DIV10",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 6553.5,
-            "div": 10,
-            "unit": "scalar"
-          },
-          "name": "TEST VGT commanded F470 div10",
-          "description": "Testing only. Alternate 16-bit VGT commanded scaling using raw / 10 scalar candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_BC_RAW16",
           "path": "TESTING.VGT_BIX",
           "fmt": {
@@ -2087,7 +1882,7 @@
             "unit": "scalar"
           },
           "name": "TEST VGT commanded F470 shifted BC raw",
-          "description": "Testing only. One-byte-shifted BC packet field from F470 using bix 8. Added after the latest drive showed a leading support/status byte and multi-field packet behaviour. Compare command versus actual, 0170 shifted fields, load, RPM, MAP and accelerator position."
+          "description": "Testing only. Correctly aligned first live F470 field. Across 70 responses it ranged 3376-10067 and correlated strongly with shifted DE (r=0.983), consistent with a paired turbo/VGT control quantity. Exact identity and scale remain unresolved."
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_DE_RAW16",
@@ -2099,19 +1894,7 @@
             "unit": "scalar"
           },
           "name": "TEST VGT commanded F470 shifted DE raw",
-          "description": "Testing only. One-byte-shifted DE packet field from F470 using bix 24. Added after the latest drive showed a leading support/status byte and multi-field packet behaviour. Compare command versus actual, 0170 shifted fields, load, RPM, MAP and accelerator position."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_FG_RAW16",
-          "path": "TESTING.VGT_BIX",
-          "fmt": {
-            "bix": 40,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST VGT commanded F470 shifted FG raw",
-          "description": "Testing only. One-byte-shifted FG packet field from F470 using bix 40. Added after the latest drive showed a leading support/status byte and multi-field packet behaviour. Compare command versus actual, 0170 shifted fields, load, RPM, MAP and accelerator position."
+          "description": "Testing only. Correctly aligned second live F470 field. Across 70 responses it ranged 3715-10243 and tracked shifted BC closely. Misaligned percentage/divisor candidates and the all-zero shifted FG field were removed."
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_IJ_RAW16",
@@ -2122,8 +1905,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST VGT commanded F470 shifted IJ raw",
-          "description": "Testing only. One-byte-shifted IJ packet field from F470 using bix 64. Added after the latest drive showed a leading support/status byte and multi-field packet behaviour. Compare command versus actual, 0170 shifted fields, load, RPM, MAP and accelerator position."
+          "name": "TEST VGT commanded F470 final state raw",
+          "description": "Testing only. Final F470 packet state word; observed values were 5-10 during the validation drive. Retained as a state/reference companion to shifted BC and DE."
         }
       ]
     },
@@ -2147,125 +1930,40 @@
           "description": "Testing only. Raw companion for VGT actual. Possible VGT/turbo vane actual position."
         },
         {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_CANDIDATE",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "TEST VGT actual F471",
-          "description": "Testing only. Possible VGT/turbo vane actual position."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV100",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 655.35,
-            "div": 100,
-            "unit": "percent"
-          },
-          "name": "TEST VGT actual F471 div100",
-          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 100 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV64",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 1023.984375,
-            "div": 64,
-            "unit": "percent"
-          },
-          "name": "TEST VGT actual F471 div64",
-          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 64 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV32",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 2047.96875,
-            "div": 32,
-            "unit": "percent"
-          },
-          "name": "TEST VGT actual F471 div32",
-          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 32 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV20",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "percent"
-          },
-          "name": "TEST VGT actual F471 div20",
-          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 20 percent-style candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_DIV10",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 6553.5,
-            "div": 10,
-            "unit": "scalar"
-          },
-          "name": "TEST VGT actual F471 div10",
-          "description": "Testing only. Alternate 16-bit VGT actual scaling using raw / 10 scalar candidate. Added after raw AB moved while original A-byte percent display stayed around 3%."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_SHIFTED_BC_RAW16",
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_B_RAW8",
           "path": "TESTING.VGT_BIX",
           "fmt": {
             "bix": 8,
-            "len": 16,
-            "max": 65535,
+            "len": 8,
+            "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST VGT actual F471 shifted BC raw",
-          "description": "Testing only. One-byte-shifted BC packet field from F471 using bix 8. Added after the latest drive showed a leading support/status byte and multi-field packet behaviour. Compare command versus actual, 0170 shifted fields, load, RPM, MAP and accelerator position."
+          "name": "TEST VGT actual F471 byte B raw",
+          "description": "Testing only. Correctly aligned first individual F471 value byte after the constant 0x07 support byte. Across 70 responses it ranged 51-216 and correlated strongly with byte C (r=0.993)."
         },
         {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_SHIFTED_DE_RAW16",
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_C_RAW8",
           "path": "TESTING.VGT_BIX",
           "fmt": {
-            "bix": 24,
-            "len": 16,
-            "max": 65535,
+            "bix": 16,
+            "len": 8,
+            "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST VGT actual F471 shifted DE raw",
-          "description": "Testing only. One-byte-shifted DE packet field from F471 using bix 24. Added after the latest drive showed a leading support/status byte and multi-field packet behaviour. Compare command versus actual, 0170 shifted fields, load, RPM, MAP and accelerator position."
+          "name": "TEST VGT actual F471 byte C raw",
+          "description": "Testing only. Correctly aligned second individual F471 value byte. Across 70 responses it ranged 52-214 and stayed within a median 0.5 count of byte B, consistent with a paired command/actual quantity."
         },
         {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_SHIFTED_FG_RAW16",
+          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_F_RAW8",
           "path": "TESTING.VGT_BIX",
           "fmt": {
             "bix": 40,
-            "len": 16,
-            "max": 65535,
+            "len": 8,
+            "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST VGT actual F471 shifted FG raw",
-          "description": "Testing only. One-byte-shifted FG packet field from F471 using bix 40. Added after the latest drive showed a leading support/status byte and multi-field packet behaviour. Compare command versus actual, 0170 shifted fields, load, RPM, MAP and accelerator position."
-        },
-        {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_SHIFTED_IJ_RAW16",
-          "path": "TESTING.VGT_BIX",
-          "fmt": {
-            "bix": 64,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST VGT actual F471 shifted IJ raw",
-          "description": "Testing only. One-byte-shifted IJ packet field from F471 using bix 64. Added after the latest drive showed a leading support/status byte and multi-field packet behaviour. Compare command versus actual, 0170 shifted fields, load, RPM, MAP and accelerator position."
+          "name": "TEST VGT actual F471 final state raw",
+          "description": "Testing only. Final F471 packet state byte; observed values were 1-2 during the validation drive. Retained as a state/reference companion to individual bytes B and C."
         }
       ]
     },
@@ -2289,42 +1987,6 @@
           "description": "Testing only. Raw first-word companion for F47A. The previous rpm candidate stayed fixed and has been removed; keep raw AB only as a low-confidence scout because later packet bytes may still contain useful data if byte offsets become available. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
-          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_CD_RAW16",
-          "path": "TESTING.Turbo_BIX",
-          "fmt": {
-            "bix": 16,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST F47A turbo packet cd raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for F47A turbo packet. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
-          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_EF_RAW16",
-          "path": "TESTING.Turbo_BIX",
-          "fmt": {
-            "bix": 32,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST F47A turbo packet ef raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for F47A turbo packet. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
-          "id": "EVEREST_TEST_TURBO_PACKET_F47A_SHIFTED_BC_RAW16",
-          "path": "TESTING.Turbo_BIX",
-          "fmt": {
-            "bix": 8,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST turbo packet F47A shifted BC raw",
-          "description": "Testing only. Shifted BC field after the leading packet byte. Latest drive usually showed zero; retained as packet structure evidence."
-        },
-        {
           "id": "EVEREST_TEST_TURBO_PACKET_F47A_SHIFTED_DE_RAW16",
           "path": "TESTING.Turbo_BIX",
           "fmt": {
@@ -2334,7 +1996,7 @@
             "unit": "scalar"
           },
           "name": "TEST turbo packet F47A shifted DE raw",
-          "description": "Testing only. Shifted DE field after the leading packet byte. Latest drive showed live values such as about 100, 200 and 860. Treat as turbo-control data, not turbo RPM."
+          "description": "Testing only. First retained live F47A shifted field. Across 71 responses it ranged 0-3340 and correlated strongly with shifted FG (r=0.976). Avoid turbo-speed or RPM wording until identified."
         },
         {
           "id": "EVEREST_TEST_TURBO_PACKET_F47A_SHIFTED_FG_RAW16",
@@ -2346,7 +2008,7 @@
             "unit": "scalar"
           },
           "name": "TEST turbo packet F47A shifted FG raw",
-          "description": "Testing only. Shifted FG field after the leading packet byte. Moved with the DE field during the latest drive; possible command/feedback or duty/status companion. Do not label as turbo speed."
+          "description": "Testing only. Second retained live F47A shifted field. Across 71 responses it ranged 0-1560 and tracked shifted DE strongly. Misaligned overlapping fields and the all-zero shifted BC scout were removed."
         }
       ]
     },
@@ -2359,16 +2021,16 @@
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_TEST_FUEL_RATE_015E_LPH_CANDIDATE",
-          "path": "TESTING.Fuel",
+          "id": "GENERIC_FUEL_RATE_015E",
+          "path": "Fuel.Generic",
           "fmt": {
             "len": 16,
             "max": 3276.75,
             "div": 20,
             "unit": "scalar"
           },
-          "name": "TEST fuel rate 015E",
-          "description": "Testing only. Strong direct fuel-rate candidate. Latest screenshots showed plausible live values around 0.3, 1.4, 5.4 and 13.5, likely L/h style behaviour; compare against load/throttle/019D."
+          "name": "Generic fuel rate",
+          "description": "Confirmed SAE Mode 01 fuel-rate signal. Raw/20 produced plausible L/h-style values across idle, cruise and load, returned valid data on every request in the validation drive, and correlated almost perfectly with the independent 019D fuel-rate packet (r=0.99999). Pelican has no volume-flow unit, so the decoded litres-per-hour value is intentionally exposed as scalar."
         }
       ]
     },
@@ -2389,55 +2051,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rate alt 019D raw AB",
-          "description": "Testing only. Raw companion for 019D fuel-rate alternate. Latest screenshots show raw values 3, 29, 62, 155 tracking fuel demand/load."
-        },
-        {
-          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_DIV50_CANDIDATE",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 1310.7,
-            "div": 50,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel rate alt 019D div50",
-          "description": "Testing only. Current 019D fuel-rate alternate scaling. Latest screenshots show raw/50 tracks load but reads lower than 015E; keep alongside div10/div20/div100."
-        },
-        {
-          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_DIV10_CANDIDATE",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 6553.5,
-            "div": 10,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel rate alt 019D div10",
-          "description": "Testing only. Alternate fuel-rate scaling for 019D; latest screenshots show raw values tracking fuel rate/load strongly."
-        },
-        {
-          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_DIV20_CANDIDATE",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel rate alt 019D div20",
-          "description": "Testing only. Alternate fuel-rate scaling for 019D; compare against 015E fuel-rate candidate."
-        },
-        {
-          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_DIV100_CANDIDATE",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 655.35,
-            "div": 100,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel rate alt 019D div100",
-          "description": "Testing only. Alternate fuel-rate scaling for 019D; compare against 015E and vehicle load."
+          "description": "Testing only. Sole retained 019D raw companion. It correlated almost perfectly with confirmed generic fuel rate 015E (r=0.99999), but none of the tested divisors produced a sufficiently exact engineering-value match; decoded scale variants were removed."
         }
       ]
     },
@@ -2461,30 +2075,6 @@
           "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
         },
         {
-          "id": "EVEREST_TEST_RANGER_PACKET_6D_CD_RAW16",
-          "path": "TESTING.Fuel_BIX",
-          "fmt": {
-            "bix": 16,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel rail packet 016D cd raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for fuel rail packet 016D. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_6D_EF_RAW16",
-          "path": "TESTING.Fuel_BIX",
-          "fmt": {
-            "bix": 32,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel rail packet 016D ef raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for fuel rail packet 016D. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_SHIFTED_BC_RAW16",
           "path": "TESTING.Fuel_BIX",
           "fmt": {
@@ -2494,7 +2084,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D shifted BC raw",
-          "description": "Testing only. First useful shifted 16-bit field after the stable 0x07 prefix. Latest drive showed this field rising strongly with load and closely tracking the shifted DE field, consistent with a requested/actual fuel-pressure pair."
+          "description": "Testing only. Strong first shifted 016D fuel-rail packet field. Five validation samples ranged 12666-14574 and correlated at r=0.9991 with shifted DE, consistent with a requested/actual pair. Scaling and units remain unresolved."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_SHIFTED_DE_RAW16",
@@ -2506,7 +2096,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D shifted DE raw",
-          "description": "Testing only. Second useful shifted 16-bit field after the packet prefix. Strong candidate for the companion requested/actual fuel-pressure value; engineering scale remains unresolved."
+          "description": "Testing only. Strong second shifted 016D fuel-rail packet field. Five validation samples ranged 12633-14577 and stayed within a median 10 counts of shifted BC. Scaling and units remain unresolved."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_BYTE_F_RAW8",
@@ -2754,19 +2344,7 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte C raw",
-          "description": "Testing only. Pelican bix-based byte C raw scout for F48B. Earlier active-regen DB evidence showed later bytes in the F48B packet changed while first A/AB decodes appeared fixed. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_F48B_CD_RAW16",
-          "path": "TESTING.Regen_BIX",
-          "fmt": {
-            "bix": 16,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status F48B byte CD raw",
-          "description": "Testing only. Pelican bix-based second-word raw scout for F48B. Use for regen-state packet investigation only. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+          "description": "Testing only. Individual F48B byte C retained for active-regen comparison. It moved only from 243 to 244 in this non-regen drive; the redundant CD word was removed because byte D remained zero."
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_E_RAW8",
@@ -2778,19 +2356,7 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte E raw",
-          "description": "Testing only. Pelican bix-based byte E raw scout for F48B. Added because later bytes changed during captured regen. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_F48B_EF_RAW16",
-          "path": "TESTING.Regen_BIX",
-          "fmt": {
-            "bix": 32,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status F48B byte EF raw",
-          "description": "Testing only. Pelican bix-based third-word raw scout for F48B. Use for regen-state packet investigation only. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+          "description": "Testing only. Individual F48B byte E retained for active-regen comparison. It moved only from 232 to 233 in this non-regen drive; the redundant EF word was removed because byte F remained zero."
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_G_RAW8",
@@ -2802,29 +2368,7 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte G raw",
-          "description": "Testing only. Pelican bix-based byte G raw scout for F48B where response length allows. Added for packet analysis; not a production signal. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
-        "22": "1E1C"
-      },
-      "freq": 2,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_TRANS_TEMP_7E0_1E1C_DIV16",
-          "path": "TESTING.Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 4095.9375,
-            "div": 16,
-            "unit": "celsius"
-          },
-          "name": "TEST transmission temperature 7E0 mirror",
-          "description": "Testing only. Ranger-derived 7E0 7E8 mirror of PID 221E1C using raw/16 °C. Latest session produced valid responses for approximately 99.6% of requests, with only 4 transient NRC 0x31 responses from 1045 requests. Keep for comparison against the working Everest 7E1 7E9 production transmission-fluid-temperature signal; compare value, update rate and availability."
+          "description": "Testing only. Individual F48B byte G retained as a possible status reference. It remained 131 throughout this non-regen drive and still needs comparison with a confirmed active regeneration."
         }
       ]
     }
