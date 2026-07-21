@@ -401,7 +401,7 @@
             "unit": "percent"
           },
           "name": "DPF / exhaust filter fullness",
-          "description": "Everest-confirmed DPF fullness / soot-load signal. Formula raw / 100. Validated during captured active DPF regen by a strong drop from high soot load to post-regen values, alongside the distance-since-regen reset. Dash display correlation is still being monitored because the vehicle display may be rounded, smoothed or modelled differently."
+          "description": "Everest-confirmed DPF fullness / soot-load estimate using raw/100 percent. It fell from 73.53% to 25.90% during a captured automatic regeneration and was independently validated by dashboard decline, F48B state changes, EGR reopening and the distance-since-regen reset. It tracked the dash closely early in the burn but diverged during the final stage, so it should not be described as the dashboard's exact internal percentage."
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_RAW16_AB",
@@ -412,7 +412,7 @@
             "unit": "scalar"
           },
           "name": "TEST DPF fullness 0610 raw AB",
-          "description": "Testing companion for the confirmed DPF fullness packet. Shows the raw first 16-bit word used by EVEREST_DPF_FULLNESS_0610 before /100 scaling. Keep while monitoring dash correlation. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+          "description": "Testing raw companion for the confirmed production DPF fullness / soot-load estimate. The first word remained live throughout the captured regeneration and its third packet word was an exact duplicate in all 187 samples."
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_CD_RAW16",
@@ -423,8 +423,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST DPF 0610 byte CD raw",
-          "description": "Testing only. Pelican bix-based byte-offset decode for the second 16-bit word of PID 220610. Added after DB logs showed later bytes in the 0610 packet moving independently of the promoted first-word DPF fullness value. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+          "name": "TEST DPF secondary soot model 0610 raw",
+          "description": "Testing only. Raw second 16-bit word from 220610. It fell from roughly 1000-1100 before regeneration to 11 immediately before completion, then began rising slightly after completion. Behaviour is consistent with a secondary soot-mass or remaining-burnable-soot model, but identity and units are not confirmed."
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100",
@@ -434,10 +434,10 @@
             "len": 16,
             "max": 655.35,
             "div": 100,
-            "unit": "percent"
+            "unit": "scalar"
           },
-          "name": "TEST DPF 0610 byte CD div100",
-          "description": "Testing only. Pelican bix-based byte-offset decode for the second 16-bit word of PID 220610 using raw/100. Compare against dash DPF display, DPF fullness, exhaust flow, and regen events. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+          "name": "TEST DPF secondary soot model 0610 div100",
+          "description": "Testing only. Second 220610 word decoded raw/100 as an unknown scalar, not percent. It fell from approximately 10-11 before the captured regeneration to 0.11 immediately before completion and was the closest observed packet quantity to a near-zero completed-burn state."
         }
       ]
     },
@@ -504,7 +504,7 @@
             "unit": "celsius"
           },
           "name": "Exhaust manifold EGT pre-turbo",
-          "description": "Working/plausible."
+          "description": "Working/plausible pre-turbo exhaust-temperature reference using raw/32 °C. During the captured active regeneration every sampled response decoded to exactly 200 °C, so the signal is retained in production but should not yet be treated as a sensitive regeneration-state indicator."
         }
       ]
     },
@@ -1555,21 +1555,7 @@
             "unit": "scalar"
           },
           "name": "TEST EGT11 F46A raw AB",
-          "description": "Testing only. Raw companion for EGT11. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
-        },
-        {
-          "id": "EVEREST_TEST_EGT11_7E0_F46A_CANDIDATE",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "len": 16,
-            "min": -40,
-            "max": 1000,
-            "mul": 0.1,
-            "add": -40,
-            "unit": "celsius"
-          },
-          "name": "TEST EGT11 F46A",
-          "description": "Testing only. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+          "description": "Testing raw companion retained after active-regeneration packet analysis proved the previous raw*0.1-40 °C decode was misaligned by a leading 0x03 support byte. Packet bytes B/C moved from 44 to 50 while byte D remained 40; engineering meaning remains unresolved."
         }
       ]
     },
@@ -1589,22 +1575,70 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST EGT14 DPF outlet F46D raw AB",
-          "description": "Testing only. Raw companion for EGT14 DPF outlet. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+          "name": "TEST exhaust packet F46D raw AB",
+          "description": "Testing raw companion retained for F46D. Active-regeneration analysis proved the previous first-word raw*0.1-40 °C decode included a leading 0x07 support byte and was invalid. Correctly aligned shifted BC/DE scouts are provided separately."
         },
         {
-          "id": "EVEREST_TEST_EGT14_DPF_OUTLET_7E0_F46D_CANDIDATE",
+          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_SHIFTED_BC_RAW16",
           "path": "TESTING.EGT",
           "fmt": {
+            "bix": 8,
             "len": 16,
-            "min": -40,
-            "max": 1000,
-            "mul": 0.1,
-            "add": -40,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust packet F46D shifted BC raw",
+          "description": "Testing only. Correctly aligned first live F46D word after the leading 0x07 support byte. It ranged 6422-7246 during active regeneration and correlated at r=0.9995 with shifted DE."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_SHIFTED_DE_RAW16",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust packet F46D shifted DE raw",
+          "description": "Testing only. Correctly aligned second live F46D word. It ranged 6425-7243 and stayed within a median 4.5 counts of shifted BC during active regeneration."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_SHIFTED_BC_DIV32",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "bix": 8,
+            "len": 16,
+            "max": 2047.96875,
+            "div": 32,
             "unit": "celsius"
           },
-          "name": "TEST EGT14 DPF outlet F46D",
-          "description": "Testing only. Candidate EGT formula raw*0.1-40 C. Compare with known 220569 and regen heat rise."
+          "name": "TEST exhaust packet F46D shifted BC div32",
+          "description": "Testing only. Shifted F46D BC raw/32 temperature candidate. It produced approximately 200.7-226.4 °C during the captured regeneration and needs comparison against confirmed exhaust temperatures before promotion."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_SHIFTED_DE_DIV32",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 2047.96875,
+            "div": 32,
+            "unit": "celsius"
+          },
+          "name": "TEST exhaust packet F46D shifted DE div32",
+          "description": "Testing only. Shifted F46D DE raw/32 temperature candidate. It produced approximately 200.8-226.3 °C and tracked shifted BC almost exactly during the captured regeneration."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_BYTE_F_RAW8",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "bix": 40,
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust packet F46D byte F raw",
+          "description": "Testing only. F46D state/reference byte following the paired shifted words. It moved from 65 to 70 during the captured active regeneration; exact meaning is unresolved."
         }
       ]
     },
@@ -1625,21 +1659,57 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust multi-EGT F478 raw AB",
-          "description": "Testing only. PID is alive and appears packet-like, but decode is not confirmed. Keep raw first word for future EGT/regen analysis."
+          "description": "Testing raw companion retained for F478. Active-regeneration analysis proved the previous first-word raw*0.1-40 °C decode included a leading 0x07 support byte and was invalid. Correctly aligned shifted BC/DE scouts are provided separately; shifted FG duplicated DE exactly."
         },
         {
-          "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_CANDIDATE_C",
+          "id": "EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_BC_RAW16",
           "path": "TESTING.EGT",
           "fmt": {
+            "bix": 8,
             "len": 16,
-            "min": -40,
-            "max": 1000,
-            "mul": 0.1,
-            "add": -40,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust multi F478 shifted BC raw",
+          "description": "Testing only. Correctly aligned first F478 word after the leading 0x07 support byte. It ranged 3899-4085 during active regeneration."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_DE_RAW16",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST exhaust multi F478 shifted DE raw",
+          "description": "Testing only. Correctly aligned second F478 word. It ranged 6462-6629; the following shifted FG word duplicated it exactly in all 11 samples and is intentionally not exposed."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_BC_DIV32",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "bix": 8,
+            "len": 16,
+            "max": 2047.96875,
+            "div": 32,
             "unit": "celsius"
           },
-          "name": "TEST exhaust multi-EGT F478 candidate",
-          "description": "Testing only. Candidate formula raw*0.1 - 40 C for first word. Needs comparison against existing EGT 220569 and active regen behaviour before promotion."
+          "name": "TEST exhaust multi F478 shifted BC div32",
+          "description": "Testing only. Shifted F478 BC raw/32 temperature candidate. It produced approximately 121.8-127.7 °C during active regeneration; sensor identity is unresolved."
+        },
+        {
+          "id": "EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_DE_DIV32",
+          "path": "TESTING.EGT",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 2047.96875,
+            "div": 32,
+            "unit": "celsius"
+          },
+          "name": "TEST exhaust multi F478 shifted DE div32",
+          "description": "Testing only. Shifted F478 DE raw/32 temperature candidate. It produced approximately 201.9-207.2 °C during active regeneration; sensor identity is unresolved."
         }
       ]
     },
@@ -1906,7 +1976,7 @@
             "unit": "scalar"
           },
           "name": "TEST VGT commanded F470 final state raw",
-          "description": "Testing only. Final F470 packet state word; observed values were 5-10 during the validation drive. Retained as a state/reference companion to shifted BC and DE."
+          "description": "Testing only. Final F470 packet state word. It changed from 6 to 5 approximately 13 seconds before F48B left its active-regeneration state, while the paired F471 final state changed from 2 to 1. This may mark a turbo/load-control transition near regen completion, but it is not yet a confirmed regen indicator."
         }
       ]
     },
@@ -1963,7 +2033,7 @@
             "unit": "scalar"
           },
           "name": "TEST VGT actual F471 final state raw",
-          "description": "Testing only. Final F471 packet state byte; observed values were 1-2 during the validation drive. Retained as a state/reference companion to individual bytes B and C."
+          "description": "Testing only. Final F471 packet state byte. It changed from 2 to 1 approximately 13 seconds before F48B left its active-regeneration state, paired with the F470 final-state change from 6 to 5. Retain for another regen comparison; exact meaning remains unresolved."
         }
       ]
     },
@@ -2051,7 +2121,19 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rate alt 019D raw AB",
-          "description": "Testing only. Sole retained 019D raw companion. It correlated almost perfectly with confirmed generic fuel rate 015E (r=0.99999), but none of the tested divisors produced a sufficiently exact engineering-value match; decoded scale variants were removed."
+          "description": "Testing only. First 019D raw word. It normally matched the second word, but during the captured active regeneration one response diverged to AB=44 and CD=69. Keep both words to investigate base versus total fuel rate, requested versus actual rate, or regeneration-related additional fuelling."
+        },
+        {
+          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_RAW16_CD",
+          "path": "TESTING.Fuel",
+          "fmt": {
+            "bix": 16,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
+          },
+          "name": "TEST fuel rate alt 019D raw CD",
+          "description": "Testing only. Second 019D raw word restored after the active-regeneration capture proved it is not always a duplicate. It normally matched AB but diverged to AB=44 and CD=69 during the burn, potentially exposing additional regeneration fuelling or a requested/actual pair."
         }
       ]
     },
@@ -2344,7 +2426,7 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte C raw",
-          "description": "Testing only. Individual F48B byte C retained for active-regen comparison. It moved only from 243 to 244 in this non-regen drive; the redundant CD word was removed because byte D remained zero."
+          "description": "Testing only. F48B byte C tracked the production 220610 soot/fullness estimate extremely closely during active regeneration (r=0.994), declining from 218 to 166 before the completion transition and then to 112. It appears to be another scaled soot/load quantity rather than a simple state flag."
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_E_RAW8",
@@ -2356,7 +2438,7 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte E raw",
-          "description": "Testing only. Individual F48B byte E retained for active-regen comparison. It moved only from 232 to 233 in this non-regen drive; the redundant EF word was removed because byte F remained zero."
+          "description": "Testing only. F48B byte E formed a strong phase signature: 232-233 during earlier normal driving, 1 throughout the captured active regeneration, and 180 immediately after completion. Keep for a second regen comparison."
         },
         {
           "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_G_RAW8",
@@ -2368,7 +2450,31 @@
             "unit": "scalar"
           },
           "name": "TEST DPF status F48B byte G raw",
-          "description": "Testing only. Individual F48B byte G retained as a possible status reference. It remained 131 throughout this non-regen drive and still needs comparison with a confirmed active regeneration."
+          "description": "Testing only. F48B byte G formed a distinct phase signature: 131 during earlier normal driving, 139 throughout the captured active regeneration, and 107 immediately after completion. It is not yet decoded as an individual bitfield."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_D_RAW8",
+          "path": "TESTING.Regen_BIX",
+          "fmt": {
+            "bix": 24,
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST DPF status F48B byte D raw",
+          "description": "Testing only. Best active-regeneration state candidate so far. Byte D was 0 during previous normal driving, 1 throughout the captured active burn, and returned to 0 approximately 41 seconds before distance-since-regen reset to zero. Requires one more confirmed regeneration before promotion."
+        },
+        {
+          "id": "EVEREST_TEST_DPF_ACTIVE_F48B_BYTE_D_CANDIDATE",
+          "path": "TESTING.Regen_BIX",
+          "fmt": {
+            "bix": 24,
+            "len": 8,
+            "max": 1,
+            "unit": "offon"
+          },
+          "name": "TEST DPF active regen F48B byte D",
+          "description": "Testing-only on/off interpretation of F48B byte D. Current evidence supports 0=not active and 1=active: the value changed back to 0 before EGR reopened and distance-since-regen reset. Do not promote until repeated in another confirmed burn."
         }
       ]
     }
