@@ -10,89 +10,66 @@ signalsets/v3/default.json
 
 ## Current release
 
-Current validated build: **v0.7.22 — confirmed regeneration and packet-state breakthrough**.
+Current validated build: **v0.7.24 — standard packet mirrors, DPF pressure and testing cleanup**.
 
-The pack currently contains 82 commands and 132 signals. Experimental work remains isolated under `TESTING.*`; production sections contain signals supported by repeated vehicle evidence.
+The pack contains 82 commands and 142 signals. Of these, 98 are production signals and 44 remain isolated under `TESTING.*`.
+
+## Latest release highlights
+
+- Promoted generic EGR A commanded, actual and error values from SAE PID 0169.
+- Decoded Ford F46A as diesel intake-airflow command and relative position.
+- Confirmed Ford F46D as a mirror of standardized 016D fuel-pressure command, actual and temperature; retained it only as raw testing companions to avoid duplicate production widgets.
+- Promoted Ford F478 exhaust-gas temperatures for bank 1 sensors 1 and 2 using raw/10-40 °C.
+- Decoded Ford F47A as DPF inlet and outlet pressure using raw/100 kPa.
+- Decoded Ford F48B normalized regeneration trigger, average regeneration interval and average regeneration distance.
+- Removed the disproved F48B byte-D active-regeneration widget, invalid /32 temperature candidates and redundant overlapping packet scouts.
+- Preserved useful raw companions with accurate names and TESTING paths.
 
 ## Confirmed production highlights
 
-- DPF fullness / soot-load estimate and distance since completed regeneration.
-- Transmission temperature, current gear, shaft speeds, TCC actual slip and desired slip.
-- Engine speed, load, coolant temperature, oil temperature, manifold pressure and torque signals.
-- Generic MAF, MAP and fuel rate.
+- DPF fullness / soot-load estimate, normalized regeneration trigger, average regeneration interval and distance, DPF inlet/outlet pressure, and distance since completed regeneration.
+- Exhaust-gas temperatures, EGR command/actual/error and intake-airflow control command/position.
+- Transmission temperature, current gear, shaft speeds, TCC actual slip, desired slip and apply command.
+- Engine speed, load, coolant temperature, oil temperature, manifold pressure, boost command/actual, VGT command/actual and torque signals.
+- Generic MAF, MAP, barometric pressure, fuel rates, exhaust flow and fuel-rail pressure/temperature.
 - Fuel level, range, odometer and vehicle speed.
 - Battery voltage, charge, current, age and alternator current.
-- EGR opening and established exhaust-temperature reference.
 
-## Latest regeneration result
+## Important DPF interpretation
 
-The v0.7.22 evidence captured a complete automatic DPF regeneration:
+`EVEREST_DPF_FULLNESS_0610` is a validated internal fullness/soot-load measure, but it is not the dashboard's exact modelled percentage. It fell through the retained automatic regeneration and agrees directionally with the display; normal-drive anchors also showed modest divergence.
 
-- Production DPF soot/fullness fell from 73.53% to 25.90%.
-- Dashboard fullness independently declined to 15% late in the burn.
-- Distance since regeneration reset from 213.3 km to 0 km.
-- EGR remained closed during the burn and reopened afterward.
-- F48B byte D was 1 during active regeneration and 0 during normal and completed states.
+F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E are one 16-bit average-time-between-regenerations value. No reliable active-regeneration status flag has yet been identified, so active state remains an open testing question.
 
-F48B byte D is the strongest active-regeneration candidate discovered so far, but remains in TESTING until repeated in another confirmed burn.
+## High-value remaining testing work
 
-## High-value testing work
-
-- F48B active/status bytes and phase signatures.
 - Secondary 220610 soot-model word.
-- 019D paired fuel-rate words and possible regeneration fuelling divergence.
-- 019E exhaust-flow scaling.
-- Shifted F46D and F478 exhaust-temperature packet fields.
-- Shifted 0169 EGR, 016D fuel-rail and 0170 boost/turbo packet pairs.
-- F470/F471/F47A turbo and VGT packet decoding.
-- TCC apply-command scaling.
+- F48B regeneration-status bits during another confirmed burn.
+- Raw Ford mirrors retained for cross-checking standardized 016D/0170 behaviour.
+- Any remaining responsive packet fields whose identities are not yet strong enough for production.
 
 ## Validation rules
 
 1. Production and TESTING remain clearly separated.
 2. New candidates are promoted only after plausible behaviour and repeatable vehicle-state correlation.
-3. Raw companions are retained for unresolved but responsive packets.
-4. Persistent negative-response, frozen, redundant or demonstrably misaligned widgets are removed.
+3. Useful raw companions are retained for unresolved or mirrored packets.
+4. Persistent negative-response, frozen, redundant, demonstrably misaligned or disproved widgets are removed.
 5. Generic SAE Mode 01 signals use `GENERIC_*` IDs and live under the relevant `*.Generic` path.
-6. Ranger definitions are reference candidates only; actual Everest responses take precedence.
-7. Every release is checked for JSON validity, duplicate IDs, malformed commands and TESTING path containment.
+6. Ford-specific confirmed signals use established `EVEREST_*` or `FORD_*` IDs.
+7. Ranger definitions are reference candidates only; actual Everest responses take precedence.
+8. Every release is checked for JSON validity, duplicate IDs, malformed commands, accidental production changes and TESTING path containment.
 
 ## References
 
 - Primary upstream target: `OBDb/Ford-Everest`
 - Shared-platform reference only: `OBDb/Ford-Ranger`
+- SAE J1979 signal reference project: <https://github.com/OBDb/SAEJ1979>
 - Pelican extended PID documentation: <https://pelican.clutch.engineering/scanning/extended-pids/>
 
 ## Privacy
 
-Pelican database exports may contain the full VIN. Do not publish raw databases without sanitising vehicle identifiers.
+Pelican database exports may contain the full VIN, and screenshots may reveal identifiable routes. Do not publish raw archives without sanitising vehicle and location identifiers.
 
-### Testing approach
+## Contribution intent
 
-Current working rules:
-
-1. Keep confirmed and experimental signals clearly separated.
-2. Put uncertain, speculative, or formula-testing signals under `TESTING.*`.
-3. Add or edit PIDs in small batches where possible.
-4. Preserve raw companion signals for formula investigation.
-5. Validate values against real vehicle behaviour, dashboard values, or repeated drive captures.
-6. Remove obvious repeated negative-response items from active testing to reduce screen clutter.
-7. Only contribute verified or well-evidenced signals upstream.
-
-### Current validation focus
-
-Current testing focus includes:
-
-- DPF / exhaust-filter fullness and regeneration behaviour
-- Exhaust gas temperature sensors
-- Transmission temperature, gear and torque converter behaviour
-- Battery, BMS and smart alternator telemetry
-- Boost, VGT and turbo-related signals
-- 4WD / transfer case telemetry
-- TPMS and Ranger-derived comparison candidates
-
-### Contribution intent
-
-Contributions are welcome in the upstream OBDb repositories.
-
-The intent is to contribute useful Everest-verified signals back upstream once enough evidence has been collected and the signal definitions are clean enough to be helpful to others.
+The intent is to contribute Everest-verified signals upstream once the definitions are clean, repeatable and useful to other owners.
