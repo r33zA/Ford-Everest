@@ -1355,7 +1355,7 @@
             "unit": "kilometers"
           },
           "name": "Odometer",
-          "description": "Working candidate; confirm exact dash odometer.",
+          "description": "Confirmed SAE Mode 01 odometer using raw/10 km. The latest complete drive increased from 28,807.0 km to 28,826.4 km across a measured 19.4 km session, confirming correct incremental behaviour.",
           "suggestedMetric": "odometer"
         }
       ]
@@ -1522,19 +1522,19 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust flow 019E raw AB",
-          "description": "Testing only. Raw companion for 019E exhaust-flow candidate. Captured active regen/load testing showed strong movement from about 185 to 3583 raw, closely tracking exhaust/load changes. Keep for scaling comparison."
+          "description": "Testing raw companion retained for the confirmed generic engine exhaust-flow signal. SAE Mode 01 PID 9E decodes as raw/5 kilograms per hour; earlier raw/20 testing looked numerically similar to MAF because it approximated a mass-flow unit conversion rather than the defined engineering scale."
         },
         {
-          "id": "EVEREST_TEST_EXHAUST_FLOW_019E_DIV20_CANDIDATE",
-          "path": "TESTING.Regen",
+          "id": "GENERIC_EXHAUST_FLOW_RATE_019E",
+          "path": "Fuel.Generic",
           "fmt": {
             "len": 16,
-            "max": 3276.75,
-            "div": 20,
-            "unit": "scalar"
+            "max": 13107,
+            "div": 5,
+            "unit": "kilogramsPerHour"
           },
-          "name": "TEST exhaust flow 019E div20 likely",
-          "description": "Testing only. Sole retained engineering-scale candidate for 019E. Across 79 validation samples it correlated strongly with generic MAF (r=0.959); raw/20 was the closest tested scale, with a median value about 0.92 times MAF. Exact identity and unit remain unconfirmed."
+          "name": "Generic engine exhaust flow rate",
+          "description": "Confirmed SAE Mode 01 engine exhaust-flow rate using raw/5 kilograms per hour. Earlier validation produced 79 samples with strong correlation to generic MAF (r=0.959); the defined kg/h scaling explains why the former raw/20 scalar appeared close to a grams-per-second airflow value."
         }
       ]
     },
@@ -1762,19 +1762,19 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST TCC commanded pressure 1E3C raw AB",
-          "description": "Testing only. Raw companion for TCC commanded pressure. Possible TCC commanded pressure."
+          "name": "TEST TCC apply command 1E3C raw AB",
+          "description": "Testing raw companion retained for the promoted TCC apply-command scalar. The engineering pressure scale remains unknown, so the production signal deliberately avoids pressure units."
         },
         {
-          "id": "EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_CANDIDATE",
-          "path": "TESTING.Transmission",
+          "id": "EVEREST_TCC_APPLY_COMMAND_1E3C",
+          "path": "Transmission",
           "fmt": {
             "len": 16,
             "max": 3000,
             "unit": "scalar"
           },
-          "name": "TEST TCC apply command scalar 1E3C",
-          "description": "Testing only. Strong TCC apply-command quantity: 22/22 validation-drive responses were valid and it moved coherently with desired slip and converter engagement. Exact pressure scaling and engineering unit remain unproven, so this is intentionally exposed as a scalar rather than kilopascal."
+          "name": "TCC apply command",
+          "description": "Confirmed torque-converter-clutch apply-command quantity. Multiple captures showed 0 with the 1023 rpm open-converter desired-slip sentinel, a strong rise during clutch application, and sustained non-zero values with 0-5 rpm desired slip during locked or near-locked driving. Exact hydraulic pressure scaling remains unknown, so the value is intentionally exposed as a scalar."
         }
       ]
     },
@@ -1851,18 +1851,18 @@
       "cmd": {
         "01": "33"
       },
-      "freq": 10,
+      "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_TEST_BARO_0133_KPA",
-          "path": "TESTING.Boost1",
+          "id": "GENERIC_BAROMETRIC_PRESSURE_0133",
+          "path": "Engine.Generic",
           "fmt": {
             "len": 8,
             "max": 255,
             "unit": "kilopascal"
           },
-          "name": "TEST BARO reference 0133",
-          "description": "Testing only. SAE barometric pressure reference. Recent drive log showed a stable 100-101 kPa, which is expected for BARO. Keep as boost-reference data rather than treating it as dead because it changes slowly."
+          "name": "Generic barometric pressure",
+          "description": "Confirmed SAE Mode 01 barometric pressure. The latest database contained 16/16 valid responses at 100 kPa despite the old TESTING widget displaying blank, proving the ECU command and decode are valid. The fresh production ID also avoids retaining the stale testing widget association."
         }
       ]
     },
@@ -1882,8 +1882,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST boost pressure packet 0170 raw AB",
-          "description": "Testing only. Raw companion for SAE/Ranger boost-control packet 0170. Latest captures showed live but small movement around raw 1805-1821; keep as alive scout for load/WOT comparison. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+          "name": "TEST boost-control packet 0170 raw AB",
+          "description": "Testing raw companion for the confirmed SAE boost-control packet. The apparent first word includes the 0x07 support mask and is not itself a pressure value; correctly aligned production command/actual signals begin at byte B."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_70_SHIFTED_BC_RAW16",
@@ -1895,7 +1895,7 @@
             "unit": "scalar"
           },
           "name": "TEST boost packet 0170 shifted BC raw",
-          "description": "Testing only. Correctly aligned 0170 packet field after the constant leading 0x07 support byte. Live in all 20 validation responses. Compare with shifted DE and the retained final state word; engineering meaning remains unresolved."
+          "description": "Testing raw companion for commanded boost pressure A. SAE Mode 01 PID 70 defines this shifted BC field as raw/32 kPa; the decoded production signal is provided alongside it."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_70_SHIFTED_DE_RAW16",
@@ -1907,7 +1907,7 @@
             "unit": "scalar"
           },
           "name": "TEST boost packet 0170 shifted DE raw",
-          "description": "Testing only. Correctly aligned second live 0170 packet field after the constant leading 0x07 support byte. The intervening shifted FG field was always zero and was removed."
+          "description": "Testing raw companion for actual boost pressure A. SAE Mode 01 PID 70 defines this shifted DE field as raw/32 kPa; synchronized comparisons tracked generic MAP closely while providing 16-bit range."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_70_SHIFTED_IJ_RAW16",
@@ -1918,8 +1918,58 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST boost packet 0170 shifted IJ raw",
-          "description": "Testing only. Later shifted 16-bit field from Mode 01 PID 70 using bix 64. Added because latest packets ended with a small live/status-style value after several zero bytes."
+          "name": "TEST boost-control packet 0170 final raw word",
+          "description": "Testing raw companion spanning the final I/J bytes. Observed whole-word values 5, 6 and 10 are normal combinations of boost-control status bits, not regeneration states. Production boost-control status A is decoded separately from the low two bits of byte J."
+        },
+        {
+          "id": "GENERIC_BOOST_PRESSURE_A_COMMANDED_0170",
+          "path": "Engine.Generic",
+          "fmt": {
+            "bix": 8,
+            "len": 16,
+            "max": 2047.96875,
+            "div": 32,
+            "unit": "kilopascal"
+          },
+          "name": "Generic commanded boost pressure A",
+          "description": "Confirmed SAE Mode 01 commanded turbocharger/supercharger A absolute pressure using shifted BC raw/32 kPa. Latest captures ranged from approximately atmospheric pressure at idle to substantially higher commanded pressure under load."
+        },
+        {
+          "id": "GENERIC_BOOST_PRESSURE_A_ACTUAL_0170",
+          "path": "Engine.Generic",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 2047.96875,
+            "div": 32,
+            "unit": "kilopascal"
+          },
+          "name": "Generic actual boost pressure A",
+          "description": "Confirmed SAE Mode 01 actual turbocharger/supercharger A absolute pressure using shifted DE raw/32 kPa. Time-near comparisons tracked generic MAP closely while avoiding the 8-bit 255 kPa ceiling of PID 010B."
+        },
+        {
+          "id": "GENERIC_BOOST_PRESSURE_A_CONTROL_STATUS_0170",
+          "path": "Engine.Generic",
+          "fmt": {
+            "bix": 78,
+            "len": 2,
+            "map": {
+              "1": {
+                "description": "Open loop",
+                "value": "OPEN_LOOP"
+              },
+              "2": {
+                "description": "Closed loop",
+                "value": "CLOSED_LOOP"
+              },
+              "3": {
+                "description": "Fault present; boost data unreliable",
+                "value": "FAULT"
+              }
+            }
+          },
+          "name": "Generic boost pressure A control status",
+          "description": "SAE Mode 01 boost-pressure A control state decoded from the low two bits of the final packet byte. Latest normal driving demonstrated ordinary open-loop and closed-loop transitions; it is not a DPF-regeneration indicator."
         }
       ]
     },
@@ -1939,8 +1989,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST VGT commanded F470 raw AB",
-          "description": "Testing only. Raw companion for VGT commanded. Possible VGT/turbo vane commanded position."
+          "name": "TEST Ford boost-control mirror F470 raw AB",
+          "description": "Testing raw first-word companion for Ford DID F470. The response mirrors the SAE 0170 boost-control packet structure; this word includes the support byte and must not be interpreted as a VGT percentage."
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_BC_RAW16",
@@ -1951,8 +2001,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST VGT commanded F470 shifted BC raw",
-          "description": "Testing only. Correctly aligned first live F470 field. Across 70 responses it ranged 3376-10067 and correlated strongly with shifted DE (r=0.983), consistent with a paired turbo/VGT control quantity. Exact identity and scale remain unresolved."
+          "name": "TEST Ford boost-control mirror F470 shifted BC raw",
+          "description": "Testing raw first pressure field from the Ford F470 mirror. Its behaviour matches commanded boost pressure using raw/32 kPa, but the standardized 0170 production signal is preferred to avoid duplicate production widgets."
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_DE_RAW16",
@@ -1963,8 +2013,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST VGT commanded F470 shifted DE raw",
-          "description": "Testing only. Correctly aligned second live F470 field. Across 70 responses it ranged 3715-10243 and tracked shifted BC closely. Misaligned percentage/divisor candidates and the all-zero shifted FG field were removed."
+          "name": "TEST Ford boost-control mirror F470 shifted DE raw",
+          "description": "Testing raw second pressure field from the Ford F470 mirror. Its behaviour matches actual boost pressure using raw/32 kPa; retain temporarily for synchronized equivalence testing against standardized 0170."
         },
         {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_IJ_RAW16",
@@ -1975,8 +2025,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST VGT commanded F470 final state raw",
-          "description": "Testing only. Final F470 packet state word. It changed from 6 to 5 approximately 13 seconds before F48B left its active-regeneration state, while the paired F471 final state changed from 2 to 1. This may mark a turbo/load-control transition near regen completion, but it is not yet a confirmed regen indicator."
+          "name": "TEST Ford boost-control mirror F470 final raw word",
+          "description": "Testing final raw word from the Ford F470 boost-control mirror. Values 5, 6 and 10 occurred during ordinary non-regen driving and encode open/closed-loop status combinations; prior regeneration-specific wording was incorrect."
         }
       ]
     },
@@ -1996,8 +2046,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST VGT actual F471 raw AB",
-          "description": "Testing only. Raw companion for VGT actual. Possible VGT/turbo vane actual position."
+          "name": "TEST VGT-control packet F471 raw AB",
+          "description": "Testing raw first-word companion for Ford DID F471. The word combines the 0x07 support mask with the first VGT position byte; use the correctly aligned raw and production fields instead of decoding this word directly."
         },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_B_RAW8",
@@ -2008,8 +2058,8 @@
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST VGT actual F471 byte B raw",
-          "description": "Testing only. Correctly aligned first individual F471 value byte after the constant 0x07 support byte. Across 70 responses it ranged 51-216 and correlated strongly with byte C (r=0.993)."
+          "name": "TEST VGT F471 commanded-position byte B raw",
+          "description": "Testing raw companion for commanded VGT A position. Across 81 combined responses it moved coherently with byte C; the production view applies the standard raw*100/255 percent scaling."
         },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_C_RAW8",
@@ -2020,8 +2070,8 @@
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST VGT actual F471 byte C raw",
-          "description": "Testing only. Correctly aligned second individual F471 value byte. Across 70 responses it ranged 52-214 and stayed within a median 0.5 count of byte B, consistent with a paired command/actual quantity."
+          "name": "TEST VGT F471 actual-position byte C raw",
+          "description": "Testing raw companion for actual VGT A position. Across 81 combined responses it tracked commanded byte B closely while retaining plausible transient separation; the production view applies raw*100/255 percent."
         },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_F_RAW8",
@@ -2032,8 +2082,60 @@
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST VGT actual F471 final state raw",
-          "description": "Testing only. Final F471 packet state byte. It changed from 2 to 1 approximately 13 seconds before F48B left its active-regeneration state, paired with the F470 final-state change from 6 to 5. Retain for another regen comparison; exact meaning remains unresolved."
+          "name": "TEST VGT F471 final state byte raw",
+          "description": "Testing raw companion for the final VGT-control state byte. Values 1 and 2 occurred during normal driving and correspond to open-loop and closed-loop control; this is not a regeneration state."
+        },
+        {
+          "id": "EVEREST_VGT_COMMANDED_POSITION_F471",
+          "path": "Engine",
+          "fmt": {
+            "bix": 8,
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "VGT commanded position",
+          "description": "Confirmed commanded variable-geometry-turbo A position from Ford DID F471 using raw*100/255 percent. The packet matches the SAE VGT-control layout and produced coherent commanded/actual behaviour across 81 combined responses."
+        },
+        {
+          "id": "EVEREST_VGT_ACTUAL_POSITION_F471",
+          "path": "Engine",
+          "fmt": {
+            "bix": 16,
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "VGT actual position",
+          "description": "Confirmed actual variable-geometry-turbo A position from Ford DID F471 using raw*100/255 percent. It tracked commanded position closely while retaining plausible control transients under changing load."
+        },
+        {
+          "id": "EVEREST_VGT_CONTROL_STATUS_F471",
+          "path": "Engine",
+          "fmt": {
+            "bix": 46,
+            "len": 2,
+            "map": {
+              "1": {
+                "description": "Open loop",
+                "value": "OPEN_LOOP"
+              },
+              "2": {
+                "description": "Closed loop",
+                "value": "CLOSED_LOOP"
+              },
+              "3": {
+                "description": "Fault present; VGT data unreliable",
+                "value": "FAULT"
+              }
+            }
+          },
+          "name": "VGT control status",
+          "description": "Variable-geometry-turbo A control state decoded from the low two bits of Ford DID F471's final byte. Normal driving captured both open-loop and closed-loop operation."
         }
       ]
     },
@@ -2121,7 +2223,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rate alt 019D raw AB",
-          "description": "Testing only. First 019D raw word. It normally matched the second word, but during the captured active regeneration one response diverged to AB=44 and CD=69. Keep both words to investigate base versus total fuel rate, requested versus actual rate, or regeneration-related additional fuelling."
+          "description": "Testing raw companion for the confirmed SAE alternate engine fuel-rate field. It matched the vehicle-rate word in all 15 normal-drive samples but diverged during captured active regeneration; the decoded production signal uses raw/50 grams per second."
         },
         {
           "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_RAW16_CD",
@@ -2133,7 +2235,32 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rate alt 019D raw CD",
-          "description": "Testing only. Second 019D raw word restored after the active-regeneration capture proved it is not always a duplicate. It normally matched AB but diverged to AB=44 and CD=69 during the burn, potentially exposing additional regeneration fuelling or a requested/actual pair."
+          "description": "Testing raw companion for the confirmed SAE vehicle fuel-rate field. It matched the engine-rate word in all 15 normal-drive samples but rose from 44 to 69 while the engine word remained 44 during active regeneration, confirming that both fields must be retained."
+        },
+        {
+          "id": "GENERIC_ENGINE_FUEL_RATE_ALT_019D",
+          "path": "Fuel.Generic",
+          "fmt": {
+            "len": 16,
+            "max": 1310.7,
+            "div": 50,
+            "unit": "gramsPerSecond"
+          },
+          "name": "Generic engine fuel rate (alternate)",
+          "description": "Confirmed SAE Mode 01 alternate engine fuel rate using raw/50 grams per second. It matched vehicle fuel rate in all 15 latest normal-drive samples and remained independently useful when the two rates diverged during active regeneration."
+        },
+        {
+          "id": "GENERIC_VEHICLE_FUEL_RATE_019D",
+          "path": "Fuel.Generic",
+          "fmt": {
+            "bix": 16,
+            "len": 16,
+            "max": 1310.7,
+            "div": 50,
+            "unit": "gramsPerSecond"
+          },
+          "name": "Generic vehicle fuel rate",
+          "description": "Confirmed SAE Mode 01 vehicle fuel rate using raw/50 grams per second. During captured active regeneration it exceeded the alternate engine-rate word, making it a useful view of total vehicle fuel consumption during emissions-control operation."
         }
       ]
     },
@@ -2153,8 +2280,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST fuel rail packet 016D raw AB",
-          "description": "Testing only. Ranger-supported fuel rail packet raw scout. Latest screenshots show live raw values around 1801–1853; keep for future packet decoding. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+          "name": "TEST fuel-pressure packet 016D raw AB",
+          "description": "Testing raw companion for the confirmed SAE fuel-pressure-control packet. The apparent first word includes the 0x07 support mask and is not a rail-pressure measurement."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_SHIFTED_BC_RAW16",
@@ -2166,7 +2293,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D shifted BC raw",
-          "description": "Testing only. Strong first shifted 016D fuel-rail packet field. Five validation samples ranged 12666-14574 and correlated at r=0.9991 with shifted DE, consistent with a requested/actual pair. Scaling and units remain unresolved."
+          "description": "Testing raw companion for commanded fuel rail pressure A. Across 27 combined samples it tracked the actual field at r=0.99958; the production signal applies the defined raw*10 kPa scaling."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_SHIFTED_DE_RAW16",
@@ -2178,7 +2305,7 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D shifted DE raw",
-          "description": "Testing only. Strong second shifted 016D fuel-rail packet field. Five validation samples ranged 12633-14577 and stayed within a median 10 counts of shifted BC. Scaling and units remain unresolved."
+          "description": "Testing raw companion for actual fuel rail pressure A. Across 27 combined samples the command/actual median absolute difference was approximately 0.25 MPa; the production signal applies raw*10 kPa."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_BYTE_F_RAW8",
@@ -2190,7 +2317,47 @@
             "unit": "scalar"
           },
           "name": "TEST fuel rail packet 016D byte F raw",
-          "description": "Testing only. Status/support-style byte following the two strong shifted 16-bit fuel-pressure fields. Latest drive often showed 0x41."
+          "description": "Testing raw companion for fuel rail temperature A. The defined raw-40 °C decode converts observed bytes 55-73 into a plausible 15-33 °C range."
+        },
+        {
+          "id": "GENERIC_FUEL_RAIL_PRESSURE_A_COMMANDED_016D",
+          "path": "Fuel.Generic",
+          "fmt": {
+            "bix": 8,
+            "len": 16,
+            "max": 655350,
+            "mul": 10,
+            "unit": "kilopascal"
+          },
+          "name": "Generic commanded fuel rail pressure A",
+          "description": "Confirmed SAE Mode 01 commanded fuel rail pressure A using shifted BC raw*10 kPa. Latest captures ranged from approximately 30 MPa at light/idle operation to approximately 203 MPa under load."
+        },
+        {
+          "id": "GENERIC_FUEL_RAIL_PRESSURE_A_016D",
+          "path": "Fuel.Generic",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 655350,
+            "mul": 10,
+            "unit": "kilopascal"
+          },
+          "name": "Generic fuel rail pressure A",
+          "description": "Confirmed SAE Mode 01 actual fuel rail pressure A using shifted DE raw*10 kPa. It followed commanded pressure almost perfectly across 27 combined samples and produced plausible common-rail diesel pressures."
+        },
+        {
+          "id": "GENERIC_FUEL_RAIL_TEMPERATURE_A_016D",
+          "path": "Fuel.Generic",
+          "fmt": {
+            "bix": 40,
+            "len": 8,
+            "max": 215,
+            "min": -40,
+            "add": -40,
+            "unit": "celsius"
+          },
+          "name": "Generic fuel rail temperature A",
+          "description": "Confirmed SAE Mode 01 fuel rail temperature A using byte F raw-40 °C. Observed values of 15-33 °C were plausible for ambient-to-warmed fuel during the retained drives."
         }
       ]
     },
