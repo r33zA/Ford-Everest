@@ -401,7 +401,7 @@
             "unit": "percent"
           },
           "name": "DPF / exhaust filter fullness",
-          "description": "Everest-confirmed DPF fullness / soot-load estimate using raw/100 percent. It fell from 73.53% to 25.90% during a captured automatic regeneration and was independently validated by dashboard decline, F48B state changes, EGR reopening and the distance-since-regen reset. It tracked the dash closely early in the burn but diverged during the final stage, so it should not be described as the dashboard's exact internal percentage."
+          "description": "Everest-confirmed DPF fullness / soot-load estimate using raw/100 percent. It fell from 73.53% to 25.90% during a captured automatic regeneration and was independently validated by dashboard decline, F48B aftertreatment data, EGR reopening and the distance-since-regen reset. A later normal drive showed 52.90% when the dashboard displayed 55%, and 57.39% when the dashboard displayed 65%; the value is therefore a strong internal soot/fullness measure but not the dashboard's exact modelled percentage."
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_RAW16_AB",
@@ -1547,15 +1547,56 @@
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_TEST_EGT11_7E0_F46A_RAW16_AB",
-          "path": "TESTING.EGT",
+          "id": "EVEREST_TEST_INTAKE_AIRFLOW_CONTROL_F46A_BYTE_B_RAW8",
+          "path": "TESTING.EGR_BIX",
           "fmt": {
-            "len": 16,
-            "max": 65535,
+            "bix": 8,
+            "len": 8,
+            "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST EGT11 F46A raw AB",
-          "description": "Testing raw companion retained after active-regeneration packet analysis proved the previous raw*0.1-40 °C decode was misaligned by a leading 0x03 support byte. Packet bytes B/C moved from 44 to 50 while byte D remained 40; engineering meaning remains unresolved."
+          "name": "TEST intake airflow F46A commanded byte B raw",
+          "description": "Testing raw companion for commanded diesel intake-airflow control A. Ford DID F46A mirrors the standardized PID 6A packet layout."
+        },
+        {
+          "id": "EVEREST_TEST_INTAKE_AIRFLOW_CONTROL_F46A_BYTE_C_RAW8",
+          "path": "TESTING.EGR_BIX",
+          "fmt": {
+            "bix": 16,
+            "len": 8,
+            "max": 255,
+            "unit": "scalar"
+          },
+          "name": "TEST intake airflow F46A relative-position byte C raw",
+          "description": "Testing raw companion for relative diesel intake-airflow position A. It tracked the commanded byte at r=0.9962 in the latest drive."
+        },
+        {
+          "id": "EVEREST_COMMANDED_INTAKE_AIRFLOW_CONTROL_A_F46A",
+          "path": "Engine",
+          "fmt": {
+            "bix": 8,
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Commanded intake airflow control A",
+          "description": "Confirmed commanded diesel intake-airflow control A from Ford DID F46A using byte B raw*100/255 percent. Command and relative position tracked at r=0.9962 in the latest drive and remained coherent during the retained regeneration session."
+        },
+        {
+          "id": "EVEREST_RELATIVE_INTAKE_AIRFLOW_POSITION_A_F46A",
+          "path": "Engine",
+          "fmt": {
+            "bix": 16,
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "Relative intake airflow position A",
+          "description": "Confirmed relative diesel intake-airflow control position A from Ford DID F46A using byte C raw*100/255 percent. Latest observed values ranged from approximately 22% to 100% and followed the commanded field closely."
         }
       ]
     },
@@ -1568,77 +1609,51 @@
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_TEST_EGT14_DPF_OUTLET_7E0_F46D_RAW16_AB",
-          "path": "TESTING.EGT",
+          "id": "EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_RAW16_AB",
+          "path": "TESTING.Fuel_BIX",
           "fmt": {
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST exhaust packet F46D raw AB",
-          "description": "Testing raw companion retained for F46D. Active-regeneration analysis proved the previous first-word raw*0.1-40 °C decode included a leading 0x07 support byte and was invalid. Correctly aligned shifted BC/DE scouts are provided separately."
+          "name": "TEST Ford fuel-pressure mirror F46D raw AB",
+          "description": "Testing raw first-word companion for Ford DID F46D. The response mirrors the standardized 016D fuel-pressure-control packet and this word includes the 0x07 support mask."
         },
         {
-          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_SHIFTED_BC_RAW16",
-          "path": "TESTING.EGT",
+          "id": "EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_SHIFTED_BC_RAW16",
+          "path": "TESTING.Fuel_BIX",
           "fmt": {
             "bix": 8,
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST exhaust packet F46D shifted BC raw",
-          "description": "Testing only. Correctly aligned first live F46D word after the leading 0x07 support byte. It ranged 6422-7246 during active regeneration and correlated at r=0.9995 with shifted DE."
+          "name": "TEST Ford fuel-pressure mirror F46D commanded raw",
+          "description": "Testing raw commanded fuel-rail-pressure companion from the Ford F46D mirror. It decodes as raw*10 kPa, but the standardized 016D production signal is preferred to avoid duplicate production widgets."
         },
         {
-          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_SHIFTED_DE_RAW16",
-          "path": "TESTING.EGT",
+          "id": "EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_SHIFTED_DE_RAW16",
+          "path": "TESTING.Fuel_BIX",
           "fmt": {
             "bix": 24,
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST exhaust packet F46D shifted DE raw",
-          "description": "Testing only. Correctly aligned second live F46D word. It ranged 6425-7243 and stayed within a median 4.5 counts of shifted BC during active regeneration."
+          "name": "TEST Ford fuel-pressure mirror F46D actual raw",
+          "description": "Testing raw actual fuel-rail-pressure companion from the Ford F46D mirror. Latest command and actual values correlated at r=0.9981; use the standardized 016D production signal for the decoded engineering value."
         },
         {
-          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_SHIFTED_BC_DIV32",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "bix": 8,
-            "len": 16,
-            "max": 2047.96875,
-            "div": 32,
-            "unit": "celsius"
-          },
-          "name": "TEST exhaust packet F46D shifted BC div32",
-          "description": "Testing only. Shifted F46D BC raw/32 temperature candidate. It produced approximately 200.7-226.4 °C during the captured regeneration and needs comparison against confirmed exhaust temperatures before promotion."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_SHIFTED_DE_DIV32",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "bix": 24,
-            "len": 16,
-            "max": 2047.96875,
-            "div": 32,
-            "unit": "celsius"
-          },
-          "name": "TEST exhaust packet F46D shifted DE div32",
-          "description": "Testing only. Shifted F46D DE raw/32 temperature candidate. It produced approximately 200.8-226.3 °C and tracked shifted BC almost exactly during the captured regeneration."
-        },
-        {
-          "id": "EVEREST_TEST_EXHAUST_PACKET_F46D_BYTE_F_RAW8",
-          "path": "TESTING.EGT",
+          "id": "EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_BYTE_F_RAW8",
+          "path": "TESTING.Fuel_BIX",
           "fmt": {
             "bix": 40,
             "len": 8,
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST exhaust packet F46D byte F raw",
-          "description": "Testing only. F46D state/reference byte following the paired shifted words. It moved from 65 to 70 during the captured active regeneration; exact meaning is unresolved."
+          "name": "TEST Ford fuel-pressure mirror F46D temperature raw",
+          "description": "Testing raw fuel-rail-temperature companion from the Ford F46D mirror. It decodes as raw-40 °C; the standardized 016D production signal is preferred."
         }
       ]
     },
@@ -1659,7 +1674,7 @@
             "unit": "scalar"
           },
           "name": "TEST exhaust multi-EGT F478 raw AB",
-          "description": "Testing raw companion retained for F478. Active-regeneration analysis proved the previous first-word raw*0.1-40 °C decode included a leading 0x07 support byte and was invalid. Correctly aligned shifted BC/DE scouts are provided separately; shifted FG duplicated DE exactly."
+          "description": "Testing raw packet companion for Ford DID F478. The response mirrors the standardized PID 78 exhaust-gas-temperature packet and this first word includes the 0x07 support mask."
         },
         {
           "id": "EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_BC_RAW16",
@@ -1670,8 +1685,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST exhaust multi F478 shifted BC raw",
-          "description": "Testing only. Correctly aligned first F478 word after the leading 0x07 support byte. It ranged 3899-4085 during active regeneration."
+          "name": "TEST EGT bank 1 sensor 1 F478 raw",
+          "description": "Testing raw companion for exhaust-gas temperature bank 1 sensor 1. The production view applies raw/10-40 °C."
         },
         {
           "id": "EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_DE_RAW16",
@@ -1682,34 +1697,38 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST exhaust multi F478 shifted DE raw",
-          "description": "Testing only. Correctly aligned second F478 word. It ranged 6462-6629; the following shifted FG word duplicated it exactly in all 11 samples and is intentionally not exposed."
+          "name": "TEST EGT bank 1 sensor 2 F478 raw",
+          "description": "Testing raw companion for exhaust-gas temperature bank 1 sensor 2. The following sensor-3 word duplicated it exactly in every retained sample, so no redundant third widget is added."
         },
         {
-          "id": "EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_BC_DIV32",
-          "path": "TESTING.EGT",
+          "id": "EVEREST_EXHAUST_GAS_TEMP_BANK1_SENSOR1_F478",
+          "path": "Emissions.Exhaust",
           "fmt": {
             "bix": 8,
             "len": 16,
-            "max": 2047.96875,
-            "div": 32,
+            "min": -40,
+            "max": 6513.5,
+            "div": 10,
+            "add": -40,
             "unit": "celsius"
           },
-          "name": "TEST exhaust multi F478 shifted BC div32",
-          "description": "Testing only. Shifted F478 BC raw/32 temperature candidate. It produced approximately 121.8-127.7 °C during active regeneration; sensor identity is unresolved."
+          "name": "Exhaust gas temperature bank 1 sensor 1",
+          "description": "Confirmed exhaust-gas temperature bank 1 sensor 1 from Ford DID F478 using shifted BC raw/10-40 °C. Latest normal-driving values ranged from 125.6-317.0 °C and retained regeneration values rose to approximately 368.5 °C."
         },
         {
-          "id": "EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_DE_DIV32",
-          "path": "TESTING.EGT",
+          "id": "EVEREST_EXHAUST_GAS_TEMP_BANK1_SENSOR2_F478",
+          "path": "Emissions.Exhaust",
           "fmt": {
             "bix": 24,
             "len": 16,
-            "max": 2047.96875,
-            "div": 32,
+            "min": -40,
+            "max": 6513.5,
+            "div": 10,
+            "add": -40,
             "unit": "celsius"
           },
-          "name": "TEST exhaust multi F478 shifted DE div32",
-          "description": "Testing only. Shifted F478 DE raw/32 temperature candidate. It produced approximately 201.9-207.2 °C during active regeneration; sensor identity is unresolved."
+          "name": "Exhaust gas temperature bank 1 sensor 2",
+          "description": "Confirmed exhaust-gas temperature bank 1 sensor 2 from Ford DID F478 using shifted DE raw/10-40 °C. It reached approximately 606-623 °C during the retained active regeneration, providing a useful direct thermal reference for DPF activity."
         }
       ]
     },
@@ -2148,39 +2167,54 @@
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_LP_TURBO_SPEED_OR_ALTERNATE_TURBO_VALUE_7E0_F47A_RAW16_AB",
-          "path": "TESTING.Turbo_BIX",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST F47A turbo packet raw AB",
-          "description": "Testing only. Raw first-word companion for F47A. The previous rpm candidate stayed fixed and has been removed; keep raw AB only as a low-confidence scout because later packet bytes may still contain useful data if byte offsets become available. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
-          "id": "EVEREST_TEST_TURBO_PACKET_F47A_SHIFTED_DE_RAW16",
-          "path": "TESTING.Turbo_BIX",
+          "id": "EVEREST_TEST_DPF_PRESSURE_F47A_SHIFTED_DE_RAW16",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 24,
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST turbo packet F47A shifted DE raw",
-          "description": "Testing only. First retained live F47A shifted field. Across 71 responses it ranged 0-3340 and correlated strongly with shifted FG (r=0.976). Avoid turbo-speed or RPM wording until identified."
+          "name": "TEST DPF inlet pressure F47A raw",
+          "description": "Testing raw companion for DPF bank 1 inlet pressure. The production view applies raw/100 kPa."
         },
         {
-          "id": "EVEREST_TEST_TURBO_PACKET_F47A_SHIFTED_FG_RAW16",
-          "path": "TESTING.Turbo_BIX",
+          "id": "EVEREST_TEST_DPF_PRESSURE_F47A_SHIFTED_FG_RAW16",
+          "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 40,
             "len": 16,
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST turbo packet F47A shifted FG raw",
-          "description": "Testing only. Second retained live F47A shifted field. Across 71 responses it ranged 0-1560 and tracked shifted DE strongly. Misaligned overlapping fields and the all-zero shifted BC scout were removed."
+          "name": "TEST DPF outlet pressure F47A raw",
+          "description": "Testing raw companion for DPF bank 1 outlet pressure. Across the latest drive it tracked inlet pressure coherently while remaining lower, producing a plausible positive pressure drop."
+        },
+        {
+          "id": "EVEREST_DPF_INLET_PRESSURE_F47A",
+          "path": "Emissions.DPF",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "kilopascal"
+          },
+          "name": "DPF inlet pressure",
+          "description": "Confirmed DPF bank 1 inlet pressure from Ford DID F47A using shifted DE raw/100 kPa. Latest normal-driving values ranged from 1.0-9.1 kPa and retained active-regeneration values reached 44.0 kPa."
+        },
+        {
+          "id": "EVEREST_DPF_OUTLET_PRESSURE_F47A",
+          "path": "Emissions.DPF",
+          "fmt": {
+            "bix": 40,
+            "len": 16,
+            "max": 655.35,
+            "div": 100,
+            "unit": "kilopascal"
+          },
+          "name": "DPF outlet pressure",
+          "description": "Confirmed DPF bank 1 outlet pressure from Ford DID F47A using shifted FG raw/100 kPa. It remained below inlet pressure in retained samples and supported a coherent positive filter pressure drop under load and during regeneration."
         }
       ]
     },
@@ -2444,32 +2478,8 @@
             "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST EGR command actual packet 0169 raw AB",
-          "description": "Testing only. Raw companion for SAE/Ranger EGR command/actual packet 0169. Latest captures showed live movement around raw 1792-1846; keep as alive scout for correlation against EGR open percentage, RPM and load. Companion byte-offset scouts were added in v0.7.16 using Pelican fmt.bix. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_69_CD_RAW16",
-          "path": "TESTING.EGR_BIX",
-          "fmt": {
-            "bix": 16,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST EGR command actual packet 0169 cd raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for EGR command actual packet 0169. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
-        },
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_69_EF_RAW16",
-          "path": "TESTING.EGR_BIX",
-          "fmt": {
-            "bix": 32,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST EGR command actual packet 0169 ef raw16",
-          "description": "Testing only. Pelican bix-based byte-offset scout for EGR command actual packet 0169. Added to inspect later packet words without relying only on the first A/B word. Dedicated BIX packet-scout group; retained because this PID previously responded but the first-word decode was frozen, low-value, or not fully decoded."
+          "name": "TEST EGR-control packet 0169 raw AB",
+          "description": "Testing raw packet companion retained for SAE Mode 01 PID 69. The apparent first word includes the 0x07 support mask and the commanded-EGR byte; use the aligned production fields for engineering values."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_69_BYTE_B_RAW8",
@@ -2480,22 +2490,8 @@
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST EGR packet 0169 byte B raw",
-          "description": "Testing only. First useful byte after the stable 0x07 packet prefix. Compare with EGR open percentage, load, RPM, fuel and regen state."
-        },
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_69_BYTE_B_PERCENT",
-          "path": "TESTING.EGR_BIX",
-          "fmt": {
-            "bix": 8,
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "TEST EGR packet 0169 byte B percent",
-          "description": "Testing only. Byte B scaled as A*100/255 after the packet prefix. Candidate commanded or actual EGR percentage."
+          "name": "TEST EGR A commanded byte B raw",
+          "description": "Testing raw companion for commanded EGR A. The production view applies raw*100/255 percent."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_69_BYTE_C_RAW8",
@@ -2506,22 +2502,8 @@
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST EGR packet 0169 byte C raw",
-          "description": "Testing only. Second useful byte after the packet prefix. Retained raw for command/actual/error comparison."
-        },
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_69_BYTE_C_PERCENT",
-          "path": "TESTING.EGR_BIX",
-          "fmt": {
-            "bix": 16,
-            "len": 8,
-            "max": 100,
-            "mul": 100,
-            "div": 255,
-            "unit": "percent"
-          },
-          "name": "TEST EGR packet 0169 byte C percent",
-          "description": "Testing only. Byte C scaled as A*100/255. Compare with byte B percent and production EGR open percentage."
+          "name": "TEST EGR A actual byte C raw",
+          "description": "Testing raw companion for actual EGR A. Latest command/actual samples correlated at r=0.9702; the production view applies raw*100/255 percent."
         },
         {
           "id": "EVEREST_TEST_RANGER_PACKET_69_BYTE_D_RAW8",
@@ -2532,46 +2514,52 @@
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST EGR packet 0169 byte D raw",
-          "description": "Testing only. Third useful byte after the packet prefix. May be EGR error, limit, status or another requested/actual value."
+          "name": "TEST EGR A error byte D raw",
+          "description": "Testing raw companion for EGR A error. The production view applies raw*100/128-100 percent; the reported error agreed with error calculated from commanded and actual EGR to within 0.67 percentage points in the latest samples."
         },
         {
-          "id": "EVEREST_TEST_RANGER_PACKET_69_BYTE_D_PERCENT",
-          "path": "TESTING.EGR_BIX",
+          "id": "GENERIC_EGR_A_COMMANDED_0169",
+          "path": "Emissions.EGR.Generic",
           "fmt": {
-            "bix": 24,
+            "bix": 8,
             "len": 8,
             "max": 100,
             "mul": 100,
             "div": 255,
             "unit": "percent"
           },
-          "name": "TEST EGR packet 0169 byte D percent",
-          "description": "Testing only. Byte D scaled as A*100/255 for comparison with bytes B and C."
+          "name": "Generic commanded EGR A",
+          "description": "Confirmed SAE Mode 01 commanded EGR A using byte B raw*100/255 percent. Latest synchronized command/actual samples moved coherently at r=0.9702."
         },
         {
-          "id": "EVEREST_TEST_RANGER_PACKET_69_SHIFTED_BC_RAW16",
-          "path": "TESTING.EGR_BIX",
-          "fmt": {
-            "bix": 8,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST EGR packet 0169 shifted BC raw",
-          "description": "Testing only. Shifted 16-bit BC field using bix 8. Added to preserve paired-field analysis alongside individual byte scouts."
-        },
-        {
-          "id": "EVEREST_TEST_RANGER_PACKET_69_SHIFTED_CD_RAW16",
-          "path": "TESTING.EGR_BIX",
+          "id": "GENERIC_EGR_A_ACTUAL_0169",
+          "path": "Emissions.EGR.Generic",
           "fmt": {
             "bix": 16,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
           },
-          "name": "TEST EGR packet 0169 shifted CD raw",
-          "description": "Testing only. Shifted overlapping 16-bit CD field using bix 16. Compare against the individual B/C/D bytes before assigning meaning."
+          "name": "Generic actual EGR A",
+          "description": "Confirmed SAE Mode 01 actual EGR A using byte C raw*100/255 percent. It followed the commanded field coherently across the latest complete drive."
+        },
+        {
+          "id": "GENERIC_EGR_A_ERROR_0169",
+          "path": "Emissions.EGR.Generic",
+          "fmt": {
+            "bix": 24,
+            "len": 8,
+            "min": -100,
+            "max": 99.21875,
+            "mul": 100,
+            "div": 128,
+            "add": -100,
+            "unit": "percent"
+          },
+          "name": "Generic EGR A error",
+          "description": "Confirmed SAE Mode 01 EGR A error using byte D raw*100/128-100 percent. Against error independently calculated from commanded and actual EGR, the latest samples had a median residual of 0.38 percentage points and a maximum residual of 0.67 percentage points."
         }
       ]
     },
@@ -2592,56 +2580,70 @@
             "max": 255,
             "unit": "scalar"
           },
-          "name": "TEST DPF status F48B byte C raw",
-          "description": "Testing only. F48B byte C tracked the production 220610 soot/fullness estimate extremely closely during active regeneration (r=0.994), declining from 218 to 166 before the completion transition and then to 112. It appears to be another scaled soot/load quantity rather than a simple state flag."
+          "name": "TEST DPF normalized trigger F48B byte C raw",
+          "description": "Testing raw companion for normalized trigger for DPF regeneration. The production view applies raw*100/255 percent. During the retained active burn it fell from 85.49% to 43.92%."
         },
         {
-          "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_E_RAW8",
-          "path": "TESTING.Regen_BIX",
-          "fmt": {
-            "bix": 32,
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status F48B byte E raw",
-          "description": "Testing only. F48B byte E formed a strong phase signature: 232-233 during earlier normal driving, 1 throughout the captured active regeneration, and 180 immediately after completion. Keep for a second regen comparison."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_G_RAW8",
-          "path": "TESTING.Regen_BIX",
-          "fmt": {
-            "bix": 48,
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF status F48B byte G raw",
-          "description": "Testing only. F48B byte G formed a distinct phase signature: 131 during earlier normal driving, 139 throughout the captured active regeneration, and 107 immediately after completion. It is not yet decoded as an individual bitfield."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_STATUS_F48B_BYTE_D_RAW8",
+          "id": "EVEREST_TEST_DPF_AVERAGE_REGEN_INTERVAL_F48B_DE_RAW16",
           "path": "TESTING.Regen_BIX",
           "fmt": {
             "bix": 24,
-            "len": 8,
-            "max": 255,
+            "len": 16,
+            "max": 65535,
             "unit": "scalar"
           },
-          "name": "TEST DPF status F48B byte D raw",
-          "description": "Testing only. Best active-regeneration state candidate so far. Byte D was 0 during previous normal driving, 1 throughout the captured active burn, and returned to 0 approximately 41 seconds before distance-since-regen reset to zero. Requires one more confirmed regeneration before promotion."
+          "name": "TEST DPF average regen interval F48B raw",
+          "description": "Testing raw companion spanning F48B bytes D/E. These bytes form one 16-bit average-time-between-regenerations value; the former byte-D on/off interpretation was disproved."
         },
         {
-          "id": "EVEREST_TEST_DPF_ACTIVE_F48B_BYTE_D_CANDIDATE",
+          "id": "EVEREST_TEST_DPF_AVERAGE_REGEN_DISTANCE_F48B_FG_RAW16",
           "path": "TESTING.Regen_BIX",
           "fmt": {
-            "bix": 24,
-            "len": 8,
-            "max": 1,
-            "unit": "offon"
+            "bix": 40,
+            "len": 16,
+            "max": 65535,
+            "unit": "scalar"
           },
-          "name": "TEST DPF active regen F48B byte D",
-          "description": "Testing-only on/off interpretation of F48B byte D. Current evidence supports 0=not active and 1=active: the value changed back to 0 before EGR reopened and distance-since-regen reset. Do not promote until repeated in another confirmed burn."
+          "name": "TEST DPF average regen distance F48B raw",
+          "description": "Testing raw companion spanning F48B bytes F/G. These bytes form one 16-bit average-distance-between-regenerations value; the former isolated byte-G interpretation was invalid."
+        },
+        {
+          "id": "EVEREST_DPF_NORMALIZED_REGEN_TRIGGER_F48B",
+          "path": "Emissions.DPF",
+          "fmt": {
+            "bix": 16,
+            "len": 8,
+            "max": 100,
+            "mul": 100,
+            "div": 255,
+            "unit": "percent"
+          },
+          "name": "DPF normalized regeneration trigger",
+          "description": "Confirmed normalized trigger for DPF regeneration from Ford DID F48B using byte C raw*100/255 percent. It fell from 85.49% to 43.92% during the retained active burn and rose from 87.06% to 95.29% in the latest non-regeneration drive."
+        },
+        {
+          "id": "EVEREST_DPF_AVERAGE_REGEN_INTERVAL_F48B",
+          "path": "Emissions.DPF",
+          "fmt": {
+            "bix": 24,
+            "len": 16,
+            "max": 65535,
+            "unit": "minutes"
+          },
+          "name": "DPF average regeneration interval",
+          "description": "Confirmed average time between DPF regenerations from Ford DID F48B bytes D/E, measured in minutes. Latest normal-driving values were 203-214 minutes; the prior active session moved from 257 to 180 minutes. The former byte-D active-regeneration candidate incorrectly treated the high byte of this word as a flag."
+        },
+        {
+          "id": "EVEREST_DPF_AVERAGE_REGEN_DISTANCE_F48B",
+          "path": "Emissions.DPF",
+          "fmt": {
+            "bix": 40,
+            "len": 16,
+            "max": 65535,
+            "unit": "kilometers"
+          },
+          "name": "DPF average regeneration distance",
+          "description": "Confirmed average distance between DPF regenerations from Ford DID F48B bytes F/G, measured in kilometres. Latest normal-driving values were 117-120 km; the prior active session moved from 139 to 107 km."
         }
       ]
     }
