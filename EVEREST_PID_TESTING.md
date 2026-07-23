@@ -2,8 +2,8 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-07-23 v0.7.23 decoded packet promotions and normal-drive cleanup  
-Aligned default file: `default_everest_my25_25_v0_7_23_decoded_packet_promotions.json` / `signalsets/v3/default.json` target  
+Version: 2026-07-23 v0.7.24 standard packet mirrors, DPF pressure and testing cleanup  
+Aligned default file: `default_everest_my25_25_v0_7_24_standard_mirror_promotions.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
 ## Update focus
@@ -2822,5 +2822,170 @@ Built Ford Everest MY25.25 PID pack v0.7.23 directly from the supplied v0.7.22 d
 Promoted decoded SAE 019D fuel rates, 016D fuel-rail command/actual/temperature, 0170 boost command/actual/status, 019E engine exhaust flow, Ford F471 VGT command/actual/status, the TCC apply-command scalar and generic barometric pressure.
 
 Preserved all raw packet companions, established production signals, battery items and connectables. Corrected F470/F471 state descriptions after the normal drive proved their transitions are ordinary turbo-control states rather than regeneration-specific indicators. Replaced only three superseded testing IDs and made no existing production formula changes.
+```
+
+---
+
+# v0.7.24 — Standard packet mirrors, DPF pressure and testing cleanup
+
+Aligned default file: `default_everest_my25_25_v0_7_24_standard_mirror_promotions.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Analysed the complete latest Pelican drive: 39,628 database rows, 29,657 positive payloads, approximately 83 minutes, 24.1 km and 96 supporting screenshots.
+- Compared the latest normal/non-regeneration session with the previously retained confirmed active-regeneration capture.
+- Proved that Ford DIDs F46A, F46D, F478, F47A and F48B use the corresponding SAE Mode 01 packet layouts 6A, 6D, 78, 7A and 8B.
+- Promoted 12 evidence-backed production signals.
+- Removed invalid temperature scalings, overlapping packet scouts and the disproved F48B byte-D active-regeneration candidate.
+- Preserved useful raw companions under accurate TESTING paths and names.
+
+## Complete-drive summary
+
+| Evidence | Result |
+| --- | ---: |
+| Pelican database rows | 39,628 |
+| Positive payloads | 29,657 |
+| Session duration | Approximately 83 minutes |
+| Odometer movement | 24.1 km |
+| DPF fullness | 48.07% to 57.39% |
+| DPF direction | 95 increases, 0 decreases |
+| Active regeneration | No |
+| Retained custom-PID failures | 0 |
+| Supporting screenshots | 96 |
+
+The DPF value rose throughout the retained period, so this was a strong normal-driving control session rather than another confirmed burn.
+
+## Promotions and decoded production signals
+
+### SAE 0169 EGR command, actual and error
+
+- Added commanded EGR A: byte B raw*100/255 percent.
+- Added actual EGR A: byte C raw*100/255 percent.
+- Added EGR A error: byte D raw*100/128-100 percent.
+- Latest command/actual correlation was r=0.9702.
+- Reported error agreed with error calculated from commanded and actual EGR with a median residual of 0.38 percentage points and maximum residual of 0.67.
+- Retained only the raw packet and individual B/C/D companions; redundant percentage and overlapping word scouts were removed.
+
+### Ford F46A diesel intake-airflow control
+
+- Added commanded intake-airflow control A: byte B raw*100/255 percent.
+- Added relative intake-airflow position A: byte C raw*100/255 percent.
+- Latest command/position correlation was r=0.9962 across 23 samples.
+- The earlier regeneration samples also moved coherently.
+- Removed the misleading EGT identity and replaced it with aligned raw B/C companions.
+
+### Ford F46D fuel-pressure mirror
+
+- Confirmed F46D mirrors the decoded SAE 016D fuel-pressure-control packet:
+  - shifted BC = commanded rail pressure, raw*10 kPa;
+  - shifted DE = actual rail pressure, raw*10 kPa;
+  - byte F = fuel rail temperature, raw-40 °C.
+- Latest command/actual correlation was r=0.9981 and retained active-session correlation was r=0.99949.
+- No duplicate production widgets were added because the standardized 016D production signals already expose the same quantities.
+- Invalid /32 exhaust-temperature candidates were removed and the four raw mirror companions moved to `TESTING.Fuel_BIX`.
+
+### Ford F478 exhaust temperatures
+
+- Added bank 1 sensor 1: shifted BC raw/10-40 °C.
+- Added bank 1 sensor 2: shifted DE raw/10-40 °C.
+- Latest normal-drive ranges were 125.6-317.0 °C for sensor 1 and 125.6-350.1 °C for sensor 2.
+- During the retained active regeneration, sensor 2 reached approximately 606-623 °C.
+- The sensor-3 word exactly duplicated sensor 2 in every retained sample, so no redundant third widget was added.
+- Invalid /32 candidates were removed.
+
+### Ford F47A DPF pressures
+
+- Added DPF bank 1 inlet pressure: shifted DE raw/100 kPa.
+- Added DPF bank 1 outlet pressure: shifted FG raw/100 kPa.
+- Latest normal-driving ranges were 1.0-9.1 kPa inlet and 0.1-2.3 kPa outlet.
+- During the retained active regeneration, inlet reached 44.0 kPa and outlet reached 12.9 kPa.
+- The calculated pressure drop remained positive and coherent with load.
+- Removed the frozen/misleading turbo raw-AB interpretation and relabelled the two live raw companions under `TESTING.Regen_BIX`.
+
+### Ford F48B diesel aftertreatment data
+
+- Added normalized regeneration trigger: byte C raw*100/255 percent.
+- Added average regeneration interval: bytes D/E in minutes.
+- Added average regeneration distance: bytes F/G in kilometres.
+- Latest normal-driving values were 87.06-95.29%, 203-214 minutes and 117-120 km.
+- During the retained active session, trigger fell from 85.49% to 43.92%.
+- The former byte-D `0/1` candidate was false: byte D was the high byte of the 16-bit D/E average-time word. It and the isolated E/G byte widgets were removed.
+- The actual regeneration-status byte remains zero in both captured active and normal sessions, so no active-regeneration state was promoted.
+
+## DPF dashboard comparison
+
+The production 220610 internal fullness estimate remains valid but is not the dashboard's exact modelled value. Latest reference screenshots showed:
+
+- 52.90% in 220610 when the dashboard displayed 55%.
+- 57.39% in 220610 when the dashboard displayed 65%.
+
+The production description now records this normal-driving divergence while retaining the earlier full-regeneration validation.
+
+## Existing promotions reconfirmed
+
+- F471 VGT commanded/actual position: latest correlation r=0.999686.
+- 016D rail-pressure command/actual: latest correlation r=0.99251 over approximately 24.72-220.18 MPa.
+- 019E exhaust flow versus generic MAF: latest correlation r=0.9627 with median converted ratio 0.987.
+- TCC desired slip and apply command remained coherent in the supporting screenshots, including the 1023 rpm open-converter sentinel.
+
+## Retained unresolved work
+
+- 220610 second word remains a useful secondary soot-model candidate but is not ready for production.
+- F48B did not reveal a working active-regeneration status flag; another confirmed burn remains valuable.
+- F470 remains a testing mirror of the standardized 0170 boost-control packet.
+- Raw mirror companions remain available where they still provide equivalence or diagnostic value.
+
+## Privacy note
+
+The Pelican database contains the full VIN and the screenshots contain identifiable route information. Keep the archive private or sanitise it before public sharing. No VIN, registration or full vehicle identifier is reproduced here.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 82 |
+| Signals | 142 |
+| Testing signals | 44 |
+| Production signals | 98 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Malformed signals | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 0 |
+| Commands removed | 0 |
+| Signal IDs added | 22 |
+| Signal IDs removed/replaced | 23 |
+| Net signal change | -1 |
+| New production signals | 12 |
+| Existing production formulas changed | 0 |
+| Existing production description changes | DPF fullness only |
+| Connectable changes | 0 |
+
+## Removed or replaced testing interpretations
+
+- 0169 duplicate percentage and overlapping-word scouts were replaced by exact production EGR command/actual/error fields.
+- F46A's false EGT identity was replaced by aligned intake-airflow raw companions and production signals.
+- F46D's false exhaust-temperature identity and /32 candidates were replaced by fuel-pressure mirror companions.
+- F478 /32 temperature candidates were removed in favour of the correct raw/10-40 °C production decode.
+- F47A turbo wording and frozen first word were removed in favour of DPF inlet/outlet pressure.
+- F48B byte D active-regeneration, byte E and byte G interpretations were removed in favour of complete D/E and F/G words.
+
+## Commit message
+
+```text
+Promote decoded standard packet mirrors for Everest PID v0.7.24
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.24 directly from the supplied v0.7.23 default.json, testing log and README.
+
+Promoted decoded EGR command/actual/error, diesel intake-airflow command/position, exhaust-gas temperatures, DPF inlet/outlet pressure, normalized regeneration trigger, average regeneration interval and average regeneration distance.
+
+Corrected Ford F46A, F46D, F478, F47A and F48B after complete-drive and retained-regeneration evidence proved they mirror standardized SAE packet layouts. Removed invalid /32 temperature candidates, redundant overlapping scouts and the disproved F48B byte-D active-regeneration widget while preserving useful raw companions under accurate TESTING paths.
+
+No commands, battery items, connectables or existing production formulas were changed.
 ```
 
