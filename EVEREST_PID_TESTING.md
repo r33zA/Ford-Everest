@@ -2,8 +2,8 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-07-22 v0.7.22 regeneration packet breakthrough  
-Aligned default file: `default_everest_my25_25_v0_7_22_regen_packet_breakthrough.json` / `signalsets/v3/default.json` target  
+Version: 2026-07-23 v0.7.23 decoded packet promotions and normal-drive cleanup  
+Aligned default file: `default_everest_my25_25_v0_7_23_decoded_packet_promotions.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
 ## Update focus
@@ -2673,5 +2673,154 @@ Built Ford Everest MY25.25 PID pack v0.7.22 directly from the supplied v0.7.21 d
 Recorded a confirmed automatic DPF regeneration, added the high-confidence F48B byte-D active-regeneration candidate, restored the second 019D word after regen-specific divergence, and replaced three misaligned EGT candidates with correctly shifted packet scouts.
 
 Preserved all established production formulas, paths, IDs, connectables and battery signals. No new regen or EGT signal was promoted prematurely; the strongest new candidates remain clearly separated under TESTING pending repeat confirmation.
+```
+
+---
+
+# v0.7.23 — Decoded packet promotions and normal-drive cleanup
+
+Aligned default file: `default_everest_my25_25_v0_7_23_decoded_packet_promotions.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Analysed 16,875 Pelican responses and 40 supporting screenshots from a complete 34.5-minute, 19.4 km normal/non-regeneration drive.
+- Used the normal drive as the control comparison for the earlier confirmed active regeneration.
+- Matched the retained 019D, 016D, 0170 and 019E packets to their defined SAE J1979 layouts and engineering scales.
+- Promoted decoded production signals while preserving their raw testing companions.
+- Corrected F470/F471 descriptions after normal driving proved their state transitions are ordinary turbo open/closed-loop behaviour rather than regeneration-specific events.
+- Promoted the confirmed BARO response and TCC apply-command scalar.
+
+## Complete-drive summary
+
+| Evidence | Result |
+| --- | ---: |
+| Pelican responses | 16,875 |
+| Distinct commands | 58 |
+| Session duration | Approximately 34.5 minutes |
+| Odometer movement | 19.4 km |
+| DPF fullness | 44.70% to 48.06% |
+| Coolant temperature | 35-98 °C |
+| Engine oil temperature | 19-99 °C |
+| Active regeneration | No |
+| Persistent negative responses from retained TESTING commands | 0 |
+
+The DPF value rose normally throughout the drive. This was therefore a useful non-regeneration control session rather than another burn.
+
+## Promotions and decoded production signals
+
+### SAE 019D dual fuel rate
+
+- Added alternate engine fuel rate: raw/50 grams per second.
+- Added vehicle fuel rate: shifted CD raw/50 grams per second.
+- All 15 normal-drive samples had identical AB/CD words.
+- The earlier active-regeneration divergence of AB=44 and CD=69 is now understood as two defined, independently useful rates rather than packet noise.
+- Both raw companions remain under `TESTING.Fuel`.
+
+### SAE 016D fuel-pressure control
+
+- Added commanded fuel rail pressure A: shifted BC raw*10 kPa.
+- Added actual fuel rail pressure A: shifted DE raw*10 kPa.
+- Added fuel rail temperature A: byte F raw-40 °C.
+- Across 27 combined samples, commanded and actual pressure correlated at r=0.99958 with a median absolute difference of approximately 0.25 MPa.
+- Latest examples ranged from approximately 30 MPa at light/idle operation to approximately 203 MPa under load.
+- Observed temperature bytes decode to a plausible 15-33 °C.
+- All raw companions remain under `TESTING.Fuel_BIX`.
+
+### SAE 0170 boost-pressure control
+
+- Added commanded boost pressure A: shifted BC raw/32 kPa.
+- Added actual boost pressure A: shifted DE raw/32 kPa.
+- Added boost-pressure A open/closed-loop/fault status from the low two bits of byte J.
+- Actual pressure tracked generic MAP in time-near comparisons while providing 16-bit range beyond the 255 kPa PID 010B ceiling.
+- Values 5, 6 and 10 in the retained final raw word are combinations of control-status bits, not regeneration states.
+- Raw packet companions remain under `TESTING.Boost_BIX`.
+
+### Ford F471 VGT control
+
+- Added commanded VGT position: byte B raw*100/255 percent.
+- Added actual VGT position: byte C raw*100/255 percent.
+- Added VGT open/closed-loop/fault status from the low two bits of byte F.
+- Across 81 combined responses, the command and actual bytes moved coherently with plausible control transients.
+- Raw companions remain under `TESTING.VGT` and `TESTING.VGT_BIX`.
+
+### SAE 019E engine exhaust flow
+
+- Replaced the testing raw/20 scalar with the defined raw/5 kilograms-per-hour production signal.
+- The previous /20 display looked close to MAF because it approximated a mass-flow unit conversion; it was not the defined engineering scale.
+- The raw companion remains under `TESTING.Regen`.
+
+### TCC apply command
+
+- Promoted 1E3C as a production `Transmission` scalar after repeated coherent transitions with desired slip and converter lockup.
+- The exact hydraulic pressure scale remains unknown, so no pressure unit is assigned.
+- The raw companion remains under `TESTING.Transmission`.
+
+### Generic BARO
+
+- Replaced `EVEREST_TEST_BARO_0133_KPA` with production `GENERIC_BAROMETRIC_PRESSURE_0133`.
+- The database contained 16/16 valid responses at 100 kPa even though the former testing widget displayed blank.
+- The command, response and formula were valid; the blank was a Pelican display/widget-association issue rather than an unsupported PID.
+- Poll interval changed from 10 to 5 seconds to populate the fresh widget more promptly.
+
+## Corrected testing interpretation
+
+- F470 is now described as a Ford boost-control mirror of standardized 0170, not a VGT-percentage packet.
+- F470 states 5, 6 and 10 occurred during normal driving and are not regeneration-specific.
+- F471 final states 1 and 2 are ordinary open-loop and closed-loop VGT control.
+- F47A remains alive but undecoded; no formula or production promotion was assigned.
+- F48B and shifted EGT candidates were not polled in this drive and remain unchanged.
+
+## Odometer confirmation
+
+The production 01A6 raw/10 odometer increased from 28,807.0 km to 28,826.4 km over the 19.4 km session. Its description is updated from a working candidate to a confirmed incremental odometer.
+
+## Privacy note
+
+The source Pelican database contains the full VIN and the screenshots contain identifiable route information. Keep the archive private or sanitise it before public sharing. No VIN, registration or full vehicle identifier is reproduced here.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 82 |
+| Signals | 143 |
+| Testing signals | 57 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 0 |
+| Commands removed | 0 |
+| Signal IDs added | 14 |
+| Signal IDs removed/replaced | 3 |
+| Net signal change | +11 |
+| Production signals modified | Odometer description only; no existing production formula, path or ID changed |
+| Removed signals | 3 superseded TESTING IDs, each replaced by a production equivalent |
+| Added signals | 14 production signal IDs |
+| Path changes | BARO to Engine.Generic; TCC scalar to Transmission; exhaust flow to Fuel.Generic |
+| Formula changes | New decoded formulas only; no existing formula changed |
+| Existing production formulas changed | 0 |
+| Connectable changes | 0 |
+
+## Removed or replaced signal IDs
+
+- `EVEREST_TEST_EXHAUST_FLOW_019E_DIV20_CANDIDATE` — replaced by correctly scaled production exhaust flow.
+- `EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_CANDIDATE` — replaced by production TCC apply-command scalar without unproven pressure wording.
+- `EVEREST_TEST_BARO_0133_KPA` — replaced by confirmed generic production BARO.
+
+## Commit message
+
+```text
+Promote decoded Everest packet signals for v0.7.23
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.23 directly from the supplied v0.7.22 default.json and testing log.
+
+Promoted decoded SAE 019D fuel rates, 016D fuel-rail command/actual/temperature, 0170 boost command/actual/status, 019E engine exhaust flow, Ford F471 VGT command/actual/status, the TCC apply-command scalar and generic barometric pressure.
+
+Preserved all raw packet companions, established production signals, battery items and connectables. Corrected F470/F471 state descriptions after the normal drive proved their transitions are ordinary turbo-control states rather than regeneration-specific indicators. Replaced only three superseded testing IDs and made no existing production formula changes.
 ```
 
