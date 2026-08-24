@@ -10,19 +10,18 @@ signalsets/v3/default.json
 
 ## Current release
 
-Current validated build: **v0.7.25 — confirmed regeneration evidence and prefix-scout cleanup**.
+Current validated build: **v0.7.26 — conservative BCM battery TESTING expansion and battery cleanup**.
 
-The pack contains 82 commands and 135 signals. Of these, 98 are production signals and 37 remain isolated under `TESTING.*`.
+The pack contains 87 commands and 141 signals. Of these, 97 are production signals and 44 remain isolated under `TESTING.*`.
 
 ## Latest release highlights
 
-- Recorded a complete 24 August automatic DPF regeneration from a `220610` peak of 79.21% to a 23.51% minimum.
-- Confirmed that `220610` is a strong internal soot/fullness model but not the dashboard's exact displayed percentage, especially near regeneration completion.
-- Identified approximately 11:30:54 as the completion boundary, when F48B average interval and distance recalculated together from 344 to 330 minutes and 186 to 178 km.
-- Reconfirmed F478 exhaust temperatures up to 643.2 °C and positive, load-coherent F47A DPF inlet/outlet pressure through the burn.
-- Reconfirmed regeneration-specific divergence between the two production `019D` fuel-rate fields.
-- Removed seven obsolete prefix-dominated first-word TESTING scouts while retaining correctly aligned raw companions and unresolved fields.
-- Changed no production formula, command, path, connectable or battery signal.
+- Added a dedicated `TESTING.BMS` group with five module-specific, read-only BCM address leads on `726   72E`.
+- Added raw-only cumulative-discharge scouts for sleep, running and engine-off states; their identities, widths, scaling and units remain unconfirmed.
+- Added raw and candidate views for battery temperature DID `4029` and older-Ford high-resolution current DID `4090`.
+- Removed the disproved `EVEREST_BATTERY_CHARGE_4028_DIV255` comparison. DID `4028` is direct state of charge: raw 85 matched FORScan's 85%, while the divided comparison incorrectly showed 33%.
+- Confirmed DID `4027` as a battery-age counter in days; the existing raw*24 hours view remains valid.
+- Preserved all other production Battery signals and made no connectable changes.
 
 ## Confirmed production highlights
 
@@ -32,7 +31,7 @@ The pack contains 82 commands and 135 signals. Of these, 98 are production signa
 - Engine speed, load, coolant temperature, oil temperature, manifold pressure, boost command/actual, VGT command/actual and torque signals.
 - Generic MAF, MAP, barometric pressure, fuel rates, exhaust flow and fuel-rail pressure/temperature.
 - Fuel level, range, odometer and vehicle speed.
-- Battery voltage, charge, current, age and alternator current.
+- Battery voltage, direct state of charge, current, age and alternator current.
 
 ## Important DPF interpretation
 
@@ -42,6 +41,8 @@ F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E
 
 ## High-value remaining testing work
 
+- Compare the new `TESTING.BMS` values directly with FORScan in the same vehicle state. Treat negative responses as evidence and do not infer formulas from a single plausible number.
+- Obtain a FORScan communication trace for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `V_BATT_BCM` and `BATT_V_INF`; no unverified Pelican definitions have been added for these labels.
 - Identify the unit and exact meaning of the secondary `220610` soot-model word, which fell from 17.43 to 1.61 during the latest burn.
 - Perform one more deliberate simultaneous comparison of Ford F46D/F470 mirrors against standardized `016D`/`0170` before considering removal.
 - Replace or retire fixed-offset gauge-boost testing if a reliable atmospheric-reference workflow becomes available.
@@ -57,6 +58,7 @@ F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E
 6. Ford-specific confirmed signals use established `EVEREST_*` or `FORD_*` IDs.
 7. Ranger definitions are reference candidates only; actual Everest responses take precedence.
 8. Every release is checked for JSON validity, duplicate IDs, malformed commands, accidental production changes and TESTING path containment.
+9. Battery experiments are read-only and module-specific; do not add BMS reset/write routines or broadcast `7DF` polling.
 
 ## References
 
