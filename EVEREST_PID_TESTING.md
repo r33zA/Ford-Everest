@@ -2,7 +2,7 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-08-24 v0.7.25 confirmed regeneration evidence and prefix-scout cleanup  
+Version: 2026-08-24 v0.7.26 conservative BCM battery TESTING expansion and battery cleanup  
 Aligned default file: `default.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
@@ -3156,4 +3156,137 @@ Recorded a complete 24 August automatic DPF regeneration in which the internal 2
 Removed seven obsolete first-word TESTING scouts whose values combined fixed packet support bytes with the first useful field. Retained aligned raw companions, secondary soot-model testing and Ford mirror fields that still have a defined comparison purpose.
 
 No commands, production IDs, production formulas, paths, connectables or battery signals were changed or removed.
+```
+
+# v0.7.26 — Conservative BCM battery TESTING expansion and battery cleanup
+
+Aligned default file: `default.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Compared the FORScan battery page with the current Pelican Battery widgets.
+- Confirmed that DID `4028` is direct battery state of charge and removed the disproved `/255` comparison signal.
+- Confirmed that DID `4027` is battery age in days and clarified both existing production descriptions without changing either formula.
+- Added five low-priority, read-only BCM commands under root `TESTING.BMS` using module-specific `726   72E` addressing.
+- Added raw companions for every new address and engineering candidates only where an established older-Ford formula provides a testable hypothesis.
+- Added no guessed definitions for FORScan labels whose addresses remain unknown.
+- Added no reset, control, write, session-start or broadcast command.
+
+## FORScan and Pelican battery comparison
+
+The paired screenshots supplied direct evidence for the existing production battery definitions:
+
+| Item | FORScan | Pelican | Decision |
+| --- | ---: | ---: | --- |
+| Battery state of charge | 85% | 85% from `4028` raw | Direct raw-percent production signal confirmed |
+| `4028` `/255` comparison | — | 33% | Disproved and removed |
+| Battery age | 10 days | raw 10 and 240 hours | Raw day counter and raw*24 hours conversion confirmed |
+| BCM voltage/current | Different capture state | Existing Pelican values plausible | Existing `402A` and `402B` formulas preserved |
+
+The screenshots were taken in different electrical states, so their instantaneous voltage and current values must not be compared numerically as if they were simultaneous.
+
+## Removed production comparison signal
+
+- `EVEREST_BATTERY_CHARGE_4028_DIV255`
+
+DID `4028` returned a raw value of 85 when FORScan displayed 85% state of charge. Applying `raw*100/255` produced the incorrect 33% widget. The correct production signal `EVEREST_BATTERY_SOC_4028_726` remains unchanged, and the shared `224028` command remains in the pack.
+
+## Confirmed battery-age interpretation
+
+- `EVEREST_AUX_12V_BATTERY_AGE_HOURS_4027` remains the raw 16-bit day counter multiplied by 24 to display hours.
+- `EVEREST_BATTERY_AGE_SCALAR_4027` remains the unconverted raw counter, now explicitly named and described as days.
+- A raw value of 10 matched FORScan's 10 days in service and Pelican's 240-hour conversion.
+
+No formula, ID, path or command changed for either signal.
+
+## Added `TESTING.BMS` commands
+
+All additions are read-only UDS service `22` requests sent directly to BCM header `726` with response header `72E`.
+
+| DID | Frequency | Added signals | Purpose |
+| --- | ---: | ---: | --- |
+| `401C` | 1 | 1 raw | Cross-platform lead for `CUM_DIS_SLP` |
+| `4021` | 1 | 1 raw | Cross-platform lead for `CUM_DIS_RUN` |
+| `4026` | 1 | 1 raw | Cross-platform lead for `CUM_DIS_OFF` |
+| `4029` | 5 | 1 raw + 1 `A-40 °C` candidate | Battery-temperature hypothesis |
+| `4090` | 5 | 1 raw + 1 `raw/16-511.7 A` candidate | Older-Ford high-resolution battery-current hypothesis |
+
+The low command frequencies intentionally limit BCM polling while these definitions are exploratory.
+
+## Added TESTING signals
+
+- `EVEREST_TEST_BMS_CUM_DIS_SLP_401C_RAW16`
+- `EVEREST_TEST_BMS_CUM_DIS_RUN_4021_RAW16`
+- `EVEREST_TEST_BMS_CUM_DIS_OFF_4026_RAW16`
+- `EVEREST_TEST_BMS_BATTERY_TEMP_4029_RAW8`
+- `EVEREST_TEST_BMS_BATTERY_TEMP_4029_A_MINUS_40`
+- `EVEREST_TEST_BMS_HIGH_RES_CURRENT_4090_RAW16`
+- `EVEREST_TEST_BMS_HIGH_RES_CURRENT_4090_DIV16_MINUS_511_7`
+
+The three cumulative-discharge definitions intentionally expose raw 16-bit values only. Their exact identity, payload width, scaling, unit and retention behaviour are not yet proven. Do not infer amp-hours, amp-seconds or another unit until a simultaneous FORScan comparison or communication trace establishes it.
+
+DID `4029` is a distinct candidate from the historically failed `22400A` battery-temperature request; adding `4029` does not resurrect `400A`.
+
+DID `4090` must not yet be labelled `BAT_CUR_PRD`. Its candidate formula is included to test an older-Ford definition, not to claim that the MY25.25 Everest uses the same identity or scale.
+
+## Deliberately not added
+
+No Pelican definitions were invented for:
+
+- `BAT_CHRG_MODE`
+- `BAT_CUR_PRD`
+- `V_BATT_BCM`
+- `BATT_V_INF`
+
+The next reliable step for those items is a FORScan communication trace containing the outgoing BCM request and matching positive response. A FORScan display label alone is not enough to determine its DID, payload location, enumeration or formula.
+
+No broadcast `7DF` fallback was added. No BMS reset, write routine, diagnostic control or keep-awake command was added.
+
+## Test procedure
+
+1. Open `TESTING.BMS` with the vehicle in a stable state and record whether every DID returns data, a negative response or no response.
+2. Capture the raw and candidate values beside FORScan at the same time; screenshot filenames should state ignition/engine state.
+3. For `4029`, compare after an overnight soak, shortly after start and after a longer drive.
+4. For `4090`, compare with FORScan `BAT_CURRENT` and `BAT_CUR_PRD`, Pelican `402B` current and alternator current during charging and discharge.
+5. For the cumulative counters, compare raw values across sleep, ignition-off and running periods. Do not reset the BMS to force a change.
+6. Remove candidates that repeatedly return NRC `31` out-of-range. Keep responsive raw values until identity and scaling are resolved.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 87 |
+| Signals | 141 |
+| Testing signals | 44 |
+| Production signals | 97 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Malformed signals | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 5 |
+| Commands removed | 0 |
+| Signals added | 7 |
+| Signals removed | 1 disproved production comparison |
+| Production signals modified | 2 descriptions/names only; 1 explicit removal |
+| Existing production formulas changed | 0 |
+| Connectable changes | 0 |
+| Path changes | Added `TESTING.BMS` only |
+
+## Commit message
+
+```text
+Add conservative BCM battery testing for Everest PID v0.7.26
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.26 from the validated v0.7.25 source files.
+
+Added a dedicated TESTING.BMS group with five low-priority, read-only BCM address leads for cumulative discharge, battery temperature and high-resolution battery current. Every unconfirmed command includes a raw companion, while engineering conversions are limited to the established older-Ford A-40 temperature and raw/16-511.7 current hypotheses.
+
+Removed the disproved 4028 div255 battery-charge comparison after simultaneous FORScan and Pelican evidence showed that 4028 is already a direct raw percentage. Confirmed 4027 as battery age in days and clarified its existing raw and hours-conversion descriptions without changing formulas.
+
+Preserved the correct 4028 state-of-charge signal, 402A voltage, 402B current, alternator current and all other production battery items. Added no guessed definitions for BAT_CHRG_MODE, BAT_CUR_PRD, V_BATT_BCM or BATT_V_INF, and added no broadcast, reset, write or control command.
 ```
