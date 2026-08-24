@@ -2,8 +2,8 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-07-23 v0.7.24 standard packet mirrors, DPF pressure and testing cleanup  
-Aligned default file: `default_everest_my25_25_v0_7_24_standard_mirror_promotions.json` / `signalsets/v3/default.json` target  
+Version: 2026-08-24 v0.7.25 confirmed regeneration evidence and prefix-scout cleanup  
+Aligned default file: `default.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
 ## Update focus
@@ -2584,8 +2584,8 @@ Overall 220610 reduction was 47.63 percentage points across approximately 19.5 m
 | State | C | D | E | G |
 | --- | ---: | ---: | ---: | ---: |
 | Previous normal driving | 243-244 | 0 | 232-233 | 131 |
-| Active regeneration | 218→166 | 1 | 1 | 139 |
-| Immediately post-regeneration | 121→112 | 0 | 180 | 107 |
+| Active regeneration | 218 166 | 1 | 1 | 139 |
+| Immediately post-regeneration | 121 112 | 0 | 180 | 107 |
 
 Byte D returned to zero approximately 41 seconds before the distance-since-regen reset. It is added as both a raw scout and an `offon` testing candidate. It remains under `TESTING.Regen_BIX` pending confirmation in one more regeneration.
 
@@ -2989,3 +2989,171 @@ Corrected Ford F46A, F46D, F478, F47A and F48B after complete-drive and retained
 No commands, battery items, connectables or existing production formulas were changed.
 ```
 
+# v0.7.25 — Confirmed regeneration evidence and prefix-scout cleanup
+
+Aligned default file: `default.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Analysed the complete 24 August Pelican session: 18,650 database rows, 13,122 positive payloads, approximately 34.3 minutes, 30.1 km and 109 supporting screenshots.
+- Confirmed another automatic DPF regeneration, with `220610` falling from a 79.21% peak to a 23.51% minimum.
+- Located the strongest regeneration-completion boundary at approximately 11:30:54, when the F48B rolling interval and distance values recalculated together.
+- Strengthened existing production descriptions without changing formulas, units, paths or IDs.
+- Removed seven prefix-dominated first-word TESTING scouts that combined a fixed support byte with the first useful data byte and were not valid engineering values.
+- Preserved aligned raw companions and unresolved packet fields that still have a defined diagnostic purpose.
+
+## Complete-drive summary
+
+| Evidence | Result |
+| --- | ---: |
+| Pelican database rows | 18,650 |
+| Positive payloads | 13,122 |
+| Session duration | Approximately 34.3 minutes |
+| Odometer movement | 30.1 km |
+| DPF fullness | 79.21% peak to 23.51% minimum |
+| Sustained decline | Approximately 11:11 to 11:30 |
+| Likely completion transition | 11:30:54 |
+| Supporting screenshots | 109 |
+| Retained custom-PID negative responses | 0 |
+
+The session contained one negative response from a routine discovery request. `221E12`, `221E1C` and `221E1F` each produced one isolated no-data response among approximately one thousand successful replies. These transient responses do not justify removing any transmission production signal.
+
+## DPF fullness and dashboard relationship
+
+Production `EVEREST_DPF_FULLNESS_0610` remains strongly validated as an internal DPF fullness / soot-load model using `raw / 100` percent. It is not the dashboard's exact modelled percentage, particularly during the final phase of a regeneration.
+
+| Approximate time | Dashboard | Pelican `220610` |
+| --- | ---: | ---: |
+| 11:25 | 50% | Approximately 48% |
+| 11:28 | 20% | Approximately 30-32% |
+| 11:32 | 10% | Approximately 24% |
+
+No formula change was made. The production description now states the distinction explicitly.
+
+## Secondary `220610` soot model
+
+The second 16-bit word remains one of the most valuable unresolved TESTING fields:
+
+- first value: 15.65;
+- maximum: 17.43;
+- minimum during the burn: 1.61;
+- final value after a small rebound: 2.43;
+- correlation with the primary DPF model: approximately 0.903.
+
+The behaviour is compatible with a second soot-mass or modelled-load quantity, but its identity and unit are not proven. Both the raw and `/100` views remain in `TESTING.Regen_BIX`; no production promotion was made.
+
+Packet observations across all 203 responses:
+
+- word 3 exactly duplicated word 1 every time and does not justify another widget;
+- word 4 stayed above word 1, while its difference contracted from approximately 4.10 to 1.33 percentage points through the burn;
+- word 4 remains unidentified and was not added.
+
+## F48B regeneration completion evidence
+
+F48B provided a coherent post-completion transition:
+
+| Field | Before completion | At/after completion |
+| --- | ---: | ---: |
+| Normalized regeneration trigger | 71.76% | 38.82-39.22% |
+| Average regeneration interval | 344 min | 330 min |
+| Average regeneration distance | 186 km | 178 km |
+
+The interval and distance changed together at approximately 11:30:54, when `220610` was approximately 23.52% and had effectively stopped falling. This strongly supports their interpretation as rolling regeneration-history values recalculated after a completed burn.
+
+The actual F48B status byte remained zero before, during and after the regeneration. The normalized-trigger field changed in coarse steps but did not behave as a binary live-active indicator. No F48B active-regeneration signal was added or restored.
+
+## Exhaust-temperature confirmation
+
+Ford F478 provided strong physical confirmation of active aftertreatment heating:
+
+| Signal | Active-burn maximum | Post-completion sample |
+| --- | ---: | ---: |
+| Bank 1 sensor 1 | 496.3 °C | 284.2 °C |
+| Bank 1 sensor 2 | 643.2 °C | 320.0 °C |
+
+The packet's third temperature continued to duplicate sensor 2 exactly, so no redundant third widget was added. Existing production F478 formulas remain unchanged.
+
+## DPF pressure confirmation
+
+Across 26 F47A responses:
+
+- inlet pressure ranged from 0.9 to 16.7 kPa;
+- outlet pressure ranged from 0.1 to 6.6 kPa;
+- calculated inlet-minus-outlet pressure remained positive from 0.8 to 12.0 kPa;
+- inlet and outlet correlation was approximately 0.890;
+- both fields moved coherently with airflow and load.
+
+This reconfirms F47A as DPF inlet and outlet pressure, not turbo speed. Production formulas remain unchanged.
+
+## Fuel, airflow and control confirmation
+
+- The two production `019D` fuel rates correlated at approximately 0.997 across 48 samples. Vehicle fuel rate was equal to engine fuel rate 22 times and higher 26 times, with a maximum difference of 0.88 g/s during the burn.
+- Production `019E` exhaust flow correlated with generic MAF at approximately 0.983.
+- F471 commanded and actual VGT position correlated at approximately 0.9994, with median absolute error below one percentage point.
+- `016D` commanded and actual fuel-rail pressure correlated at approximately 0.9996 in the three captured samples.
+- EGR commanded and actual values correlated at approximately 0.999 across the usable active-page samples.
+- TCC desired slip and apply command continued to show coherent locked and unlocked behaviour.
+
+These findings strengthen existing production signals; they do not require new production widgets.
+
+## Removed TESTING signals
+
+The following scouts combined a fixed support byte with the first aligned data byte. They were useful during packet discovery but are not standalone engineering values and are superseded by aligned raw or production fields:
+
+- `EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_RAW16_AB`
+- `EVEREST_TEST_EXHAUST_MULTI_EGT_F478_RAW16_AB`
+- `EVEREST_TEST_RANGER_PACKET_70_RAW16_AB`
+- `EVEREST_TEST_VGT_COMMANDED_7E0_F470_RAW16_AB`
+- `EVEREST_TEST_VGT_ACTUAL_7E0_F471_RAW16_AB`
+- `EVEREST_TEST_RANGER_PACKET_6D_RAW16_AB`
+- `EVEREST_TEST_RANGER_PACKET_69_RAW16_AB`
+
+No command was removed because each affected command still contains aligned raw companions, production signals or an independent mirror needed for continued comparison.
+
+## Retained TESTING priorities
+
+- `220610` secondary-word raw and `/100` views.
+- Fixed-offset MAP gauge-boost comparisons pending a better atmospheric-reference test.
+- F46D aligned Ford fuel-pressure mirror fields for one more deliberate simultaneous comparison with standardized `016D`.
+- F470 aligned Ford boost-control mirror fields for one more deliberate simultaneous comparison with standardized `0170`.
+- Other aligned raw companions whose packet-level diagnostic purpose remains documented.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 82 |
+| Signals | 135 |
+| Testing signals | 37 |
+| Production signals | 98 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Malformed signals | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 0 |
+| Commands removed | 0 |
+| Signals added | 0 |
+| Testing signals removed | 7 |
+| Production signals modified | 0 formulas; 4 descriptions only |
+| Existing production formulas changed | 0 |
+| Connectable changes | 0 |
+| Battery changes | 0 |
+
+## Commit message
+
+```text
+Record August DPF regeneration and clean prefix scouts for Everest PID v0.7.25
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.25 from the validated v0.7.24 source files.
+
+Recorded a complete 24 August automatic DPF regeneration in which the internal 220610 fullness model peaked at 79.21% and fell to 23.51%. Documented dashboard divergence during the final burn phase, F48B's simultaneous post-completion history update, exhaust temperatures up to 643.2 °C, coherent DPF inlet/outlet pressure and regeneration-specific fuel-rate divergence.
+
+Removed seven obsolete first-word TESTING scouts whose values combined fixed packet support bytes with the first useful field. Retained aligned raw companions, secondary soot-model testing and Ford mirror fields that still have a defined comparison purpose.
+
+No commands, production IDs, production formulas, paths, connectables or battery signals were changed or removed.
+```
