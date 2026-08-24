@@ -401,7 +401,7 @@
             "unit": "percent"
           },
           "name": "DPF / exhaust filter fullness",
-          "description": "Everest-confirmed DPF fullness / soot-load estimate using raw/100 percent. It fell from 73.53% to 25.90% during a captured automatic regeneration and was independently validated by dashboard decline, F48B aftertreatment data, EGR reopening and the distance-since-regen reset. A later normal drive showed 52.90% when the dashboard displayed 55%, and 57.39% when the dashboard displayed 65%; the value is therefore a strong internal soot/fullness measure but not the dashboard's exact modelled percentage."
+          "description": "Everest-confirmed internal DPF fullness / soot-load estimate using raw/100 percent. It has fallen coherently through multiple captured automatic regenerations. In the 24 August capture it dropped from a 79.21% peak to 23.51%; the dashboard moved from 50% to 20% and then 10% while this signal was approximately 48%, 30-32% and 24%. It is therefore a strong internal soot/fullness measure, not the dashboard's exact modelled percentage, especially near regeneration completion."
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_RAW16_AB",
@@ -1609,17 +1609,6 @@
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_RAW16_AB",
-          "path": "TESTING.Fuel_BIX",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Ford fuel-pressure mirror F46D raw AB",
-          "description": "Testing raw first-word companion for Ford DID F46D. The response mirrors the standardized 016D fuel-pressure-control packet and this word includes the 0x07 support mask."
-        },
-        {
           "id": "EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_SHIFTED_BC_RAW16",
           "path": "TESTING.Fuel_BIX",
           "fmt": {
@@ -1665,17 +1654,6 @@
       },
       "freq": 10,
       "signals": [
-        {
-          "id": "EVEREST_TEST_EXHAUST_MULTI_EGT_F478_RAW16_AB",
-          "path": "TESTING.EGT",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST exhaust multi-EGT F478 raw AB",
-          "description": "Testing raw packet companion for Ford DID F478. The response mirrors the standardized PID 78 exhaust-gas-temperature packet and this first word includes the 0x07 support mask."
-        },
         {
           "id": "EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_BC_RAW16",
           "path": "TESTING.EGT",
@@ -1894,17 +1872,6 @@
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_RANGER_PACKET_70_RAW16_AB",
-          "path": "TESTING.Boost_BIX",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST boost-control packet 0170 raw AB",
-          "description": "Testing raw companion for the confirmed SAE boost-control packet. The apparent first word includes the 0x07 support mask and is not itself a pressure value; correctly aligned production command/actual signals begin at byte B."
-        },
-        {
           "id": "EVEREST_TEST_RANGER_PACKET_70_SHIFTED_BC_RAW16",
           "path": "TESTING.Boost_BIX",
           "fmt": {
@@ -2001,17 +1968,6 @@
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_RAW16_AB",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Ford boost-control mirror F470 raw AB",
-          "description": "Testing raw first-word companion for Ford DID F470. The response mirrors the SAE 0170 boost-control packet structure; this word includes the support byte and must not be interpreted as a VGT percentage."
-        },
-        {
           "id": "EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_BC_RAW16",
           "path": "TESTING.VGT_BIX",
           "fmt": {
@@ -2057,17 +2013,6 @@
       },
       "freq": 10,
       "signals": [
-        {
-          "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_RAW16_AB",
-          "path": "TESTING.VGT",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST VGT-control packet F471 raw AB",
-          "description": "Testing raw first-word companion for Ford DID F471. The word combines the 0x07 support mask with the first VGT position byte; use the correctly aligned raw and production fields instead of decoding this word directly."
-        },
         {
           "id": "EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_B_RAW8",
           "path": "TESTING.VGT_BIX",
@@ -2307,17 +2252,6 @@
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_RANGER_PACKET_6D_RAW16_AB",
-          "path": "TESTING.Fuel_BIX",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel-pressure packet 016D raw AB",
-          "description": "Testing raw companion for the confirmed SAE fuel-pressure-control packet. The apparent first word includes the 0x07 support mask and is not a rail-pressure measurement."
-        },
-        {
           "id": "EVEREST_TEST_RANGER_PACKET_6D_SHIFTED_BC_RAW16",
           "path": "TESTING.Fuel_BIX",
           "fmt": {
@@ -2471,17 +2405,6 @@
       "freq": 10,
       "signals": [
         {
-          "id": "EVEREST_TEST_RANGER_PACKET_69_RAW16_AB",
-          "path": "TESTING.EGR_BIX",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST EGR-control packet 0169 raw AB",
-          "description": "Testing raw packet companion retained for SAE Mode 01 PID 69. The apparent first word includes the 0x07 support mask and the commanded-EGR byte; use the aligned production fields for engineering values."
-        },
-        {
           "id": "EVEREST_TEST_RANGER_PACKET_69_BYTE_B_RAW8",
           "path": "TESTING.EGR_BIX",
           "fmt": {
@@ -2619,7 +2542,7 @@
             "unit": "percent"
           },
           "name": "DPF normalized regeneration trigger",
-          "description": "Confirmed normalized trigger for DPF regeneration from Ford DID F48B using byte C raw*100/255 percent. It fell from 85.49% to 43.92% during the retained active burn and rose from 87.06% to 95.29% in the latest non-regeneration drive."
+          "description": "Confirmed normalized trigger for DPF regeneration from Ford DID F48B using byte C raw*100/255 percent. It fell from 99.61% to 38.82% during the 24 August automatic burn and changed in coarse steps as the internal soot model declined. It is an aftertreatment model value, not a live active-regeneration flag."
         },
         {
           "id": "EVEREST_DPF_AVERAGE_REGEN_INTERVAL_F48B",
@@ -2631,7 +2554,7 @@
             "unit": "minutes"
           },
           "name": "DPF average regeneration interval",
-          "description": "Confirmed average time between DPF regenerations from Ford DID F48B bytes D/E, measured in minutes. Latest normal-driving values were 203-214 minutes; the prior active session moved from 257 to 180 minutes. The former byte-D active-regeneration candidate incorrectly treated the high byte of this word as a flag."
+          "description": "Confirmed average time between DPF regenerations from Ford DID F48B bytes D/E, measured in minutes. During the 24 August burn it remained 343-344 minutes, then recalculated to 330 minutes at the regeneration-completion boundary. The former byte-D active-regeneration candidate incorrectly treated the high byte of this word as a flag."
         },
         {
           "id": "EVEREST_DPF_AVERAGE_REGEN_DISTANCE_F48B",
@@ -2643,7 +2566,7 @@
             "unit": "kilometers"
           },
           "name": "DPF average regeneration distance",
-          "description": "Confirmed average distance between DPF regenerations from Ford DID F48B bytes F/G, measured in kilometres. Latest normal-driving values were 117-120 km; the prior active session moved from 139 to 107 km."
+          "description": "Confirmed average distance between DPF regenerations from Ford DID F48B bytes F/G, measured in kilometres. During the 24 August burn it remained 186 km, then recalculated to 178 km at the regeneration-completion boundary. This rolling history value is not a live active-regeneration flag."
         }
       ]
     }
