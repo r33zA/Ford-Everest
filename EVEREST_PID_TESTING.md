@@ -2,7 +2,7 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-08-25 v0.7.27 FORScan-correlated BCM validation and negative-response cleanup  
+Version: 2026-08-25 v0.7.28 afternoon-drive validation and resolved TESTING cleanup  
 Aligned default file: `default.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
@@ -3498,4 +3498,153 @@ Confirmed BCM DIDs 401C, 4021 and 4026 as the raw 16-bit FORScan CUM_DIS_SLP, CU
 Removed DIDs 4029 and 4090 plus their four testing signals after every request returned NRC 31 Request Out Of Range across the complete test drive. Strengthened production descriptions for battery age 4027, SOC 4028, BCM voltage 402A and battery current 402B using matched FORScan and Pelican wire evidence.
 
 Added no speculative BAT_CHRG_MODE, BAT_CUR_PRD, BATT_V_INF or VBAT_B-E definition. Changed no production formula, ID, path or connectable.
+```
+
+# v0.7.28 — Afternoon-drive validation and resolved TESTING cleanup
+
+Date: 25 August 2026
+
+## Update focus
+
+- Used the complete afternoon Pelican session and the driver's state observations to resolve TCC, fuel-rate, BMS, fuel-pressure-mirror and boost-testing questions.
+- Removed nine testing signals whose comparison purpose is complete or whose method is no longer considered reliable.
+- Removed the now-empty `7E0   7E8 22F46D` command.
+- Kept all production decodes, including both `019D` fuel-rate words.
+- Kept the user's preferred `+4 km/h` corrected Ford speed as the sole `speed` connectable and retained raw Ford speed as a visible comparison.
+- Promoted no signals and changed no production formula, ID or path.
+
+## Complete-drive summary
+
+| Item | Result |
+| --- | --- |
+| Session span | Approximately 14:47:26–15:07:49 |
+| Database rows | 10,856 |
+| Distinct commands | 71 observed |
+| Distance | Approximately 10.1 km (`30797.9   30808.0`) |
+| DPF fullness | `38.72%   43.22%`; no regeneration captured |
+| Transmission temperature | `30.0   62.4375 °C` |
+| Persistent custom-command negative responses | None identified |
+
+The session is principally a validation and cleanup drive. It does not justify a new production promotion, but it materially reduces TESTING clutter.
+
+## TCC desired-slip and apply-command confirmation
+
+The raw `1E35` field again showed `4092`, which decodes through the production `/4` formula to `1023 rpm`. In this session it appeared mainly at a stop or very low speed with `1E3C` apply command at zero, supporting the existing open/unlocked sentinel interpretation.
+
+The raw `1E35` field also reached zero at approximately 35–57 km/h while `1E3C` was non-zero. Several of those samples occurred with zero accelerator input, confirming that zero desired slip is a legitimate locked/coasting target rather than a dead value.
+
+Decision:
+
+- Keep `EVEREST_TCC_DESIRED_SLIP_1E35` and `EVEREST_TCC_COMMANDED_PRESSURE_1E3C` in production.
+- Remove their raw AB testing companions because the raw-to-production relationship and operating states are now sufficiently understood.
+- Continue treating the `1E3C` engineering unit cautiously; this release strengthens behaviour wording without changing its formula or unit.
+
+## Alternative fuel-rate `019D` confirmation
+
+The database contained 13 sampled `019D` packets. AB and CD were equal in all recorded ordinary-driving samples, including `16/16` at idle and `226/226` under load. The driver also directly observed both raw words at zero during coasting, which is coherent with deceleration fuel cut.
+
+Earlier confirmed regeneration evidence showed the two words diverging. Therefore:
+
+- Keep both decoded production `019D` signals; they can represent distinct channels even though they normally agree.
+- Remove both raw AB/CD testing companions because they no longer add useful dashboard information.
+
+## BMS cumulative-counter progression
+
+The confirmed raw cumulative counters progressed between the earlier and afternoon sessions as follows:
+
+| FORScan meaning | DID | Earlier | Afternoon | Change |
+| --- | --- | ---: | ---: | ---: |
+| Sleep discharge | `401C` | 15 | 16 | +1 |
+| Running discharge | `4021` | 5 | 5 | 0 |
+| Engine-off discharge | `4026` | 12 | 13 | +1 |
+
+This is strong semantic support for the three FORScan labels: the sleep and engine-off counters advanced while the running counter did not. It does not reveal whether the counters use amp-hours, an internal event bucket or another scale.
+
+Decision: keep all three raw `TESTING.BMS` signals at their conservative 60-second polling interval and do not add guessed units or conversions.
+
+## `F46D` fuel-pressure mirror resolution
+
+Timestamp-paired samples showed the shifted `F46D` words closely tracking standardized production `016D` requested and actual fuel-rail pressure fields. The companion temperature/status byte also matched. Seven pairs within 0.2 seconds had mean absolute raw differences of approximately 42 counts for commanded pressure and 59 counts for actual pressure, consistent with normal sampling stagger rather than a distinct measurement.
+
+Decision: remove the three `F46D` mirror scouts and their now-empty command. The standardized `016D` production command remains the preferred definition.
+
+## Fixed-offset boost testing resolution
+
+Generic `010B` MAP reached its 255 kPa absolute ceiling during the drive. The fixed-offset gauge-boost signals have completed their comparison purpose and cannot provide reliable gauge boost across changing atmospheric pressure or above the 8-bit ceiling.
+
+Decision: remove both fixed-offset `010B` gauge-boost testing signals. Do not restore them unless a later design uses a live atmospheric reference and clearly documents the upper-range limitation.
+
+## Speed connectable decision
+
+The driver confirmed the `+4 km/h` corrected Ford speed is the preferred value because it matches the dashboard. It remains unchanged and retains `suggestedMetric: speed`.
+
+The raw Ford extended speed remains visible for comparison, but its duplicate `speed` connectable was removed so Pelican has one intentional preferred source. This is a connectable-selection change only; neither speed formula changed.
+
+## Removed TESTING signals
+
+- `EVEREST_TEST_TCC_DESIRED_SLIP_7E1_1E35_RAW16_AB`
+- `EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_RAW16_AB`
+- `EVEREST_TEST_FUEL_RATE_ALT_019D_RAW16_AB`
+- `EVEREST_TEST_FUEL_RATE_ALT_019D_RAW16_CD`
+- `EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_SHIFTED_BC_RAW16`
+- `EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_SHIFTED_DE_RAW16`
+- `EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_BYTE_F_RAW8`
+- `EVEREST_TEST_GENERIC_MAP_010B_GAUGE_KPA_FIXED`
+- `EVEREST_TEST_GENERIC_MAP_010B_GAUGE_PSI_FIXED`
+
+Removed command:
+
+- `7E0   7E8 22F46D`
+
+## Retained TESTING priorities
+
+- Determine the engineering unit and transform for confirmed BMS cumulative-discharge DIDs `401C`, `4021` and `4026`.
+- Capture `402B` below raw 127 beside FORScan to finish validating signed battery-current direction.
+- Obtain the wire definitions for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `BATT_V_INF` and `VBAT_B–E` without guessed DID sweeps.
+- Identify the unit and exact meaning of the secondary `220610` soot-model word.
+- Perform a deliberate simultaneous `F470` versus standardized `0170` comparison.
+- Continue searching for a genuine live regeneration-state signal without restoring disproved F48B interpretations.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 84 |
+| Signals | 128 |
+| Testing signals | 31 |
+| Production signals | 97 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Malformed signals | 0 |
+| Empty commands | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 0 |
+| Commands removed | 1 (`22F46D`) |
+| Signals added | 0 |
+| Testing signals removed | 9 |
+| Signals promoted | 0 |
+| Production formulas changed | 0 |
+| Production IDs changed | 0 |
+| Production paths changed | 0 |
+| Connectable changes | Removed duplicate `speed` from raw F40D; corrected `+4 km/h` signal retained |
+
+## Commit message
+
+```text
+Clean resolved testing signals after afternoon validation for Everest PID v0.7.28
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.28 from the validated v0.7.27 files and the complete 25 August afternoon Pelican session.
+
+Strengthened the production TCC interpretation after raw 4092 again behaved as the 1023 rpm open-converter sentinel and raw zero appeared during legitimate locked coasting with non-zero apply command. Confirmed both 019D fuel-rate words agree during ordinary running and can fall to zero during coasting, while retaining both production channels because earlier regeneration evidence showed them diverging.
+
+Confirmed further semantic movement in the three raw BMS cumulative counters: sleep and engine-off advanced by one while running remained unchanged. Their scale remains unresolved, so they stay in TESTING.BMS without guessed engineering units.
+
+Removed resolved raw TCC and fuel-rate companions, the redundant F46D fuel-pressure mirror command and scouts, and the fixed-offset generic MAP boost experiments. Retained the user's preferred +4 km/h corrected Ford speed as the sole speed connectable while keeping raw Ford speed visible as an uncorrected comparison.
+
+Removed nine testing signals and one command. Promoted no signals and changed no production formula, ID or path.
 ```
