@@ -10,18 +10,18 @@ signalsets/v3/default.json
 
 ## Current release
 
-Current validated build: **v0.7.26 — conservative BCM battery TESTING expansion and battery cleanup**.
+Current validated build: **v0.7.27 — FORScan-correlated BCM validation and negative-response cleanup**.
 
-The pack contains 87 commands and 141 signals. Of these, 97 are production signals and 44 remain isolated under `TESTING.*`.
+The pack contains 85 commands and 137 signals. Of these, 97 are production signals and 40 remain isolated under `TESTING.*`.
 
 ## Latest release highlights
 
-- Added a dedicated `TESTING.BMS` group with five module-specific, read-only BCM address leads on `726   72E`.
-- Added raw-only cumulative-discharge scouts for sleep, running and engine-off states; their identities, widths, scaling and units remain unconfirmed.
-- Added raw and candidate views for battery temperature DID `4029` and older-Ford high-resolution current DID `4090`.
-- Removed the disproved `EVEREST_BATTERY_CHARGE_4028_DIV255` comparison. DID `4028` is direct state of charge: raw 85 matched FORScan's 85%, while the divided comparison incorrectly showed 33%.
-- Confirmed DID `4027` as a battery-age counter in days; the existing raw*24 hours view remains valid.
-- Preserved all other production Battery signals and made no connectable changes.
+- Confirmed `401C`, `4021` and `4026` as the Everest BCM DIDs for FORScan `CUM_DIS_SLP`, `CUM_DIS_RUN` and `CUM_DIS_OFF` through exact timestamp-matched raw scalar values.
+- Retained the three cumulative-discharge signals as raw-only `TESTING.BMS` widgets because their engineering conversion and unit remain unresolved.
+- Corrected their polling interval from one second to 60 seconds after the test drive proved `freq: 1` produced approximately one request per second per command.
+- Removed DID `4029` and DID `4090` after each returned NRC `31` Request Out Of Range for all 14 requests across approximately 17 minutes.
+- Strengthened production documentation for battery age `4027`, SOC `4028`, BCM voltage `402A` and battery current `402B` using matched FORScan and Pelican evidence.
+- Changed no production formula, ID, path or connectable.
 
 ## Confirmed production highlights
 
@@ -41,8 +41,9 @@ F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E
 
 ## High-value remaining testing work
 
-- Compare the new `TESTING.BMS` values directly with FORScan in the same vehicle state. Treat negative responses as evidence and do not infer formulas from a single plausible number.
-- Obtain a FORScan communication trace for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `V_BATT_BCM` and `BATT_V_INF`; no unverified Pelican definitions have been added for these labels.
+- Determine the engineering transform and unit for the confirmed raw `CUM_DIS_SLP`, `CUM_DIS_RUN` and `CUM_DIS_OFF` values without guessing from the rounded FORScan display.
+- Capture `402B` below raw 127 beside FORScan to finish validating negative-current direction.
+- Obtain wire definitions for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `BATT_V_INF` and `VBAT_B–E`; no unverified Pelican definitions have been added for these labels. `V_BATT_BCM` is now confirmed as DID `402A`.
 - Identify the unit and exact meaning of the secondary `220610` soot-model word, which fell from 17.43 to 1.61 during the latest burn.
 - Perform one more deliberate simultaneous comparison of Ford F46D/F470 mirrors against standardized `016D`/`0170` before considering removal.
 - Replace or retire fixed-offset gauge-boost testing if a reliable atmospheric-reference workflow becomes available.
