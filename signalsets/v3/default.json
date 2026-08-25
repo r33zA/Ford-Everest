@@ -875,34 +875,6 @@
           },
           "name": "Generic manifold absolute pressure",
           "description": "Generic SAE OBD-II MAP value, confirmed responding on the Everest. Kept under Engine.Generic because it is not an Everest-specific Ford enhanced PID."
-        },
-        {
-          "id": "EVEREST_TEST_GENERIC_MAP_010B_GAUGE_KPA_FIXED",
-          "path": "TESTING.Boost1",
-          "fmt": {
-            "len": 8,
-            "min": -101,
-            "max": 154,
-            "add": -101,
-            "unit": "kilopascal"
-          },
-          "name": "TEST Generic MAP gauge boost 010B fixed offset",
-          "description": "Testing only. Generic MAP converted to approximate gauge boost using fixed sea-level offset A-101 kPa. Watch for 255 kPa absolute cap under high load."
-        },
-        {
-          "id": "EVEREST_TEST_GENERIC_MAP_010B_GAUGE_PSI_FIXED",
-          "path": "TESTING.Boost1",
-          "fmt": {
-            "len": 8,
-            "min": -14.65,
-            "max": 22.34,
-            "mul": 10000,
-            "div": 68947,
-            "add": -14.65,
-            "unit": "psi"
-          },
-          "name": "TEST Generic MAP gauge boost 010B psi fixed offset",
-          "description": "Testing only. Generic MAP converted to approximate gauge boost in psi using fixed sea-level offset. Formula approximately A*0.145038-14.65. Added so 010B can be compared directly against the F40B psi boost candidate. Watch for the 255 kPa absolute cap under high load."
         }
       ]
     },
@@ -1175,8 +1147,7 @@
             "unit": "kilometersPerHour"
           },
           "name": "Vehicle speed Ford extended raw",
-          "description": "Confirmed working Ford extended vehicle speed. Raw value reads about 4 km/h below dashboard; kept as raw speed connectable.",
-          "suggestedMetric": "speed"
+          "description": "Confirmed working Ford extended vehicle speed. Raw value reads about 4 km/h below the dashboard and remains visible as an uncorrected comparison; the corrected signal is the intentionally preferred speed connectable."
         },
         {
           "id": "EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED",
@@ -1591,52 +1562,6 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
-        "22": "F46D"
-      },
-      "freq": 5,
-      "signals": [
-        {
-          "id": "EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_SHIFTED_BC_RAW16",
-          "path": "TESTING.Fuel_BIX",
-          "fmt": {
-            "bix": 8,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Ford fuel-pressure mirror F46D commanded raw",
-          "description": "Testing raw commanded fuel-rail-pressure companion from the Ford F46D mirror. It decodes as raw*10 kPa, but the standardized 016D production signal is preferred to avoid duplicate production widgets."
-        },
-        {
-          "id": "EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_SHIFTED_DE_RAW16",
-          "path": "TESTING.Fuel_BIX",
-          "fmt": {
-            "bix": 24,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST Ford fuel-pressure mirror F46D actual raw",
-          "description": "Testing raw actual fuel-rail-pressure companion from the Ford F46D mirror. Latest command and actual values correlated at r=0.9981; use the standardized 016D production signal for the decoded engineering value."
-        },
-        {
-          "id": "EVEREST_TEST_FUEL_PRESSURE_MIRROR_F46D_BYTE_F_RAW8",
-          "path": "TESTING.Fuel_BIX",
-          "fmt": {
-            "bix": 40,
-            "len": 8,
-            "max": 255,
-            "unit": "scalar"
-          },
-          "name": "TEST Ford fuel-pressure mirror F46D temperature raw",
-          "description": "Testing raw fuel-rail-temperature companion from the Ford F46D mirror. It decodes as raw-40 °C; the standardized 016D production signal is preferred."
-        }
-      ]
-    },
-    {
-      "hdr": "7E0",
-      "rax": "7E8",
-      "cmd": {
         "22": "F478"
       },
       "freq": 10,
@@ -1706,17 +1631,6 @@
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_TEST_TCC_DESIRED_SLIP_7E1_1E35_RAW16_AB",
-          "path": "TESTING.Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST TCC desired slip 1E35 raw AB",
-          "description": "Testing raw companion retained for the promoted TCC desired-slip signal. Raw 4092 corresponds to the observed 1023 rpm open/unlocked sentinel under the confirmed raw/4 decode."
-        },
-        {
           "id": "EVEREST_TCC_DESIRED_SLIP_1E35",
           "path": "Transmission",
           "fmt": {
@@ -1726,7 +1640,7 @@
             "unit": "rpm"
           },
           "name": "TCC desired slip",
-          "description": "Confirmed transmission torque-converter-clutch desired slip using raw/4 rpm. Captures showed 1023 rpm while the converter was open/unlocked, followed by low single-digit desired slip as TCC apply command increased; the validation drive showed 0-5 rpm during locked or near-locked highway operation. Treat 1023 rpm as an open/unlocked sentinel rather than literal controlled slip."
+          "description": "Confirmed transmission torque-converter-clutch desired slip using raw/4 rpm. The afternoon drive captured raw 4092 with zero apply command across 41 predominantly stopped/low-speed samples, confirming 1023 rpm as an open/unlocked sentinel. Raw zero occurred at 35-57 km/h with non-zero apply command, commonly while coasting, confirming a genuine zero-slip target during locked or near-locked operation."
         }
       ]
     },
@@ -1739,17 +1653,6 @@
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_TEST_TCC_COMMANDED_PRESSURE_7E1_1E3C_RAW16_AB",
-          "path": "TESTING.Transmission",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST TCC apply command 1E3C raw AB",
-          "description": "Testing raw companion retained for the promoted TCC apply-command scalar. The engineering pressure scale remains unknown, so the production signal deliberately avoids pressure units."
-        },
-        {
           "id": "EVEREST_TCC_APPLY_COMMAND_1E3C",
           "path": "Transmission",
           "fmt": {
@@ -1758,7 +1661,7 @@
             "unit": "scalar"
           },
           "name": "TCC apply command",
-          "description": "Confirmed torque-converter-clutch apply-command quantity. Multiple captures showed 0 with the 1023 rpm open-converter desired-slip sentinel, a strong rise during clutch application, and sustained non-zero values with 0-5 rpm desired slip during locked or near-locked driving. Exact hydraulic pressure scaling remains unknown, so the value is intentionally exposed as a scalar."
+          "description": "Confirmed torque-converter-clutch apply-command quantity. The afternoon drive showed command zero with the 1023 rpm open/unlocked sentinel and non-zero commands approximately 91-358 with a zero desired-slip target at 35-57 km/h. Exact hydraulic pressure scaling remains unknown, so the value is intentionally exposed as a scalar."
         }
       ]
     },
@@ -2181,29 +2084,6 @@
       "freq": 5,
       "signals": [
         {
-          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_RAW16_AB",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel rate alt 019D raw AB",
-          "description": "Testing raw companion for the confirmed SAE alternate engine fuel-rate field. It matched the vehicle-rate word in all 15 normal-drive samples but diverged during captured active regeneration; the decoded production signal uses raw/50 grams per second."
-        },
-        {
-          "id": "EVEREST_TEST_FUEL_RATE_ALT_019D_RAW16_CD",
-          "path": "TESTING.Fuel",
-          "fmt": {
-            "bix": 16,
-            "len": 16,
-            "max": 65535,
-            "unit": "scalar"
-          },
-          "name": "TEST fuel rate alt 019D raw CD",
-          "description": "Testing raw companion for the confirmed SAE vehicle fuel-rate field. It matched the engine-rate word in all 15 normal-drive samples but rose from 44 to 69 while the engine word remained 44 during active regeneration, confirming that both fields must be retained."
-        },
-        {
           "id": "GENERIC_ENGINE_FUEL_RATE_ALT_019D",
           "path": "Fuel.Generic",
           "fmt": {
@@ -2213,7 +2093,7 @@
             "unit": "gramsPerSecond"
           },
           "name": "Generic engine fuel rate (alternate)",
-          "description": "Confirmed SAE Mode 01 alternate engine fuel rate using raw/50 grams per second. It matched vehicle fuel rate in all 15 latest normal-drive samples and remained independently useful when the two rates diverged during active regeneration."
+          "description": "Confirmed SAE Mode 01 alternate engine fuel rate using raw/50 grams per second. In the afternoon drive it matched the vehicle-rate word in all 13 sampled states, including 0.32 g/s idle and 4.52 g/s under load; direct observation showed zero during fuel-cut coasting. It remains independently useful because the two words diverged during active regeneration."
         },
         {
           "id": "GENERIC_VEHICLE_FUEL_RATE_019D",
@@ -2226,7 +2106,7 @@
             "unit": "gramsPerSecond"
           },
           "name": "Generic vehicle fuel rate",
-          "description": "Confirmed SAE Mode 01 vehicle fuel rate using raw/50 grams per second. During captured active regeneration it exceeded the alternate engine-rate word, making it a useful view of total vehicle fuel consumption during emissions-control operation."
+          "description": "Confirmed SAE Mode 01 vehicle fuel rate using raw/50 grams per second. It matched the engine-rate word throughout the afternoon normal drive, including zero during observed fuel-cut coasting, but exceeded it during captured active regeneration. Both decoded production fields therefore remain useful."
         }
       ]
     },
@@ -2285,7 +2165,7 @@
             "unit": "kilopascal"
           },
           "name": "Generic commanded fuel rail pressure A",
-          "description": "Confirmed SAE Mode 01 commanded fuel rail pressure A using shifted BC raw*10 kPa. Latest captures ranged from approximately 30 MPa at light/idle operation to approximately 203 MPa under load."
+          "description": "Confirmed SAE Mode 01 commanded fuel rail pressure A using shifted BC raw*10 kPa. The afternoon drive provided synchronized comparison against Ford F46D and confirmed this standardized signal as the preferred decoded source; captured values ranged from light/idle pressure to above 200 MPa under load."
         },
         {
           "id": "GENERIC_FUEL_RAIL_PRESSURE_A_016D",
@@ -2298,7 +2178,7 @@
             "unit": "kilopascal"
           },
           "name": "Generic fuel rail pressure A",
-          "description": "Confirmed SAE Mode 01 actual fuel rail pressure A using shifted DE raw*10 kPa. It followed commanded pressure almost perfectly across 27 combined samples and produced plausible common-rail diesel pressures."
+          "description": "Confirmed SAE Mode 01 actual fuel rail pressure A using shifted DE raw*10 kPa. It followed commanded pressure almost perfectly and closely matched the Ford F46D mirror in synchronized afternoon samples; the standardized signal is retained as the preferred source."
         },
         {
           "id": "GENERIC_FUEL_RAIL_TEMPERATURE_A_016D",
@@ -2312,7 +2192,7 @@
             "unit": "celsius"
           },
           "name": "Generic fuel rail temperature A",
-          "description": "Confirmed SAE Mode 01 fuel rail temperature A using byte F raw-40 °C. Observed values of 15-33 °C were plausible for ambient-to-warmed fuel during the retained drives."
+          "description": "Confirmed SAE Mode 01 fuel rail temperature A using byte F raw-40 °C. The standardized byte matched Ford F46D's temperature byte in synchronized afternoon comparisons and remains the preferred decoded source."
         }
       ]
     },
@@ -2574,7 +2454,7 @@
             "unit": "scalar"
           },
           "name": "TEST cumulative sleep discharge 401C raw",
-          "description": "Everest-confirmed read-only raw DID for FORScan CUM_DIS_SLP. A timestamp-matched FORScan scalar of 15 exactly matched BCM response 62 401C 000F. Identity and 16-bit width are confirmed; engineering conversion and unit remain unresolved."
+          "description": "Everest-confirmed read-only raw DID for FORScan CUM_DIS_SLP. Timestamp-matched FORScan scalar 15 matched BCM response 62 401C 000F, then the counter advanced to 16 after several parked hours while the running counter stayed fixed. Identity and 16-bit width are confirmed; engineering conversion and unit remain unresolved."
         }
       ]
     },
@@ -2595,7 +2475,7 @@
             "unit": "scalar"
           },
           "name": "TEST cumulative running discharge 4021 raw",
-          "description": "Everest-confirmed read-only raw DID for FORScan CUM_DIS_RUN. A timestamp-matched FORScan scalar of 5 exactly matched BCM response 62 4021 0005. Identity and 16-bit width are confirmed; engineering conversion and unit remain unresolved."
+          "description": "Everest-confirmed read-only raw DID for FORScan CUM_DIS_RUN. Timestamp-matched FORScan scalar 5 matched BCM response 62 4021 0005 and remained 5 between the morning and afternoon drives while the parked-state counters advanced. Identity and 16-bit width are confirmed; engineering conversion and unit remain unresolved."
         }
       ]
     },
@@ -2616,7 +2496,7 @@
             "unit": "scalar"
           },
           "name": "TEST cumulative engine-off discharge 4026 raw",
-          "description": "Everest-confirmed read-only raw DID for FORScan CUM_DIS_OFF. A timestamp-matched FORScan scalar of 12 exactly matched BCM response 62 4026 000C. Identity and 16-bit width are confirmed; engineering conversion and unit remain unresolved."
+          "description": "Everest-confirmed read-only raw DID for FORScan CUM_DIS_OFF. Timestamp-matched FORScan scalar 12 matched BCM response 62 4026 000C, then the counter advanced to 13 after several parked hours while the running counter stayed fixed. Identity and 16-bit width are confirmed; engineering conversion and unit remain unresolved."
         }
       ]
     }
