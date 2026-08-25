@@ -10,18 +10,19 @@ signalsets/v3/default.json
 
 ## Current release
 
-Current validated build: **v0.7.27 — FORScan-correlated BCM validation and negative-response cleanup**.
+Current validated build: **v0.7.28 — afternoon-drive validation and resolved TESTING cleanup**.
 
-The pack contains 85 commands and 137 signals. Of these, 97 are production signals and 40 remain isolated under `TESTING.*`.
+The pack contains 84 commands and 128 signals. Of these, 97 are production signals and 31 remain isolated under `TESTING.*`.
 
 ## Latest release highlights
 
-- Confirmed `401C`, `4021` and `4026` as the Everest BCM DIDs for FORScan `CUM_DIS_SLP`, `CUM_DIS_RUN` and `CUM_DIS_OFF` through exact timestamp-matched raw scalar values.
-- Retained the three cumulative-discharge signals as raw-only `TESTING.BMS` widgets because their engineering conversion and unit remain unresolved.
-- Corrected their polling interval from one second to 60 seconds after the test drive proved `freq: 1` produced approximately one request per second per command.
-- Removed DID `4029` and DID `4090` after each returned NRC `31` Request Out Of Range for all 14 requests across approximately 17 minutes.
-- Strengthened production documentation for battery age `4027`, SOC `4028`, BCM voltage `402A` and battery current `402B` using matched FORScan and Pelican evidence.
-- Changed no production formula, ID, path or connectable.
+- Confirmed the production TCC interpretation more strongly: `1E35 / 4` uses raw `4092` as the open/unlocked `1023 rpm` sentinel, can legitimately reach zero during locked coasting, and changes coherently with the `1E3C` apply command.
+- Confirmed the two `019D` fuel-rate words are equal during ordinary driving and can both fall to zero during fuel-cut coasting, while retaining both production decodes because earlier regeneration evidence showed meaningful divergence.
+- Strengthened `TESTING.BMS` semantics after the confirmed counters moved from sleep/run/off `15/5/12` to `16/5/13`: sleep and engine-off increased while running remained unchanged. Their scale and engineering unit remain unresolved.
+- Retired the redundant Ford `F46D` fuel-pressure mirror after close timestamp pairing confirmed it tracks the standardized production `016D` command, actual and temperature fields.
+- Removed the resolved fixed-offset `010B` gauge-boost experiments because 8-bit MAP caps at 255 kPa absolute and a fixed atmospheric offset is not robust.
+- Kept the user's preferred `+4 km/h` corrected Ford speed as the sole `speed` connectable. The raw Ford speed remains visible as an uncorrected comparison.
+- Removed nine testing signals and one now-empty command. No signal was promoted, and no production formula, ID or path changed.
 
 ## Confirmed production highlights
 
@@ -45,8 +46,8 @@ F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E
 - Capture `402B` below raw 127 beside FORScan to finish validating negative-current direction.
 - Obtain wire definitions for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `BATT_V_INF` and `VBAT_B–E`; no unverified Pelican definitions have been added for these labels. `V_BATT_BCM` is now confirmed as DID `402A`.
 - Identify the unit and exact meaning of the secondary `220610` soot-model word, which fell from 17.43 to 1.61 during the latest burn.
-- Perform one more deliberate simultaneous comparison of Ford F46D/F470 mirrors against standardized `016D`/`0170` before considering removal.
-- Replace or retire fixed-offset gauge-boost testing if a reliable atmospheric-reference workflow becomes available.
+- Perform a deliberate simultaneous comparison of Ford `F470` against standardized `0170`; the resolved `F46D` mirror has now been retired.
+- If gauge boost is revisited, use a live atmospheric reference and account for the 255 kPa absolute ceiling rather than restoring fixed-offset widgets.
 - Continue searching for a genuine live active-regeneration state without resurrecting disproved F48B interpretations.
 
 ## Validation rules
