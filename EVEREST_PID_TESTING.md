@@ -2,7 +2,7 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-08-24 v0.7.26 conservative BCM battery TESTING expansion and battery cleanup  
+Version: 2026-08-25 v0.7.27 FORScan-correlated BCM validation and negative-response cleanup  
 Aligned default file: `default.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
@@ -3289,4 +3289,213 @@ Added a dedicated TESTING.BMS group with five low-priority, read-only BCM addres
 Removed the disproved 4028 div255 battery-charge comparison after simultaneous FORScan and Pelican evidence showed that 4028 is already a direct raw percentage. Confirmed 4027 as battery age in days and clarified its existing raw and hours-conversion descriptions without changing formulas.
 
 Preserved the correct 4028 state-of-charge signal, 402A voltage, 402B current, alternator current and all other production battery items. Added no guessed definitions for BAT_CHRG_MODE, BAT_CUR_PRD, V_BATT_BCM or BATT_V_INF, and added no broadcast, reset, write or control command.
+```
+
+# v0.7.27 — FORScan-correlated BCM validation and negative-response cleanup
+
+Aligned default file: `default.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Correlated the 25 August Pelican database with the immediately preceding 14-PID FORScan Lite FSL/CSV capture.
+- Confirmed the Everest wire identities and 16-bit raw payloads for all three cumulative-discharge DIDs.
+- Removed two battery candidates that returned persistent NRC `31` Request Out Of Range responses throughout the drive.
+- Corrected cumulative-counter polling from one request per second to one request per 60 seconds.
+- Strengthened production descriptions for battery age, SOC, BCM voltage and battery current using exact cross-tool raw values.
+- Recorded corrected FORScan FSL/debug methodology without treating internal IDs or FSL storage as Ford wire definitions.
+- Added no speculative battery mode, predicted-current or inferred-voltage PID.
+
+## Session summary
+
+| Evidence | Result |
+| --- | ---: |
+| Pelican database rows | 16,132 |
+| Session duration | Approximately 22.2 minutes |
+| Logged driving distance | Approximately 10.7 km |
+| Supporting screenshots | 8 |
+| `401C` positive responses | 1,031 / 1,031 |
+| `4021` positive responses | 1,031 / 1,031 |
+| `4026` positive responses | 1,031 / 1,031 |
+| `4029` out-of-range responses | 14 / 14 |
+| `4090` out-of-range responses | 14 / 14 |
+
+The screenshots and database agreed: SOC changed from 85% to 86%, battery age was 11 days / 264 hours, DPF fullness increased normally from approximately 35% to 38%, and the three cumulative raw values remained 15, 5 and 12.
+
+## Confirmed cumulative-discharge wire definitions
+
+The FORScan Lite recording began at approximately 08:15 and stored these internal scalars:
+
+| FORScan PID | FSL scalar |
+| --- | ---: |
+| `CUM_DIS_SLP` | 15 |
+| `CUM_DIS_RUN` | 5 |
+| `CUM_DIS_OFF` | 12 |
+
+Pelican began roughly one minute later and received:
+
+```text
+726   72E  22401C     62 40 1C 00 0F     15
+726   72E  224021     62 40 21 00 05      5
+726   72E  224026     62 40 26 00 0C     12
+```
+
+The exact three-value match confirms:
+
+| FORScan PID | Everest DID | Confirmed payload | Current status |
+| --- | --- | --- | --- |
+| `CUM_DIS_SLP` | `401C` | Unsigned 16-bit raw | Keep in `TESTING.BMS` |
+| `CUM_DIS_RUN` | `4021` | Unsigned 16-bit raw | Keep in `TESTING.BMS` |
+| `CUM_DIS_OFF` | `4026` | Unsigned 16-bit raw | Keep in `TESTING.BMS` |
+
+The DID identity and raw width are confirmed. The engineering conversion and unit are not. FORScan displayed rounded values of 0, 0 and 1 from scalars 15, 5 and 12, but that is insufficient to justify `/10`, `/12`, truncation, bit masking or another transform. These widgets therefore remain raw-only testing signals.
+
+## Polling correction
+
+In Pelican, `freq: 1` produced approximately one request per second. Each cumulative DID was requested 1,031 times over approximately 18.34 minutes, generating about 2.8 BCM requests per second across three static counters.
+
+All three commands now use:
+
+```text
+freq: 60
+```
+
+Once-per-minute polling is sufficient for slowly changing cumulative values while still allowing practical validation. The v0.7.26 description of `freq: 1` as low-priority polling was incorrect and is superseded by this measured behaviour.
+
+## Removed out-of-range commands and signals
+
+### DID `4029`
+
+Every request returned:
+
+```text
+72E 03 7F 22 31
+```
+
+Removed:
+
+- `EVEREST_TEST_BMS_BATTERY_TEMP_4029_RAW8`
+- `EVEREST_TEST_BMS_BATTERY_TEMP_4029_A_MINUS_40`
+
+This does not affect the historically separate failed `400A` candidate.
+
+### DID `4090`
+
+Every request also returned NRC `31` Request Out Of Range.
+
+Removed:
+
+- `EVEREST_TEST_BMS_HIGH_RES_CURRENT_4090_RAW16`
+- `EVEREST_TEST_BMS_HIGH_RES_CURRENT_4090_DIV16_MINUS_511_7`
+
+This proves that older-Ford DID `4090` is not a supported Everest route to FORScan `BAT_CUR_PRD` through BCM `726` in the tested state.
+
+## Production battery confirmations
+
+### Battery age `4027`
+
+FORScan scalar 11 matched Pelican response `62 4027 000B`, confirming an unsigned 16-bit day counter. Consecutive captures advanced from 10 days / 240 hours to 11 days / 264 hours. Both existing production formulas remain unchanged.
+
+### State of charge `4028`
+
+The complete Everest definition is confirmed:
+
+```text
+TX 726
+RX 72E
+Service 22
+DID 4028
+Payload one byte
+Formula raw percent
+```
+
+Raw `0x55` matched 85% and raw `0x56` matched 86% in timestamp-correlated FORScan and Pelican captures.
+
+### BCM battery voltage `402A`
+
+FORScan `V_BATT_BCM` scalar 171 and Pelican raw `0xAB` both decoded to 14.55 V using `A/20 + 6`. The Everest payload is one byte. An external two-byte `/2560` definition from another Ford platform does not apply here.
+
+### Battery current `402B`
+
+FORScan `BAT_CURRENT` scalar 127 displayed 0 A and scalar 128 displayed 1 A. Pelican raw `0x80` also decoded to 1 A using `A-127`. This confirms the one-byte wire representation and formula around zero/positive current. A timestamp-matched value below raw 127 is still required to finish validating negative-current direction.
+
+No production formula, ID, path or connectable changed. Only descriptions were strengthened.
+
+## FORScan reverse-engineering methodology
+
+The FSL work confirms that FORScan stores post-decode scalars as little-endian `uint32` values. These are not automatically the ECU payload width or endian. In this release, equivalence between the FSL scalar and Ford response was accepted only where timestamp-matched Pelican packets proved it.
+
+Useful confirmed research notes include:
+
+- FSL data records begin at offset `0x004A`.
+- Record size is `(PID count + 1) × 4` bytes.
+- `BAT_CHRG_MODE` internal FORScan ID is `0x9A1B2B33`.
+- The only confirmed charging-mode enum is scalar `0 = Conventional Charging`.
+- Windows `dump.bin` records use `[uint16 length][encoded payload][2-byte unknown trailer]`.
+- The encoded payload is restricted to the 7-bit range and is not plaintext CAN, UDS or ELM traffic.
+- A single-PID FSL capture may refresh near 96 samples per second, but that does not establish an appropriate Pelican polling rate or prove 96 physical CAN transactions per second.
+
+Internal FORScan IDs must not be treated as DIDs or CAN addresses.
+
+## Deliberately not added
+
+No wire definitions are yet known for:
+
+- `BAT_CHRG_MODE`
+- `BAT_CUR_PRD`
+- `BATT_V_INF`
+- `VBAT_B_V`
+- `VBAT_C_V`
+- `VBAT_D_V`
+- `VBAT_E_V`
+
+`V_BATT_BCM` is no longer in this unresolved list because timestamp-matched evidence confirms it as DID `402A`.
+
+The preferred discovery method for the remaining items is a single-PID FORScan capture combined with passive CAN or adapter-transport capture. No guessed DID sweep, broadcast request, write routine or BMS reset was added.
+
+## Retained TESTING priorities
+
+- Determine the engineering unit and transform for the confirmed raw cumulative-discharge values.
+- Obtain a below-127 `402B` current sample beside FORScan.
+- Identify the wire definition and additional enum states for `BAT_CHRG_MODE`.
+- Continue the established DPF secondary-word and standardized/Ford mirror comparisons from v0.7.25.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 85 |
+| Signals | 137 |
+| Testing signals | 40 |
+| Production signals | 97 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Malformed signals | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 0 |
+| Commands removed | 2 |
+| Signals added | 0 |
+| Testing signals removed | 4 |
+| Production signals modified | 5 descriptions only |
+| Existing production formulas changed | 0 |
+| Connectable changes | 0 |
+| Frequency changes | `401C`, `4021`, `4026`: 1   60 |
+| Path changes | 0 |
+
+## Commit message
+
+```text
+Validate BCM battery DIDs and remove failed candidates for Everest PID v0.7.27
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.27 from the validated v0.7.26 source files.
+
+Confirmed BCM DIDs 401C, 4021 and 4026 as the raw 16-bit FORScan CUM_DIS_SLP, CUM_DIS_RUN and CUM_DIS_OFF values through exact timestamp-matched FSL and Pelican scalars. Retained them under TESTING.BMS because their engineering conversion and unit remain unresolved, and reduced polling from once per second to once per minute after measured session behaviour showed the original setting was unnecessarily aggressive.
+
+Removed DIDs 4029 and 4090 plus their four testing signals after every request returned NRC 31 Request Out Of Range across the complete test drive. Strengthened production descriptions for battery age 4027, SOC 4028, BCM voltage 402A and battery current 402B using matched FORScan and Pelican wire evidence.
+
+Added no speculative BAT_CHRG_MODE, BAT_CUR_PRD, BATT_V_INF or VBAT_B-E definition. Changed no production formula, ID, path or connectable.
 ```
