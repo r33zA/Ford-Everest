@@ -2,7 +2,7 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-08-25 v0.7.28 afternoon-drive validation and resolved TESTING cleanup  
+Version: 2026-08-27 v0.7.29 complete-regeneration validation and raw-companion cleanup  
 Aligned default file: `default.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
@@ -3647,4 +3647,228 @@ Confirmed further semantic movement in the three raw BMS cumulative counters: sl
 Removed resolved raw TCC and fuel-rate companions, the redundant F46D fuel-pressure mirror command and scouts, and the fixed-offset generic MAP boost experiments. Retained the user's preferred +4 km/h corrected Ford speed as the sole speed connectable while keeping raw Ford speed visible as an uncorrected comparison.
 
 Removed nine testing signals and one command. Promoted no signals and changed no production formula, ID or path.
+```
+
+# v0.7.29 — Complete-regeneration validation and raw-companion cleanup
+
+Date: 27 August 2026
+
+## Update focus
+
+- Analysed all 122 supporting images and the complete attached Pelican database.
+- Confirmed a full automatic DPF regeneration from dashboard `Full` to `0%`.
+- Kept the screenshot-supported burn evidence separate from the database-backed post-burn evidence because the database session began at 11:27:24, just after the dashboard reached `0%` at approximately 11:26:51.
+- Strengthened production DPF, EGT and pressure descriptions without changing formulas, units, IDs or paths.
+- Strengthened the three BMS counter descriptions without assigning guessed engineering units.
+- Removed 20 raw TESTING companions whose engineering decodes are already confirmed in production.
+- Retained exactly 11 unresolved TESTING signals: two secondary soot-model fields, six `0170/F470` comparison fields and three BMS counters.
+- Promoted no signal and removed no command.
+
+## Evidence boundaries
+
+| Evidence | Result |
+| --- | ---: |
+| Supporting images | 122 |
+| Image span | Approximately 11:04–11:34 |
+| Database responses | 3,663 |
+| Distinct database command strings | 63 |
+| Database span | Approximately 11:27:24–11:34:56 |
+| Database odometer movement | Approximately 4.1 km (`30941.8   30945.9`) |
+| Retained custom-PID persistent negative responses | 0 |
+
+The screenshots record the full pre-completion event through dashboard, Pelican map and targeted TESTING pages. The database records the post-completion drive and cannot independently supply raw packets for the earlier part of the burn.
+
+## Complete DPF regeneration
+
+| Approximate time | Dashboard | Pelican internal `220610` |
+| --- | ---: | ---: |
+| 11:04–11:05 | Full | 83–85% |
+| 11:15 | 90% | 70% |
+| 11:16 | 85% | 67% |
+| 11:21 | 55% | 53% |
+| 11:22 | 50% | 48% |
+| 11:22 | 35% | 40% |
+| 11:24 | 25% | 31% |
+| 11:25 | 20% | 30% |
+| 11:26 | 15% | 29% |
+| 11:27 | 0% | Approximately 13% |
+
+The post-burn database then held the internal model between 12.58% and 13.75% while the dashboard remained at 0%. This strongly reconfirms `EVEREST_DPF_FULLNESS_0610` as an internal soot/fullness measure rather than the dashboard's exact model. Its `raw/100` production formula remains unchanged.
+
+The first raw TESTING companion has completed its validation purpose and was removed. Production retains the complete useful decode.
+
+## Secondary `220610` soot model
+
+The second 16-bit word provided the strongest unresolved evidence in this release:
+
+- started at approximately 11.9;
+- declined progressively through the complete burn;
+- reached approximately 1.1 near completion;
+- ranged from approximately 1.03 to 2.18 in the post-burn database session;
+- began rebounding after completion, consistent with the earlier captured burn.
+
+Two completed regenerations now establish a high-confidence soot-related relationship. Its physical identity and engineering unit remain unknown, so both raw and `/100` scalar views remain under `TESTING.Regen_BIX` and no production promotion was made.
+
+Across all 44 post-burn database packets:
+
+- packet word 3 duplicated word 1 in all 44 samples;
+- packet word 4 remained word 1 plus 21–23 raw counts;
+- neither redundant field justifies another widget.
+
+## F48B repeatability
+
+F48B repeated the same completion pattern captured on 24 August:
+
+| Field | During 27 August burn | At/after completion |
+| --- | ---: | ---: |
+| Normalized trigger raw | 254 initially, then coarse decline to 167 | 55 |
+| Average regeneration interval | 394 min | 376 min |
+| Average regeneration distance | 203–204 km | 195 km |
+
+The interval and distance recalculated together at completion. The normalized trigger is a valid production aftertreatment model value but not a binary live-regeneration flag. The three raw F48B companions are now superseded by their production decodes and were removed.
+
+## Thermal and pressure confirmation
+
+F478 provided direct aftertreatment-heating evidence:
+
+| Signal | Earlier burn sample | Active-burn sample |
+| --- | ---: | ---: |
+| Bank 1 sensor 1 | Approximately 250.5 °C | Approximately 484.4 °C |
+| Bank 1 sensor 2 | Approximately 263.1 °C | Approximately 575.7 °C |
+
+F47A pressure showed strong flow sensitivity during the burn and then fell after completion:
+
+| Signal | Active-burn example | Post-completion example |
+| --- | ---: | ---: |
+| DPF inlet pressure | 51.4 kPa | 1.5–1.6 kPa |
+| DPF outlet pressure | 21.3 kPa | 0.1 kPa |
+
+These observations reconfirm the existing production formulas. The F478 and F47A raw companions were removed because they no longer serve an unresolved diagnostic purpose.
+
+## Control and fuel-system confirmation
+
+- F471 commanded and actual VGT bytes continued tracking closely. Screenshots captured command/actual pairs such as `181/179`, `76/73` and `193/190`, while final state values `1` and `2` continued behaving as ordinary open-loop/closed-loop control.
+- `016D` commanded and actual fuel-rail pressure remained coherent, including expected transient separation under changing load; the temperature byte remained plausible.
+- `0169` EGR command, actual and error continued following the standardized decoding, including raw error `128` representing zero error when command and actual were both zero.
+- F46A intake-airflow command/position continued moving coherently.
+- `019E` exhaust flow covered both active-burn/highway values and approximately 41–42 kg/h during the post-burn session.
+
+The corresponding raw companions were removed. Their confirmed production signals and commands remain unchanged.
+
+## BMS counter progression
+
+The confirmed raw counters now read:
+
+| FORScan meaning | DID | Previous | 27 August | Change |
+| --- | --- | ---: | ---: | ---: |
+| Sleep discharge | `401C` | 16 | 18 | +2 |
+| Running discharge | `4021` | 5 | 5 | 0 |
+| Engine-off discharge | `4026` | 13 | 15 | +2 |
+
+The state relationship is increasingly strong: sleep and engine-off advanced while running remained unchanged. Their conversion and unit remain unresolved, so all three stay as raw-only `TESTING.BMS` signals at a 60-second interval.
+
+## Removed TESTING signals
+
+- `EVEREST_TEST_DPF_FULLNESS_0610_RAW16_AB`
+- `EVEREST_TEST_EXHAUST_FLOW_019E_RAW16_AB`
+- `EVEREST_TEST_INTAKE_AIRFLOW_CONTROL_F46A_BYTE_B_RAW8`
+- `EVEREST_TEST_INTAKE_AIRFLOW_CONTROL_F46A_BYTE_C_RAW8`
+- `EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_BC_RAW16`
+- `EVEREST_TEST_EXHAUST_MULTI_F478_SHIFTED_DE_RAW16`
+- `EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_B_RAW8`
+- `EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_C_RAW8`
+- `EVEREST_TEST_VGT_ACTUAL_7E0_F471_BYTE_F_RAW8`
+- `EVEREST_TEST_DPF_PRESSURE_F47A_SHIFTED_DE_RAW16`
+- `EVEREST_TEST_DPF_PRESSURE_F47A_SHIFTED_FG_RAW16`
+- `EVEREST_TEST_RANGER_PACKET_6D_SHIFTED_BC_RAW16`
+- `EVEREST_TEST_RANGER_PACKET_6D_SHIFTED_DE_RAW16`
+- `EVEREST_TEST_RANGER_PACKET_6D_BYTE_F_RAW8`
+- `EVEREST_TEST_RANGER_PACKET_69_BYTE_B_RAW8`
+- `EVEREST_TEST_RANGER_PACKET_69_BYTE_C_RAW8`
+- `EVEREST_TEST_RANGER_PACKET_69_BYTE_D_RAW8`
+- `EVEREST_TEST_DPF_STATUS_F48B_BYTE_C_RAW8`
+- `EVEREST_TEST_DPF_AVERAGE_REGEN_INTERVAL_F48B_DE_RAW16`
+- `EVEREST_TEST_DPF_AVERAGE_REGEN_DISTANCE_F48B_FG_RAW16`
+
+No command was removed because every affected command retains one or more confirmed production signals.
+
+## Retained TESTING signals
+
+Secondary soot model:
+
+- `EVEREST_TEST_DPF_FULLNESS_0610_CD_RAW16`
+- `EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100`
+
+Standardized boost packet for Ford-mirror comparison:
+
+- `EVEREST_TEST_RANGER_PACKET_70_SHIFTED_BC_RAW16`
+- `EVEREST_TEST_RANGER_PACKET_70_SHIFTED_DE_RAW16`
+- `EVEREST_TEST_RANGER_PACKET_70_SHIFTED_IJ_RAW16`
+
+Ford boost-control mirror:
+
+- `EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_BC_RAW16`
+- `EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_DE_RAW16`
+- `EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_IJ_RAW16`
+
+BMS counters:
+
+- `EVEREST_TEST_BMS_CUM_DIS_SLP_401C_RAW16`
+- `EVEREST_TEST_BMS_CUM_DIS_RUN_4021_RAW16`
+- `EVEREST_TEST_BMS_CUM_DIS_OFF_4026_RAW16`
+
+## Remaining research priorities
+
+- Identify the physical meaning and engineering unit of the secondary `220610` word; another ordinary burn is no longer the missing evidence.
+- Capture `0170` and Ford `F470` simultaneously at the same vehicle states to finish the mirror comparison.
+- Determine the BMS cumulative-counter transform and unit without extrapolating from rounded FORScan display values.
+- Capture `402B` below raw 127 beside FORScan to finish validating signed battery-current direction.
+- Obtain wire definitions for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `BATT_V_INF` and `VBAT_B–E` without speculative DID sweeps.
+- Continue searching for a genuine live regeneration-state value without restoring disproved F48B flag interpretations.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 84 |
+| Signals | 108 |
+| Testing signals | 11 |
+| Production signals | 97 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Malformed signals | 0 |
+| Empty commands | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 0 |
+| Commands removed | 0 |
+| Signals added | 0 |
+| Testing signals removed | 20 |
+| Signals promoted | 0 |
+| Production descriptions updated | 8 |
+| Testing descriptions updated | 5 |
+| Existing formulas changed | 0 |
+| IDs changed | 0 |
+| Paths changed | 0 |
+| Frequency changes | 0 |
+| Connectable changes | 0 |
+
+## Commit message
+
+```text
+Remove resolved raw companions after complete DPF burn for Everest PID v0.7.29
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.29 directly from the validated v0.7.28 files and the complete 27 August automatic-regeneration evidence.
+
+Documented the dashboard transition from Full to 0% while the internal 220610 model fell from approximately 83-85% to 13%, further confirming that raw/100 is a valid internal soot/fullness model rather than the dashboard's exact percentage. Strengthened F48B rolling interval/distance evidence after both fields recalculated together at a second captured completion boundary, while retaining the normalized trigger as a non-binary aftertreatment model value.
+
+Strengthened F478 exhaust-temperature and F47A DPF-pressure descriptions using full-burn thermal and pressure observations. Updated the secondary 220610 soot-model descriptions after a repeated decline from 11.9 to approximately 1.1 and post-burn rebound, while keeping it in TESTING because its engineering identity and unit remain unresolved. Updated BMS counter descriptions after sleep and engine-off advanced to 18 and 15 while running remained 5.
+
+Removed 20 aligned raw companions whose decoded production signals are established: primary DPF fullness, exhaust flow, intake-airflow control, EGT, VGT position/status, DPF pressures, fuel-rail pressure/temperature, EGR and F48B rolling fields. Retained exactly 11 unresolved TESTING signals for the secondary soot model, 0170/F470 mirror comparison and BMS counters.
+
+Removed no command, promoted no signal and changed no production formula, ID, path, frequency or connectable.
 ```
