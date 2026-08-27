@@ -10,19 +10,19 @@ signalsets/v3/default.json
 
 ## Current release
 
-Current validated build: **v0.7.28 — afternoon-drive validation and resolved TESTING cleanup**.
+Current validated build: **v0.7.29 — complete-regeneration validation and raw-companion cleanup**.
 
-The pack contains 84 commands and 128 signals. Of these, 97 are production signals and 31 remain isolated under `TESTING.*`.
+The pack contains 84 commands and 108 signals. Of these, 97 are production signals and 11 remain isolated under `TESTING.*`.
 
 ## Latest release highlights
 
-- Confirmed the production TCC interpretation more strongly: `1E35 / 4` uses raw `4092` as the open/unlocked `1023 rpm` sentinel, can legitimately reach zero during locked coasting, and changes coherently with the `1E3C` apply command.
-- Confirmed the two `019D` fuel-rate words are equal during ordinary driving and can both fall to zero during fuel-cut coasting, while retaining both production decodes because earlier regeneration evidence showed meaningful divergence.
-- Strengthened `TESTING.BMS` semantics after the confirmed counters moved from sleep/run/off `15/5/12` to `16/5/13`: sleep and engine-off increased while running remained unchanged. Their scale and engineering unit remain unresolved.
-- Retired the redundant Ford `F46D` fuel-pressure mirror after close timestamp pairing confirmed it tracks the standardized production `016D` command, actual and temperature fields.
-- Removed the resolved fixed-offset `010B` gauge-boost experiments because 8-bit MAP caps at 255 kPa absolute and a fixed atmospheric offset is not robust.
-- Kept the user's preferred `+4 km/h` corrected Ford speed as the sole `speed` connectable. The raw Ford speed remains visible as an uncorrected comparison.
-- Removed nine testing signals and one now-empty command. No signal was promoted, and no production formula, ID or path changed.
+- Documented a complete 27 August automatic DPF regeneration from dashboard `Full` to `0%`, with the Pelican internal model falling from approximately 83-85% to 13%.
+- Reconfirmed that `220610 raw/100` is an internal soot/fullness model rather than the dashboard's exact modelled percentage; the post-burn database held it around 12.58-13.75% while the dashboard remained at 0%.
+- Strengthened the secondary `220610` soot-model candidate after it fell from 11.9 to approximately 1.1 during the burn and rebounded through approximately 1.03-2.18 afterward. It remains TESTING because its physical identity and unit are unknown.
+- Reconfirmed F48B rolling history: average interval/distance recalculated together from `394/203-204` to `376/195` at completion, while its normalized trigger changed from raw 254 to 55. None is a live active-regeneration flag.
+- Revalidated production F478 temperatures, F47A DPF pressures, F471 VGT control, `016D` fuel pressure, `0169` EGR and `019E` exhaust flow during the full burn.
+- Advanced the BMS counters to sleep/run/off `18/5/15`; sleep and engine-off continued rising while running remained unchanged, but the engineering unit is unresolved.
+- Removed 20 raw companions superseded by confirmed production decodes. No command, production formula, ID, path or connectable changed.
 
 ## Confirmed production highlights
 
@@ -36,16 +36,16 @@ The pack contains 84 commands and 128 signals. Of these, 97 are production signa
 
 ## Important DPF interpretation
 
-`EVEREST_DPF_FULLNESS_0610` is a validated internal fullness/soot-load measure, but it is not the dashboard's exact modelled percentage. During the 24 August burn, the dashboard showed 50%, 20% and 10% while Pelican showed approximately 48%, 30-32% and 24%. The difference becomes most obvious near regeneration completion; the `raw / 100` formula remains valid for the internal model.
+`EVEREST_DPF_FULLNESS_0610` is a validated internal fullness/soot-load measure, but it is not the dashboard's exact modelled percentage. During the complete 27 August burn, the dashboard moved from `Full` to `0%` while Pelican moved from approximately 83-85% to 13%. The difference becomes most obvious near regeneration completion; the `raw / 100` formula remains valid for the internal model.
 
-F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E are one 16-bit average-time-between-regenerations value. During the latest confirmed burn, the actual status byte remained zero throughout. The normalized trigger fell in coarse steps and the average interval/distance fields recalculated together after completion, but none is a reliable live active-regeneration flag.
+F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E are one 16-bit average-time-between-regenerations value. Across two completed burns, the normalized trigger fell in coarse steps and the average interval/distance fields recalculated together at completion, but none is a reliable live active-regeneration flag.
 
 ## High-value remaining testing work
 
 - Determine the engineering transform and unit for the confirmed raw `CUM_DIS_SLP`, `CUM_DIS_RUN` and `CUM_DIS_OFF` values without guessing from the rounded FORScan display.
 - Capture `402B` below raw 127 beside FORScan to finish validating negative-current direction.
 - Obtain wire definitions for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `BATT_V_INF` and `VBAT_B–E`; no unverified Pelican definitions have been added for these labels. `V_BATT_BCM` is now confirmed as DID `402A`.
-- Identify the unit and exact meaning of the secondary `220610` soot-model word, which fell from 17.43 to 1.61 during the latest burn.
+- Identify the unit and exact meaning of the secondary `220610` soot-model word, now repeatably confirmed across two complete burns.
 - Perform a deliberate simultaneous comparison of Ford `F470` against standardized `0170`; the resolved `F46D` mirror has now been retired.
 - If gauge boost is revisited, use a live atmospheric reference and account for the 255 kPa absolute ceiling rather than restoring fixed-offset widgets.
 - Continue searching for a genuine live active-regeneration state without resurrecting disproved F48B interpretations.
