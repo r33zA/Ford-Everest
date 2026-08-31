@@ -2,9 +2,18 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-08-27 v0.7.29 complete-regeneration validation and raw-companion cleanup  
+Version: 2026-08-31 v0.7.30 regeneration evidence and final TESTING cleanup  
 Aligned default file: `default.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
+
+## Current release status
+
+- 80 commands and 98 signals.
+- 97 production signals and exactly one `TESTING.*` signal.
+- The sole remaining testing item is the `/100` presentation of the secondary `220610` soot-model word; its soot relationship is confirmed but its physical identity and engineering unit remain unknown.
+- The `0170` raw companions, the redundant Ford `F470` mirror and the disproved `401C`/`4021`/`4026` BMS candidates have been removed.
+- `EVEREST_BATTERY_SOC_4028_726` now carries Pelican's supported `stateOfCharge` suggested metric.
+- All earlier release sections below are retained as historical evidence. Where an older section identifies `401C`, `4021` or `4026` as FORScan cumulative-discharge counters, the v0.7.30 disproof section supersedes it.
 
 ## Update focus
 
@@ -3871,4 +3880,219 @@ Strengthened F478 exhaust-temperature and F47A DPF-pressure descriptions using f
 Removed 20 aligned raw companions whose decoded production signals are established: primary DPF fullness, exhaust flow, intake-airflow control, EGT, VGT position/status, DPF pressures, fuel-rail pressure/temperature, EGR and F48B rolling fields. Retained exactly 11 unresolved TESTING signals for the secondary soot model, 0170/F470 mirror comparison and BMS counters.
 
 Removed no command, promoted no signal and changed no production formula, ID, path, frequency or connectable.
+```
+
+---
+
+# v0.7.30 — 31 August regeneration evidence and final TESTING cleanup
+
+Aligned default file: `default.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Analysed two complete Pelican database sessions from 31 August with 89 supporting screenshots.
+- Used database responses as primary evidence and screenshots as time/state references.
+- Captured another complete automatic DPF regeneration from dashboard 90% to 0%.
+- Retained one high-confidence but still unidentified secondary DPF soot-model signal.
+- Removed redundant standardized boost raw companions and the confirmed Ford F470 mirror.
+- Removed three responsive but incorrectly identified BMS candidates after direct FORScan contradiction.
+- Added the confirmed battery state of charge as Pelican's `stateOfCharge` connectable.
+- Changed no production formula, signal ID, path or polling frequency.
+
+## Drive 1 — normal accumulation baseline
+
+The first session ran from approximately 13:21 to 13:55 and provided a normal non-regeneration baseline:
+
+- production `220610` increased from approximately 63.53% to 68.36%;
+- the secondary word increased from approximately 11.79 to 12.55;
+- packet word 3 duplicated word 1 in all 38 responses;
+- packet word 4 remained word 1 plus exactly 20 raw counts;
+- `220614` reported 160.3 km since the previous completed regeneration.
+
+This is coherent soot accumulation and confirms that both retained `220610` fields move in the expected direction outside regeneration.
+
+## Drive 2 — complete automatic regeneration
+
+The second session ran from approximately 15:54 to 16:43. Screenshots documented the dashboard falling from 90% through 70%, 60%, 50%, 35%, 20%, 10% and 5% to 0%.
+
+Timestamp-near database comparisons were:
+
+| Dashboard | `220610` main model | Secondary `/100` model |
+| ---: | ---: | ---: |
+| 90% | 71.94 | 14.55 |
+| 70% | 59.64 | 7.82 |
+| 60% | 53.15 | 6.50 |
+| 50% | 47.67 | 5.44 |
+| 35% | 38.30 | 4.04 |
+| 20% | 30.53 | 2.90 |
+| 10% | 22.27 | 1.66 |
+| 5% | 20.96 | 1.49 |
+| 0% | approximately 17.69 | 1.24 |
+
+Across all 294 `220610` responses:
+
+- the main model reached a minimum of 15.85 shortly after dashboard completion;
+- the secondary model reached a minimum of 1.14 at approximately 16:32:49;
+- the secondary model rebounded to 3.01 by the end of the session;
+- word 3 duplicated word 1 in 294/294 packets;
+- word 4 remained close to word 1 but varied between +4 and +41 raw counts.
+
+This is the third project-documented complete automatic burn supporting both soot-model fields. The production main model is confirmed as an internal estimate rather than the dashboard's exact percentage. The secondary model is unquestionably soot-related, but neither its physical identity nor engineering unit is known.
+
+`220614`, F48B and the detailed production EGT/pressure signals were not actively polled during this burn. Consequently this session cannot be used to assess the distance reset, F48B rolling-history recalculation or complete thermal profile.
+
+## Secondary `220610` cleanup decision
+
+The two former testing widgets represented the same 16-bit packet word:
+
+- `EVEREST_TEST_DPF_FULLNESS_0610_CD_RAW16`
+- `EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100`
+
+The raw integer presentation no longer provides independent evidence and was removed. The `/100` scalar presentation is easier to compare between captures and remains as the sole TESTING signal.
+
+Promotion is intentionally deferred. Repeatable correlation proves the signal is soot-related, but it does not establish whether it represents soot mass, an alternate load model, pressure-derived loading or another internal aftertreatment quantity.
+
+## `0170` and `F470` mirror resolution
+
+Two near-stationary comparisons supplied the missing same-state evidence:
+
+| Session | Source | Commanded raw | Actual raw | Final status word |
+| --- | --- | ---: | ---: | ---: |
+| Drive 1 | `0170` | 3305 | 3356 | 5 |
+| Drive 1 | `F470` | 3308 | 3350 | 5 |
+| Drive 2 | `0170` | 3353 | 3420 | 5 |
+| Drive 2 | `F470` | 3360 | 3417 | 5 |
+
+The very small differences are consistent with the commands being polled approximately 11–12 seconds apart. Combined with their matching packet structure and prior load behaviour, this establishes F470 as a Ford proprietary mirror of SAE Mode 01 PID 70.
+
+The standardized `0170` production signals remain:
+
+- `GENERIC_BOOST_PRESSURE_A_COMMANDED_0170`
+- `GENERIC_BOOST_PRESSURE_A_ACTUAL_0170`
+- `GENERIC_BOOST_PRESSURE_A_CONTROL_STATUS_0170`
+
+The three raw `0170` companions were removed because they are superseded by these decoded production signals. The entire `22F470` command and its three testing signals were removed because they add no unique value.
+
+## BMS counter disproof
+
+The Pelican candidates responded consistently during both sessions:
+
+| Candidate label | DID | Pelican raw value |
+| --- | --- | ---: |
+| Sleep discharge | `401C` | 26 |
+| Running discharge | `4021` | 7 |
+| Engine-off discharge | `4026` | 18 |
+
+A near-contemporaneous FORScan screenshot from the same vehicle state reported:
+
+| FORScan item | FORScan value |
+| --- | ---: |
+| `CUM_DIS_SLP` | 1 |
+| `CUM_DIS_RUN` | 1 |
+| `CUM_DIS_OFF` | 2 |
+
+The responding DIDs are therefore not the FORScan cumulative-discharge parameters. Their earlier apparent progression was coincidental or represented unrelated BCM values. No credible scaling, byte alignment or reordering reconciles the two sets.
+
+The following commands and signals were removed:
+
+- `22401C` / `EVEREST_TEST_BMS_CUM_DIS_SLP_401C_RAW16`
+- `224021` / `EVEREST_TEST_BMS_CUM_DIS_RUN_4021_RAW16`
+- `224026` / `EVEREST_TEST_BMS_CUM_DIS_OFF_4026_RAW16`
+
+This evidence supersedes all earlier log sections that called these identities confirmed. The DIDs should not be restored under cumulative-discharge names without new wire-level evidence.
+
+## Production battery cross-validation
+
+The same session strongly reconfirmed the established battery signals:
+
+| Measurement | Pelican / database | FORScan | Decision |
+| --- | ---: | ---: | --- |
+| Battery SOC | 81% | 81% | Confirmed direct percent |
+| BCM battery voltage | 14.2 V | 14.20 V | Confirmed `A/20 + 6` formula |
+| Battery current | 1–2 A | 2 A | Positive direction remains coherent |
+| Battery age | 17 days / 408 hours | 17 days | Confirmed day counter |
+
+`EVEREST_BATTERY_SOC_4028_726` now includes:
+
+```json
+"suggestedMetric": "stateOfCharge"
+```
+
+Pelican's extended-PID documentation lists `stateOfCharge` as a supported Normal connectable and expects percent input, which the confirmed one-byte `4028` signal already supplies.
+
+## Removed TESTING signals
+
+- `EVEREST_TEST_DPF_FULLNESS_0610_CD_RAW16`
+- `EVEREST_TEST_RANGER_PACKET_70_SHIFTED_BC_RAW16`
+- `EVEREST_TEST_RANGER_PACKET_70_SHIFTED_DE_RAW16`
+- `EVEREST_TEST_RANGER_PACKET_70_SHIFTED_IJ_RAW16`
+- `EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_BC_RAW16`
+- `EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_DE_RAW16`
+- `EVEREST_TEST_VGT_COMMANDED_7E0_F470_SHIFTED_IJ_RAW16`
+- `EVEREST_TEST_BMS_CUM_DIS_SLP_401C_RAW16`
+- `EVEREST_TEST_BMS_CUM_DIS_RUN_4021_RAW16`
+- `EVEREST_TEST_BMS_CUM_DIS_OFF_4026_RAW16`
+
+## Retained TESTING signal
+
+- `EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100`
+  - Path: `TESTING.Regen_BIX`
+  - Command: `220610`
+  - Status: high-confidence soot-related internal model; physical identity and engineering unit unknown.
+
+## Remaining research priorities
+
+- Identify the secondary `220610` word through a named FORScan value, wire definition or authoritative engineering reference.
+- Capture `402B` below raw 127 beside FORScan to confirm negative-current direction.
+- Obtain the real wire definitions for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `BATT_V_INF`, `CUM_DIS_SLP`, `CUM_DIS_RUN`, `CUM_DIS_OFF` and `VBAT_B–E` without speculative DID sweeps.
+- During any future regeneration, actively poll `220614`, F48B, F478 and F47A alongside `220610` so completion, history and thermal evidence are captured together.
+- Continue searching for a genuine live regeneration-state value without restoring disproved F48B flag interpretations.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 80 |
+| Signals | 98 |
+| Testing signals | 1 |
+| Production signals | 97 |
+| Signals with suggestedMetric | 14 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Malformed signals | 0 |
+| Empty commands | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 0 |
+| Commands removed | 4 |
+| Signals added | 0 |
+| Testing signals removed | 10 |
+| Signals promoted | 0 |
+| Production descriptions updated | 2 |
+| Existing formulas changed | 0 |
+| IDs changed | 0 |
+| Paths changed | 0 |
+| Frequency changes | 0 |
+| Connectable changes | Added `stateOfCharge` to confirmed SOC |
+
+## Commit message
+
+```text
+Remove resolved TESTING signals after 31 August Everest drive validation
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.30 directly from the validated v0.7.29 files and two complete 31 August Pelican sessions.
+
+Documented another complete automatic DPF regeneration from dashboard 90% to 0%. The production 220610 internal model fell from approximately 71.94% to 17.69%, reached 15.85% shortly after completion and then began rebounding. The secondary 220610 word fell from 15.55 to 1.14 and rebounded to 3.01, confirming its soot relationship across three captured burns while leaving its physical identity and engineering unit unresolved.
+
+Removed the duplicate raw secondary-soot widget while retaining the /100 scalar as the sole remaining TESTING signal. Removed three raw 0170 companions superseded by confirmed production decodes. Removed the F470 command and its three scouts after two near-stationary comparisons confirmed it mirrors standardized PID 0170.
+
+Removed DIDs 401C, 4021 and 4026 plus their misleading cumulative-discharge labels after Pelican returned 26/7/18 while a near-contemporaneous FORScan reference reported sleep/run/off values 1/1/2. The responsive DIDs are not the FORScan CUM_DIS parameters, and the new evidence supersedes their earlier identification.
+
+Reconfirmed production battery SOC, voltage, current and age against FORScan, and added the supported stateOfCharge suggested metric to EVEREST_BATTERY_SOC_4028_726.
+
+Removed ten TESTING signals and four commands. Promoted no signal and changed no existing production formula, signal ID, path or polling frequency.
 ```
