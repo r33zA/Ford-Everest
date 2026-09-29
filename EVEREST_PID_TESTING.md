@@ -2,28 +2,27 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-09-29 v0.7.31 interrupted-regeneration evidence and speed-widget cleanup  
+Version: 2026-09-29 v0.7.32 lifetime engine-counter test pack  
 Aligned default file: `default.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
 ## Current release status
 
-- 80 commands and 97 signals.
-- 96 production signals and exactly one `TESTING.*` signal.
-- The sole remaining testing item is the `/100` presentation of the secondary `220610` soot-related word; its aftertreatment relationship is confirmed but its physical identity and engineering unit remain unknown.
+- 81 commands and 100 signals.
+- 96 unchanged production signals and four `TESTING.*` signals.
+- The existing secondary `220610` soot-related scalar remains unresolved, and three new `017F` lifetime engine-counter candidates have been added under `TESTING.Engine`.
 - The `0170` raw companions, the redundant Ford `F470` mirror and the disproved `401C`/`4021`/`4026` BMS candidates have been removed.
 - `EVEREST_BATTERY_SOC_4028_726` now carries Pelican's supported `stateOfCharge` suggested metric.
 - The hard-coded `+4 km/h` speed signal has been removed. The unmodified Ford F40D signal is now the sole `speed` connectable, with dashboard matching handled by Pelican's speed-widget trim.
-- All earlier release sections below are retained as historical evidence. The v0.7.30 BMS disproof and v0.7.31 speed decision supersede their older candidate descriptions.
+- All earlier release sections below are retained as historical evidence. The v0.7.30 BMS disproof, v0.7.31 speed decision and v0.7.32 engine-counter scope supersede their older candidate descriptions.
 
 ## Update focus
 
-- Document the user-confirmed interrupted 29 September DPF regeneration and its approximately 50% dashboard correlation.
-- Preserve the confirmed production DPF model and keep the sole secondary soot-related scalar under root `TESTING.*`.
-- Remove the now-redundant hard-coded `+4 km/h` speed signal.
-- Use the unmodified Ford F40D value as Pelican's sole `speed` connectable and apply dashboard matching through Pelican's speed-widget trim.
+- Add the SAE Mode 01 `017F` lifetime engine-run, engine-idle and PTO counters under root `TESTING.Engine`.
+- Use the Everest's repeated `0160` support bitmap and current OBDb Ranger packet evidence as the basis for testing.
+- Poll the slowly changing lifetime counters only once every 60 seconds.
 - Preserve all unrelated production commands, formulas, IDs, paths, frequencies and connectables.
-- Revalidate JSON structure, duplicate IDs, TESTING containment and the exact v0.7.30-to-v0.7.31 diff.
+- Revalidate JSON structure, duplicate IDs, TESTING containment and the exact v0.7.31-to-v0.7.32 diff.
 
 ## Important note — DPF promotion
 
@@ -32,20 +31,23 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 | `EVEREST_DPF_FULLNESS_0610` | `220610` | `raw / 100` | Promoted | Matched the vehicle exhaust-filter display through a full regen cycle: high/full, cleaning, and post-regen near zero. |
 | `EVEREST_DISTANCE_SINCE_DPF_REGEN_0614` | `220614` | `raw / 10` km | Promoted | Counted up with driving distance, reset to 0 km when the regen completed, then immediately started counting up again. |
 
-## Important note — retained testing-only candidate
+## Important note — current testing-only candidates
 
 | Signal | PID | Path | Reason retained |
 | --- | --- | --- | --- |
 | `EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100` | `220610` | `TESTING.Regen_BIX` | Repeatably soot-related across completed and interrupted burns, but exact identity and engineering unit remain unknown. |
+| `EVEREST_TEST_LIFETIME_ENGINE_RUN_HOURS_017F` | `017F` | `TESTING.Engine` | Candidate lifetime engine-run counter; validate plausibility, persistence and elapsed-time increments. |
+| `EVEREST_TEST_LIFETIME_ENGINE_IDLE_HOURS_017F` | `017F` | `TESTING.Engine` | Candidate lifetime idle counter; validate that it persists and rises during stationary engine operation. |
+| `EVEREST_TEST_LIFETIME_PTO_HOURS_017F` | `017F` | `TESTING.Engine` | Candidate lifetime PTO counter; may remain zero because PTO is unsupported or unused. |
 
 ## Sanity-check snapshot
 
 | Check | Result |
 | --- | ---: |
-| Commands in current default.json | 80 |
-| Signals in current default.json | 97 |
+| Commands in current default.json | 81 |
+| Signals in current default.json | 100 |
 | Production signals | 96 |
-| TESTING signals | 1 |
+| TESTING signals | 4 |
 | Signals with suggestedMetric | 14 |
 | Duplicate signal IDs | 0 |
 | JSON validation | Passed |
@@ -4233,4 +4235,123 @@ Documented a driver-confirmed interrupted automatic DPF regeneration. The dashbo
 Removed EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED because Pelican now supports trimming the OBD or GPS speed in its speed widget. The unmodified EVEREST_SPEED_FORD_EXTENDED_F40D signal is now the sole speed connectable, allowing the preferred approximately +4 km/h dashboard match to be configured in Pelican rather than encoded as a duplicate PID.
 
 Removed one production signal. Added or removed no command, promoted no signal and changed no retained formula, signal ID, path or polling frequency.
+```
+
+---
+
+# v0.7.32 — Lifetime engine-counter test pack
+
+Aligned default file: `default.json` / `signalsets/v3/default.json` target
+
+## Update focus
+
+- Added one narrowly scoped SAE Mode 01 test command after reviewing the current OBDb Ford Ranger command evidence.
+- Preserved all v0.7.31 production commands and signals unchanged.
+- Kept all new work under root `TESTING.Engine`.
+- Added no connectable and promoted no signal.
+
+## Evidence and rationale
+
+The Everest repeatedly returned the following Mode 01 support bitmap in multiple Pelican sessions:
+
+```text
+0160 -> FFC9C343
+```
+
+Decoded for PIDs `61` through `80`, this explicitly advertises PID `7F` as supported by the Everest PCM.
+
+The current OBDb Ford Ranger 2024 reference supplies a decoded `017F` response with:
+
+- one support byte;
+- a 32-bit cumulative engine-run counter in seconds;
+- a 32-bit cumulative engine-idle counter in seconds;
+- a 32-bit cumulative PTO counter in seconds.
+
+The Ranger example decodes to approximately 725.5 total run hours, 83.2 idle hours and zero PTO hours. This provides a defined packet layout suitable for a disciplined Everest test rather than a speculative proprietary-DID sweep.
+
+## Added command
+
+```text
+Header:    7E0
+Responder: 7E8
+Command:   017F
+Frequency: 60
+```
+
+The low polling frequency is intentional because these are cumulative lifetime counters that change slowly.
+
+## Added TESTING signals
+
+| Signal ID | Field | Formula | Validation target |
+| --- | --- | --- | --- |
+| `EVEREST_TEST_LIFETIME_ENGINE_RUN_HOURS_017F` | bytes B-E / `bix: 8` | unsigned raw32 / 3600 hours | Plausible lifetime value; persistent across restarts; greater than idle time |
+| `EVEREST_TEST_LIFETIME_ENGINE_IDLE_HOURS_017F` | bytes F-I / `bix: 40` | unsigned raw32 / 3600 hours | Plausible fraction of total run time; increases during stationary engine operation |
+| `EVEREST_TEST_LIFETIME_PTO_HOURS_017F` | bytes J-M / `bix: 72` | unsigned raw32 / 3600 hours | Expected to remain zero unless PTO time is supported and used |
+
+## Test procedure
+
+1. Connect Pelican and confirm all three widgets populate without `NO DATA` or a negative response.
+2. Record the engine-run and idle values before driving.
+3. Complete an ordinary drive and record both values again.
+4. Switch the ignition off, reconnect later and confirm both counters retain their values.
+5. During a stationary engine-running period, check whether the idle counter rises with total run time.
+6. If FORScan exposes equivalent lifetime run/idle counters, capture a timestamp-matched comparison.
+
+PTO remaining zero is not by itself a failure. The Ranger example's support mask indicates that PTO can be unsupported while run and idle counters remain valid.
+
+## Promotion criteria
+
+Promote engine-run and idle counters only after:
+
+- valid responses are captured across at least two ignition cycles;
+- values are plausible for the vehicle;
+- counters persist rather than resetting each trip;
+- total run time is greater than idle time;
+- observed increments agree with elapsed engine-running and idling time within the displayed resolution.
+
+Remove the command if it repeatedly returns NRC `31`, `NO DATA`, malformed packets or obviously impossible counter values. The PTO field may be removed independently if its support state proves false or it remains permanently unsupported.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 81 |
+| Signals | 100 |
+| Testing signals | 4 |
+| Production signals | 96 |
+| Signals with suggestedMetric | 14 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Malformed signals | 0 |
+| Empty commands | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 1 |
+| Commands removed | 0 |
+| Signals added | 3 |
+| Signals removed | 0 |
+| Signals promoted | 0 |
+| Production signals modified | 0 |
+| Existing formulas changed | 0 |
+| IDs changed | 0 |
+| Existing paths changed | 0 |
+| Existing frequency changes | 0 |
+| Connectable changes | 0 |
+
+## Commit message
+
+```text
+Add lifetime engine counters for Everest PID v0.7.32 testing
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.32 directly from the validated v0.7.31 files.
+
+Added SAE Mode 01 PID 017F as a low-frequency TESTING.Engine command after the Everest repeatedly advertised PID 7F in its 0160 support bitmap and the current OBDb Ford Ranger reference supplied a decoded multi-counter packet layout.
+
+Added cumulative lifetime engine-run, engine-idle and PTO-time candidates. Each field is decoded from its 32-bit seconds counter and displayed in hours. The test descriptions define persistence, plausibility, increment and cross-tool checks required before promotion. PTO zero is treated cautiously because the feature may be unsupported or unused on this vehicle.
+
+Added one command and three TESTING signals. No production signal, existing formula, signal ID, path, polling frequency or connectable was changed or removed.
 ```
