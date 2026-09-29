@@ -10,19 +10,30 @@ signalsets/v3/default.json
 
 ## Current release
 
-Current validated build: **v0.7.31 — 29 September interrupted-regeneration evidence and speed-widget cleanup**.
+Current testing build: **v0.7.32 — lifetime engine-counter test pack**.
 
-The pack contains 80 commands and 97 signals. Of these, 96 are production signals and exactly one remains isolated under `TESTING.*`.
+The pack contains 81 commands and 100 signals. Of these, 96 are unchanged production signals and four remain isolated under `TESTING.*`.
 
 ## Latest release highlights
 
-- Analysed three consecutive Pelican sessions covering approximately 38.8 km and 36,096 logged commands.
-- Documented a driver-confirmed interrupted DPF regeneration. The dashboard was approximately 50% when the production `220610` model reached 47.87%, and the model ended near 48.11% after driving had to stop.
-- Strengthened the sole remaining TESTING field after its secondary scalar fell from 16.84 to 5.61 and rebounded to 7.07. Its physical identity and engineering unit remain unknown.
-- Confirmed that `220610` word 3 duplicated word 1 in all 449 captured packets, while word 4 remained a near-copy. Neither warrants another visible signal.
-- Removed the hard-coded `+4 km/h` corrected speed signal now that Pelican supports speed-widget trimming.
-- Made the unmodified `EVEREST_SPEED_FORD_EXTENDED_F40D` signal the sole `speed` connectable. Retained formulas, command frequency and command count are unchanged.
-- Found no Request Out Of Range responses and no production-signal failure requiring removal.
+- Added one low-frequency SAE Mode 01 `017F` command under `TESTING.Engine`.
+- Added candidate lifetime engine-run, engine-idle and PTO counters, decoded from three unsigned 32-bit seconds fields and displayed in hours.
+- The Everest repeatedly advertises PID `017F` through its `0160` support bitmap (`FFC9C343`).
+- The byte layout is grounded in the current OBDb Ford Ranger 2024 reference capture rather than a guessed proprietary DID.
+- No production signal, formula, path, ID, polling frequency or connectable was changed.
+- The earlier v0.7.31 interrupted-regeneration findings and speed-widget cleanup remain in force.
+
+## Lifetime engine-counter testing
+
+The new `017F` command uses `7E0` request and `7E8` response addressing and polls only once every 60 seconds. Its first data byte is a support mask followed by three 32-bit cumulative counters:
+
+| Candidate | Packet field | Display |
+| --- | --- | --- |
+| Lifetime engine run time | bytes B-E | raw seconds / 3600 hours |
+| Lifetime engine idle time | bytes F-I | raw seconds / 3600 hours |
+| Lifetime PTO run time | bytes J-M | raw seconds / 3600 hours |
+
+Before promotion, confirm that engine-run and idle values are plausible and persist across ignition cycles. Engine run time should be greater than idle time. PTO may remain zero because this Everest does not use a power-take-off; zero alone is not proof of a faulty decode.
 
 ## Confirmed production highlights
 
@@ -38,7 +49,7 @@ The pack contains 80 commands and 97 signals. Of these, 96 are production signal
 
 `EVEREST_DPF_FULLNESS_0610` is a validated internal fullness/soot-load measure, but it is not always the dashboard's exact modelled percentage. During the deliberately interrupted 29 September burn, the dashboard was approximately 50% while Pelican reached 47.87% and ended near 48.11%. During the complete 31 August burn, the dashboard moved from 90% to 0% while Pelican moved from approximately 71.94% to 17.69%, reached 15.85% shortly after completion and then began rebounding. The `raw / 100` formula remains valid for the internal model.
 
-The second `220610` word is also definitively soot-related. Across three completed automatic burns and the deliberately interrupted 29 September burn it has declined coherently during cleaning and rebounded afterward. In the latest drive it began declining before the primary model peaked, showing that it is not simply another fullness percentage. It remains TESTING because neither its physical identity nor engineering unit has been established. The `/100` scalar view is the sole remaining testing signal.
+The second `220610` word is also definitively soot-related. Across three completed automatic burns and the deliberately interrupted 29 September burn it has declined coherently during cleaning and rebounded afterward. In the latest drive it began declining before the primary model peaked, showing that it is not simply another fullness percentage. It remains TESTING because neither its physical identity nor engineering unit has been established. Its `/100` scalar view remains the only unresolved DPF testing signal; the other current TESTING items are the new `017F` lifetime engine counters.
 
 F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E are one 16-bit average-time-between-regenerations value. Across two completed burns where F48B was polled, the normalized trigger fell in coarse steps and the average interval/distance fields recalculated together at completion, but none is a reliable live active-regeneration flag. F48B was not polled during the 31 August burn.
 
@@ -61,6 +72,7 @@ The responsive DIDs `401C`, `4021` and `4026` are not FORScan `CUM_DIS_SLP`, `CU
 
 ## High-value remaining work
 
+- Validate the new `017F` lifetime engine counters across at least two ignition cycles and compare them with FORScan if the equivalent values are available.
 - Identify the engineering unit and exact meaning of the secondary `220610` soot-model word. Another ordinary regeneration is no longer the missing evidence; a named FORScan value or authoritative definition is needed.
 - Capture `402B` below raw 127 beside FORScan to finish validating negative-current direction.
 - Obtain wire definitions for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `BATT_V_INF`, the real `CUM_DIS_*` counters and `VBAT_B–E`; no guessed Pelican definitions are included.
