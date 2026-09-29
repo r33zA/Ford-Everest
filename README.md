@@ -10,19 +10,19 @@ signalsets/v3/default.json
 
 ## Current release
 
-Current validated build: **v0.7.30 — 31 August regeneration and final TESTING cleanup**.
+Current validated build: **v0.7.31 — 29 September interrupted-regeneration evidence and speed-widget cleanup**.
 
-The pack contains 80 commands and 98 signals. Of these, 97 are production signals and exactly one remains isolated under `TESTING.*`.
+The pack contains 80 commands and 97 signals. Of these, 96 are production signals and exactly one remains isolated under `TESTING.*`.
 
 ## Latest release highlights
 
-- Documented another complete automatic DPF regeneration, with the dashboard falling from 90% to 0% and the production `220610` internal model falling from 71.94% to approximately 17.69% before reaching a 15.85% minimum.
-- Strengthened the secondary `220610` soot-model candidate after it fell from 15.55 to 1.14 and rebounded to 3.01 after completion. Its physical identity and engineering unit remain unknown, so only the `/100` scalar view remains in TESTING.
-- Confirmed through two near-stationary comparisons that Ford DID `F470` mirrors the standardized SAE `0170` commanded pressure, actual pressure and control-status fields. Removed the redundant F470 command and the superseded raw `0170` companions.
-- Disproved the experimental `401C`, `4021` and `4026` cumulative-discharge identifications. Pelican returned `26/7/18` while the near-contemporaneous FORScan reference reported sleep/run/off values `1/1/2`; the three commands and misleading signals were removed.
-- Reconfirmed production BCM battery values against FORScan: state of charge 81%, direct voltage 14.20 V, current approximately 2 A and battery age 17 days.
-- Added `stateOfCharge` as the Pelican connectable for `EVEREST_BATTERY_SOC_4028_726`.
-- Removed ten TESTING signals and four commands without changing any production formula, signal ID, path or polling frequency.
+- Analysed three consecutive Pelican sessions covering approximately 38.8 km and 36,096 logged commands.
+- Documented a driver-confirmed interrupted DPF regeneration. The dashboard was approximately 50% when the production `220610` model reached 47.87%, and the model ended near 48.11% after driving had to stop.
+- Strengthened the sole remaining TESTING field after its secondary scalar fell from 16.84 to 5.61 and rebounded to 7.07. Its physical identity and engineering unit remain unknown.
+- Confirmed that `220610` word 3 duplicated word 1 in all 449 captured packets, while word 4 remained a near-copy. Neither warrants another visible signal.
+- Removed the hard-coded `+4 km/h` corrected speed signal now that Pelican supports speed-widget trimming.
+- Made the unmodified `EVEREST_SPEED_FORD_EXTENDED_F40D` signal the sole `speed` connectable. Retained formulas, command frequency and command count are unchanged.
+- Found no Request Out Of Range responses and no production-signal failure requiring removal.
 
 ## Confirmed production highlights
 
@@ -36,11 +36,17 @@ The pack contains 80 commands and 98 signals. Of these, 97 are production signal
 
 ## Important DPF interpretation
 
-`EVEREST_DPF_FULLNESS_0610` is a validated internal fullness/soot-load measure, but it is not the dashboard's exact modelled percentage. During the complete 31 August burn, the dashboard moved from 90% to 0% while Pelican moved from approximately 71.94% to 17.69%, reached 15.85% shortly after completion and then began rebounding. The `raw / 100` formula remains valid for the internal model.
+`EVEREST_DPF_FULLNESS_0610` is a validated internal fullness/soot-load measure, but it is not always the dashboard's exact modelled percentage. During the deliberately interrupted 29 September burn, the dashboard was approximately 50% while Pelican reached 47.87% and ended near 48.11%. During the complete 31 August burn, the dashboard moved from 90% to 0% while Pelican moved from approximately 71.94% to 17.69%, reached 15.85% shortly after completion and then began rebounding. The `raw / 100` formula remains valid for the internal model.
 
-The second `220610` word is also definitively soot-related. Across three captured automatic burns it has declined coherently during cleaning and rebounded afterward. It remains TESTING because neither its physical identity nor engineering unit has been established. The duplicate raw widget was removed; the `/100` scalar view is the sole remaining testing signal.
+The second `220610` word is also definitively soot-related. Across three completed automatic burns and the deliberately interrupted 29 September burn it has declined coherently during cleaning and rebounded afterward. In the latest drive it began declining before the primary model peaked, showing that it is not simply another fullness percentage. It remains TESTING because neither its physical identity nor engineering unit has been established. The `/100` scalar view is the sole remaining testing signal.
 
 F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E are one 16-bit average-time-between-regenerations value. Across two completed burns where F48B was polled, the normalized trigger fell in coarse steps and the average interval/distance fields recalculated together at completion, but none is a reliable live active-regeneration flag. F48B was not polled during the 31 August burn.
+
+## Speed interpretation
+
+`EVEREST_SPEED_FORD_EXTENDED_F40D` is the sole vehicle-speed signal and the active `speed` connectable. Its unmodified Ford value reads approximately 4 km/h below the dashboard on this Everest.
+
+Pelican now supports trimming the OBD or GPS speed shown by its speed widget. Apply approximately `+4 km/h` in Pelican when a dashboard-matching presentation is preferred. The former hard-coded `EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED` signal was removed to avoid maintaining two presentations of the same byte.
 
 ## Battery interpretation
 
