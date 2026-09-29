@@ -2,32 +2,28 @@
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-08-31 v0.7.30 regeneration evidence and final TESTING cleanup  
+Version: 2026-09-29 v0.7.31 interrupted-regeneration evidence and speed-widget cleanup  
 Aligned default file: `default.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
 ## Current release status
 
-- 80 commands and 98 signals.
-- 97 production signals and exactly one `TESTING.*` signal.
-- The sole remaining testing item is the `/100` presentation of the secondary `220610` soot-model word; its soot relationship is confirmed but its physical identity and engineering unit remain unknown.
+- 80 commands and 97 signals.
+- 96 production signals and exactly one `TESTING.*` signal.
+- The sole remaining testing item is the `/100` presentation of the secondary `220610` soot-related word; its aftertreatment relationship is confirmed but its physical identity and engineering unit remain unknown.
 - The `0170` raw companions, the redundant Ford `F470` mirror and the disproved `401C`/`4021`/`4026` BMS candidates have been removed.
 - `EVEREST_BATTERY_SOC_4028_726` now carries Pelican's supported `stateOfCharge` suggested metric.
-- All earlier release sections below are retained as historical evidence. Where an older section identifies `401C`, `4021` or `4026` as FORScan cumulative-discharge counters, the v0.7.30 disproof section supersedes it.
+- The hard-coded `+4 km/h` speed signal has been removed. The unmodified Ford F40D signal is now the sole `speed` connectable, with dashboard matching handled by Pelican's speed-widget trim.
+- All earlier release sections below are retained as historical evidence. The v0.7.30 BMS disproof and v0.7.31 speed decision supersede their older candidate descriptions.
 
 ## Update focus
 
-- Updated from v0.6.3 transmission temperature div16 primary pass.
-- Promoted `EVEREST_DPF_FULLNESS_0610` as the preferred DPF / exhaust-filter fullness value.
-- Promoted `EVEREST_DISTANCE_SINCE_DPF_REGEN_0614` as distance since last completed DPF regeneration.
-- Added `EVEREST_DPF_FULLNESS_0610` as a `dpfSootLoad` connectable candidate.
-- Kept a small testing-only emissions section for remaining useful survivor candidates:
-  - `22F48B`
-  - `22F478`
-  - `22F463`
-  - `220440`
-- Did **not** bring across the dead v0.3/v0.3.1 exploratory clutter.
-- Revalidated JSON: no duplicate signal IDs.
+- Document the user-confirmed interrupted 29 September DPF regeneration and its approximately 50% dashboard correlation.
+- Preserve the confirmed production DPF model and keep the sole secondary soot-related scalar under root `TESTING.*`.
+- Remove the now-redundant hard-coded `+4 km/h` speed signal.
+- Use the unmodified Ford F40D value as Pelican's sole `speed` connectable and apply dashboard matching through Pelican's speed-widget trim.
+- Preserve all unrelated production commands, formulas, IDs, paths, frequencies and connectables.
+- Revalidate JSON structure, duplicate IDs, TESTING containment and the exact v0.7.30-to-v0.7.31 diff.
 
 ## Important note — DPF promotion
 
@@ -36,25 +32,21 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 | `EVEREST_DPF_FULLNESS_0610` | `220610` | `raw / 100` | Promoted | Matched the vehicle exhaust-filter display through a full regen cycle: high/full, cleaning, and post-regen near zero. |
 | `EVEREST_DISTANCE_SINCE_DPF_REGEN_0614` | `220614` | `raw / 10` km | Promoted | Counted up with driving distance, reset to 0 km when the regen completed, then immediately started counting up again. |
 
-## Important note — retained testing-only emissions candidates
+## Important note — retained testing-only candidate
 
 | Signal | PID | Path | Reason retained |
 | --- | --- | --- | --- |
-| `EVEREST_TEST_DPF_STATUS_F48B_RAW8_A` | `22F48B` | `Emissions.DPF.Testing` | Alive; may be a DPF/regen status byte. |
-| `EVEREST_TEST_DPF_STATUS_F48B_RAW16_AB` | `22F48B` | `Emissions.DPF.Testing` | Raw 16-bit companion for status analysis. |
-| `EVEREST_TEST_DPF_REGEN_STATUS_0440_RAW8_A` | `220440` | `Emissions.DPF.Testing` | Alive with valid zero; possible regen-status bitfield. |
-| `EVEREST_TEST_EXHAUST_MULTI_EGT_F478_RAW16_AB` | `22F478` | `Emissions.Exhaust.Testing` | Alive packet-like exhaust/EGT candidate. |
-| `EVEREST_TEST_EXHAUST_MULTI_EGT_F478_CANDIDATE_C` | `22F478` | `Emissions.Exhaust.Testing` | Candidate first-word temperature scaling for comparison only. |
-| `EVEREST_TEST_EGRT_F463_CELSIUS` | `22F463` | `Emissions.Exhaust.Testing` | Plausible EGRT / EGR manifold temperature candidate. |
-| `EVEREST_TEST_EGRT_F463_RAW16_AB` | `22F463` | `Emissions.Exhaust.Testing` | Raw companion for F463. |
+| `EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100` | `220610` | `TESTING.Regen_BIX` | Repeatably soot-related across completed and interrupted burns, but exact identity and engineering unit remain unknown. |
 
 ## Sanity-check snapshot
 
 | Check | Result |
 | --- | ---: |
-| Commands in current default.json | 69 |
-| Signals in current default.json | 77 |
-| Signals with suggestedMetric | 21 |
+| Commands in current default.json | 80 |
+| Signals in current default.json | 97 |
+| Production signals | 96 |
+| TESTING signals | 1 |
+| Signals with suggestedMetric | 14 |
 | Duplicate signal IDs | 0 |
 | JSON validation | Passed |
 
@@ -62,22 +54,20 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 
 | Suggested metric | Signal ID | Name | Cmd |
 | --- | --- | --- | --- |
-| `dpfSootLoad` | `EVEREST_DPF_FULLNESS_0610` | DPF / exhaust filter fullness | `220610` |
 | `transmissionFluidTemperature` | `EVEREST_TRANS_TEMP_1E1C_DIV16` | Transmission fluid temperature Everest div16 | `221E1C` |
-| `transmissionGear` | `EVEREST_GEAR_ENGAGED_7E1_1E1F` | Transmission gear engaged | `221E1F` |
 | `engineCoolantTemperature` | `EVEREST_COOLANT_TEMP_F405` | Coolant temperature | `22F405` |
 | `engineOilTemperature` | `EVEREST_ENGINE_OIL_TEMP_F45C` | Engine oil temperature | `22F45C` |
 | `engineLoad` | `EVEREST_ENGINE_LOAD_F404` | Engine load | `22F404` |
 | `engineSpeed` | `EVEREST_ENGINE_SPEED_F40C` | Engine speed | `22F40C` |
-| `fuelRange` | `FORD_DTE_DISP` | Distance to empty, displayed | `224195` |
+| `fuelRange` | `FORD_DTE_DISP` | Distance to empty displayed | `224195` |
 | `fuelTankLevel` | `EVEREST_FUEL_REMAINING_F42F` | Fuel remaining | `22F42F` |
-| `fuelTankLevel` | `GENERIC_FUEL_LEVEL_012F` | Generic fuel level | `012F` |
-| `massAirFlow` | `GENERIC_MAF_0110` | Air flow rate from mass air flow sensor | `0110` |
+| `massAirFlow` | `GENERIC_MAF_0110` | Generic mass air flow rate | `0110` |
 | `odometer` | `EVEREST_ODOMETER_01A6` | Odometer | `01A6` |
-| `speed` | `EVEREST_SPEED_FORD_EXTENDED_F40D` | Vehicle speed Ford extended raw | `22F40D` |
-| `speed` | `EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED` | Vehicle speed Ford extended corrected | `22F40D` |
+| `speed` | `EVEREST_SPEED_FORD_EXTENDED_F40D` | Vehicle speed Ford extended | `22F40D` |
 | `starterBatteryVoltage` | `EVEREST_AUX_12V_BATTERY_VOLTAGE_402A` | Aux 12V battery voltage | `22402A` |
+| `stateOfCharge` | `EVEREST_BATTERY_SOC_4028_726` | Aux 12V battery state of charge | `224028` |
 | `throttlePosition` | `EVEREST_ACCEL_PEDAL_032B` | Accelerator pedal position | `22032B` |
+| `distanceSinceDTCsCleared` | `EVEREST_DISTANCE_SINCE_DTC_CLEAR_F431` | Distance since DTC clear | `22F431` |
 
 ## Confirmed / working and currently understood
 
@@ -87,14 +77,14 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 | DPF | `220614` | `7E0 7E8` | Distance since DPF regen | Works | Active; formula raw/10 km; reset at regen completion. |
 | Transmission | `221E1C div16` | `7E1 7E9` | Transmission fluid temperature Everest div16 | Works / chosen | Preferred current Everest-specific scaling; active transmissionFluidTemperature connectable. |
 | Transmission | `221E1C 5/72` | `7E1 7E9` | Transmission fluid temperature 5/72 compare | Comparison / legacy | Retained for validation only; no suggestedMetric. |
-| Transmission | `221E1F` | `7E1 7E9` | Transmission gear engaged | Works | Active as transmissionGear. |
+| Transmission | `221E1F` | `7E1 7E9` | Transmission gear engaged | Works | Visible working current-gear signal; no unsupported transmissionGear connectable assigned. |
 | Emissions | `22052E` | `7E0 7E8` | EGR open percentage | Works | Active. |
 | Emissions | `220569` | `7E0 7E8` | EGT pre-turbo | Works / plausible | Active. |
 | Fuel / range | `22F42F` | `7E0 7E8` | Fuel remaining | Works | Active as fuelTankLevel. |
-| Fuel / range | `012F` | `7E0 7E8` | Generic fuel level | Works | Backup/comparison fuelTankLevel. |
+| Fuel / range | `012F` | `7E0 7E8` | Generic fuel level | Works | Visible backup/comparison value; no duplicate fuelTankLevel connectable assigned. |
 | Fuel / range | `224195` | `7E0 7E8` | Distance to empty, displayed | Works | Matched dash; active as fuelRange. |
 | Movement | `01A6` | `7E0 7E8` | Odometer | Works | Active as odometer. |
-| Movement | `22F40D` | `7E0 7E8` | Vehicle speed Ford extended raw/corrected | Works | Corrected signal retained as practical dash-matching speed. |
+| Movement | `22F40D` | `7E0 7E8` | Vehicle speed Ford extended | Works | Unmodified signal is the sole speed connectable; use Pelican's speed-widget trim for the preferred dashboard match. |
 | Control | `22032B` | `7E0 7E8` | Accelerator pedal position | Works | Practical throttlePosition connectable. |
 | Engine | `22F404` | `7E0 7E8` | Engine load | Works | Active as engineLoad. |
 | Engine | `22F405` | `7E0 7E8` | Coolant temperature | Works | Active as engineCoolantTemperature. |
@@ -2593,8 +2583,8 @@ Overall 220610 reduction was 47.63 percentage points across approximately 19.5 m
 | State | C | D | E | G |
 | --- | ---: | ---: | ---: | ---: |
 | Previous normal driving | 243-244 | 0 | 232-233 | 131 |
-| Active regeneration | 218 166 | 1 | 1 | 139 |
-| Immediately post-regeneration | 121 112 | 0 | 180 | 107 |
+| Active regeneration | 218→166 | 1 | 1 | 139 |
+| Immediately post-regeneration | 121→112 | 0 | 180 | 107 |
 
 Byte D returned to zero approximately 41 seconds before the distance-since-regen reset. It is added as both a raw scout and an `offon` testing candidate. It remains under `TESTING.Regen_BIX` pending confirmation in one more regeneration.
 
@@ -3176,7 +3166,7 @@ Aligned default file: `default.json` / `signalsets/v3/default.json` target
 - Compared the FORScan battery page with the current Pelican Battery widgets.
 - Confirmed that DID `4028` is direct battery state of charge and removed the disproved `/255` comparison signal.
 - Confirmed that DID `4027` is battery age in days and clarified both existing production descriptions without changing either formula.
-- Added five low-priority, read-only BCM commands under root `TESTING.BMS` using module-specific `726   72E` addressing.
+- Added five low-priority, read-only BCM commands under root `TESTING.BMS` using module-specific `726 → 72E` addressing.
 - Added raw companions for every new address and engineering candidates only where an established older-Ford formula provides a testable hypothesis.
 - Added no guessed definitions for FORScan labels whose addresses remain unknown.
 - Added no reset, control, write, session-start or broadcast command.
@@ -3343,9 +3333,9 @@ The FORScan Lite recording began at approximately 08:15 and stored these interna
 Pelican began roughly one minute later and received:
 
 ```text
-726   72E  22401C     62 40 1C 00 0F     15
-726   72E  224021     62 40 21 00 05      5
-726   72E  224026     62 40 26 00 0C     12
+726 → 72E  22401C  →  62 40 1C 00 0F  →  15
+726 → 72E  224021  →  62 40 21 00 05  →   5
+726 → 72E  224026  →  62 40 26 00 0C  →  12
 ```
 
 The exact three-value match confirms:
@@ -3488,7 +3478,7 @@ The preferred discovery method for the remaining items is a single-PID FORScan c
 | Production signals modified | 5 descriptions only |
 | Existing production formulas changed | 0 |
 | Connectable changes | 0 |
-| Frequency changes | `401C`, `4021`, `4026`: 1   60 |
+| Frequency changes | `401C`, `4021`, `4026`: 1 → 60 |
 | Path changes | 0 |
 
 ## Commit message
@@ -3517,7 +3507,7 @@ Date: 25 August 2026
 
 - Used the complete afternoon Pelican session and the driver's state observations to resolve TCC, fuel-rate, BMS, fuel-pressure-mirror and boost-testing questions.
 - Removed nine testing signals whose comparison purpose is complete or whose method is no longer considered reliable.
-- Removed the now-empty `7E0   7E8 22F46D` command.
+- Removed the now-empty `7E0 → 7E8 22F46D` command.
 - Kept all production decodes, including both `019D` fuel-rate words.
 - Kept the user's preferred `+4 km/h` corrected Ford speed as the sole `speed` connectable and retained raw Ford speed as a visible comparison.
 - Promoted no signals and changed no production formula, ID or path.
@@ -3529,9 +3519,9 @@ Date: 25 August 2026
 | Session span | Approximately 14:47:26–15:07:49 |
 | Database rows | 10,856 |
 | Distinct commands | 71 observed |
-| Distance | Approximately 10.1 km (`30797.9   30808.0`) |
-| DPF fullness | `38.72%   43.22%`; no regeneration captured |
-| Transmission temperature | `30.0   62.4375 °C` |
+| Distance | Approximately 10.1 km (`30797.9 → 30808.0`) |
+| DPF fullness | `38.72% → 43.22%`; no regeneration captured |
+| Transmission temperature | `30.0 → 62.4375 °C` |
 | Persistent custom-command negative responses | None identified |
 
 The session is principally a validation and cleanup drive. It does not justify a new production promotion, but it materially reduces TESTING clutter.
@@ -3603,7 +3593,7 @@ The raw Ford extended speed remains visible for comparison, but its duplicate `s
 
 Removed command:
 
-- `7E0   7E8 22F46D`
+- `7E0 → 7E8 22F46D`
 
 ## Retained TESTING priorities
 
@@ -3682,7 +3672,7 @@ Date: 27 August 2026
 | Database responses | 3,663 |
 | Distinct database command strings | 63 |
 | Database span | Approximately 11:27:24–11:34:56 |
-| Database odometer movement | Approximately 4.1 km (`30941.8   30945.9`) |
+| Database odometer movement | Approximately 4.1 km (`30941.8 → 30945.9`) |
 | Retained custom-PID persistent negative responses | 0 |
 
 The screenshots record the full pre-completion event through dashboard, Pelican map and targeted TESTING pages. The database records the post-completion drive and cannot independently supply raw packets for the earlier part of the burn.
@@ -4095,4 +4085,152 @@ Removed DIDs 401C, 4021 and 4026 plus their misleading cumulative-discharge labe
 Reconfirmed production battery SOC, voltage, current and age against FORScan, and added the supported stateOfCharge suggested metric to EVEREST_BATTERY_SOC_4028_726.
 
 Removed ten TESTING signals and four commands. Promoted no signal and changed no existing production formula, signal ID, path or polling frequency.
+```
+
+---
+
+# v0.7.31 — 29 September interrupted-regeneration evidence and speed-widget cleanup
+
+Aligned default file: `default.json` / `signalsets/v3/default.json` target
+
+## Session scope
+
+- Analysed three consecutive Pelican sessions from 29 September 2026.
+- Used the SQLite command/response databases as primary evidence and the session-summary screenshots as secondary timing, polling and scanner-performance references.
+- Normalised Pelican's numeric reconnect/duplicate suffixes before decoding so later samples such as `2206102` were included with their configured command.
+- Covered approximately 38.8 km and 36,096 logged commands using Pelican v5.1.0 build 907 and the same signal-set commit.
+- Sanitised the analysis narrative: the supplied screenshots and databases contain a full VIN and identifiable route information.
+
+## Consecutive-drive evidence
+
+| Drive | Distance | Production DPF model | Secondary scalar | Interpretation |
+| --- | ---: | ---: | ---: | --- |
+| 1 | 12.8 km | 79.41→84.66% | 13.27→14.41; peak 16.52 | Normal accumulation and warm-up |
+| 2 | 2.7 km | 84.75→86.67% | 14.52→15.71; peak 16.61 | Continued accumulation |
+| 3 | 23.3 km | 86.81→89.02→47.87%; ended 48.11% | 16.84→5.61→7.07 | Driver-confirmed interrupted active regeneration |
+
+The session boundaries were coherent:
+
+- Drive 1 ended at 84.66% and Drive 2 began at 84.75%.
+- Drive 2 ended at 86.67% and Drive 3 began at 86.81%.
+
+This continuity further validates `EVEREST_DPF_FULLNESS_0610` as a persistent internal soot/fullness model.
+
+## Interrupted regeneration finding
+
+The driver confirmed that the third drive entered active cleaning but had to be stopped when the dashboard was approximately 50%.
+
+The database independently recorded:
+
+- primary `220610` peak: 89.02% at approximately 17:05:32;
+- primary minimum: 47.87% at approximately 17:25:46;
+- final primary value: 48.11%;
+- secondary minimum: 5.61 at approximately 17:24:16;
+- final secondary value after rebound: 7.07.
+
+The approximately 50% dashboard observation agrees closely with the 47.87–48.11% internal value. The burn is classified as deliberately interrupted, not completed. It must not be used as evidence for a `220614` reset or F48B history recalculation.
+
+`220614`, F48B, F478 and F47A were not actively polled during this event, so distance-reset, rolling-history, temperature and pressure completion evidence is unavailable.
+
+## Secondary `220610` interpretation
+
+Across the third drive:
+
+- before the primary peak, the main model rose from 86.81% to 89.02% while the secondary scalar fell from 16.84 to 12.93;
+- the descriptive correlation through the primary peak was approximately `-0.971`;
+- after the primary peak, both fields declined together, with descriptive correlation approximately `0.927`;
+- the secondary field rebounded before the session ended.
+
+The field is therefore not a duplicate fullness percentage. It remains a high-confidence soot-related or aftertreatment scalar whose exact identity and engineering unit are unknown.
+
+Decision:
+
+- retain `EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100` under `TESTING.Regen_BIX`;
+- rename its visible label to `TEST DPF secondary soot-related scalar 0610`;
+- keep the `/100` scalar formula unchanged;
+- do not promote it without a named FORScan comparison, wire definition or authoritative engineering reference.
+
+Retaining this field creates no additional ECU request because it shares the production `220610` command.
+
+## Remaining packet words
+
+Across all 449 captured `220610` responses:
+
+- word 3 duplicated word 1 in 449/449 packets;
+- word 4 remained a near-copy of word 1, varying between zero and 108 raw counts above it;
+- the second word remained the only independently useful unresolved field.
+
+The earlier cleanup of duplicate word-3 and word-4 scouts remains correct.
+
+## Response health
+
+- No NRC `31` Request Out Of Range response was recorded.
+- No production PID showed persistent failure.
+- A small number of transmission requests returned transient `NO DATA` during Drives 1 and 2, followed by sustained valid data and no corresponding failure in Drive 3.
+- The single per-session `7F 01 11` response belonged to generic Mode 01 discovery and is not evidence against an Everest extended signal.
+- Battery SOC, battery voltage, transmission temperature, coolant temperature and engine-oil temperature remained plausible and coherent.
+
+## Speed-widget cleanup
+
+Pelican now supports trimming the OBD or GPS speed displayed by its speed widget to match the vehicle speedometer. The hard-coded duplicate is therefore no longer needed.
+
+Removed:
+
+- `EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED`
+  - former formula: raw `+4 km/h`;
+  - former role: sole `speed` connectable.
+
+Retained and updated:
+
+- `EVEREST_SPEED_FORD_EXTENDED_F40D`
+  - formula remains the unmodified 8-bit Ford value;
+  - ID and `Movement` path remain unchanged;
+  - visible name is now `Vehicle speed Ford extended`;
+  - now carries `suggestedMetric: speed`;
+  - Pelican's widget trim should be set to approximately `+4 km/h` when dashboard matching is preferred.
+
+The F40D command, responder, polling frequency and retained formula are unchanged. Removing the duplicate signal does not change command traffic.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 80 |
+| Signals | 97 |
+| Testing signals | 1 |
+| Production signals | 96 |
+| Signals with suggestedMetric | 14 |
+| Duplicate signal IDs | 0 |
+| Malformed commands | 0 |
+| Malformed signals | 0 |
+| Empty commands | 0 |
+| Non-root TESTING paths | 0 |
+| JSON validation | Passed |
+| Commands added | 0 |
+| Commands removed | 0 |
+| Signals added | 0 |
+| Signals removed | 1 |
+| Signals promoted | 0 |
+| Existing formulas changed | 0 |
+| IDs changed | 0 |
+| Paths changed | 0 |
+| Frequency changes | 0 |
+| Connectable changes | Moved `speed` from corrected F40D to unmodified F40D |
+
+## Commit message
+
+```text
+Remove corrected speed duplicate for Everest PID v0.7.31
+```
+
+## Extended description
+
+```text
+Built Ford Everest MY25.25 PID pack v0.7.31 directly from the validated v0.7.30 files and three consecutive 29 September Pelican sessions.
+
+Documented a driver-confirmed interrupted automatic DPF regeneration. The dashboard was approximately 50% when the production 220610 internal model reached 47.87%, and the model ended near 48.11% after driving had to stop. The secondary 220610 scalar fell from 16.84 to 5.61 and rebounded to 7.07. Its visible name and description now reflect a high-confidence soot-related scalar rather than implying a duplicate fullness percentage, while its TESTING placement and formula remain unchanged.
+
+Removed EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED because Pelican now supports trimming the OBD or GPS speed in its speed widget. The unmodified EVEREST_SPEED_FORD_EXTENDED_F40D signal is now the sole speed connectable, allowing the preferred approximately +4 km/h dashboard match to be configured in Pelican rather than encoded as a duplicate PID.
+
+Removed one production signal. Added or removed no command, promoted no signal and changed no retained formula, signal ID, path or polling frequency.
 ```
