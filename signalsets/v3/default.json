@@ -2050,6 +2050,55 @@
       "hdr": "7E0",
       "rax": "7E8",
       "cmd": {
+        "01": "7F"
+      },
+      "freq": 60,
+      "signals": [
+        {
+          "id": "EVEREST_TEST_LIFETIME_ENGINE_RUN_HOURS_017F",
+          "path": "TESTING.Engine",
+          "fmt": {
+            "bix": 8,
+            "len": 32,
+            "max": 1193046.47,
+            "div": 3600,
+            "unit": "hours"
+          },
+          "name": "TEST lifetime engine run time 017F",
+          "description": "SAE Mode 01 PID 7F candidate for cumulative lifetime engine run time. The Everest repeatedly advertises PID 7F in its 0160 support bitmap. The Ranger reference decodes bytes B-E as an unsigned 32-bit seconds counter; this TESTING view converts seconds to hours. Validate that the value is plausible, persistent across ignition cycles and greater than the lifetime idle counter before promotion."
+        },
+        {
+          "id": "EVEREST_TEST_LIFETIME_ENGINE_IDLE_HOURS_017F",
+          "path": "TESTING.Engine",
+          "fmt": {
+            "bix": 40,
+            "len": 32,
+            "max": 1193046.47,
+            "div": 3600,
+            "unit": "hours"
+          },
+          "name": "TEST lifetime engine idle time 017F",
+          "description": "SAE Mode 01 PID 7F candidate for cumulative lifetime engine idle time. The Ranger reference decodes bytes F-I as an unsigned 32-bit seconds counter; this TESTING view converts seconds to hours. Validate persistence across ignition cycles and confirm that it rises only while the engine is idling before promotion."
+        },
+        {
+          "id": "EVEREST_TEST_LIFETIME_PTO_HOURS_017F",
+          "path": "TESTING.Engine",
+          "fmt": {
+            "bix": 72,
+            "len": 32,
+            "max": 1193046.47,
+            "div": 3600,
+            "unit": "hours"
+          },
+          "name": "TEST lifetime PTO run time 017F",
+          "description": "SAE Mode 01 PID 7F candidate for cumulative power-take-off run time. The Ranger reference decodes bytes J-M as an unsigned 32-bit seconds counter; this TESTING view converts seconds to hours. A constant zero may simply mean PTO time is unsupported or unused on this Everest, so do not promote without a non-zero or cross-tool confirmation."
+        }
+      ]
+    },
+    {
+      "hdr": "7E0",
+      "rax": "7E8",
+      "cmd": {
         "22": "F48B"
       },
       "freq": 10,
