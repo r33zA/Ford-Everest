@@ -389,7 +389,7 @@
             "unit": "percent"
           },
           "name": "DPF / exhaust filter fullness",
-          "description": "Everest-confirmed internal DPF fullness / soot-load estimate using raw/100 percent. It has fallen coherently through three captured automatic regenerations. During the 31 August burn the dashboard moved from 90% to 0% while this signal fell from approximately 71.94% to 17.69%, reached 15.85% shortly after completion and then began rebounding. This confirms a strong internal soot/fullness measure rather than the dashboard's exact modelled percentage, especially near regeneration completion."
+          "description": "Everest-confirmed internal DPF fullness / soot-load estimate using raw/100 percent. It has fallen coherently through three completed automatic regenerations and one deliberately interrupted regeneration. During the interrupted 29 September burn the dashboard was approximately 50% when this signal reached 47.87% and ended near 48.11%. During the complete 31 August burn the dashboard moved from 90% to 0% while this signal fell from approximately 71.94% to 17.69%, reached 15.85% shortly after completion and then began rebounding. This confirms a strong internal soot/fullness measure while preserving the known final-phase difference from the dashboard model."
         },
         {
           "id": "EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100",
@@ -401,8 +401,8 @@
             "div": 100,
             "unit": "scalar"
           },
-          "name": "TEST DPF secondary soot model 0610 div100",
-          "description": "High-confidence testing only. Second 220610 word decoded raw/100 as an unknown scalar, not percent. Across three captured automatic burns it has fallen coherently with DPF cleaning. During the complete 31 August burn it fell from a maximum of 15.55 to 1.14 and rebounded to 3.01 afterward. Its soot-related behaviour is confirmed, but the physical identity and engineering unit remain unresolved, so production promotion is intentionally deferred."
+          "name": "TEST DPF secondary soot-related scalar 0610",
+          "description": "High-confidence testing only. Second 220610 word decoded raw/100 as an unknown scalar, not percent. Across three completed automatic burns and the deliberately interrupted 29 September burn it has fallen coherently during DPF cleaning. In the interrupted burn it declined from 16.84 to 5.61 and rebounded to 7.07 after cleaning stopped, while also declining before the primary model peaked. This confirms a distinct soot-related or aftertreatment model rather than a duplicate fullness percentage. Its physical identity and engineering unit remain unresolved, so production promotion is intentionally deferred."
         }
       ]
     },
@@ -1124,20 +1124,8 @@
             "max": 255,
             "unit": "kilometersPerHour"
           },
-          "name": "Vehicle speed Ford extended raw",
-          "description": "Confirmed working Ford extended vehicle speed. Raw value reads about 4 km/h below the dashboard and remains visible as an uncorrected comparison; the corrected signal is the intentionally preferred speed connectable."
-        },
-        {
-          "id": "EVEREST_SPEED_FORD_EXTENDED_F40D_CORRECTED",
-          "path": "Movement",
-          "fmt": {
-            "len": 8,
-            "max": 259,
-            "add": 4,
-            "unit": "kilometersPerHour"
-          },
-          "name": "Vehicle speed Ford extended corrected",
-          "description": "Ford extended vehicle speed with +4 km/h display correction to better match the dashboard. Use this as the practical speed connectable.",
+          "name": "Vehicle speed Ford extended",
+          "description": "Confirmed working Ford extended vehicle speed. The raw vehicle value reads approximately 4 km/h below the dashboard on this Everest. It remains unmodified so Pelican's supported speed-widget trim can provide the driver's preferred dashboard-matching presentation without a duplicate corrected PID.",
           "suggestedMetric": "speed"
         }
       ]
