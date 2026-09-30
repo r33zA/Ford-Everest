@@ -10,30 +10,29 @@ signalsets/v3/default.json
 
 ## Current release
 
-Current testing build: **v0.7.32 — lifetime engine-counter test pack**.
+Current validated build: **v0.7.33 — lifetime engine-counter promotion and cleanup**.
 
-The pack contains 81 commands and 100 signals. Of these, 96 are unchanged production signals and four remain isolated under `TESTING.*`.
+The pack contains 81 commands and 99 signals. Of these, 98 are production signals and exactly one remains isolated under `TESTING.*`.
 
 ## Latest release highlights
 
-- Added one low-frequency SAE Mode 01 `017F` command under `TESTING.Engine`.
-- Added candidate lifetime engine-run, engine-idle and PTO counters, decoded from three unsigned 32-bit seconds fields and displayed in hours.
-- The Everest repeatedly advertises PID `017F` through its `0160` support bitmap (`FFC9C343`).
-- The byte layout is grounded in the current OBDb Ford Ranger 2024 reference capture rather than a guessed proprietary DID.
-- No production signal, formula, path, ID, polling frequency or connectable was changed.
-- The earlier v0.7.31 interrupted-regeneration findings and speed-widget cleanup remain in force.
+- Promoted the SAE Mode 01 `017F` lifetime engine-run and engine-idle counters to `Engine.Generic` after five successful responses across three consecutive ignition cycles.
+- Total run time advanced exactly with elapsed engine-on time in two independently sampled intervals: 168 seconds over 168.015 seconds and 1,750 seconds over 1,750.622 seconds.
+- Both counters persisted across restarts, total run time remained greater than idle time, and idle increments were plausible for the observed driving.
+- Removed the zero-only PTO widget. The packet support byte remained `07`, so the field exists, but it accumulated no useful value on this Everest.
+- Retained the `017F` command at its low 60-second polling frequency.
+- No unrelated production signal, formula, path, polling frequency or connectable was changed.
 
-## Lifetime engine-counter testing
+## Lifetime engine counters
 
-The new `017F` command uses `7E0` request and `7E8` response addressing and polls only once every 60 seconds. Its first data byte is a support mask followed by three 32-bit cumulative counters:
+The confirmed `017F` command uses `7E0` request and `7E8` response addressing and polls only once every 60 seconds. Its first data byte is a support mask followed by 32-bit cumulative counters:
 
-| Candidate | Packet field | Display |
+| Production signal | Packet field | Display |
 | --- | --- | --- |
 | Lifetime engine run time | bytes B-E | raw seconds / 3600 hours |
 | Lifetime engine idle time | bytes F-I | raw seconds / 3600 hours |
-| Lifetime PTO run time | bytes J-M | raw seconds / 3600 hours |
 
-Before promotion, confirm that engine-run and idle values are plausible and persist across ignition cycles. Engine run time should be greater than idle time. PTO may remain zero because this Everest does not use a power-take-off; zero alone is not proof of a faulty decode.
+The five captured responses spanned approximately 1,030.96 to 1,032.31 total hours and 330.86 to 331.12 idle hours. The PTO field remained zero in every packet and is intentionally not exposed as a widget.
 
 ## Confirmed production highlights
 
@@ -49,7 +48,7 @@ Before promotion, confirm that engine-run and idle values are plausible and pers
 
 `EVEREST_DPF_FULLNESS_0610` is a validated internal fullness/soot-load measure, but it is not always the dashboard's exact modelled percentage. During the deliberately interrupted 29 September burn, the dashboard was approximately 50% while Pelican reached 47.87% and ended near 48.11%. During the complete 31 August burn, the dashboard moved from 90% to 0% while Pelican moved from approximately 71.94% to 17.69%, reached 15.85% shortly after completion and then began rebounding. The `raw / 100` formula remains valid for the internal model.
 
-The second `220610` word is also definitively soot-related. Across three completed automatic burns and the deliberately interrupted 29 September burn it has declined coherently during cleaning and rebounded afterward. In the latest drive it began declining before the primary model peaked, showing that it is not simply another fullness percentage. It remains TESTING because neither its physical identity nor engineering unit has been established. Its `/100` scalar view remains the only unresolved DPF testing signal; the other current TESTING items are the new `017F` lifetime engine counters.
+The second `220610` word is also definitively soot-related. Across three completed automatic burns and the deliberately interrupted 29 September burn it has declined coherently during cleaning and rebounded afterward. In the latest drive it began declining before the primary model peaked, showing that it is not simply another fullness percentage. It remains TESTING because neither its physical identity nor engineering unit has been established. Its `/100` scalar view is now the sole remaining TESTING signal.
 
 F48B's former byte-D active-regeneration interpretation was incorrect. Bytes D/E are one 16-bit average-time-between-regenerations value. Across two completed burns where F48B was polled, the normalized trigger fell in coarse steps and the average interval/distance fields recalculated together at completion, but none is a reliable live active-regeneration flag. F48B was not polled during the 31 August burn.
 
@@ -72,8 +71,8 @@ The responsive DIDs `401C`, `4021` and `4026` are not FORScan `CUM_DIS_SLP`, `CU
 
 ## High-value remaining work
 
-- Validate the new `017F` lifetime engine counters across at least two ignition cycles and compare them with FORScan if the equivalent values are available.
 - Identify the engineering unit and exact meaning of the secondary `220610` soot-model word. Another ordinary regeneration is no longer the missing evidence; a named FORScan value or authoritative definition is needed.
+- Capture a deliberate stationary Park/Reverse/Neutral/Drive sequence to finish interpreting the non-forward `1E1F` gear values `70`, `128` and `130` before changing their production presentation.
 - Capture `402B` below raw 127 beside FORScan to finish validating negative-current direction.
 - Obtain wire definitions for `BAT_CHRG_MODE`, `BAT_CUR_PRD`, `BATT_V_INF`, the real `CUM_DIS_*` counters and `VBAT_B–E`; no guessed Pelican definitions are included.
 - During any future regeneration, keep `220614`, F48B and the production EGT/pressure signals actively polled so the distance reset, history recalculation and thermal behaviour are captured together.
