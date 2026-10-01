@@ -614,7 +614,7 @@
             "unit": "celsius"
           },
           "name": "Intercooler air charge temperature",
-          "description": "Working charge-air / post-intercooler temperature candidate. Added as a custom connectable using intercoolerAirChargeTemperature."
+          "description": "Working charge-air / post-intercooler temperature signal. Retained as a visible parameter without a suggestedMetric assignment."
         }
       ]
     },
@@ -682,7 +682,7 @@
             "unit": "volts"
           },
           "name": "Intake air temperature sensor voltage",
-          "description": "Responds but showed 0 V during test. Keep as low-confidence candidate; compare later."
+          "description": "Responded with 0 V in the retained test capture. Its practical interpretation remains unverified; retained as a low-confidence parameter, not an active testing item."
         }
       ]
     },

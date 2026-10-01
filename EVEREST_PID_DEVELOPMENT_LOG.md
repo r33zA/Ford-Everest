@@ -13,7 +13,7 @@ The project's main purpose is to improve Pelican support for Everest owners, bui
 There are no current testing items: all 98 retained signals are in production categories, and there are no `TESTING.*` widgets. Development remains ongoing, and new evidence may justify future testing or refinements. Production placement includes established comparison/legacy presentations and does not remove the interpretation limits documented below.
 
 - 81 commands, 98 signals and 14 suggested-metric assignments.
-- The v0.7.35 JSON is byte-for-byte identical to v0.7.34. Signal IDs, formulas, paths, command settings and connectables are unchanged.
+- The initial v0.7.35 JSON was byte-for-byte identical to v0.7.34. Repository maintenance clarified two signal descriptions; signal IDs, formulas, paths, command settings and connectables remain unchanged.
 - The current gear display is accepted by the owner as useful for its driving purpose. Explicit Park/Reverse presentation is optional future work, not a required fix or an active test.
 - The secondary `220610` scalar is retired. Its unknown physical identity and unit do not justify continued exploratory widgets.
 - The `017F` run/idle counters remain under `Engine.Generic` with their existing `GENERIC_LIFETIME_ENGINE_*` IDs; the zero-only PTO widget is removed.
@@ -4596,7 +4596,7 @@ Aligned default file: `default.json` / `signalsets/v3/default.json` target
 
 - Clarified that improving Pelican support for other Everest owners is the project's main purpose. The PID findings may also be useful with other tools.
 - Recorded that there are no current TESTING items while development, daily Pelican use and evidence-led future refinements continue.
-- Kept `default.json` byte-for-byte identical to v0.7.34. All existing definitions and retained comparisons remain intact.
+- Initially kept `default.json` byte-for-byte identical to v0.7.34. Subsequent repository maintenance clarified two descriptions only; all decoding, IDs, paths, polling settings, connectables and retained comparisons remain intact.
 - Renamed the detailed record from `EVEREST_PID_TESTING.md` to `EVEREST_PID_DEVELOPMENT_LOG.md` and titled it Ford Everest PID Development and Validation Log.
 - Rewrote the current overview to distinguish accepted behaviour, evidence limits and retired candidates from historical testing plans.
 - Recorded the owner's acceptance of the current driving-gear presentation. Explicit P/R presentation is an optional future enhancement, not an outstanding fix or an active test. No enum, clamp, formula or signal was changed.
@@ -4604,6 +4604,8 @@ Aligned default file: `default.json` / `signalsets/v3/default.json` target
 - Refined the README after owner review to distinguish the Australian validation vehicle from the project's wider intended usefulness. Added official Ford references for Thailand production and the Ranger/T6 connection, and restored the compact upstream/SAE/Pelican references, privacy and contribution sections.
 - Rewrote `PELICAN_HANDOFF.md` as a copy-and-paste email linking to the development repository. It explains the owner's original upstream contribution goal and invites the developer to use or adapt useful definitions for Pelican's Everest support, without requesting formal review or implying an obligation.
 - Replaced review/submission and share-ready wording with neutral project documentation wording. The intended contact is an email with a repository link, not an attached file pack. No email was sent, repository published or upstream change submitted as part of this release.
+- Corrected the published log filename from `VEREST_PID_DEVELOPMENT_LOG.md` to `EVEREST_PID_DEVELOPMENT_LOG.md`, repaired the README's signal-file link and removed its private email-draft entry. The email draft remains a local document, not a public repository file.
+- Clarified the charge-air temperature description to reflect its existing parameter-only presentation. Reworded the intake-air sensor-voltage description to retain the observed 0 V and unresolved interpretation without implying an active testing task. No PID was added, removed or reclassified.
 
 Historical release entries from v0.7.0 through v0.7.34 are retained verbatim. Their older testing and gear-change plans are superseded by the current release decisions where applicable. Previous release folders retain their original filenames for provenance.
 
@@ -4617,7 +4619,7 @@ Historical release entries from v0.7.0 through v0.7.34 are retained verbatim. Th
 | Testing signals | 0 |
 | Duplicate IDs | 0 |
 | JSON validation | Passed |
-| Production signals modified | 0 |
+| Production signals modified | 2 descriptions only; no decoding changes |
 | Removed signals | 0 |
 | Added signals | 0 |
 | Path changes | 0 |
@@ -4629,7 +4631,7 @@ Historical release entries from v0.7.0 through v0.7.34 are retained verbatim. Th
 | Empty commands | 0 |
 | Command structure issues | 0 |
 | Signal structure issues | 0 |
-| Current JSON compared with v0.7.34 | Byte-for-byte identical |
+| Current JSON compared with v0.7.34 | Two description changes only; all other fields unchanged |
 | Historical v0.7.0–v0.7.34 release entries | Preserved verbatim |
 | Current documentation file links | Valid |
 
@@ -4648,7 +4650,7 @@ Clarified that the Ford Everest PID project's main goal is better vehicle suppor
 
 Renamed EVEREST_PID_TESTING.md to EVEREST_PID_DEVELOPMENT_LOG.md and refreshed its current overview to distinguish no current testing from an ongoing project. Preserved all historical release entries, documented interpretation limits and recorded the owner's acceptance of the current gear display. Explicit Park/Reverse presentation is optional future work rather than a release requirement.
 
-Rewrote PELICAN_HANDOFF.md as an email introducing the work through a repository link and inviting useful adoption or adaptation into Pelican's Everest support. No formal review, attachment pack or direct GitHub submission is requested. No email was sent or upstream changes submitted. The release retains all 81 commands and 98 production-category signals, with zero TESTING widgets. default.json is byte-for-byte unchanged from v0.7.34; no IDs, formulas, paths, polling settings, connectables or signal definitions were altered.
+Rewrote the local PELICAN_HANDOFF.md as an email introducing the work through a repository link and inviting useful adoption or adaptation into Pelican's Everest support. No formal review, attachment pack or direct upstream submission is requested. No email was sent or upstream changes submitted. The release retains all 81 commands and 98 production-category signals, with zero TESTING widgets. Repository maintenance corrected the published log filename, repaired README links and removed the private email-draft entry. Two signal descriptions were clarified; all other JSON fields, including IDs, formulas, paths, polling settings and connectables, are unchanged from v0.7.34.
 
 Validated JSON structure, unique IDs, absence of current testing, unchanged definitions, preserved release history and current documentation links. Future testing remains possible when supported by new evidence.
 ```

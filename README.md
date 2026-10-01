@@ -10,7 +10,7 @@ Validated vehicle: Australian-market Ford Everest Trend MY25.25, 2.0 L Bi-Turbo 
 
 The project is intended to benefit Everest owners across markets. Australia identifies the vehicle used for validation; it does not define a compatibility restriction. Individual PID support can vary with powertrain, module software and calibration.
 
-**v0.7.35:** 81 commands, 98 retained signals and no active TESTING widgets. Signal definitions are unchanged from v0.7.34.
+**v0.7.35:** 81 commands, 98 retained signals and no active TESTING widgets. Decoding, IDs, paths, polling settings and connectables are unchanged from v0.7.34; two signal descriptions have been clarified.
 
 Development remains ongoing. There are no current testing items; future evidence may lead to further validation, refinements or new candidates.
 
@@ -23,9 +23,8 @@ Development remains ongoing. There are no current testing items; future evidence
 
 ## Files
 
-- [default.json](default.json): the complete signal pack, targeting `signalsets/v3/default.json` in the vehicle repository.
+- [default.json](signalsets/v3/default.json): the complete signal pack at `signalsets/v3/default.json`.
 - [EVEREST_PID_DEVELOPMENT_LOG.md](EVEREST_PID_DEVELOPMENT_LOG.md): detailed evidence, decoding decisions, limitations and release history.
-- [PELICAN_HANDOFF.md](PELICAN_HANDOFF.md): an email draft introducing the work and linking to this repository.
 
 The DPF fullness signal represents Ford's internal model and can differ from the dashboard percentage. Further interpretation details are recorded in the development log.
 
