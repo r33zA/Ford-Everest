@@ -42,4 +42,4 @@ Pelican database exports may contain the full VIN, and screenshots may reveal id
 
 ## Contribution intent
 
-The intended home for useful definitions is [OBDb/Ford-Everest](https://github.com/OBDb/Ford-Everest), to help expand Pelican's Everest support. Rather than submitting changes directly, I am offering the [development repository](https://github.com/r33zA/Ford-Everest) to the Pelican developer to use or adapt where helpful. The documented PID findings may also benefit owners using other tools.
+The intended home for useful definitions is [OBDb/Ford-Everest](https://github.com/OBDb/Ford-Everest), to help expand Pelican's Everest support.
