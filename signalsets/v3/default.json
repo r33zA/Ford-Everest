@@ -390,19 +390,6 @@
           },
           "name": "DPF / exhaust filter fullness",
           "description": "Everest-confirmed internal DPF fullness / soot-load estimate using raw/100 percent. It has fallen coherently through three completed automatic regenerations and one deliberately interrupted regeneration. During the interrupted 29 September burn the dashboard was approximately 50% when this signal reached 47.87% and ended near 48.11%. During the complete 31 August burn the dashboard moved from 90% to 0% while this signal fell from approximately 71.94% to 17.69%, reached 15.85% shortly after completion and then began rebounding. This confirms a strong internal soot/fullness measure while preserving the known final-phase difference from the dashboard model."
-        },
-        {
-          "id": "EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100",
-          "path": "TESTING.Regen_BIX",
-          "fmt": {
-            "bix": 16,
-            "len": 16,
-            "max": 655.35,
-            "div": 100,
-            "unit": "scalar"
-          },
-          "name": "TEST DPF secondary soot-related scalar 0610",
-          "description": "High-confidence testing only. Second 220610 word decoded raw/100 as an unknown scalar, not percent. Across three completed automatic burns and the deliberately interrupted 29 September burn it has fallen coherently during DPF cleaning. In the interrupted burn it declined from 16.84 to 5.61 and rebounded to 7.07 after cleaning stopped, while also declining before the primary model peaked. This confirms a distinct soot-related or aftertreatment model rather than a duplicate fullness percentage. Its physical identity and engineering unit remain unresolved, so production promotion is intentionally deferred."
         }
       ]
     },
