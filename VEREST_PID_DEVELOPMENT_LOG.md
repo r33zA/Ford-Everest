@@ -1,51 +1,75 @@
-# Ford Everest MY25.25 PID Testing Log
+# Ford Everest PID Development and Validation Log
 
 https://github.com/r33zA/Ford-Everest
 
-Version: 2026-09-30 v0.7.33 lifetime engine-counter promotion and cleanup  
+Version: 2026-10-01 v0.7.35 project documentation update  
 Aligned default file: `default.json` / `signalsets/v3/default.json` target  
 Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 10-speed automatic, full-time 4WD
 
 ## Current release status
 
-- 81 commands and 99 signals.
-- 98 production signals and exactly one `TESTING.*` signal.
-- The `017F` lifetime engine-run and engine-idle counters are promoted under `Engine.Generic`; the zero-only PTO widget is removed.
-- The existing secondary `220610` soot-related scalar remains the sole TESTING item because its physical identity and engineering unit are still unknown.
-- The `0170` raw companions, the redundant Ford `F470` mirror and the disproved `401C`/`4021`/`4026` BMS candidates have been removed.
-- `EVEREST_BATTERY_SOC_4028_726` now carries Pelican's supported `stateOfCharge` suggested metric.
-- The hard-coded `+4 km/h` speed signal has been removed. The unmodified Ford F40D signal is now the sole `speed` connectable, with dashboard matching handled by Pelican's speed-widget trim.
-- All earlier release sections below are retained as historical evidence. The v0.7.30 BMS disproof, v0.7.31 speed decision and v0.7.33 engine-counter promotion supersede their older candidate descriptions.
+The project's main purpose is to improve Pelican support for Everest owners, building on several months of daily use, drive captures and validation. The useful definitions are intended for contribution to `OBDb/Ford-Everest`; the owner will offer the development repository to the Pelican developer by email rather than submit changes directly. This is an invitation to use or adapt the work, not a request for formal review or a claim of upstream integration.
 
-## Update focus
+There are no current testing items: all 98 retained signals are in production categories, and there are no `TESTING.*` widgets. Development remains ongoing, and new evidence may justify future testing or refinements. Production placement includes established comparison/legacy presentations and does not remove the interpretation limits documented below.
 
-- Promote the SAE Mode 01 `017F` lifetime engine-run and engine-idle counters to `Engine.Generic` after three consecutive ignition-cycle captures.
-- Remove the zero-only PTO widget while retaining the shared `017F` command at frequency 60.
-- Document exact counter increments, persistence and packet support evidence.
-- Preserve all unrelated production commands, formulas, IDs, paths, frequencies and connectables.
-- Revalidate JSON structure, duplicate IDs, TESTING containment and the exact v0.7.32-to-v0.7.33 diff.
+- 81 commands, 98 signals and 14 suggested-metric assignments.
+- The v0.7.35 JSON is byte-for-byte identical to v0.7.34. Signal IDs, formulas, paths, command settings and connectables are unchanged.
+- The current gear display is accepted by the owner as useful for its driving purpose. Explicit Park/Reverse presentation is optional future work, not a required fix or an active test.
+- The secondary `220610` scalar is retired. Its unknown physical identity and unit do not justify continued exploratory widgets.
+- The `017F` run/idle counters remain under `Engine.Generic` with their existing `GENERIC_LIFETIME_ENGINE_*` IDs; the zero-only PTO widget is removed.
+- Battery SOC uses the `stateOfCharge` suggested metric. The unmodified Ford F40D signal is the sole `speed` connectable; dashboard matching uses Pelican's speed-widget trim.
 
-## Important note — DPF promotion
+## How to use this log
+
+This file replaces `EVEREST_PID_TESTING.md` as the project's detailed development record. The README provides the short introduction. This log retains the evidence, decoding decisions, retired candidates, limitations and release history.
+
+The current overview and the latest applicable release decisions take precedence over older entries. Historical references to active testing, capture checklists, tentative meanings or planned gear changes describe the position at that time; they are not the current work programme. In particular, v0.7.30 supersedes the BMS candidates, v0.7.31 the adjusted-speed definition, v0.7.33 the engine-counter testing, v0.7.34 the secondary DPF test and v0.7.35 the gear-display follow-up requirement.
+
+## Accepted behaviour and interpretation limits
+
+### DPF
+
+The primary `220610` signal is a useful internal fullness/soot-load model, not an exact reproduction of the dashboard percentage. In the latest retained capture it rose from 69.08% to 76.08%, fell to 19.04% and ended at 21.93%; dashboard images showed Full, 85%, 20%, 0% and 5%. This strongly supports a completed clean, although `220614`, F48B and exhaust-temperature/pressure commands were not polled to capture the ECU reset/thermal boundary independently.
+
+The secondary word was responsive but unidentified and is retired. F48B provides trigger/history values; it must not be presented as a confirmed live regeneration-active flag.
+
+### Transmission
+
+Forward-gear values 1–10 provide useful driving information. Non-forward codes above 10 are clamped to 10 in the existing numeric `7E1` presentations. The owner accepts this behaviour for the current pack; an explicit P/R display could be considered later if a reliable mapping is established. Raw 128 also occurs during transitions and is not safely labelled Neutral alone.
+
+The `/16` transmission-temperature signal is the primary presentation. The existing `5/72` compare remains a legacy comparison rather than a second equally preferred formula. Both definitions are retained as requested.
+
+### Battery and counters
+
+The BCM voltage, SOC and age definitions have vehicle-specific cross-checks. The `402B` negative-current direction has not yet been cross-checked below raw 127; this is an evidence limit, not an active testing requirement. Legacy comparison presentations remain documented as comparisons. Unidentified FORScan battery parameters are outside this release's scope.
+
+The `017F` engine run/idle counters persisted across three captured ignition cycles and the run counter matched elapsed engine-on time in independently sampled intervals. Existing names and IDs are retained for continuity; servicing or module replacement reset behaviour has not been established.
+
+### Compatibility and recording
+
+The project is intended to benefit Everest owners across markets; Australia identifies the validation vehicle, not a compatibility restriction. Vehicle-specific evidence applies to the stated Everest, and individual PID support on other vehicles can vary with powertrain, module software and calibration. Thailand production and the Ranger/T6 platform connection explain why related Ford definitions are useful research references; they do not establish that every Ranger PID works on every Everest.
+
+Configured polling frequency does not prove that a signal was recorded in a particular Pelican session; only the actual requests/responses establish coverage. No additional capture is a prerequisite for using the current definitions. Future work should be driven by new evidence rather than continuing retired experiments without a clear purpose.
+
+## DPF production decisions
 
 | Signal | PID | Formula | Decision | Reason |
 | --- | --- | --- | --- | --- |
-| `EVEREST_DPF_FULLNESS_0610` | `220610` | `raw / 100` | Promoted | Matched the vehicle exhaust-filter display through a full regen cycle: high/full, cleaning, and post-regen near zero. |
+| `EVEREST_DPF_FULLNESS_0610` | `220610` | `raw / 100` | Retained production | Repeated coherent accumulation and regeneration decline; internal model can differ substantially from the dashboard percentage. |
 | `EVEREST_DISTANCE_SINCE_DPF_REGEN_0614` | `220614` | `raw / 10` km | Promoted | Counted up with driving distance, reset to 0 km when the regen completed, then immediately started counting up again. |
 
-## Important note — current testing-only candidates
+## Active testing
 
-| Signal | PID | Path | Reason retained |
-| --- | --- | --- | --- |
-| `EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100` | `220610` | `TESTING.Regen_BIX` | Repeatably soot-related across completed and interrupted burns, but exact identity and engineering unit remain unknown. |
+None currently. The secondary `220610` field was retired in v0.7.34. No candidate is scheduled for testing as part of v0.7.35. Earlier observations remain historical evidence; the project remains open to future testing when a useful, evidence-based candidate is identified.
 
 ## Sanity-check snapshot
 
 | Check | Result |
 | --- | ---: |
 | Commands in current default.json | 81 |
-| Signals in current default.json | 99 |
+| Signals in current default.json | 98 |
 | Production signals | 98 |
-| TESTING signals | 1 |
+| TESTING signals | 0 |
 | Signals with suggestedMetric | 14 |
 | Duplicate signal IDs | 0 |
 | JSON validation | Passed |
@@ -73,10 +97,10 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 
 | Group | PID / cmd | ECU | Signal | Status | Decision / notes |
 | --- | --- | --- | --- | --- | --- |
-| DPF | `220610` | `7E0 7E8` | DPF / exhaust filter fullness | Works | Active; formula raw/100 percent; matched dash regen/fullness behaviour. |
+| DPF | `220610` | `7E0 7E8` | DPF / exhaust filter fullness | Works | Active; raw/100 internal model; tracks accumulation and cleaning but is not the exact dashboard percentage. |
 | DPF | `220614` | `7E0 7E8` | Distance since DPF regen | Works | Active; formula raw/10 km; reset at regen completion. |
 | Transmission | `221E1C div16` | `7E1 7E9` | Transmission fluid temperature Everest div16 | Works / chosen | Preferred current Everest-specific scaling; active transmissionFluidTemperature connectable. |
-| Transmission | `221E1C 5/72` | `7E1 7E9` | Transmission fluid temperature 5/72 compare | Comparison / legacy | Retained for validation only; no suggestedMetric. |
+| Transmission | `221E1C 5/72` | `7E1 7E9` | Transmission fluid temperature 5/72 compare | Comparison / legacy | Retained legacy comparison; div16 remains primary; no suggestedMetric. |
 | Transmission | `221E1F` | `7E1 7E9` | Transmission gear engaged | Works | Visible working current-gear signal; no unsupported transmissionGear connectable assigned. |
 | Emissions | `22052E` | `7E0 7E8` | EGR open percentage | Works | Active. |
 | Emissions | `220569` | `7E0 7E8` | EGT pre-turbo | Works / plausible | Active. |
@@ -89,11 +113,15 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 | Engine | `22F404` | `7E0 7E8` | Engine load | Works | Active as engineLoad. |
 | Engine | `22F405` | `7E0 7E8` | Coolant temperature | Works | Active as engineCoolantTemperature. |
 | Engine | `22F40C` | `7E0 7E8` | Engine speed | Works | Active as engineSpeed. |
-| Engine | `22F45C` | `7E0 7E8` | Engine oil temperature | Works | Active as engineOilTemperature; continue sanity checking long term. |
+| Engine | `22F45C` | `7E0 7E8` | Engine oil temperature | Works | Active as engineOilTemperature. |
 | AdBlue | `220487` | `7E0 7E8` | AdBlue tank level | Works | Best AdBlue quantity signal. |
 | Battery | `22402A` | `726 72E` | Aux 12V battery voltage | Works | Active as starterBatteryVoltage. |
 
-## Shelved / not carried forward from v0.3.1
+## Historical notes preceding v0.7.0
+
+The following shelving notes and testing rules are preserved from the earlier development record. They do not describe active work in v0.7.35.
+
+### Shelved / not carried forward from v0.3.1
 
 | Candidate | Decision |
 | --- | --- |
@@ -103,16 +131,16 @@ Vehicle: Ford Everest Trend MY25.25, Australian market, 2.0 L Bi-Turbo Diesel, 1
 | `22F460` | Shelved for now; alive but current decode produced nonsense/high value. |
 | Raw `0610` and raw `0614` validation signals | Not exposed in stable default; retained in validation notes only. |
 
-## Testing rules going forward
+### Testing rules used during development
 
-### Promote only when all are true
+#### Promote only when all are true
 
 - Live response received.
 - Value is plausible for the vehicle state.
 - Behaviour changes correctly during warm-up, movement, throttle/load, regen, gear changes, or another relevant real-world state.
 - It is more useful than an existing signal.
 
-### Reject or shelve quickly when any are true
+#### Reject or shelve quickly when any are true
 
 - Negative response / out of range.
 - Blank or stale value.
@@ -4482,4 +4510,145 @@ Moved the promoted signals to Engine.Generic with GENERIC_* IDs while retaining 
 Documented approximately 52.0 km of continuous DPF accumulation and retained the secondary 220610 scalar as the sole TESTING signal because its aftertreatment relationship is strong but its physical identity and engineering unit remain unknown.
 
 Promoted two signals and removed one additional testing widget. No unrelated production signal, formula, ID, path, frequency or connectable was changed.
+```
+
+# v0.7.34 — Secondary DPF scout retirement
+
+Aligned default file: `default.json` / `signalsets/v3/default.json` target
+
+## Decision and scope
+
+The user directed that testing of the secondary DPF field should end: it must either provide a workable, trustworthy measurement or be removed. Retired exactly:
+
+```text
+EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100
+```
+
+The field responds and correlates with aftertreatment behaviour, but repeated captures have not established its physical identity, engineering unit or a dependable driver-facing interpretation. Its retirement is a usability/research decision, not an unsupported-PID finding. It is not promoted under a speculative label, percentage, mass unit or active-regeneration state.
+
+The shared `7E0 -> 7E8 220610` command remains at frequency 10 with the unchanged `EVEREST_DPF_FULLNESS_0610` production signal. Therefore the widget removal saves no separate diagnostic requests; it ends visible exploratory testing. Raw second-word bytes remain present in future complete command responses whenever `220610` is polled.
+
+There are now no TESTING signals. This does not imply that every remaining research question or presentation issue is resolved. Restore this retired field only if new evidence identifies its meaning, not merely because another ordinary drive or burn makes it change again.
+
+## Latest drive evidence retained
+
+The archive received 1 October contained 47,804 logged commands, including adapter configuration, over approximately 96 minutes and 52.0 km. It included 558 valid eight-byte `220610` responses:
+
+| Reading | First | Maximum | Minimum | Final |
+| --- | ---: | ---: | ---: | ---: |
+| Primary DPF internal model | 69.08% | 76.08% | 19.04% | 21.93% |
+| Retired secondary `/100` scalar | 6.84 | 13.01 | 1.42 | 4.77 |
+
+The primary maximum-to-minimum decline covered approximately 18.5 minutes. Dashboard photos showed Full, then 85%, 20%, 0% and 5%, strongly supporting a completed clean. The second word reached its minimum approximately 50 seconds before the primary minimum, then recovered. Its physical unit remains unidentified.
+
+Distance-since-regen `220614`, F48B and exhaust-temperature/pressure commands were not polled. The ECU's exact completion/reset boundary cannot be independently verified from this capture. The production primary model remains an internal estimate, not an exact copy of the dashboard percentage.
+
+The numeric `7E1` gear signals have a separately identified presentation issue: raw non-forward codes above 10 are clamped to 10 by their existing maximum. This release deliberately contains only the authorised secondary-widget removal; the gear definitions and previously discussed LIFETIME/TOTAL counter wording are unchanged. Those concerns remain documented for a focused subsequent update.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 81 |
+| Signals | 98 |
+| Production signals | 98 |
+| Testing signals | 0 |
+| Duplicate IDs | 0 |
+| JSON validation | Passed |
+| Production signals modified | 0 |
+| Removed signals | 1 secondary DPF TESTING widget |
+| Added signals | 0 |
+| Path changes | No retained paths changed; TESTING.Regen_BIX has no remaining signal |
+| Formula changes | 0 |
+| Connectable changes | 0 |
+| Signals with suggestedMetric | 14 |
+| Commands added or removed | 0 |
+| Frequency changes | 0 |
+| Empty commands | 0 |
+| Command structure issues | 0 |
+| Signal structure issues | 0 |
+| Exact comparison against v0.7.33 | Only the authorised signal removal |
+
+## Commit message
+
+```text
+Retire unidentified secondary DPF scout for Everest PID v0.7.34
+```
+
+## Extended description
+
+```text
+Retired EVEREST_TEST_DPF_FULLNESS_0610_CD_DIV100 at the user's direction after repeated drive and regeneration captures established a responsive but still unidentified aftertreatment field. Its physical meaning, engineering unit and practical dashboard interpretation remain unresolved, so it is removed rather than promoted speculatively.
+
+Preserved the shared 220610 command, its frequency and the confirmed primary DPF fullness signal. Complete future responses still contain the secondary raw bytes. All 98 production signal definitions, other commands, formulas, IDs, paths and connectables are unchanged.
+
+Updated README and the testing log to close the experiment, retain the latest regeneration evidence and record that no TESTING widgets remain. Previous release sections remain historical evidence. Reintroduction requires new identification evidence rather than another ordinary burn.
+
+Validated JSON parsing, signal IDs, command/signal structure and an exact comparison against v0.7.33 proving that only the authorised secondary signal was removed.
+```
+
+# v0.7.35 — Project documentation update
+
+Date: 1 October 2026  
+Aligned default file: `default.json` / `signalsets/v3/default.json` target
+
+## Release decisions
+
+- Clarified that improving Pelican support for other Everest owners is the project's main purpose. The PID findings may also be useful with other tools.
+- Recorded that there are no current TESTING items while development, daily Pelican use and evidence-led future refinements continue.
+- Kept `default.json` byte-for-byte identical to v0.7.34. All existing definitions and retained comparisons remain intact.
+- Renamed the detailed record from `EVEREST_PID_TESTING.md` to `EVEREST_PID_DEVELOPMENT_LOG.md` and titled it Ford Everest PID Development and Validation Log.
+- Rewrote the current overview to distinguish accepted behaviour, evidence limits and retired candidates from historical testing plans.
+- Recorded the owner's acceptance of the current driving-gear presentation. Explicit P/R presentation is an optional future enhancement, not an outstanding fix or an active test. No enum, clamp, formula or signal was changed.
+- Replaced the long README with a concise Pelican-focused purpose/vehicle/coverage/file overview and one brief DPF interpretation note. Detailed findings remain in this log.
+- Refined the README after owner review to distinguish the Australian validation vehicle from the project's wider intended usefulness. Added official Ford references for Thailand production and the Ranger/T6 connection, and restored the compact upstream/SAE/Pelican references, privacy and contribution sections.
+- Rewrote `PELICAN_HANDOFF.md` as a copy-and-paste email linking to the development repository. It explains the owner's original upstream contribution goal and invites the developer to use or adapt useful definitions for Pelican's Everest support, without requesting formal review or implying an obligation.
+- Replaced review/submission and share-ready wording with neutral project documentation wording. The intended contact is an email with a repository link, not an attached file pack. No email was sent, repository published or upstream change submitted as part of this release.
+
+Historical release entries from v0.7.0 through v0.7.34 are retained verbatim. Their older testing and gear-change plans are superseded by the current release decisions where applicable. Previous release folders retain their original filenames for provenance.
+
+## Validation summary
+
+| Check | Result |
+| --- | ---: |
+| Commands | 81 |
+| Signals | 98 |
+| Production-category signals | 98 |
+| Testing signals | 0 |
+| Duplicate IDs | 0 |
+| JSON validation | Passed |
+| Production signals modified | 0 |
+| Removed signals | 0 |
+| Added signals | 0 |
+| Path changes | 0 |
+| Formula changes | 0 |
+| Connectable changes | 0 |
+| Suggested-metric assignments | 14 |
+| Commands added or removed | 0 |
+| Frequency changes | 0 |
+| Empty commands | 0 |
+| Command structure issues | 0 |
+| Signal structure issues | 0 |
+| Current JSON compared with v0.7.34 | Byte-for-byte identical |
+| Historical v0.7.0–v0.7.34 release entries | Preserved verbatim |
+| Current documentation file links | Valid |
+
+These checks confirm local file consistency and structure. The documentation describes the intent to offer the repository for useful Pelican/OBDb integration; it does not claim that the definitions have been adopted upstream or that other Everest variants have been validated.
+
+## Commit message
+
+```text
+Clarify Everest PID project scope and development status
+```
+
+## Extended description
+
+```text
+Clarified that the Ford Everest PID project's main goal is better vehicle support in Pelican for other Everest owners, with wider value in the documented PID findings. Replaced the detailed README with a concise introduction covering daily Pelican use, the tested MY25.25 vehicle, release, signal coverage, target path and supporting files. Retained Thailand production and Ranger/T6 context, while distinguishing the Australian validation vehicle from the project's intended usefulness across markets. Kept brief references, privacy and contribution sections.
+
+Renamed EVEREST_PID_TESTING.md to EVEREST_PID_DEVELOPMENT_LOG.md and refreshed its current overview to distinguish no current testing from an ongoing project. Preserved all historical release entries, documented interpretation limits and recorded the owner's acceptance of the current gear display. Explicit Park/Reverse presentation is optional future work rather than a release requirement.
+
+Rewrote PELICAN_HANDOFF.md as an email introducing the work through a repository link and inviting useful adoption or adaptation into Pelican's Everest support. No formal review, attachment pack or direct GitHub submission is requested. No email was sent or upstream changes submitted. The release retains all 81 commands and 98 production-category signals, with zero TESTING widgets. default.json is byte-for-byte unchanged from v0.7.34; no IDs, formulas, paths, polling settings, connectables or signal definitions were altered.
+
+Validated JSON structure, unique IDs, absence of current testing, unchanged definitions, preserved release history and current documentation links. Future testing remains possible when supported by new evidence.
 ```
